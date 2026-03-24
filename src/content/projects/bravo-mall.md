@@ -12,20 +12,20 @@ categories:
   - commercial
 features: []
 tags: []
-coverImage: "/portfolio/bravo-mall/01.jpg"
+coverImage: "/_img/portfolio/bravo-mall/01.jpg"
 published: true
 featured: false
 images:
-  - src: "/portfolio/bravo-mall/01.jpg"
+  - src: "/_img/portfolio/bravo-mall/01.jpg"
     alt: ""
-  - src: "/portfolio/bravo-mall/02.jpg"
+  - src: "/_img/portfolio/bravo-mall/02.jpg"
     alt: ""
-  - src: "/portfolio/bravo-mall/03.jpg"
+  - src: "/_img/portfolio/bravo-mall/03.jpg"
     alt: ""
-  - src: "/portfolio/bravo-mall/04.jpg"
+  - src: "/_img/portfolio/bravo-mall/04.jpg"
     alt: ""
-  - src: "/portfolio/bravo-mall/05.jpg"
+  - src: "/_img/portfolio/bravo-mall/05.jpg"
     alt: ""
-  - src: "/portfolio/bravo-mall/06.jpg"
+  - src: "/_img/portfolio/bravo-mall/06.jpg"
     alt: ""
 ---

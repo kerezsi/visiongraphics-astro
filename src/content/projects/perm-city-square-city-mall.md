@@ -12,31 +12,31 @@ categories:
   - urban
 features: []
 tags: []
-coverImage: "/portfolio/perm-city-square-city-mall/01.jpg"
+coverImage: "/_img/portfolio/perm-city-square-city-mall/01.jpg"
 published: true
 featured: false
 techniques:
   - exterior
   - site-plan
 images:
-  - src: "/portfolio/perm-city-square-city-mall/01.jpg"
+  - src: "/_img/portfolio/perm-city-square-city-mall/01.jpg"
     alt: ""
-  - src: "/portfolio/perm-city-square-city-mall/02.jpg"
+  - src: "/_img/portfolio/perm-city-square-city-mall/02.jpg"
     alt: ""
-  - src: "/portfolio/perm-city-square-city-mall/03.jpg"
+  - src: "/_img/portfolio/perm-city-square-city-mall/03.jpg"
     alt: ""
-  - src: "/portfolio/perm-city-square-city-mall/04.jpg"
+  - src: "/_img/portfolio/perm-city-square-city-mall/04.jpg"
     alt: ""
-  - src: "/portfolio/perm-city-square-city-mall/05.jpg"
+  - src: "/_img/portfolio/perm-city-square-city-mall/05.jpg"
     alt: ""
-  - src: "/portfolio/perm-city-square-city-mall/06.jpg"
+  - src: "/_img/portfolio/perm-city-square-city-mall/06.jpg"
     alt: ""
-  - src: "/portfolio/perm-city-square-city-mall/07.jpg"
+  - src: "/_img/portfolio/perm-city-square-city-mall/07.jpg"
     alt: ""
-  - src: "/portfolio/perm-city-square-city-mall/08.jpg"
+  - src: "/_img/portfolio/perm-city-square-city-mall/08.jpg"
     alt: ""
-  - src: "/portfolio/perm-city-square-city-mall/09.jpg"
+  - src: "/_img/portfolio/perm-city-square-city-mall/09.jpg"
     alt: ""
-  - src: "/portfolio/perm-city-square-city-mall/10.jpg"
+  - src: "/_img/portfolio/perm-city-square-city-mall/10.jpg"
     alt: ""
 ---

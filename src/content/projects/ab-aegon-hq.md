@@ -8,20 +8,20 @@ categories:
   - office
 features: []
 tags: []
-coverImage: "/portfolio/ab-aegon-hq/01.jpg"
+coverImage: "/_img/portfolio/ab-aegon-hq/01.jpg"
 published: true
 featured: false
 techniques:
   - interior
 images:
-  - src: "/portfolio/ab-aegon-hq/01.jpg"
+  - src: "/_img/portfolio/ab-aegon-hq/01.jpg"
     alt: ""
-  - src: "/portfolio/ab-aegon-hq/02.jpg"
+  - src: "/_img/portfolio/ab-aegon-hq/02.jpg"
     alt: ""
-  - src: "/portfolio/ab-aegon-hq/03.jpg"
+  - src: "/_img/portfolio/ab-aegon-hq/03.jpg"
     alt: ""
-  - src: "/portfolio/ab-aegon-hq/04.jpg"
+  - src: "/_img/portfolio/ab-aegon-hq/04.jpg"
     alt: ""
-  - src: "/portfolio/ab-aegon-hq/05.jpg"
+  - src: "/_img/portfolio/ab-aegon-hq/05.jpg"
     alt: ""
 ---

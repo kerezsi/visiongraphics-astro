@@ -12,7 +12,7 @@ categories:
   - office
 features: []
 tags: []
-coverImage: "/portfolio/promenade-gardens/01.jpg"
+coverImage: "/_img/portfolio/promenade-gardens/01.jpg"
 published: true
 featured: false
 techniques:
@@ -21,34 +21,34 @@ techniques:
   - exterior
   - night-renderings
 images:
-  - src: "/portfolio/promenade-gardens/01.jpg"
+  - src: "/_img/portfolio/promenade-gardens/01.jpg"
     alt: ""
-  - src: "/portfolio/promenade-gardens/02.jpg"
+  - src: "/_img/portfolio/promenade-gardens/02.jpg"
     alt: ""
-  - src: "/portfolio/promenade-gardens/03.jpg"
+  - src: "/_img/portfolio/promenade-gardens/03.jpg"
     alt: ""
-  - src: "/portfolio/promenade-gardens/04.jpg"
+  - src: "/_img/portfolio/promenade-gardens/04.jpg"
     alt: ""
-  - src: "/portfolio/promenade-gardens/05.jpg"
+  - src: "/_img/portfolio/promenade-gardens/05.jpg"
     alt: ""
-  - src: "/portfolio/promenade-gardens/06.jpg"
+  - src: "/_img/portfolio/promenade-gardens/06.jpg"
     alt: ""
-  - src: "/portfolio/promenade-gardens/07.jpg"
+  - src: "/_img/portfolio/promenade-gardens/07.jpg"
     alt: ""
-  - src: "/portfolio/promenade-gardens/08.jpg"
+  - src: "/_img/portfolio/promenade-gardens/08.jpg"
     alt: ""
-  - src: "/portfolio/promenade-gardens/09.jpg"
+  - src: "/_img/portfolio/promenade-gardens/09.jpg"
     alt: ""
-  - src: "/portfolio/promenade-gardens/10.jpg"
+  - src: "/_img/portfolio/promenade-gardens/10.jpg"
     alt: ""
-  - src: "/portfolio/promenade-gardens/11.jpg"
+  - src: "/_img/portfolio/promenade-gardens/11.jpg"
     alt: ""
-  - src: "/portfolio/promenade-gardens/12.jpg"
+  - src: "/_img/portfolio/promenade-gardens/12.jpg"
     alt: ""
-  - src: "/portfolio/promenade-gardens/13.jpg"
+  - src: "/_img/portfolio/promenade-gardens/13.jpg"
     alt: ""
-  - src: "/portfolio/promenade-gardens/14.jpg"
+  - src: "/_img/portfolio/promenade-gardens/14.jpg"
     alt: ""
-  - src: "/portfolio/promenade-gardens/15.jpg"
+  - src: "/_img/portfolio/promenade-gardens/15.jpg"
     alt: ""
 ---

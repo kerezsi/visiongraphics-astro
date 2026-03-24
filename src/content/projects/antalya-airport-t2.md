@@ -18,15 +18,15 @@ tags:
   - turkey
   - infrastructure
   - fraport
-coverImage: "/portfolio/antalya-airport-t2/cover.jpg"
+coverImage: "/_img/portfolio/antalya-airport-t2/cover.jpg"
 images:
-  - src: "/portfolio/antalya-airport-t2/01.jpg"
+  - src: "/_img/portfolio/antalya-airport-t2/01.jpg"
     alt: "Terminal 2 exterior approach view, dawn lighting"
-  - src: "/portfolio/antalya-airport-t2/02.jpg"
+  - src: "/_img/portfolio/antalya-airport-t2/02.jpg"
     alt: "Check-in hall overview"
-  - src: "/portfolio/antalya-airport-t2/03.jpg"
+  - src: "/_img/portfolio/antalya-airport-t2/03.jpg"
     alt: "Gate area, natural light study"
-  - src: "/portfolio/antalya-airport-t2/04.jpg"
+  - src: "/_img/portfolio/antalya-airport-t2/04.jpg"
     alt: "Aerial context view, full terminal"
 featured: true
 published: false

@@ -9,16 +9,16 @@ categories:
   - architectural-visualization
 features: []
 tags: []
-coverImage: "/portfolio/home-center-orient/01.jpg"
+coverImage: "/_img/portfolio/home-center-orient/01.jpg"
 published: true
 featured: false
 techniques:
   - exterior
 images:
-  - src: "/portfolio/home-center-orient/01.jpg"
+  - src: "/_img/portfolio/home-center-orient/01.jpg"
     alt: ""
-  - src: "/portfolio/home-center-orient/02.jpg"
+  - src: "/_img/portfolio/home-center-orient/02.jpg"
     alt: ""
-  - src: "/portfolio/home-center-orient/03.jpg"
+  - src: "/_img/portfolio/home-center-orient/03.jpg"
     alt: ""
 ---

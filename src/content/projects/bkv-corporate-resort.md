@@ -8,18 +8,18 @@ categories:
   - hospitality
 features: []
 tags: []
-coverImage: "/portfolio/bkv-corporate-resort/01.jpg"
+coverImage: "/_img/portfolio/bkv-corporate-resort/01.jpg"
 published: true
 featured: false
 techniques:
   - exterior
 images:
-  - src: "/portfolio/bkv-corporate-resort/01.jpg"
+  - src: "/_img/portfolio/bkv-corporate-resort/01.jpg"
     alt: ""
-  - src: "/portfolio/bkv-corporate-resort/02.jpg"
+  - src: "/_img/portfolio/bkv-corporate-resort/02.jpg"
     alt: ""
-  - src: "/portfolio/bkv-corporate-resort/03.jpg"
+  - src: "/_img/portfolio/bkv-corporate-resort/03.jpg"
     alt: ""
-  - src: "/portfolio/bkv-corporate-resort/04.jpg"
+  - src: "/_img/portfolio/bkv-corporate-resort/04.jpg"
     alt: ""
 ---

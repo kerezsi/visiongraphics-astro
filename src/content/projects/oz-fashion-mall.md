@@ -12,7 +12,7 @@ categories:
   - commercial
 features: []
 tags: []
-coverImage: "/portfolio/oz-fashion-mall/01.jpg"
+coverImage: "/_img/portfolio/oz-fashion-mall/01.jpg"
 published: true
 featured: false
 techniques:
@@ -20,26 +20,26 @@ techniques:
   - interior
   - night-renderings
 images:
-  - src: "/portfolio/oz-fashion-mall/01.jpg"
+  - src: "/_img/portfolio/oz-fashion-mall/01.jpg"
     alt: ""
-  - src: "/portfolio/oz-fashion-mall/02.jpg"
+  - src: "/_img/portfolio/oz-fashion-mall/02.jpg"
     alt: ""
-  - src: "/portfolio/oz-fashion-mall/03.jpg"
+  - src: "/_img/portfolio/oz-fashion-mall/03.jpg"
     alt: ""
-  - src: "/portfolio/oz-fashion-mall/04.jpg"
+  - src: "/_img/portfolio/oz-fashion-mall/04.jpg"
     alt: ""
-  - src: "/portfolio/oz-fashion-mall/05.jpg"
+  - src: "/_img/portfolio/oz-fashion-mall/05.jpg"
     alt: ""
-  - src: "/portfolio/oz-fashion-mall/06.jpg"
+  - src: "/_img/portfolio/oz-fashion-mall/06.jpg"
     alt: ""
-  - src: "/portfolio/oz-fashion-mall/07.jpg"
+  - src: "/_img/portfolio/oz-fashion-mall/07.jpg"
     alt: ""
-  - src: "/portfolio/oz-fashion-mall/08.jpg"
+  - src: "/_img/portfolio/oz-fashion-mall/08.jpg"
     alt: ""
-  - src: "/portfolio/oz-fashion-mall/09.jpg"
+  - src: "/_img/portfolio/oz-fashion-mall/09.jpg"
     alt: ""
-  - src: "/portfolio/oz-fashion-mall/10.jpg"
+  - src: "/_img/portfolio/oz-fashion-mall/10.jpg"
     alt: ""
-  - src: "/portfolio/oz-fashion-mall/11.jpg"
+  - src: "/_img/portfolio/oz-fashion-mall/11.jpg"
     alt: ""
 ---

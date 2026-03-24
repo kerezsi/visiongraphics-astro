@@ -10,7 +10,7 @@ categories:
   - residential
 features: []
 tags: []
-coverImage: "/portfolio/filler-utca-85/01.jpg"
+coverImage: "/_img/portfolio/filler-utca-85/01.jpg"
 published: true
 featured: false
 techniques:
@@ -18,18 +18,18 @@ techniques:
   - marketing-apartment-plan
   - marketing-level-plan
 images:
-  - src: "/portfolio/filler-utca-85/01.jpg"
+  - src: "/_img/portfolio/filler-utca-85/01.jpg"
     alt: ""
-  - src: "/portfolio/filler-utca-85/02.jpg"
+  - src: "/_img/portfolio/filler-utca-85/02.jpg"
     alt: ""
-  - src: "/portfolio/filler-utca-85/03.jpg"
+  - src: "/_img/portfolio/filler-utca-85/03.jpg"
     alt: ""
-  - src: "/portfolio/filler-utca-85/04.jpg"
+  - src: "/_img/portfolio/filler-utca-85/04.jpg"
     alt: ""
-  - src: "/portfolio/filler-utca-85/05.jpg"
+  - src: "/_img/portfolio/filler-utca-85/05.jpg"
     alt: ""
-  - src: "/portfolio/filler-utca-85/06.jpg"
+  - src: "/_img/portfolio/filler-utca-85/06.jpg"
     alt: ""
-  - src: "/portfolio/filler-utca-85/07.jpg"
+  - src: "/_img/portfolio/filler-utca-85/07.jpg"
     alt: ""
 ---

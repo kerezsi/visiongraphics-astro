@@ -1,7 +1,7 @@
 ---
 title: "Interior Styling"
 description: "Interior styling transforms basic 3D models or photos into different design styles, showing you options without waiting for manual renders. It lets you see how your space would look with different furniture, colors, and materials before making any decisions."
-image: "/vision-tech/interior-styling.jpg"
+image: "/_img/vision-tech/interior-styling.jpg"
 technique: "AI-Enhanced"
 cost: "€€"
 model3d: "No 3D Model Required"
@@ -11,10 +11,10 @@ purpose:
   - "Decision Support"
   - "Design Development"
 gallery:
-  - "/vision-tech/interior-styling/01.jpeg"
-  - "/vision-tech/interior-styling/02.jpeg"
-  - "/vision-tech/interior-styling/03.jpeg"
-  - "/vision-tech/interior-styling/04.jpeg"
+  - "/_img/vision-tech/interior-styling/01.jpeg"
+  - "/_img/vision-tech/interior-styling/02.jpeg"
+  - "/_img/vision-tech/interior-styling/03.jpeg"
+  - "/_img/vision-tech/interior-styling/04.jpeg"
 relatedCategories:
   - "residential"
   - "hospitality"

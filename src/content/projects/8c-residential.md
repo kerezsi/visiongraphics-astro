@@ -12,31 +12,31 @@ categories:
   - residential
 features: []
 tags: []
-coverImage: "/portfolio/8c-residential/01.jpg"
+coverImage: "/_img/portfolio/8c-residential/01.jpg"
 published: true
 featured: false
 techniques:
   - exterior
   - site-plan
 images:
-  - src: "/portfolio/8c-residential/01.jpg"
+  - src: "/_img/portfolio/8c-residential/01.jpg"
     alt: ""
-  - src: "/portfolio/8c-residential/02.jpg"
+  - src: "/_img/portfolio/8c-residential/02.jpg"
     alt: ""
-  - src: "/portfolio/8c-residential/03.jpg"
+  - src: "/_img/portfolio/8c-residential/03.jpg"
     alt: ""
-  - src: "/portfolio/8c-residential/04.jpg"
+  - src: "/_img/portfolio/8c-residential/04.jpg"
     alt: ""
-  - src: "/portfolio/8c-residential/05.jpg"
+  - src: "/_img/portfolio/8c-residential/05.jpg"
     alt: ""
-  - src: "/portfolio/8c-residential/06.jpg"
+  - src: "/_img/portfolio/8c-residential/06.jpg"
     alt: ""
-  - src: "/portfolio/8c-residential/07.jpg"
+  - src: "/_img/portfolio/8c-residential/07.jpg"
     alt: ""
-  - src: "/portfolio/8c-residential/08.jpg"
+  - src: "/_img/portfolio/8c-residential/08.jpg"
     alt: ""
-  - src: "/portfolio/8c-residential/09.jpg"
+  - src: "/_img/portfolio/8c-residential/09.jpg"
     alt: ""
-  - src: "/portfolio/8c-residential/10.jpg"
+  - src: "/_img/portfolio/8c-residential/10.jpg"
     alt: ""
 ---

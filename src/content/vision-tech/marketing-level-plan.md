@@ -1,7 +1,7 @@
 ---
 title: "Marketing Level Plan"
 description: "Attractive visualizations of entire building floors or levels for promotional purposes. These plans typically showcase the layout of multiple units or spaces within a larger structure."
-image: "/vision-tech/marketing-level-plan.jpg"
+image: "/_img/vision-tech/marketing-level-plan.jpg"
 technique: "Hybrid"
 cost: "€€€"
 model3d: "Output from 3D Model"
@@ -10,10 +10,10 @@ reality: "Conceptual Reality"
 purpose:
   - "Communication"
 gallery:
-  - "/vision-tech/marketing-level-plan/01.jpg"
-  - "/vision-tech/marketing-level-plan/02.jpg"
-  - "/vision-tech/marketing-level-plan/03.jpg"
-  - "/vision-tech/marketing-level-plan/04.jpg"
+  - "/_img/vision-tech/marketing-level-plan/01.jpg"
+  - "/_img/vision-tech/marketing-level-plan/02.jpg"
+  - "/_img/vision-tech/marketing-level-plan/03.jpg"
+  - "/_img/vision-tech/marketing-level-plan/04.jpg"
 relatedCategories:
   - "residential"
   - "commercial"

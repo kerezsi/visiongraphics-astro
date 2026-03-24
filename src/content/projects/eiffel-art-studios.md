@@ -12,7 +12,7 @@ categories:
   - commercial
 features: []
 tags: []
-coverImage: "/portfolio/eiffel-art-studios/01.jpg"
+coverImage: "/_img/portfolio/eiffel-art-studios/01.jpg"
 published: true
 featured: false
 video: "https://www.youtube.com/watch?v=hYO10"
@@ -22,26 +22,26 @@ techniques:
   - exterior
   - interior
 images:
-  - src: "/portfolio/eiffel-art-studios/01.jpg"
+  - src: "/_img/portfolio/eiffel-art-studios/01.jpg"
     alt: ""
-  - src: "/portfolio/eiffel-art-studios/02.jpg"
+  - src: "/_img/portfolio/eiffel-art-studios/02.jpg"
     alt: ""
-  - src: "/portfolio/eiffel-art-studios/03.jpg"
+  - src: "/_img/portfolio/eiffel-art-studios/03.jpg"
     alt: ""
-  - src: "/portfolio/eiffel-art-studios/04.jpg"
+  - src: "/_img/portfolio/eiffel-art-studios/04.jpg"
     alt: ""
-  - src: "/portfolio/eiffel-art-studios/05.jpg"
+  - src: "/_img/portfolio/eiffel-art-studios/05.jpg"
     alt: ""
-  - src: "/portfolio/eiffel-art-studios/06.jpg"
+  - src: "/_img/portfolio/eiffel-art-studios/06.jpg"
     alt: ""
-  - src: "/portfolio/eiffel-art-studios/07.jpg"
+  - src: "/_img/portfolio/eiffel-art-studios/07.jpg"
     alt: ""
-  - src: "/portfolio/eiffel-art-studios/08.jpg"
+  - src: "/_img/portfolio/eiffel-art-studios/08.jpg"
     alt: ""
-  - src: "/portfolio/eiffel-art-studios/09.jpg"
+  - src: "/_img/portfolio/eiffel-art-studios/09.jpg"
     alt: ""
-  - src: "/portfolio/eiffel-art-studios/10.jpg"
+  - src: "/_img/portfolio/eiffel-art-studios/10.jpg"
     alt: ""
-  - src: "/portfolio/eiffel-art-studios/11.jpg"
+  - src: "/_img/portfolio/eiffel-art-studios/11.jpg"
     alt: ""
 ---

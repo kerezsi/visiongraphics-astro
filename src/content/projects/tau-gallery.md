@@ -12,33 +12,33 @@ categories:
   - commercial
 features: []
 tags: []
-coverImage: "/portfolio/tau-gallery/01.jpg"
+coverImage: "/_img/portfolio/tau-gallery/01.jpg"
 published: true
 featured: false
 techniques:
   - exterior
   - interior
 images:
-  - src: "/portfolio/tau-gallery/01.jpg"
+  - src: "/_img/portfolio/tau-gallery/01.jpg"
     alt: ""
-  - src: "/portfolio/tau-gallery/02.jpg"
+  - src: "/_img/portfolio/tau-gallery/02.jpg"
     alt: ""
-  - src: "/portfolio/tau-gallery/03.jpg"
+  - src: "/_img/portfolio/tau-gallery/03.jpg"
     alt: ""
-  - src: "/portfolio/tau-gallery/04.jpg"
+  - src: "/_img/portfolio/tau-gallery/04.jpg"
     alt: ""
-  - src: "/portfolio/tau-gallery/05.jpg"
+  - src: "/_img/portfolio/tau-gallery/05.jpg"
     alt: ""
-  - src: "/portfolio/tau-gallery/06.jpg"
+  - src: "/_img/portfolio/tau-gallery/06.jpg"
     alt: ""
-  - src: "/portfolio/tau-gallery/07.jpg"
+  - src: "/_img/portfolio/tau-gallery/07.jpg"
     alt: ""
-  - src: "/portfolio/tau-gallery/08.jpg"
+  - src: "/_img/portfolio/tau-gallery/08.jpg"
     alt: ""
-  - src: "/portfolio/tau-gallery/09.jpg"
+  - src: "/_img/portfolio/tau-gallery/09.jpg"
     alt: ""
-  - src: "/portfolio/tau-gallery/10.jpg"
+  - src: "/_img/portfolio/tau-gallery/10.jpg"
     alt: ""
-  - src: "/portfolio/tau-gallery/11.jpg"
+  - src: "/_img/portfolio/tau-gallery/11.jpg"
     alt: ""
 ---

@@ -8,25 +8,25 @@ categories:
   - transportation
 features: []
 tags: []
-coverImage: "/portfolio/sochi-airport/01.jpg"
+coverImage: "/_img/portfolio/sochi-airport/01.jpg"
 published: true
 featured: false
 video: "https://youtu.be/3T1_cQEMIfs"
 images:
-  - src: "/portfolio/sochi-airport/01.jpg"
+  - src: "/_img/portfolio/sochi-airport/01.jpg"
     alt: ""
-  - src: "/portfolio/sochi-airport/02.jpg"
+  - src: "/_img/portfolio/sochi-airport/02.jpg"
     alt: ""
-  - src: "/portfolio/sochi-airport/03.jpg"
+  - src: "/_img/portfolio/sochi-airport/03.jpg"
     alt: ""
-  - src: "/portfolio/sochi-airport/04.jpg"
+  - src: "/_img/portfolio/sochi-airport/04.jpg"
     alt: ""
-  - src: "/portfolio/sochi-airport/05.jpg"
+  - src: "/_img/portfolio/sochi-airport/05.jpg"
     alt: ""
-  - src: "/portfolio/sochi-airport/06.jpg"
+  - src: "/_img/portfolio/sochi-airport/06.jpg"
     alt: ""
-  - src: "/portfolio/sochi-airport/07.jpg"
+  - src: "/_img/portfolio/sochi-airport/07.jpg"
     alt: ""
-  - src: "/portfolio/sochi-airport/08.jpg"
+  - src: "/_img/portfolio/sochi-airport/08.jpg"
     alt: ""
 ---

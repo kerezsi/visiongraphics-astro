@@ -6,7 +6,7 @@ categories:
   - residential
 features: []
 tags: []
-coverImage: "/portfolio/garibaldi-4/01.jpg"
+coverImage: "/_img/portfolio/garibaldi-4/01.jpg"
 published: true
 featured: false
 video: "https://youtu.be/iHty1OoKQ0U"
@@ -15,18 +15,18 @@ techniques:
   - exterior
   - interior
 images:
-  - src: "/portfolio/garibaldi-4/01.jpg"
+  - src: "/_img/portfolio/garibaldi-4/01.jpg"
     alt: ""
-  - src: "/portfolio/garibaldi-4/02.jpg"
+  - src: "/_img/portfolio/garibaldi-4/02.jpg"
     alt: ""
-  - src: "/portfolio/garibaldi-4/03.jpg"
+  - src: "/_img/portfolio/garibaldi-4/03.jpg"
     alt: ""
-  - src: "/portfolio/garibaldi-4/04.jpg"
+  - src: "/_img/portfolio/garibaldi-4/04.jpg"
     alt: ""
-  - src: "/portfolio/garibaldi-4/05.jpg"
+  - src: "/_img/portfolio/garibaldi-4/05.jpg"
     alt: ""
-  - src: "/portfolio/garibaldi-4/06.jpg"
+  - src: "/_img/portfolio/garibaldi-4/06.jpg"
     alt: ""
-  - src: "/portfolio/garibaldi-4/07.jpg"
+  - src: "/_img/portfolio/garibaldi-4/07.jpg"
     alt: ""
 ---

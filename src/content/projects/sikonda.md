@@ -7,31 +7,31 @@ categories:
   - hospitality
 features: []
 tags: []
-coverImage: "/portfolio/sikonda/01.jpg"
+coverImage: "/_img/portfolio/sikonda/01.jpg"
 published: true
 featured: false
 techniques:
   - exterior
   - site-plan
 images:
-  - src: "/portfolio/sikonda/01.jpg"
+  - src: "/_img/portfolio/sikonda/01.jpg"
     alt: ""
-  - src: "/portfolio/sikonda/02.jpg"
+  - src: "/_img/portfolio/sikonda/02.jpg"
     alt: ""
-  - src: "/portfolio/sikonda/03.jpg"
+  - src: "/_img/portfolio/sikonda/03.jpg"
     alt: ""
-  - src: "/portfolio/sikonda/04.jpg"
+  - src: "/_img/portfolio/sikonda/04.jpg"
     alt: ""
-  - src: "/portfolio/sikonda/05.jpg"
+  - src: "/_img/portfolio/sikonda/05.jpg"
     alt: ""
-  - src: "/portfolio/sikonda/06.jpg"
+  - src: "/_img/portfolio/sikonda/06.jpg"
     alt: ""
-  - src: "/portfolio/sikonda/07.jpg"
+  - src: "/_img/portfolio/sikonda/07.jpg"
     alt: ""
-  - src: "/portfolio/sikonda/08.jpg"
+  - src: "/_img/portfolio/sikonda/08.jpg"
     alt: ""
-  - src: "/portfolio/sikonda/09.jpg"
+  - src: "/_img/portfolio/sikonda/09.jpg"
     alt: ""
-  - src: "/portfolio/sikonda/10.jpg"
+  - src: "/_img/portfolio/sikonda/10.jpg"
     alt: ""
 ---

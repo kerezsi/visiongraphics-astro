@@ -7,19 +7,19 @@ categories:
   - healthcare
 features: []
 tags: []
-coverImage: "/portfolio/rudolfinerhaus-garage/01.jpg"
+coverImage: "/_img/portfolio/rudolfinerhaus-garage/01.jpg"
 published: true
 featured: false
 techniques:
   - interior
   - section
 images:
-  - src: "/portfolio/rudolfinerhaus-garage/01.jpg"
+  - src: "/_img/portfolio/rudolfinerhaus-garage/01.jpg"
     alt: ""
-  - src: "/portfolio/rudolfinerhaus-garage/02.jpg"
+  - src: "/_img/portfolio/rudolfinerhaus-garage/02.jpg"
     alt: ""
-  - src: "/portfolio/rudolfinerhaus-garage/03.jpg"
+  - src: "/_img/portfolio/rudolfinerhaus-garage/03.jpg"
     alt: ""
-  - src: "/portfolio/rudolfinerhaus-garage/04.jpg"
+  - src: "/_img/portfolio/rudolfinerhaus-garage/04.jpg"
     alt: ""
 ---

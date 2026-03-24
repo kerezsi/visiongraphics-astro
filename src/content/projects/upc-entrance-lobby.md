@@ -7,7 +7,7 @@ categories:
   - office
 features: []
 tags: []
-coverImage: "/portfolio/upc-entrance-lobby/01.jpg"
+coverImage: "/_img/portfolio/upc-entrance-lobby/01.jpg"
 published: true
 featured: false
 tour360:
@@ -18,20 +18,20 @@ techniques:
   - 360-tour
   - interior
 images:
-  - src: "/portfolio/upc-entrance-lobby/01.jpg"
+  - src: "/_img/portfolio/upc-entrance-lobby/01.jpg"
     alt: ""
-  - src: "/portfolio/upc-entrance-lobby/02.jpg"
+  - src: "/_img/portfolio/upc-entrance-lobby/02.jpg"
     alt: ""
-  - src: "/portfolio/upc-entrance-lobby/03.jpg"
+  - src: "/_img/portfolio/upc-entrance-lobby/03.jpg"
     alt: ""
-  - src: "/portfolio/upc-entrance-lobby/04.jpg"
+  - src: "/_img/portfolio/upc-entrance-lobby/04.jpg"
     alt: ""
-  - src: "/portfolio/upc-entrance-lobby/05.jpg"
+  - src: "/_img/portfolio/upc-entrance-lobby/05.jpg"
     alt: ""
-  - src: "/portfolio/upc-entrance-lobby/06.jpg"
+  - src: "/_img/portfolio/upc-entrance-lobby/06.jpg"
     alt: ""
-  - src: "/portfolio/upc-entrance-lobby/07.jpg"
+  - src: "/_img/portfolio/upc-entrance-lobby/07.jpg"
     alt: ""
-  - src: "/portfolio/upc-entrance-lobby/08.jpg"
+  - src: "/_img/portfolio/upc-entrance-lobby/08.jpg"
     alt: ""
 ---

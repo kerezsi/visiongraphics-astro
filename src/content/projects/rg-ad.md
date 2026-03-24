@@ -7,7 +7,7 @@ categories:
   - industrial
 features: []
 tags: []
-coverImage: "/portfolio/rg-ad/01.jpg"
+coverImage: "/_img/portfolio/rg-ad/01.jpg"
 published: true
 featured: false
 techniques:
@@ -15,18 +15,18 @@ techniques:
   - exterior
   - photo-integration
 images:
-  - src: "/portfolio/rg-ad/01.jpg"
+  - src: "/_img/portfolio/rg-ad/01.jpg"
     alt: ""
-  - src: "/portfolio/rg-ad/02.jpg"
+  - src: "/_img/portfolio/rg-ad/02.jpg"
     alt: ""
-  - src: "/portfolio/rg-ad/03.jpg"
+  - src: "/_img/portfolio/rg-ad/03.jpg"
     alt: ""
-  - src: "/portfolio/rg-ad/04.jpg"
+  - src: "/_img/portfolio/rg-ad/04.jpg"
     alt: ""
-  - src: "/portfolio/rg-ad/05.jpg"
+  - src: "/_img/portfolio/rg-ad/05.jpg"
     alt: ""
-  - src: "/portfolio/rg-ad/06.jpg"
+  - src: "/_img/portfolio/rg-ad/06.jpg"
     alt: ""
-  - src: "/portfolio/rg-ad/07.jpg"
+  - src: "/_img/portfolio/rg-ad/07.jpg"
     alt: ""
 ---

@@ -21,26 +21,26 @@ categories:
   - commercial
 features: []
 tags: []
-coverImage: "/portfolio/pannon-gsm-brand-book/01.jpg"
+coverImage: "/_img/portfolio/pannon-gsm-brand-book/01.jpg"
 published: true
 featured: false
 techniques:
   - interior
 images:
-  - src: "/portfolio/pannon-gsm-brand-book/01.jpg"
+  - src: "/_img/portfolio/pannon-gsm-brand-book/01.jpg"
     alt: ""
-  - src: "/portfolio/pannon-gsm-brand-book/02.jpg"
+  - src: "/_img/portfolio/pannon-gsm-brand-book/02.jpg"
     alt: ""
-  - src: "/portfolio/pannon-gsm-brand-book/03.jpg"
+  - src: "/_img/portfolio/pannon-gsm-brand-book/03.jpg"
     alt: ""
-  - src: "/portfolio/pannon-gsm-brand-book/04.jpg"
+  - src: "/_img/portfolio/pannon-gsm-brand-book/04.jpg"
     alt: ""
-  - src: "/portfolio/pannon-gsm-brand-book/05.jpg"
+  - src: "/_img/portfolio/pannon-gsm-brand-book/05.jpg"
     alt: ""
-  - src: "/portfolio/pannon-gsm-brand-book/06.jpg"
+  - src: "/_img/portfolio/pannon-gsm-brand-book/06.jpg"
     alt: ""
-  - src: "/portfolio/pannon-gsm-brand-book/07.jpg"
+  - src: "/_img/portfolio/pannon-gsm-brand-book/07.jpg"
     alt: ""
-  - src: "/portfolio/pannon-gsm-brand-book/08.jpg"
+  - src: "/_img/portfolio/pannon-gsm-brand-book/08.jpg"
     alt: ""
 ---

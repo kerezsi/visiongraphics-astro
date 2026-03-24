@@ -9,20 +9,20 @@ categories:
   - transportation
 features: []
 tags: []
-coverImage: "/portfolio/bud-ferihegy-parking/01.jpg"
+coverImage: "/_img/portfolio/bud-ferihegy-parking/01.jpg"
 published: true
 featured: false
 techniques:
   - exterior
 images:
-  - src: "/portfolio/bud-ferihegy-parking/01.jpg"
+  - src: "/_img/portfolio/bud-ferihegy-parking/01.jpg"
     alt: ""
-  - src: "/portfolio/bud-ferihegy-parking/02.jpg"
+  - src: "/_img/portfolio/bud-ferihegy-parking/02.jpg"
     alt: ""
-  - src: "/portfolio/bud-ferihegy-parking/03.jpg"
+  - src: "/_img/portfolio/bud-ferihegy-parking/03.jpg"
     alt: ""
-  - src: "/portfolio/bud-ferihegy-parking/04.jpg"
+  - src: "/_img/portfolio/bud-ferihegy-parking/04.jpg"
     alt: ""
-  - src: "/portfolio/bud-ferihegy-parking/05.jpg"
+  - src: "/_img/portfolio/bud-ferihegy-parking/05.jpg"
     alt: ""
 ---

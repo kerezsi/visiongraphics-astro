@@ -19,16 +19,16 @@ categories:
   - commercial
 features: []
 tags: []
-coverImage: "/portfolio/inter-europa-bank/01.jpg"
+coverImage: "/_img/portfolio/inter-europa-bank/01.jpg"
 published: true
 featured: false
 techniques:
   - interior
 images:
-  - src: "/portfolio/inter-europa-bank/01.jpg"
+  - src: "/_img/portfolio/inter-europa-bank/01.jpg"
     alt: ""
-  - src: "/portfolio/inter-europa-bank/02.jpg"
+  - src: "/_img/portfolio/inter-europa-bank/02.jpg"
     alt: ""
-  - src: "/portfolio/inter-europa-bank/03.jpg"
+  - src: "/_img/portfolio/inter-europa-bank/03.jpg"
     alt: ""
 ---

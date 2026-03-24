@@ -1,7 +1,7 @@
 ---
 title: "360 Tour"
 description: "An interactive virtual experience that allows users to navigate through a series of connected 360-degree images or renderings. This technology enables remote exploration of spaces or properties."
-image: "/vision-tech/360-tour.jpg"
+image: "/_img/vision-tech/360-tour.jpg"
 technique: ""
 cost: "€€"
 model3d: "Output from 3D Model"
@@ -32,10 +32,10 @@ blocks:
     url: "https://visiongraphics.eu/PANO/AYT_T2_EXPO/"
     title: "multi-floor 360 tour"
   - type: text
-    html: "<h2>What makes a good tour</h2><p>The best tours have:</p><ul><li>Strategic viewpoint placement</li><li>Clear navigation paths</li><li>Consistent image quality</li><li>Helpful information when needed</li><li>Simple, intuitive controls</li></ul><h3>Our 360 visualization services work together:</h3><ul><li><a href=\"/vision-tech/360-renderings/\">360 Renderings</a>: Computer-generated panoramas of unbuilt spaces</li><li><a href=\"/vision-tech/360-photography/\">360 Photography:</a> Real panoramic photos of existing spaces</li><li><a href=\"/vision-tech/360-photo-integration/\">360 Photo Integration</a>: Virtual elements added to real 360 photos</li><li><a href=\"/vision-tech/360-tour/\"> 360 Tour:</a> Connected 360 images you can navigate between</li></ul><p> These can be used alone or together depending on your project needs.</p><h2>Getting started</h2><p>Ready to create a virtual tour? Here's what we need to know:</p><ul><li>What type of space (real or virtual)</li><li>How many viewpoints you need</li><li>Any special features required</li><li>How it will be used</li><li>Your timeline</li></ul><p>We'll help you plan the perfect tour.</p>"
+    html: "<h2>What makes a good tour</h2><p>The best tours have:</p><ul><li>Strategic viewpoint placement</li><li>Clear navigation paths</li><li>Consistent image quality</li><li>Helpful information when needed</li><li>Simple, intuitive controls</li></ul><h3>Our 360 visualization services work together:</h3><ul><li><a href=\"/_img/vision-tech/360-renderings/\">360 Renderings</a>: Computer-generated panoramas of unbuilt spaces</li><li><a href=\"/_img/vision-tech/360-photography/\">360 Photography:</a> Real panoramic photos of existing spaces</li><li><a href=\"/_img/vision-tech/360-photo-integration/\">360 Photo Integration</a>: Virtual elements added to real 360 photos</li><li><a href=\"/_img/vision-tech/360-tour/\"> 360 Tour:</a> Connected 360 images you can navigate between</li></ul><p> These can be used alone or together depending on your project needs.</p><h2>Getting started</h2><p>Ready to create a virtual tour? Here's what we need to know:</p><ul><li>What type of space (real or virtual)</li><li>How many viewpoints you need</li><li>Any special features required</li><li>How it will be used</li><li>Your timeline</li></ul><p>We'll help you plan the perfect tour.</p>"
   - type: tour360
     url: "https://visiongraphics.eu/PANO/AYT_VR/"
     title: "several design alternatives showcased in 360 tour"
   - type: text
-    html: "<p>Want to mix real and virtual? Ask about our <a href=\"/vision-tech/360-photo-integration/\">360 Photo Integration.</a></p>"
+    html: "<p>Want to mix real and virtual? Ask about our <a href=\"/_img/vision-tech/360-photo-integration/\">360 Photo Integration.</a></p>"
 ---

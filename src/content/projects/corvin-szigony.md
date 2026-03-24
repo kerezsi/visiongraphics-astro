@@ -10,7 +10,7 @@ categories:
   - residential
 features: []
 tags: []
-coverImage: "/portfolio/corvin-szigony/01.jpg"
+coverImage: "/_img/portfolio/corvin-szigony/01.jpg"
 published: true
 featured: false
 video: "https://youtu.be/G2LJmQpSBJA"
@@ -22,30 +22,30 @@ techniques:
   - interior
   - video-production
 images:
-  - src: "/portfolio/corvin-szigony/01.jpg"
+  - src: "/_img/portfolio/corvin-szigony/01.jpg"
     alt: ""
-  - src: "/portfolio/corvin-szigony/02.jpg"
+  - src: "/_img/portfolio/corvin-szigony/02.jpg"
     alt: ""
-  - src: "/portfolio/corvin-szigony/03.jpg"
+  - src: "/_img/portfolio/corvin-szigony/03.jpg"
     alt: ""
-  - src: "/portfolio/corvin-szigony/04.jpg"
+  - src: "/_img/portfolio/corvin-szigony/04.jpg"
     alt: ""
-  - src: "/portfolio/corvin-szigony/05.jpg"
+  - src: "/_img/portfolio/corvin-szigony/05.jpg"
     alt: ""
-  - src: "/portfolio/corvin-szigony/06.jpg"
+  - src: "/_img/portfolio/corvin-szigony/06.jpg"
     alt: ""
-  - src: "/portfolio/corvin-szigony/07.jpg"
+  - src: "/_img/portfolio/corvin-szigony/07.jpg"
     alt: ""
-  - src: "/portfolio/corvin-szigony/08.jpg"
+  - src: "/_img/portfolio/corvin-szigony/08.jpg"
     alt: ""
-  - src: "/portfolio/corvin-szigony/09.jpg"
+  - src: "/_img/portfolio/corvin-szigony/09.jpg"
     alt: ""
-  - src: "/portfolio/corvin-szigony/10.jpg"
+  - src: "/_img/portfolio/corvin-szigony/10.jpg"
     alt: ""
-  - src: "/portfolio/corvin-szigony/11.jpg"
+  - src: "/_img/portfolio/corvin-szigony/11.jpg"
     alt: ""
-  - src: "/portfolio/corvin-szigony/12.jpg"
+  - src: "/_img/portfolio/corvin-szigony/12.jpg"
     alt: ""
-  - src: "/portfolio/corvin-szigony/13.jpg"
+  - src: "/_img/portfolio/corvin-szigony/13.jpg"
     alt: ""
 ---

@@ -18,15 +18,15 @@ categories:
   - renovation
 features: []
 tags: []
-coverImage: "/portfolio/hotel-royal-spa/01.jpg"
+coverImage: "/_img/portfolio/hotel-royal-spa/01.jpg"
 published: true
 featured: false
 techniques:
   - 3d-animation
   - interior
 images:
-  - src: "/portfolio/hotel-royal-spa/01.jpg"
+  - src: "/_img/portfolio/hotel-royal-spa/01.jpg"
     alt: ""
-  - src: "/portfolio/hotel-royal-spa/02.jpg"
+  - src: "/_img/portfolio/hotel-royal-spa/02.jpg"
     alt: ""
 ---

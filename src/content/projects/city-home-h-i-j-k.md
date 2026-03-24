@@ -7,7 +7,7 @@ categories:
   - residential
 features: []
 tags: []
-coverImage: "/portfolio/city-home-h-i-j-k/01.jpg"
+coverImage: "/_img/portfolio/city-home-h-i-j-k/01.jpg"
 published: true
 featured: false
 techniques:
@@ -16,32 +16,32 @@ techniques:
   - photo-integration
   - site-plan
 images:
-  - src: "/portfolio/city-home-h-i-j-k/01.jpg"
+  - src: "/_img/portfolio/city-home-h-i-j-k/01.jpg"
     alt: ""
-  - src: "/portfolio/city-home-h-i-j-k/02.jpg"
+  - src: "/_img/portfolio/city-home-h-i-j-k/02.jpg"
     alt: ""
-  - src: "/portfolio/city-home-h-i-j-k/03.jpg"
+  - src: "/_img/portfolio/city-home-h-i-j-k/03.jpg"
     alt: ""
-  - src: "/portfolio/city-home-h-i-j-k/04.jpg"
+  - src: "/_img/portfolio/city-home-h-i-j-k/04.jpg"
     alt: ""
-  - src: "/portfolio/city-home-h-i-j-k/05.jpg"
+  - src: "/_img/portfolio/city-home-h-i-j-k/05.jpg"
     alt: ""
-  - src: "/portfolio/city-home-h-i-j-k/06.jpg"
+  - src: "/_img/portfolio/city-home-h-i-j-k/06.jpg"
     alt: ""
-  - src: "/portfolio/city-home-h-i-j-k/07.jpg"
+  - src: "/_img/portfolio/city-home-h-i-j-k/07.jpg"
     alt: ""
-  - src: "/portfolio/city-home-h-i-j-k/08.jpg"
+  - src: "/_img/portfolio/city-home-h-i-j-k/08.jpg"
     alt: ""
-  - src: "/portfolio/city-home-h-i-j-k/09.jpg"
+  - src: "/_img/portfolio/city-home-h-i-j-k/09.jpg"
     alt: ""
-  - src: "/portfolio/city-home-h-i-j-k/10.jpg"
+  - src: "/_img/portfolio/city-home-h-i-j-k/10.jpg"
     alt: ""
-  - src: "/portfolio/city-home-h-i-j-k/11.jpg"
+  - src: "/_img/portfolio/city-home-h-i-j-k/11.jpg"
     alt: ""
-  - src: "/portfolio/city-home-h-i-j-k/12.jpg"
+  - src: "/_img/portfolio/city-home-h-i-j-k/12.jpg"
     alt: ""
-  - src: "/portfolio/city-home-h-i-j-k/13.jpg"
+  - src: "/_img/portfolio/city-home-h-i-j-k/13.jpg"
     alt: ""
-  - src: "/portfolio/city-home-h-i-j-k/14.jpg"
+  - src: "/_img/portfolio/city-home-h-i-j-k/14.jpg"
     alt: ""
 ---

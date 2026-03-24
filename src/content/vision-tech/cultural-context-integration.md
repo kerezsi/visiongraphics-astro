@@ -1,7 +1,7 @@
 ---
 title: "Cultural Context Integration"
 description: "How we mix AI and human touch to show cultural connections You know those buildings that just click with their neighborhood? That's what we aim for. We use both AI tools and traditional methods to show how new designs fit into local culture. Why Bother? Getting these local connections right helps everyone: Communities say yes [&hellip;]"
-image: "/vision-tech/cultural-context-integration.jpg"
+image: "/_img/vision-tech/cultural-context-integration.jpg"
 technique: "AI-Enhanced"
 cost: "€€"
 model3d: "No 3D Model Required"
@@ -11,10 +11,10 @@ purpose:
   - "Decision Support"
   - "Design Development"
 gallery:
-  - "/vision-tech/cultural-context-integration/01.jpg"
-  - "/vision-tech/cultural-context-integration/02.jpg"
-  - "/vision-tech/cultural-context-integration/03.jpg"
-  - "/vision-tech/cultural-context-integration/04.jpg"
+  - "/_img/vision-tech/cultural-context-integration/01.jpg"
+  - "/_img/vision-tech/cultural-context-integration/02.jpg"
+  - "/_img/vision-tech/cultural-context-integration/03.jpg"
+  - "/_img/vision-tech/cultural-context-integration/04.jpg"
 relatedCategories:
   - "exhibition"
   - "civic"

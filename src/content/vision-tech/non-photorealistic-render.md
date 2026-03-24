@@ -1,7 +1,7 @@
 ---
 title: "Non Photorealistic Render"
 description: "Stylized 3D renderings that intentionally deviate from photorealism. These images can range from sketch-like representations to abstract interpretations of architectural designs."
-image: "/vision-tech/non-photorealistic-render.jpg"
+image: "/_img/vision-tech/non-photorealistic-render.jpg"
 technique: "Digital"
 cost: "€"
 model3d: "Output from 3D Model"
@@ -10,10 +10,10 @@ reality: "Pure Vision"
 purpose:
   - "Communication"
 gallery:
-  - "/vision-tech/non-photorealistic-render/01.jpg"
-  - "/vision-tech/non-photorealistic-render/02.jpg"
-  - "/vision-tech/non-photorealistic-render/03.jpg"
-  - "/vision-tech/non-photorealistic-render/04.jpg"
+  - "/_img/vision-tech/non-photorealistic-render/01.jpg"
+  - "/_img/vision-tech/non-photorealistic-render/02.jpg"
+  - "/_img/vision-tech/non-photorealistic-render/03.jpg"
+  - "/_img/vision-tech/non-photorealistic-render/04.jpg"
 relatedCategories:
   - "residential"
   - "commercial"

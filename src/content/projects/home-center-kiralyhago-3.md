@@ -9,26 +9,26 @@ categories:
   - residential
 features: []
 tags: []
-coverImage: "/portfolio/home-center-kiralyhago-3/01.jpg"
+coverImage: "/_img/portfolio/home-center-kiralyhago-3/01.jpg"
 published: true
 featured: false
 techniques:
   - exterior
 images:
-  - src: "/portfolio/home-center-kiralyhago-3/01.jpg"
+  - src: "/_img/portfolio/home-center-kiralyhago-3/01.jpg"
     alt: ""
-  - src: "/portfolio/home-center-kiralyhago-3/02.jpg"
+  - src: "/_img/portfolio/home-center-kiralyhago-3/02.jpg"
     alt: ""
-  - src: "/portfolio/home-center-kiralyhago-3/03.jpg"
+  - src: "/_img/portfolio/home-center-kiralyhago-3/03.jpg"
     alt: ""
-  - src: "/portfolio/home-center-kiralyhago-3/04.jpg"
+  - src: "/_img/portfolio/home-center-kiralyhago-3/04.jpg"
     alt: ""
-  - src: "/portfolio/home-center-kiralyhago-3/05.jpg"
+  - src: "/_img/portfolio/home-center-kiralyhago-3/05.jpg"
     alt: ""
-  - src: "/portfolio/home-center-kiralyhago-3/06.jpg"
+  - src: "/_img/portfolio/home-center-kiralyhago-3/06.jpg"
     alt: ""
-  - src: "/portfolio/home-center-kiralyhago-3/07.jpg"
+  - src: "/_img/portfolio/home-center-kiralyhago-3/07.jpg"
     alt: ""
-  - src: "/portfolio/home-center-kiralyhago-3/08.jpg"
+  - src: "/_img/portfolio/home-center-kiralyhago-3/08.jpg"
     alt: ""
 ---

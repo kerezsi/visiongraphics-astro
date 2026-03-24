@@ -12,36 +12,36 @@ categories:
   - commercial
 features: []
 tags: []
-coverImage: "/portfolio/belgorod/01.jpg"
+coverImage: "/_img/portfolio/belgorod/01.jpg"
 published: true
 featured: false
 techniques:
   - interior
 images:
-  - src: "/portfolio/belgorod/01.jpg"
+  - src: "/_img/portfolio/belgorod/01.jpg"
     alt: ""
-  - src: "/portfolio/belgorod/02.jpg"
+  - src: "/_img/portfolio/belgorod/02.jpg"
     alt: ""
-  - src: "/portfolio/belgorod/03.jpg"
+  - src: "/_img/portfolio/belgorod/03.jpg"
     alt: ""
-  - src: "/portfolio/belgorod/04.jpg"
+  - src: "/_img/portfolio/belgorod/04.jpg"
     alt: ""
-  - src: "/portfolio/belgorod/05.jpg"
+  - src: "/_img/portfolio/belgorod/05.jpg"
     alt: ""
-  - src: "/portfolio/belgorod/06.jpg"
+  - src: "/_img/portfolio/belgorod/06.jpg"
     alt: ""
-  - src: "/portfolio/belgorod/07.jpg"
+  - src: "/_img/portfolio/belgorod/07.jpg"
     alt: ""
-  - src: "/portfolio/belgorod/08.jpg"
+  - src: "/_img/portfolio/belgorod/08.jpg"
     alt: ""
-  - src: "/portfolio/belgorod/09.jpg"
+  - src: "/_img/portfolio/belgorod/09.jpg"
     alt: ""
-  - src: "/portfolio/belgorod/10.jpg"
+  - src: "/_img/portfolio/belgorod/10.jpg"
     alt: ""
-  - src: "/portfolio/belgorod/11.jpg"
+  - src: "/_img/portfolio/belgorod/11.jpg"
     alt: ""
-  - src: "/portfolio/belgorod/12.jpg"
+  - src: "/_img/portfolio/belgorod/12.jpg"
     alt: ""
-  - src: "/portfolio/belgorod/13.jpg"
+  - src: "/_img/portfolio/belgorod/13.jpg"
     alt: ""
 ---

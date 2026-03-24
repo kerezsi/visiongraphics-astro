@@ -15,14 +15,14 @@ categories:
   - transportation
 features: []
 tags: []
-coverImage: "/portfolio/bud-ferihegy-terminal-2b/01.jpg"
+coverImage: "/_img/portfolio/bud-ferihegy-terminal-2b/01.jpg"
 published: true
 featured: false
 techniques:
   - interior
 images:
-  - src: "/portfolio/bud-ferihegy-terminal-2b/01.jpg"
+  - src: "/_img/portfolio/bud-ferihegy-terminal-2b/01.jpg"
     alt: ""
-  - src: "/portfolio/bud-ferihegy-terminal-2b/02.jpg"
+  - src: "/_img/portfolio/bud-ferihegy-terminal-2b/02.jpg"
     alt: ""
 ---

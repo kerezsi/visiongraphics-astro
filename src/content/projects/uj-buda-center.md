@@ -14,7 +14,7 @@ categories:
   - renovation
 features: []
 tags: []
-coverImage: "/portfolio/uj-buda-center/01.jpg"
+coverImage: "/_img/portfolio/uj-buda-center/01.jpg"
 published: true
 featured: false
 techniques:
@@ -23,18 +23,18 @@ techniques:
   - exterior
   - interior
 images:
-  - src: "/portfolio/uj-buda-center/01.jpg"
+  - src: "/_img/portfolio/uj-buda-center/01.jpg"
     alt: ""
-  - src: "/portfolio/uj-buda-center/02.jpg"
+  - src: "/_img/portfolio/uj-buda-center/02.jpg"
     alt: ""
-  - src: "/portfolio/uj-buda-center/03.jpg"
+  - src: "/_img/portfolio/uj-buda-center/03.jpg"
     alt: ""
-  - src: "/portfolio/uj-buda-center/04.jpg"
+  - src: "/_img/portfolio/uj-buda-center/04.jpg"
     alt: ""
-  - src: "/portfolio/uj-buda-center/05.jpg"
+  - src: "/_img/portfolio/uj-buda-center/05.jpg"
     alt: ""
-  - src: "/portfolio/uj-buda-center/06.jpg"
+  - src: "/_img/portfolio/uj-buda-center/06.jpg"
     alt: ""
-  - src: "/portfolio/uj-buda-center/07.jpg"
+  - src: "/_img/portfolio/uj-buda-center/07.jpg"
     alt: ""
 ---

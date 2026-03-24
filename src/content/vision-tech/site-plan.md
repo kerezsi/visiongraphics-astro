@@ -1,7 +1,7 @@
 ---
 title: "Site Plan"
 description: "Overhead views of a property showing the arrangement of buildings landscape features and other site elements. Site plans provide context and illustrate how a project relates to its surroundings."
-image: "/vision-tech/site-plan.jpg"
+image: "/_img/vision-tech/site-plan.jpg"
 technique: "Digital"
 cost: "€€"
 model3d: "Output from 3D Model"
@@ -10,10 +10,10 @@ reality: "Conceptual Reality"
 purpose:
   - "Design Development"
 gallery:
-  - "/vision-tech/site-plan/01.jpeg"
-  - "/vision-tech/site-plan/02.jpeg"
-  - "/vision-tech/site-plan/03.jpeg"
-  - "/vision-tech/site-plan/04.jpeg"
+  - "/_img/vision-tech/site-plan/01.jpeg"
+  - "/_img/vision-tech/site-plan/02.jpeg"
+  - "/_img/vision-tech/site-plan/03.jpeg"
+  - "/_img/vision-tech/site-plan/04.jpeg"
 relatedCategories:
   - "commercial"
   - "urban"

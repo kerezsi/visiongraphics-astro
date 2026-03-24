@@ -12,7 +12,7 @@ categories:
   - commercial
 features: []
 tags: []
-coverImage: "/portfolio/sphera-mall/01.jpg"
+coverImage: "/_img/portfolio/sphera-mall/01.jpg"
 published: true
 featured: false
 techniques:
@@ -20,22 +20,22 @@ techniques:
   - night-renderings
   - site-plan
 images:
-  - src: "/portfolio/sphera-mall/01.jpg"
+  - src: "/_img/portfolio/sphera-mall/01.jpg"
     alt: ""
-  - src: "/portfolio/sphera-mall/02.jpg"
+  - src: "/_img/portfolio/sphera-mall/02.jpg"
     alt: ""
-  - src: "/portfolio/sphera-mall/03.jpg"
+  - src: "/_img/portfolio/sphera-mall/03.jpg"
     alt: ""
-  - src: "/portfolio/sphera-mall/04.jpg"
+  - src: "/_img/portfolio/sphera-mall/04.jpg"
     alt: ""
-  - src: "/portfolio/sphera-mall/05.jpg"
+  - src: "/_img/portfolio/sphera-mall/05.jpg"
     alt: ""
-  - src: "/portfolio/sphera-mall/06.jpg"
+  - src: "/_img/portfolio/sphera-mall/06.jpg"
     alt: ""
-  - src: "/portfolio/sphera-mall/07.jpg"
+  - src: "/_img/portfolio/sphera-mall/07.jpg"
     alt: ""
-  - src: "/portfolio/sphera-mall/08.jpg"
+  - src: "/_img/portfolio/sphera-mall/08.jpg"
     alt: ""
-  - src: "/portfolio/sphera-mall/09.jpg"
+  - src: "/_img/portfolio/sphera-mall/09.jpg"
     alt: ""
 ---

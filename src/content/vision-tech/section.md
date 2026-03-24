@@ -1,7 +1,7 @@
 ---
 title: "Section"
 description: "Cutaway views of buildings or structures that reveal internal arrangements and construction details. Section drawings or renderings provide insights into spatial relationships and building systems."
-image: "/vision-tech/section.jpg"
+image: "/_img/vision-tech/section.jpg"
 technique: "Digital"
 cost: "€€"
 model3d: "Output from 3D Model"
@@ -10,10 +10,10 @@ reality: "Conceptual Reality"
 purpose:
   - "Technical Analysis"
 gallery:
-  - "/vision-tech/section/01.jpeg"
-  - "/vision-tech/section/02.jpeg"
-  - "/vision-tech/section/03.jpeg"
-  - "/vision-tech/section/04.jpeg"
+  - "/_img/vision-tech/section/01.jpeg"
+  - "/_img/vision-tech/section/02.jpeg"
+  - "/_img/vision-tech/section/03.jpeg"
+  - "/_img/vision-tech/section/04.jpeg"
 relatedCategories:
   - "residential"
   - "commercial"

@@ -13,32 +13,32 @@ categories:
   - residential
 features: []
 tags: []
-coverImage: "/portfolio/sasadliget-1/01.jpg"
+coverImage: "/_img/portfolio/sasadliget-1/01.jpg"
 published: true
 featured: false
 techniques:
   - exterior
 images:
-  - src: "/portfolio/sasadliget-1/01.jpg"
+  - src: "/_img/portfolio/sasadliget-1/01.jpg"
     alt: ""
-  - src: "/portfolio/sasadliget-1/02.jpg"
+  - src: "/_img/portfolio/sasadliget-1/02.jpg"
     alt: ""
-  - src: "/portfolio/sasadliget-1/03.jpg"
+  - src: "/_img/portfolio/sasadliget-1/03.jpg"
     alt: ""
-  - src: "/portfolio/sasadliget-1/04.jpg"
+  - src: "/_img/portfolio/sasadliget-1/04.jpg"
     alt: ""
-  - src: "/portfolio/sasadliget-1/05.jpg"
+  - src: "/_img/portfolio/sasadliget-1/05.jpg"
     alt: ""
-  - src: "/portfolio/sasadliget-1/06.jpg"
+  - src: "/_img/portfolio/sasadliget-1/06.jpg"
     alt: ""
-  - src: "/portfolio/sasadliget-1/07.jpg"
+  - src: "/_img/portfolio/sasadliget-1/07.jpg"
     alt: ""
-  - src: "/portfolio/sasadliget-1/08.jpg"
+  - src: "/_img/portfolio/sasadliget-1/08.jpg"
     alt: ""
-  - src: "/portfolio/sasadliget-1/09.jpg"
+  - src: "/_img/portfolio/sasadliget-1/09.jpg"
     alt: ""
-  - src: "/portfolio/sasadliget-1/10.jpg"
+  - src: "/_img/portfolio/sasadliget-1/10.jpg"
     alt: ""
-  - src: "/portfolio/sasadliget-1/11.jpg"
+  - src: "/_img/portfolio/sasadliget-1/11.jpg"
     alt: ""
 ---

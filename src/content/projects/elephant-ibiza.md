@@ -9,7 +9,7 @@ categories:
   - residential
 features: []
 tags: []
-coverImage: "/portfolio/elephant-ibiza/01.jpg"
+coverImage: "/_img/portfolio/elephant-ibiza/01.jpg"
 published: true
 featured: false
 video: "https://youtu.be/ce9ZTN5ulPY"
@@ -20,20 +20,20 @@ techniques:
   - exterior
   - interior
 images:
-  - src: "/portfolio/elephant-ibiza/01.jpg"
+  - src: "/_img/portfolio/elephant-ibiza/01.jpg"
     alt: ""
-  - src: "/portfolio/elephant-ibiza/02.jpg"
+  - src: "/_img/portfolio/elephant-ibiza/02.jpg"
     alt: ""
-  - src: "/portfolio/elephant-ibiza/03.jpg"
+  - src: "/_img/portfolio/elephant-ibiza/03.jpg"
     alt: ""
-  - src: "/portfolio/elephant-ibiza/04.jpg"
+  - src: "/_img/portfolio/elephant-ibiza/04.jpg"
     alt: ""
-  - src: "/portfolio/elephant-ibiza/05.jpg"
+  - src: "/_img/portfolio/elephant-ibiza/05.jpg"
     alt: ""
-  - src: "/portfolio/elephant-ibiza/06.jpg"
+  - src: "/_img/portfolio/elephant-ibiza/06.jpg"
     alt: ""
-  - src: "/portfolio/elephant-ibiza/07.jpg"
+  - src: "/_img/portfolio/elephant-ibiza/07.jpg"
     alt: ""
-  - src: "/portfolio/elephant-ibiza/08.jpg"
+  - src: "/_img/portfolio/elephant-ibiza/08.jpg"
     alt: ""
 ---

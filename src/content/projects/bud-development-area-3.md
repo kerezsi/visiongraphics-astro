@@ -12,7 +12,7 @@ categories:
   - transportation
 features: []
 tags: []
-coverImage: "/portfolio/bud-development-area-3/01.jpg"
+coverImage: "/_img/portfolio/bud-development-area-3/01.jpg"
 published: true
 featured: false
 video: "https://youtu.be/65yJ-bqK3eQ"
@@ -20,26 +20,26 @@ techniques:
   - 3d-animation
   - exterior
 images:
-  - src: "/portfolio/bud-development-area-3/01.jpg"
+  - src: "/_img/portfolio/bud-development-area-3/01.jpg"
     alt: ""
-  - src: "/portfolio/bud-development-area-3/02.jpg"
+  - src: "/_img/portfolio/bud-development-area-3/02.jpg"
     alt: ""
-  - src: "/portfolio/bud-development-area-3/03.jpg"
+  - src: "/_img/portfolio/bud-development-area-3/03.jpg"
     alt: ""
-  - src: "/portfolio/bud-development-area-3/04.jpg"
+  - src: "/_img/portfolio/bud-development-area-3/04.jpg"
     alt: ""
-  - src: "/portfolio/bud-development-area-3/05.jpg"
+  - src: "/_img/portfolio/bud-development-area-3/05.jpg"
     alt: ""
-  - src: "/portfolio/bud-development-area-3/06.jpg"
+  - src: "/_img/portfolio/bud-development-area-3/06.jpg"
     alt: ""
-  - src: "/portfolio/bud-development-area-3/07.jpg"
+  - src: "/_img/portfolio/bud-development-area-3/07.jpg"
     alt: ""
-  - src: "/portfolio/bud-development-area-3/08.jpg"
+  - src: "/_img/portfolio/bud-development-area-3/08.jpg"
     alt: ""
-  - src: "/portfolio/bud-development-area-3/09.jpg"
+  - src: "/_img/portfolio/bud-development-area-3/09.jpg"
     alt: ""
-  - src: "/portfolio/bud-development-area-3/10.jpg"
+  - src: "/_img/portfolio/bud-development-area-3/10.jpg"
     alt: ""
-  - src: "/portfolio/bud-development-area-3/11.jpg"
+  - src: "/_img/portfolio/bud-development-area-3/11.jpg"
     alt: ""
 ---

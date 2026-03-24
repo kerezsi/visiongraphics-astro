@@ -12,27 +12,27 @@ categories:
   - residential
 features: []
 tags: []
-coverImage: "/portfolio/silver-side/01.jpg"
+coverImage: "/_img/portfolio/silver-side/01.jpg"
 published: true
 featured: false
 video: "https://youtu.be/c6pXpgUq8Go"
 images:
-  - src: "/portfolio/silver-side/01.jpg"
+  - src: "/_img/portfolio/silver-side/01.jpg"
     alt: ""
-  - src: "/portfolio/silver-side/02.jpg"
+  - src: "/_img/portfolio/silver-side/02.jpg"
     alt: ""
-  - src: "/portfolio/silver-side/03.jpg"
+  - src: "/_img/portfolio/silver-side/03.jpg"
     alt: ""
-  - src: "/portfolio/silver-side/04.jpg"
+  - src: "/_img/portfolio/silver-side/04.jpg"
     alt: ""
-  - src: "/portfolio/silver-side/05.jpg"
+  - src: "/_img/portfolio/silver-side/05.jpg"
     alt: ""
-  - src: "/portfolio/silver-side/06.jpg"
+  - src: "/_img/portfolio/silver-side/06.jpg"
     alt: ""
-  - src: "/portfolio/silver-side/07.jpg"
+  - src: "/_img/portfolio/silver-side/07.jpg"
     alt: ""
-  - src: "/portfolio/silver-side/08.jpg"
+  - src: "/_img/portfolio/silver-side/08.jpg"
     alt: ""
-  - src: "/portfolio/silver-side/09.jpg"
+  - src: "/_img/portfolio/silver-side/09.jpg"
     alt: ""
 ---

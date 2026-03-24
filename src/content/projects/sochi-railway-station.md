@@ -12,7 +12,7 @@ categories:
   - transportation
 features: []
 tags: []
-coverImage: "/portfolio/sochi-railway-station/01.jpg"
+coverImage: "/_img/portfolio/sochi-railway-station/01.jpg"
 published: true
 featured: false
 techniques:
@@ -20,14 +20,14 @@ techniques:
   - exterior
   - night-renderings
 images:
-  - src: "/portfolio/sochi-railway-station/01.jpg"
+  - src: "/_img/portfolio/sochi-railway-station/01.jpg"
     alt: ""
-  - src: "/portfolio/sochi-railway-station/02.jpg"
+  - src: "/_img/portfolio/sochi-railway-station/02.jpg"
     alt: ""
-  - src: "/portfolio/sochi-railway-station/03.jpg"
+  - src: "/_img/portfolio/sochi-railway-station/03.jpg"
     alt: ""
-  - src: "/portfolio/sochi-railway-station/04.jpg"
+  - src: "/_img/portfolio/sochi-railway-station/04.jpg"
     alt: ""
-  - src: "/portfolio/sochi-railway-station/05.jpg"
+  - src: "/_img/portfolio/sochi-railway-station/05.jpg"
     alt: ""
 ---

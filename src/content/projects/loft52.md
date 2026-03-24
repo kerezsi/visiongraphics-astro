@@ -24,7 +24,7 @@ categories:
   - residential
 features: []
 tags: []
-coverImage: "/portfolio/loft52/01.jpg"
+coverImage: "/_img/portfolio/loft52/01.jpg"
 published: true
 featured: false
 techniques:
@@ -34,24 +34,24 @@ techniques:
   - marketing-level-plan
   - photo-integration
 images:
-  - src: "/portfolio/loft52/01.jpg"
+  - src: "/_img/portfolio/loft52/01.jpg"
     alt: ""
-  - src: "/portfolio/loft52/02.jpg"
+  - src: "/_img/portfolio/loft52/02.jpg"
     alt: ""
-  - src: "/portfolio/loft52/03.jpg"
+  - src: "/_img/portfolio/loft52/03.jpg"
     alt: ""
-  - src: "/portfolio/loft52/04.jpg"
+  - src: "/_img/portfolio/loft52/04.jpg"
     alt: ""
-  - src: "/portfolio/loft52/05.jpg"
+  - src: "/_img/portfolio/loft52/05.jpg"
     alt: ""
-  - src: "/portfolio/loft52/06.jpg"
+  - src: "/_img/portfolio/loft52/06.jpg"
     alt: ""
-  - src: "/portfolio/loft52/07.jpg"
+  - src: "/_img/portfolio/loft52/07.jpg"
     alt: ""
-  - src: "/portfolio/loft52/08.jpg"
+  - src: "/_img/portfolio/loft52/08.jpg"
     alt: ""
-  - src: "/portfolio/loft52/09.jpg"
+  - src: "/_img/portfolio/loft52/09.jpg"
     alt: ""
-  - src: "/portfolio/loft52/10.jpg"
+  - src: "/_img/portfolio/loft52/10.jpg"
     alt: ""
 ---

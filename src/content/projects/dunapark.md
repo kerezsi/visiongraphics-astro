@@ -19,7 +19,7 @@ categories:
   - residential
 features: []
 tags: []
-coverImage: "/portfolio/dunapark/01.jpg"
+coverImage: "/_img/portfolio/dunapark/01.jpg"
 published: true
 featured: false
 techniques:
@@ -27,22 +27,22 @@ techniques:
   - 3d-animation
   - exterior
 images:
-  - src: "/portfolio/dunapark/01.jpg"
+  - src: "/_img/portfolio/dunapark/01.jpg"
     alt: ""
-  - src: "/portfolio/dunapark/02.jpg"
+  - src: "/_img/portfolio/dunapark/02.jpg"
     alt: ""
-  - src: "/portfolio/dunapark/03.jpg"
+  - src: "/_img/portfolio/dunapark/03.jpg"
     alt: ""
-  - src: "/portfolio/dunapark/04.jpg"
+  - src: "/_img/portfolio/dunapark/04.jpg"
     alt: ""
-  - src: "/portfolio/dunapark/05.jpg"
+  - src: "/_img/portfolio/dunapark/05.jpg"
     alt: ""
-  - src: "/portfolio/dunapark/06.jpg"
+  - src: "/_img/portfolio/dunapark/06.jpg"
     alt: ""
-  - src: "/portfolio/dunapark/07.jpg"
+  - src: "/_img/portfolio/dunapark/07.jpg"
     alt: ""
-  - src: "/portfolio/dunapark/08.jpg"
+  - src: "/_img/portfolio/dunapark/08.jpg"
     alt: ""
-  - src: "/portfolio/dunapark/09.jpg"
+  - src: "/_img/portfolio/dunapark/09.jpg"
     alt: ""
 ---

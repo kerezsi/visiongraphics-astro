@@ -1,7 +1,7 @@
 ---
 title: "Virtual Reality (VR) Experience"
 description: "Immersive computer-generated environments that users can explore using VR headsets. These experiences allow for full-scale interactive walkthroughs of architectural designs."
-image: "/vision-tech/virtual-reality-vr-experience.jpg"
+image: "/_img/vision-tech/virtual-reality-vr-experience.jpg"
 technique: "Digital"
 cost: "€€€€"
 model3d: "Output from 3D Model"
@@ -10,10 +10,10 @@ reality: "Conceptual Reality"
 purpose:
   - "Communication"
 gallery:
-  - "/vision-tech/virtual-reality-vr-experience/01.jpeg"
-  - "/vision-tech/virtual-reality-vr-experience/02.jpeg"
-  - "/vision-tech/virtual-reality-vr-experience/03.jpeg"
-  - "/vision-tech/virtual-reality-vr-experience/04.jpeg"
+  - "/_img/vision-tech/virtual-reality-vr-experience/01.jpeg"
+  - "/_img/vision-tech/virtual-reality-vr-experience/02.jpeg"
+  - "/_img/vision-tech/virtual-reality-vr-experience/03.jpeg"
+  - "/_img/vision-tech/virtual-reality-vr-experience/04.jpeg"
 relatedCategories:
   - "vr-experience"
   - "residential"

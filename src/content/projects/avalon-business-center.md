@@ -13,7 +13,7 @@ categories:
   - office
 features: []
 tags: []
-coverImage: "/portfolio/avalon-business-center/01.jpg"
+coverImage: "/_img/portfolio/avalon-business-center/01.jpg"
 published: true
 featured: false
 tour360:
@@ -29,30 +29,30 @@ techniques:
   - exterior
   - night-renderings
 images:
-  - src: "/portfolio/avalon-business-center/01.jpg"
+  - src: "/_img/portfolio/avalon-business-center/01.jpg"
     alt: ""
-  - src: "/portfolio/avalon-business-center/02.jpg"
+  - src: "/_img/portfolio/avalon-business-center/02.jpg"
     alt: ""
-  - src: "/portfolio/avalon-business-center/03.jpg"
+  - src: "/_img/portfolio/avalon-business-center/03.jpg"
     alt: ""
-  - src: "/portfolio/avalon-business-center/04.jpg"
+  - src: "/_img/portfolio/avalon-business-center/04.jpg"
     alt: ""
-  - src: "/portfolio/avalon-business-center/05.jpg"
+  - src: "/_img/portfolio/avalon-business-center/05.jpg"
     alt: ""
-  - src: "/portfolio/avalon-business-center/06.jpg"
+  - src: "/_img/portfolio/avalon-business-center/06.jpg"
     alt: ""
-  - src: "/portfolio/avalon-business-center/07.jpg"
+  - src: "/_img/portfolio/avalon-business-center/07.jpg"
     alt: ""
-  - src: "/portfolio/avalon-business-center/08.jpg"
+  - src: "/_img/portfolio/avalon-business-center/08.jpg"
     alt: ""
-  - src: "/portfolio/avalon-business-center/09.jpg"
+  - src: "/_img/portfolio/avalon-business-center/09.jpg"
     alt: ""
-  - src: "/portfolio/avalon-business-center/10.jpg"
+  - src: "/_img/portfolio/avalon-business-center/10.jpg"
     alt: ""
-  - src: "/portfolio/avalon-business-center/11.jpg"
+  - src: "/_img/portfolio/avalon-business-center/11.jpg"
     alt: ""
-  - src: "/portfolio/avalon-business-center/12.jpg"
+  - src: "/_img/portfolio/avalon-business-center/12.jpg"
     alt: ""
-  - src: "/portfolio/avalon-business-center/13.jpg"
+  - src: "/_img/portfolio/avalon-business-center/13.jpg"
     alt: ""
 ---

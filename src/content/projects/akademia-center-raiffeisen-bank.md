@@ -17,7 +17,7 @@ categories:
   - office
 features: []
 tags: []
-coverImage: "/portfolio/akademia-center-raiffeisen-bank/01.jpg"
+coverImage: "/_img/portfolio/akademia-center-raiffeisen-bank/01.jpg"
 published: true
 featured: false
 techniques:
@@ -26,18 +26,18 @@ techniques:
   - 3d-animation
   - interior
 images:
-  - src: "/portfolio/akademia-center-raiffeisen-bank/01.jpg"
+  - src: "/_img/portfolio/akademia-center-raiffeisen-bank/01.jpg"
     alt: ""
-  - src: "/portfolio/akademia-center-raiffeisen-bank/02.jpg"
+  - src: "/_img/portfolio/akademia-center-raiffeisen-bank/02.jpg"
     alt: ""
-  - src: "/portfolio/akademia-center-raiffeisen-bank/03.jpg"
+  - src: "/_img/portfolio/akademia-center-raiffeisen-bank/03.jpg"
     alt: ""
-  - src: "/portfolio/akademia-center-raiffeisen-bank/04.jpg"
+  - src: "/_img/portfolio/akademia-center-raiffeisen-bank/04.jpg"
     alt: ""
-  - src: "/portfolio/akademia-center-raiffeisen-bank/05.jpg"
+  - src: "/_img/portfolio/akademia-center-raiffeisen-bank/05.jpg"
     alt: ""
-  - src: "/portfolio/akademia-center-raiffeisen-bank/06.jpg"
+  - src: "/_img/portfolio/akademia-center-raiffeisen-bank/06.jpg"
     alt: ""
-  - src: "/portfolio/akademia-center-raiffeisen-bank/07.jpg"
+  - src: "/_img/portfolio/akademia-center-raiffeisen-bank/07.jpg"
     alt: ""
 ---

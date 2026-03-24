@@ -13,30 +13,30 @@ categories:
   - residential
 features: []
 tags: []
-coverImage: "/portfolio/sputnik-towers/01.jpg"
+coverImage: "/_img/portfolio/sputnik-towers/01.jpg"
 published: true
 featured: false
 techniques:
   - exterior
 images:
-  - src: "/portfolio/sputnik-towers/01.jpg"
+  - src: "/_img/portfolio/sputnik-towers/01.jpg"
     alt: ""
-  - src: "/portfolio/sputnik-towers/02.jpg"
+  - src: "/_img/portfolio/sputnik-towers/02.jpg"
     alt: ""
-  - src: "/portfolio/sputnik-towers/03.jpg"
+  - src: "/_img/portfolio/sputnik-towers/03.jpg"
     alt: ""
-  - src: "/portfolio/sputnik-towers/04.jpg"
+  - src: "/_img/portfolio/sputnik-towers/04.jpg"
     alt: ""
-  - src: "/portfolio/sputnik-towers/05.jpg"
+  - src: "/_img/portfolio/sputnik-towers/05.jpg"
     alt: ""
-  - src: "/portfolio/sputnik-towers/06.jpg"
+  - src: "/_img/portfolio/sputnik-towers/06.jpg"
     alt: ""
-  - src: "/portfolio/sputnik-towers/07.jpg"
+  - src: "/_img/portfolio/sputnik-towers/07.jpg"
     alt: ""
-  - src: "/portfolio/sputnik-towers/08.jpg"
+  - src: "/_img/portfolio/sputnik-towers/08.jpg"
     alt: ""
-  - src: "/portfolio/sputnik-towers/09.jpg"
+  - src: "/_img/portfolio/sputnik-towers/09.jpg"
     alt: ""
-  - src: "/portfolio/sputnik-towers/10.jpg"
+  - src: "/_img/portfolio/sputnik-towers/10.jpg"
     alt: ""
 ---

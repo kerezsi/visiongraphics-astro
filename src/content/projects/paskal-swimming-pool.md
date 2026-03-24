@@ -7,22 +7,22 @@ categories:
   - sports
 features: []
 tags: []
-coverImage: "/portfolio/paskal-swimming-pool/01.jpg"
+coverImage: "/_img/portfolio/paskal-swimming-pool/01.jpg"
 published: true
 featured: false
 techniques:
   - exterior
 images:
-  - src: "/portfolio/paskal-swimming-pool/01.jpg"
+  - src: "/_img/portfolio/paskal-swimming-pool/01.jpg"
     alt: ""
-  - src: "/portfolio/paskal-swimming-pool/02.jpg"
+  - src: "/_img/portfolio/paskal-swimming-pool/02.jpg"
     alt: ""
-  - src: "/portfolio/paskal-swimming-pool/03.jpg"
+  - src: "/_img/portfolio/paskal-swimming-pool/03.jpg"
     alt: ""
-  - src: "/portfolio/paskal-swimming-pool/04.jpg"
+  - src: "/_img/portfolio/paskal-swimming-pool/04.jpg"
     alt: ""
-  - src: "/portfolio/paskal-swimming-pool/05.jpg"
+  - src: "/_img/portfolio/paskal-swimming-pool/05.jpg"
     alt: ""
-  - src: "/portfolio/paskal-swimming-pool/06.jpg"
+  - src: "/_img/portfolio/paskal-swimming-pool/06.jpg"
     alt: ""
 ---

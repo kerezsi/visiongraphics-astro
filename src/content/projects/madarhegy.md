@@ -7,7 +7,7 @@ categories:
   - residential
 features: []
 tags: []
-coverImage: "/portfolio/madarhegy/01.jpg"
+coverImage: "/_img/portfolio/madarhegy/01.jpg"
 published: true
 featured: false
 techniques:
@@ -15,14 +15,14 @@ techniques:
   - aerial-photography
   - exterior
 images:
-  - src: "/portfolio/madarhegy/01.jpg"
+  - src: "/_img/portfolio/madarhegy/01.jpg"
     alt: ""
-  - src: "/portfolio/madarhegy/02.jpg"
+  - src: "/_img/portfolio/madarhegy/02.jpg"
     alt: ""
-  - src: "/portfolio/madarhegy/03.jpg"
+  - src: "/_img/portfolio/madarhegy/03.jpg"
     alt: ""
-  - src: "/portfolio/madarhegy/04.jpg"
+  - src: "/_img/portfolio/madarhegy/04.jpg"
     alt: ""
-  - src: "/portfolio/madarhegy/05.jpg"
+  - src: "/_img/portfolio/madarhegy/05.jpg"
     alt: ""
 ---

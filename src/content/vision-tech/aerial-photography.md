@@ -1,7 +1,7 @@
 ---
 title: "Aerial Photography"
 description: "High-altitude photographs typically taken from aircraft providing a broad overview of large areas. These images offer unique perspectives on landscapes urban environments and architectural projects."
-image: "/vision-tech/aerial-photography.jpg"
+image: "/_img/vision-tech/aerial-photography.jpg"
 technique: "Traditional"
 cost: "€€"
 model3d: "No 3D Model Required"
@@ -10,10 +10,10 @@ reality: "Pure Reality"
 purpose:
   - "Documentation"
 gallery:
-  - "/vision-tech/aerial-photography/01.jpg"
-  - "/vision-tech/aerial-photography/02.jpg"
-  - "/vision-tech/aerial-photography/03.jpg"
-  - "/vision-tech/aerial-photography/04.jpg"
+  - "/_img/vision-tech/aerial-photography/01.jpg"
+  - "/_img/vision-tech/aerial-photography/02.jpg"
+  - "/_img/vision-tech/aerial-photography/03.jpg"
+  - "/_img/vision-tech/aerial-photography/04.jpg"
 relatedCategories:
   - "urban"
   - "airport"
@@ -22,5 +22,5 @@ relatedFeatures:
   - "Aerial Integration"
 blocks:
   - type: text
-    html: "<h2>What is Aerial Photography?</h2><p>It's photos taken from airplanes or helicopters, showing large areas from above. They give you a view you just can't get from the ground.</p> \n \n \n \n \n  \n <h2>Why Take Aerial Photos?</h2><p>Looking down changes everything. You see patterns, connections, and context that you miss from the ground:</p><ul><li>Understand how sites relate to their surroundings</li><li>Document large properties completely</li><li>Show the scale of developments</li><li>Capture views that sell properties</li><li>See how traffic and people flow</li></ul><h2>How We Capture Them</h2><p>We work with experienced pilots who know how to get the right angles:</p><ol><li>Plan the flight path and altitude based on what you need</li><li>Schedule when the light will be best</li><li>Fly with specialized camera equipment</li><li>Capture multiple angles and heights</li><li>Process the images for clarity and impact</li></ol><p>In Hungary, we have our own trusted pilots. For projects elsewhere, we find reliable local partners with the right experience.</p> \n \n \n \n \n  \n <h2>When to Use Aerial Photography</h2><p>This works perfectly when you need to:</p><ul><li>Document large sites</li><li>Show property boundaries</li><li>Capture progress on big projects</li><li>Create marketing materials</li><li>See how developments fit into neighborhoods</li></ul> \n \n \n \n \n  \n <h2>What You Get</h2><p>We deliver:</p><ul><li>High-resolution aerial images</li><li>Multiple angles and heights</li><li>Photos at different times of day, if needed</li><li>Images ready for print or digital use</li><li>Location data if required</li></ul> \n \n \n \n \n \n \n \n \n \n \n \n \n  \n <h2>What We Need to Know</h2><p>To plan a successful shoot:</p><ul><li>Location details</li><li>What you want to highlight</li><li>How big an area to capture</li><li>When you need the photos</li><li>Any flight restrictions in the area</li></ul><h2>Getting Started</h2><p>Ready to see your project from above? Here's what we need to know:</p><ul><li>Location details</li><li>Project timeline</li><li>What you want to show</li><li>How you'll use the images</li><li>Your budget range</li></ul><p>We'll help you plan the perfect shoot.</p><p>Want to see how your unbuilt project would look from the air? Check out our <a href=\"/vision-tech/aerial-integration/\">Aerial Integration</a> service.</p> \n \n "
+    html: "<h2>What is Aerial Photography?</h2><p>It's photos taken from airplanes or helicopters, showing large areas from above. They give you a view you just can't get from the ground.</p> \n \n \n \n \n  \n <h2>Why Take Aerial Photos?</h2><p>Looking down changes everything. You see patterns, connections, and context that you miss from the ground:</p><ul><li>Understand how sites relate to their surroundings</li><li>Document large properties completely</li><li>Show the scale of developments</li><li>Capture views that sell properties</li><li>See how traffic and people flow</li></ul><h2>How We Capture Them</h2><p>We work with experienced pilots who know how to get the right angles:</p><ol><li>Plan the flight path and altitude based on what you need</li><li>Schedule when the light will be best</li><li>Fly with specialized camera equipment</li><li>Capture multiple angles and heights</li><li>Process the images for clarity and impact</li></ol><p>In Hungary, we have our own trusted pilots. For projects elsewhere, we find reliable local partners with the right experience.</p> \n \n \n \n \n  \n <h2>When to Use Aerial Photography</h2><p>This works perfectly when you need to:</p><ul><li>Document large sites</li><li>Show property boundaries</li><li>Capture progress on big projects</li><li>Create marketing materials</li><li>See how developments fit into neighborhoods</li></ul> \n \n \n \n \n  \n <h2>What You Get</h2><p>We deliver:</p><ul><li>High-resolution aerial images</li><li>Multiple angles and heights</li><li>Photos at different times of day, if needed</li><li>Images ready for print or digital use</li><li>Location data if required</li></ul> \n \n \n \n \n \n \n \n \n \n \n \n \n  \n <h2>What We Need to Know</h2><p>To plan a successful shoot:</p><ul><li>Location details</li><li>What you want to highlight</li><li>How big an area to capture</li><li>When you need the photos</li><li>Any flight restrictions in the area</li></ul><h2>Getting Started</h2><p>Ready to see your project from above? Here's what we need to know:</p><ul><li>Location details</li><li>Project timeline</li><li>What you want to show</li><li>How you'll use the images</li><li>Your budget range</li></ul><p>We'll help you plan the perfect shoot.</p><p>Want to see how your unbuilt project would look from the air? Check out our <a href=\"/_img/vision-tech/aerial-integration/\">Aerial Integration</a> service.</p> \n \n "
 ---

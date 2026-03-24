@@ -12,24 +12,24 @@ categories:
   - exhibition
 features: []
 tags: []
-coverImage: "/portfolio/technical-museum/01.jpg"
+coverImage: "/_img/portfolio/technical-museum/01.jpg"
 published: true
 featured: false
 techniques:
   - exterior
 images:
-  - src: "/portfolio/technical-museum/01.jpg"
+  - src: "/_img/portfolio/technical-museum/01.jpg"
     alt: ""
-  - src: "/portfolio/technical-museum/02.jpg"
+  - src: "/_img/portfolio/technical-museum/02.jpg"
     alt: ""
-  - src: "/portfolio/technical-museum/03.jpg"
+  - src: "/_img/portfolio/technical-museum/03.jpg"
     alt: ""
-  - src: "/portfolio/technical-museum/04.jpg"
+  - src: "/_img/portfolio/technical-museum/04.jpg"
     alt: ""
-  - src: "/portfolio/technical-museum/05.jpg"
+  - src: "/_img/portfolio/technical-museum/05.jpg"
     alt: ""
-  - src: "/portfolio/technical-museum/06.jpg"
+  - src: "/_img/portfolio/technical-museum/06.jpg"
     alt: ""
-  - src: "/portfolio/technical-museum/07.jpg"
+  - src: "/_img/portfolio/technical-museum/07.jpg"
     alt: ""
 ---

@@ -1,7 +1,7 @@
 ---
 title: "Marketing Apartment Plan"
 description: "Visually appealing floor plans designed specifically for marketing residential units. These plans often include furniture layouts color coding and highlighted features to attract potential buyers or renters."
-image: "/vision-tech/marketing-apartment-plan.jpg"
+image: "/_img/vision-tech/marketing-apartment-plan.jpg"
 technique: "Digital"
 cost: "€€"
 model3d: "Output from 3D Model"
@@ -10,10 +10,10 @@ reality: "Conceptual Reality"
 purpose:
   - "Communication"
 gallery:
-  - "/vision-tech/marketing-apartment-plan/01.jpg"
-  - "/vision-tech/marketing-apartment-plan/02.jpg"
-  - "/vision-tech/marketing-apartment-plan/03.jpg"
-  - "/vision-tech/marketing-apartment-plan/04.jpg"
+  - "/_img/vision-tech/marketing-apartment-plan/01.jpg"
+  - "/_img/vision-tech/marketing-apartment-plan/02.jpg"
+  - "/_img/vision-tech/marketing-apartment-plan/03.jpg"
+  - "/_img/vision-tech/marketing-apartment-plan/04.jpg"
 relatedCategories:
   - "residential"
 relatedFeatures: []

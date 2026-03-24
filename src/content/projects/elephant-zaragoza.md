@@ -8,7 +8,7 @@ categories:
   - residential
 features: []
 tags: []
-coverImage: "/portfolio/elephant-zaragoza/01.jpg"
+coverImage: "/_img/portfolio/elephant-zaragoza/01.jpg"
 published: true
 featured: false
 video: "https://youtu.be/VpWJHdQOetk"
@@ -19,22 +19,22 @@ techniques:
   - exterior
   - interior
 images:
-  - src: "/portfolio/elephant-zaragoza/01.jpg"
+  - src: "/_img/portfolio/elephant-zaragoza/01.jpg"
     alt: ""
-  - src: "/portfolio/elephant-zaragoza/02.jpg"
+  - src: "/_img/portfolio/elephant-zaragoza/02.jpg"
     alt: ""
-  - src: "/portfolio/elephant-zaragoza/03.jpg"
+  - src: "/_img/portfolio/elephant-zaragoza/03.jpg"
     alt: ""
-  - src: "/portfolio/elephant-zaragoza/04.jpg"
+  - src: "/_img/portfolio/elephant-zaragoza/04.jpg"
     alt: ""
-  - src: "/portfolio/elephant-zaragoza/05.jpg"
+  - src: "/_img/portfolio/elephant-zaragoza/05.jpg"
     alt: ""
-  - src: "/portfolio/elephant-zaragoza/06.jpg"
+  - src: "/_img/portfolio/elephant-zaragoza/06.jpg"
     alt: ""
-  - src: "/portfolio/elephant-zaragoza/07.jpg"
+  - src: "/_img/portfolio/elephant-zaragoza/07.jpg"
     alt: ""
-  - src: "/portfolio/elephant-zaragoza/08.jpg"
+  - src: "/_img/portfolio/elephant-zaragoza/08.jpg"
     alt: ""
-  - src: "/portfolio/elephant-zaragoza/09.jpg"
+  - src: "/_img/portfolio/elephant-zaragoza/09.jpg"
     alt: ""
 ---

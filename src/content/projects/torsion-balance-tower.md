@@ -21,19 +21,19 @@ categories:
   - hospitality
 features: []
 tags: []
-coverImage: "/portfolio/torsion-balance-tower/01.jpg"
+coverImage: "/_img/portfolio/torsion-balance-tower/01.jpg"
 published: true
 featured: false
 techniques:
   - exterior
   - photo-integration
 images:
-  - src: "/portfolio/torsion-balance-tower/01.jpg"
+  - src: "/_img/portfolio/torsion-balance-tower/01.jpg"
     alt: ""
-  - src: "/portfolio/torsion-balance-tower/02.jpg"
+  - src: "/_img/portfolio/torsion-balance-tower/02.jpg"
     alt: ""
-  - src: "/portfolio/torsion-balance-tower/03.jpg"
+  - src: "/_img/portfolio/torsion-balance-tower/03.jpg"
     alt: ""
-  - src: "/portfolio/torsion-balance-tower/04.jpg"
+  - src: "/_img/portfolio/torsion-balance-tower/04.jpg"
     alt: ""
 ---

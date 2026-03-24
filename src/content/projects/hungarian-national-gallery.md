@@ -12,7 +12,7 @@ categories:
   - exhibition
 features: []
 tags: []
-coverImage: "/portfolio/hungarian-national-gallery/01.jpg"
+coverImage: "/_img/portfolio/hungarian-national-gallery/01.jpg"
 published: true
 featured: false
 techniques:
@@ -22,20 +22,20 @@ techniques:
   - night-renderings
   - photo-integration
 images:
-  - src: "/portfolio/hungarian-national-gallery/01.jpg"
+  - src: "/_img/portfolio/hungarian-national-gallery/01.jpg"
     alt: ""
-  - src: "/portfolio/hungarian-national-gallery/02.jpg"
+  - src: "/_img/portfolio/hungarian-national-gallery/02.jpg"
     alt: ""
-  - src: "/portfolio/hungarian-national-gallery/03.jpg"
+  - src: "/_img/portfolio/hungarian-national-gallery/03.jpg"
     alt: ""
-  - src: "/portfolio/hungarian-national-gallery/04.jpg"
+  - src: "/_img/portfolio/hungarian-national-gallery/04.jpg"
     alt: ""
-  - src: "/portfolio/hungarian-national-gallery/05.jpg"
+  - src: "/_img/portfolio/hungarian-national-gallery/05.jpg"
     alt: ""
-  - src: "/portfolio/hungarian-national-gallery/06.jpg"
+  - src: "/_img/portfolio/hungarian-national-gallery/06.jpg"
     alt: ""
-  - src: "/portfolio/hungarian-national-gallery/07.jpg"
+  - src: "/_img/portfolio/hungarian-national-gallery/07.jpg"
     alt: ""
-  - src: "/portfolio/hungarian-national-gallery/08.jpg"
+  - src: "/_img/portfolio/hungarian-national-gallery/08.jpg"
     alt: ""
 ---

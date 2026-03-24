@@ -19,7 +19,7 @@ categories:
   - commercial
 features: []
 tags: []
-coverImage: "/portfolio/hungexpo-revitalization/01.jpg"
+coverImage: "/_img/portfolio/hungexpo-revitalization/01.jpg"
 published: true
 featured: false
 video: "https://youtu.be/ML2ZIkyGvTk?si=j9i2W8Z8CR3_PSny"
@@ -28,30 +28,30 @@ techniques:
   - exterior
   - interior
 images:
-  - src: "/portfolio/hungexpo-revitalization/01.jpg"
+  - src: "/_img/portfolio/hungexpo-revitalization/01.jpg"
     alt: ""
-  - src: "/portfolio/hungexpo-revitalization/02.jpg"
+  - src: "/_img/portfolio/hungexpo-revitalization/02.jpg"
     alt: ""
-  - src: "/portfolio/hungexpo-revitalization/03.jpg"
+  - src: "/_img/portfolio/hungexpo-revitalization/03.jpg"
     alt: ""
-  - src: "/portfolio/hungexpo-revitalization/04.jpg"
+  - src: "/_img/portfolio/hungexpo-revitalization/04.jpg"
     alt: ""
-  - src: "/portfolio/hungexpo-revitalization/05.jpg"
+  - src: "/_img/portfolio/hungexpo-revitalization/05.jpg"
     alt: ""
-  - src: "/portfolio/hungexpo-revitalization/06.jpg"
+  - src: "/_img/portfolio/hungexpo-revitalization/06.jpg"
     alt: ""
-  - src: "/portfolio/hungexpo-revitalization/07.jpg"
+  - src: "/_img/portfolio/hungexpo-revitalization/07.jpg"
     alt: ""
-  - src: "/portfolio/hungexpo-revitalization/08.jpg"
+  - src: "/_img/portfolio/hungexpo-revitalization/08.jpg"
     alt: ""
-  - src: "/portfolio/hungexpo-revitalization/09.jpg"
+  - src: "/_img/portfolio/hungexpo-revitalization/09.jpg"
     alt: ""
-  - src: "/portfolio/hungexpo-revitalization/10.jpg"
+  - src: "/_img/portfolio/hungexpo-revitalization/10.jpg"
     alt: ""
-  - src: "/portfolio/hungexpo-revitalization/11.jpg"
+  - src: "/_img/portfolio/hungexpo-revitalization/11.jpg"
     alt: ""
-  - src: "/portfolio/hungexpo-revitalization/12.jpg"
+  - src: "/_img/portfolio/hungexpo-revitalization/12.jpg"
     alt: ""
-  - src: "/portfolio/hungexpo-revitalization/13.jpg"
+  - src: "/_img/portfolio/hungexpo-revitalization/13.jpg"
     alt: ""
 ---

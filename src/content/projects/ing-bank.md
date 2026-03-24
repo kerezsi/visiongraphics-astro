@@ -18,7 +18,7 @@ categories:
   - commercial
 features: []
 tags: []
-coverImage: "/portfolio/ing-bank/01.jpg"
+coverImage: "/_img/portfolio/ing-bank/01.jpg"
 published: true
 featured: false
 tour360:
@@ -29,20 +29,20 @@ techniques:
   - 360-tour
   - interior
 images:
-  - src: "/portfolio/ing-bank/01.jpg"
+  - src: "/_img/portfolio/ing-bank/01.jpg"
     alt: ""
-  - src: "/portfolio/ing-bank/02.jpg"
+  - src: "/_img/portfolio/ing-bank/02.jpg"
     alt: ""
-  - src: "/portfolio/ing-bank/03.jpg"
+  - src: "/_img/portfolio/ing-bank/03.jpg"
     alt: ""
-  - src: "/portfolio/ing-bank/04.jpg"
+  - src: "/_img/portfolio/ing-bank/04.jpg"
     alt: ""
-  - src: "/portfolio/ing-bank/05.jpg"
+  - src: "/_img/portfolio/ing-bank/05.jpg"
     alt: ""
-  - src: "/portfolio/ing-bank/06.jpg"
+  - src: "/_img/portfolio/ing-bank/06.jpg"
     alt: ""
-  - src: "/portfolio/ing-bank/07.jpg"
+  - src: "/_img/portfolio/ing-bank/07.jpg"
     alt: ""
-  - src: "/portfolio/ing-bank/08.jpg"
+  - src: "/_img/portfolio/ing-bank/08.jpg"
     alt: ""
 ---

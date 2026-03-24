@@ -9,7 +9,7 @@ categories:
   - urban
 features: []
 tags: []
-coverImage: "/portfolio/szerencsejatek_parkolo/01.jpg"
+coverImage: "/_img/portfolio/szerencsejatek_parkolo/01.jpg"
 published: true
 featured: false
 tour360:
@@ -22,12 +22,12 @@ techniques:
   - 360-tour
   - exterior
 images:
-  - src: "/portfolio/szerencsejatek_parkolo/01.jpg"
+  - src: "/_img/portfolio/szerencsejatek_parkolo/01.jpg"
     alt: ""
-  - src: "/portfolio/szerencsejatek_parkolo/02.jpg"
+  - src: "/_img/portfolio/szerencsejatek_parkolo/02.jpg"
     alt: ""
-  - src: "/portfolio/szerencsejatek_parkolo/03.jpg"
+  - src: "/_img/portfolio/szerencsejatek_parkolo/03.jpg"
     alt: ""
-  - src: "/portfolio/szerencsejatek_parkolo/04.jpg"
+  - src: "/_img/portfolio/szerencsejatek_parkolo/04.jpg"
     alt: ""
 ---

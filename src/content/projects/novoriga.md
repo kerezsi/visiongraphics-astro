@@ -12,7 +12,7 @@ categories:
   - commercial
 features: []
 tags: []
-coverImage: "/portfolio/novoriga/01.jpg"
+coverImage: "/_img/portfolio/novoriga/01.jpg"
 published: true
 featured: false
 techniques:
@@ -20,16 +20,16 @@ techniques:
   - interior
   - night-renderings
 images:
-  - src: "/portfolio/novoriga/01.jpg"
+  - src: "/_img/portfolio/novoriga/01.jpg"
     alt: ""
-  - src: "/portfolio/novoriga/02.jpg"
+  - src: "/_img/portfolio/novoriga/02.jpg"
     alt: ""
-  - src: "/portfolio/novoriga/03.jpg"
+  - src: "/_img/portfolio/novoriga/03.jpg"
     alt: ""
-  - src: "/portfolio/novoriga/04.jpg"
+  - src: "/_img/portfolio/novoriga/04.jpg"
     alt: ""
-  - src: "/portfolio/novoriga/05.jpg"
+  - src: "/_img/portfolio/novoriga/05.jpg"
     alt: ""
-  - src: "/portfolio/novoriga/06.jpg"
+  - src: "/_img/portfolio/novoriga/06.jpg"
     alt: ""
 ---

@@ -7,7 +7,7 @@ categories:
   - residential
 features: []
 tags: []
-coverImage: "/portfolio/continental-residence/01.jpg"
+coverImage: "/_img/portfolio/continental-residence/01.jpg"
 published: true
 featured: false
 techniques:
@@ -17,30 +17,30 @@ techniques:
   - marketing-apartment-plan
   - marketing-level-plan
 images:
-  - src: "/portfolio/continental-residence/01.jpg"
+  - src: "/_img/portfolio/continental-residence/01.jpg"
     alt: ""
-  - src: "/portfolio/continental-residence/02.jpg"
+  - src: "/_img/portfolio/continental-residence/02.jpg"
     alt: ""
-  - src: "/portfolio/continental-residence/03.jpg"
+  - src: "/_img/portfolio/continental-residence/03.jpg"
     alt: ""
-  - src: "/portfolio/continental-residence/04.jpg"
+  - src: "/_img/portfolio/continental-residence/04.jpg"
     alt: ""
-  - src: "/portfolio/continental-residence/05.jpg"
+  - src: "/_img/portfolio/continental-residence/05.jpg"
     alt: ""
-  - src: "/portfolio/continental-residence/06.jpg"
+  - src: "/_img/portfolio/continental-residence/06.jpg"
     alt: ""
-  - src: "/portfolio/continental-residence/07.jpg"
+  - src: "/_img/portfolio/continental-residence/07.jpg"
     alt: ""
-  - src: "/portfolio/continental-residence/08.jpg"
+  - src: "/_img/portfolio/continental-residence/08.jpg"
     alt: ""
-  - src: "/portfolio/continental-residence/09.jpg"
+  - src: "/_img/portfolio/continental-residence/09.jpg"
     alt: ""
-  - src: "/portfolio/continental-residence/10.jpg"
+  - src: "/_img/portfolio/continental-residence/10.jpg"
     alt: ""
-  - src: "/portfolio/continental-residence/11.jpg"
+  - src: "/_img/portfolio/continental-residence/11.jpg"
     alt: ""
-  - src: "/portfolio/continental-residence/12.jpg"
+  - src: "/_img/portfolio/continental-residence/12.jpg"
     alt: ""
-  - src: "/portfolio/continental-residence/13.jpg"
+  - src: "/_img/portfolio/continental-residence/13.jpg"
     alt: ""
 ---

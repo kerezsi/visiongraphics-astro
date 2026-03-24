@@ -15,27 +15,27 @@ categories:
   - hospitality
 features: []
 tags: []
-coverImage: "/portfolio/gundel-restaurant/01.jpg"
+coverImage: "/_img/portfolio/gundel-restaurant/01.jpg"
 published: true
 featured: false
 techniques:
   - exterior
   - interior
 images:
-  - src: "/portfolio/gundel-restaurant/01.jpg"
+  - src: "/_img/portfolio/gundel-restaurant/01.jpg"
     alt: ""
-  - src: "/portfolio/gundel-restaurant/02.jpg"
+  - src: "/_img/portfolio/gundel-restaurant/02.jpg"
     alt: ""
-  - src: "/portfolio/gundel-restaurant/03.jpg"
+  - src: "/_img/portfolio/gundel-restaurant/03.jpg"
     alt: ""
-  - src: "/portfolio/gundel-restaurant/04.jpg"
+  - src: "/_img/portfolio/gundel-restaurant/04.jpg"
     alt: ""
-  - src: "/portfolio/gundel-restaurant/05.jpg"
+  - src: "/_img/portfolio/gundel-restaurant/05.jpg"
     alt: ""
-  - src: "/portfolio/gundel-restaurant/06.jpg"
+  - src: "/_img/portfolio/gundel-restaurant/06.jpg"
     alt: ""
-  - src: "/portfolio/gundel-restaurant/07.jpg"
+  - src: "/_img/portfolio/gundel-restaurant/07.jpg"
     alt: ""
-  - src: "/portfolio/gundel-restaurant/08.jpg"
+  - src: "/_img/portfolio/gundel-restaurant/08.jpg"
     alt: ""
 ---

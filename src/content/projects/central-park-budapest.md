@@ -19,15 +19,15 @@ tags:
   - mixed-use
   - hungary
   - futureal
-coverImage: "/portfolio/central-park-budapest/cover.jpg"
+coverImage: "/_img/portfolio/central-park-budapest/cover.jpg"
 images:
-  - src: "/portfolio/central-park-budapest/01.jpg"
+  - src: "/_img/portfolio/central-park-budapest/01.jpg"
     alt: "Residential tower exterior, daytime"
-  - src: "/portfolio/central-park-budapest/02.jpg"
+  - src: "/_img/portfolio/central-park-budapest/02.jpg"
     alt: "Ground floor commercial activation"
-  - src: "/portfolio/central-park-budapest/03.jpg"
+  - src: "/_img/portfolio/central-park-budapest/03.jpg"
     alt: "Courtyard and landscaping"
-  - src: "/portfolio/central-park-budapest/04.jpg"
+  - src: "/_img/portfolio/central-park-budapest/04.jpg"
     alt: "Interior apartment — living room"
 featured: true
 published: false

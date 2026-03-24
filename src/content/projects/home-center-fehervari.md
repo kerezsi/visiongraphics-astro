@@ -9,7 +9,7 @@ categories:
   - residential
 features: []
 tags: []
-coverImage: "/portfolio/home-center-fehervari/01.jpg"
+coverImage: "/_img/portfolio/home-center-fehervari/01.jpg"
 published: true
 featured: false
 techniques:
@@ -17,28 +17,28 @@ techniques:
   - marketing-apartment-plan
   - marketing-level-plan
 images:
-  - src: "/portfolio/home-center-fehervari/01.jpg"
+  - src: "/_img/portfolio/home-center-fehervari/01.jpg"
     alt: ""
-  - src: "/portfolio/home-center-fehervari/02.jpg"
+  - src: "/_img/portfolio/home-center-fehervari/02.jpg"
     alt: ""
-  - src: "/portfolio/home-center-fehervari/03.jpg"
+  - src: "/_img/portfolio/home-center-fehervari/03.jpg"
     alt: ""
-  - src: "/portfolio/home-center-fehervari/04.jpg"
+  - src: "/_img/portfolio/home-center-fehervari/04.jpg"
     alt: ""
-  - src: "/portfolio/home-center-fehervari/05.jpg"
+  - src: "/_img/portfolio/home-center-fehervari/05.jpg"
     alt: ""
-  - src: "/portfolio/home-center-fehervari/06.jpg"
+  - src: "/_img/portfolio/home-center-fehervari/06.jpg"
     alt: ""
-  - src: "/portfolio/home-center-fehervari/07.jpg"
+  - src: "/_img/portfolio/home-center-fehervari/07.jpg"
     alt: ""
-  - src: "/portfolio/home-center-fehervari/08.jpg"
+  - src: "/_img/portfolio/home-center-fehervari/08.jpg"
     alt: ""
-  - src: "/portfolio/home-center-fehervari/09.jpg"
+  - src: "/_img/portfolio/home-center-fehervari/09.jpg"
     alt: ""
-  - src: "/portfolio/home-center-fehervari/10.jpg"
+  - src: "/_img/portfolio/home-center-fehervari/10.jpg"
     alt: ""
-  - src: "/portfolio/home-center-fehervari/11.jpg"
+  - src: "/_img/portfolio/home-center-fehervari/11.jpg"
     alt: ""
-  - src: "/portfolio/home-center-fehervari/12.jpg"
+  - src: "/_img/portfolio/home-center-fehervari/12.jpg"
     alt: ""
 ---

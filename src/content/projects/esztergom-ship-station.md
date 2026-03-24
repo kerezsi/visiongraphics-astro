@@ -13,23 +13,23 @@ categories:
   - transportation
 features: []
 tags: []
-coverImage: "/portfolio/esztergom-ship-station/01.jpg"
+coverImage: "/_img/portfolio/esztergom-ship-station/01.jpg"
 published: true
 featured: false
 techniques:
   - exterior
   - photo-integration
 images:
-  - src: "/portfolio/esztergom-ship-station/01.jpg"
+  - src: "/_img/portfolio/esztergom-ship-station/01.jpg"
     alt: ""
-  - src: "/portfolio/esztergom-ship-station/02.jpg"
+  - src: "/_img/portfolio/esztergom-ship-station/02.jpg"
     alt: ""
-  - src: "/portfolio/esztergom-ship-station/03.jpg"
+  - src: "/_img/portfolio/esztergom-ship-station/03.jpg"
     alt: ""
-  - src: "/portfolio/esztergom-ship-station/04.jpg"
+  - src: "/_img/portfolio/esztergom-ship-station/04.jpg"
     alt: ""
-  - src: "/portfolio/esztergom-ship-station/05.jpg"
+  - src: "/_img/portfolio/esztergom-ship-station/05.jpg"
     alt: ""
-  - src: "/portfolio/esztergom-ship-station/06.jpg"
+  - src: "/_img/portfolio/esztergom-ship-station/06.jpg"
     alt: ""
 ---

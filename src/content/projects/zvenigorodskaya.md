@@ -12,31 +12,31 @@ categories:
   - residential
 features: []
 tags: []
-coverImage: "/portfolio/zvenigorodskaya/01.jpg"
+coverImage: "/_img/portfolio/zvenigorodskaya/01.jpg"
 published: true
 featured: false
 techniques:
   - exterior
   - photo-integration
 images:
-  - src: "/portfolio/zvenigorodskaya/01.jpg"
+  - src: "/_img/portfolio/zvenigorodskaya/01.jpg"
     alt: ""
-  - src: "/portfolio/zvenigorodskaya/02.jpg"
+  - src: "/_img/portfolio/zvenigorodskaya/02.jpg"
     alt: ""
-  - src: "/portfolio/zvenigorodskaya/03.jpg"
+  - src: "/_img/portfolio/zvenigorodskaya/03.jpg"
     alt: ""
-  - src: "/portfolio/zvenigorodskaya/04.jpg"
+  - src: "/_img/portfolio/zvenigorodskaya/04.jpg"
     alt: ""
-  - src: "/portfolio/zvenigorodskaya/05.jpg"
+  - src: "/_img/portfolio/zvenigorodskaya/05.jpg"
     alt: ""
-  - src: "/portfolio/zvenigorodskaya/06.jpg"
+  - src: "/_img/portfolio/zvenigorodskaya/06.jpg"
     alt: ""
-  - src: "/portfolio/zvenigorodskaya/07.jpg"
+  - src: "/_img/portfolio/zvenigorodskaya/07.jpg"
     alt: ""
-  - src: "/portfolio/zvenigorodskaya/08.jpg"
+  - src: "/_img/portfolio/zvenigorodskaya/08.jpg"
     alt: ""
-  - src: "/portfolio/zvenigorodskaya/09.jpg"
+  - src: "/_img/portfolio/zvenigorodskaya/09.jpg"
     alt: ""
-  - src: "/portfolio/zvenigorodskaya/10.jpg"
+  - src: "/_img/portfolio/zvenigorodskaya/10.jpg"
     alt: ""
 ---

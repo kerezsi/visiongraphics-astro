@@ -8,7 +8,7 @@ categories:
   - hospitality
 features: []
 tags: []
-coverImage: "/portfolio/bem-ter/01.jpg"
+coverImage: "/_img/portfolio/bem-ter/01.jpg"
 published: true
 featured: false
 techniques:
@@ -16,18 +16,18 @@ techniques:
   - exterior
   - photo-integration
 images:
-  - src: "/portfolio/bem-ter/01.jpg"
+  - src: "/_img/portfolio/bem-ter/01.jpg"
     alt: ""
-  - src: "/portfolio/bem-ter/02.jpg"
+  - src: "/_img/portfolio/bem-ter/02.jpg"
     alt: ""
-  - src: "/portfolio/bem-ter/03.jpg"
+  - src: "/_img/portfolio/bem-ter/03.jpg"
     alt: ""
-  - src: "/portfolio/bem-ter/04.jpg"
+  - src: "/_img/portfolio/bem-ter/04.jpg"
     alt: ""
-  - src: "/portfolio/bem-ter/05.jpg"
+  - src: "/_img/portfolio/bem-ter/05.jpg"
     alt: ""
-  - src: "/portfolio/bem-ter/06.jpg"
+  - src: "/_img/portfolio/bem-ter/06.jpg"
     alt: ""
-  - src: "/portfolio/bem-ter/07.jpg"
+  - src: "/_img/portfolio/bem-ter/07.jpg"
     alt: ""
 ---

@@ -12,7 +12,7 @@ categories:
   - commercial
 features: []
 tags: []
-coverImage: "/portfolio/red-whale-1/01.jpg"
+coverImage: "/_img/portfolio/red-whale-1/01.jpg"
 published: true
 featured: false
 techniques:
@@ -20,28 +20,28 @@ techniques:
   - interior
   - section
 images:
-  - src: "/portfolio/red-whale-1/01.jpg"
+  - src: "/_img/portfolio/red-whale-1/01.jpg"
     alt: ""
-  - src: "/portfolio/red-whale-1/02.jpg"
+  - src: "/_img/portfolio/red-whale-1/02.jpg"
     alt: ""
-  - src: "/portfolio/red-whale-1/03.jpg"
+  - src: "/_img/portfolio/red-whale-1/03.jpg"
     alt: ""
-  - src: "/portfolio/red-whale-1/04.jpg"
+  - src: "/_img/portfolio/red-whale-1/04.jpg"
     alt: ""
-  - src: "/portfolio/red-whale-1/05.jpg"
+  - src: "/_img/portfolio/red-whale-1/05.jpg"
     alt: ""
-  - src: "/portfolio/red-whale-1/06.jpg"
+  - src: "/_img/portfolio/red-whale-1/06.jpg"
     alt: ""
-  - src: "/portfolio/red-whale-1/07.jpg"
+  - src: "/_img/portfolio/red-whale-1/07.jpg"
     alt: ""
-  - src: "/portfolio/red-whale-1/08.jpg"
+  - src: "/_img/portfolio/red-whale-1/08.jpg"
     alt: ""
-  - src: "/portfolio/red-whale-1/09.jpg"
+  - src: "/_img/portfolio/red-whale-1/09.jpg"
     alt: ""
-  - src: "/portfolio/red-whale-1/10.jpg"
+  - src: "/_img/portfolio/red-whale-1/10.jpg"
     alt: ""
-  - src: "/portfolio/red-whale-1/11.jpg"
+  - src: "/_img/portfolio/red-whale-1/11.jpg"
     alt: ""
-  - src: "/portfolio/red-whale-1/12.jpg"
+  - src: "/_img/portfolio/red-whale-1/12.jpg"
     alt: ""
 ---

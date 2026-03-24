@@ -20,15 +20,15 @@ tags:
   - office
   - mol
   - hungary
-coverImage: "/portfolio/mol-campus/cover.jpg"
+coverImage: "/_img/portfolio/mol-campus/cover.jpg"
 images:
-  - src: "/portfolio/mol-campus/01.jpg"
+  - src: "/_img/portfolio/mol-campus/01.jpg"
     alt: "Campus masterplan aerial view"
-  - src: "/portfolio/mol-campus/02.jpg"
+  - src: "/_img/portfolio/mol-campus/02.jpg"
     alt: "Main tower facade, evening"
-  - src: "/portfolio/mol-campus/03.jpg"
+  - src: "/_img/portfolio/mol-campus/03.jpg"
     alt: "Public plaza and ground floor activation"
-  - src: "/portfolio/mol-campus/04.jpg"
+  - src: "/_img/portfolio/mol-campus/04.jpg"
     alt: "Interior atrium"
 featured: true
 published: false

@@ -7,7 +7,7 @@ categories:
   - hospitality
 features: []
 tags: []
-coverImage: "/portfolio/hotel-portobello/01.jpg"
+coverImage: "/_img/portfolio/hotel-portobello/01.jpg"
 published: true
 featured: false
 techniques:
@@ -15,18 +15,18 @@ techniques:
   - exterior
   - photo-integration
 images:
-  - src: "/portfolio/hotel-portobello/01.jpg"
+  - src: "/_img/portfolio/hotel-portobello/01.jpg"
     alt: ""
-  - src: "/portfolio/hotel-portobello/02.jpg"
+  - src: "/_img/portfolio/hotel-portobello/02.jpg"
     alt: ""
-  - src: "/portfolio/hotel-portobello/03.jpg"
+  - src: "/_img/portfolio/hotel-portobello/03.jpg"
     alt: ""
-  - src: "/portfolio/hotel-portobello/04.jpg"
+  - src: "/_img/portfolio/hotel-portobello/04.jpg"
     alt: ""
-  - src: "/portfolio/hotel-portobello/05.jpg"
+  - src: "/_img/portfolio/hotel-portobello/05.jpg"
     alt: ""
-  - src: "/portfolio/hotel-portobello/06.jpg"
+  - src: "/_img/portfolio/hotel-portobello/06.jpg"
     alt: ""
-  - src: "/portfolio/hotel-portobello/07.jpg"
+  - src: "/_img/portfolio/hotel-portobello/07.jpg"
     alt: ""
 ---

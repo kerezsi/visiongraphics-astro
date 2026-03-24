@@ -12,7 +12,7 @@ categories:
   - exhibition
 features: []
 tags: []
-coverImage: "/portfolio/ethnography-museum/01.jpg"
+coverImage: "/_img/portfolio/ethnography-museum/01.jpg"
 published: true
 featured: false
 techniques:
@@ -21,18 +21,18 @@ techniques:
   - night-renderings
   - photo-integration
 images:
-  - src: "/portfolio/ethnography-museum/01.jpg"
+  - src: "/_img/portfolio/ethnography-museum/01.jpg"
     alt: ""
-  - src: "/portfolio/ethnography-museum/02.jpg"
+  - src: "/_img/portfolio/ethnography-museum/02.jpg"
     alt: ""
-  - src: "/portfolio/ethnography-museum/03.jpg"
+  - src: "/_img/portfolio/ethnography-museum/03.jpg"
     alt: ""
-  - src: "/portfolio/ethnography-museum/04.jpg"
+  - src: "/_img/portfolio/ethnography-museum/04.jpg"
     alt: ""
-  - src: "/portfolio/ethnography-museum/05.jpg"
+  - src: "/_img/portfolio/ethnography-museum/05.jpg"
     alt: ""
-  - src: "/portfolio/ethnography-museum/06.jpg"
+  - src: "/_img/portfolio/ethnography-museum/06.jpg"
     alt: ""
-  - src: "/portfolio/ethnography-museum/07.jpg"
+  - src: "/_img/portfolio/ethnography-museum/07.jpg"
     alt: ""
 ---

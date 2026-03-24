@@ -14,15 +14,15 @@ categories:
   - exhibition
 features: []
 tags: []
-coverImage: "/portfolio/konstruktiv/01.jpg"
+coverImage: "/_img/portfolio/konstruktiv/01.jpg"
 published: true
 featured: false
 techniques:
   - exterior
   - photo-integration
 images:
-  - src: "/portfolio/konstruktiv/01.jpg"
+  - src: "/_img/portfolio/konstruktiv/01.jpg"
     alt: ""
-  - src: "/portfolio/konstruktiv/02.jpg"
+  - src: "/_img/portfolio/konstruktiv/02.jpg"
     alt: ""
 ---

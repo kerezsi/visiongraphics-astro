@@ -14,7 +14,7 @@ categories:
   - residential
 features: []
 tags: []
-coverImage: "/portfolio/bncc/01.jpg"
+coverImage: "/_img/portfolio/bncc/01.jpg"
 published: true
 featured: false
 techniques:
@@ -23,32 +23,32 @@ techniques:
   - exterior
   - photo-integration
 images:
-  - src: "/portfolio/bncc/01.jpg"
+  - src: "/_img/portfolio/bncc/01.jpg"
     alt: ""
-  - src: "/portfolio/bncc/02.jpg"
+  - src: "/_img/portfolio/bncc/02.jpg"
     alt: ""
-  - src: "/portfolio/bncc/03.jpg"
+  - src: "/_img/portfolio/bncc/03.jpg"
     alt: ""
-  - src: "/portfolio/bncc/04.jpg"
+  - src: "/_img/portfolio/bncc/04.jpg"
     alt: ""
-  - src: "/portfolio/bncc/05.jpg"
+  - src: "/_img/portfolio/bncc/05.jpg"
     alt: ""
-  - src: "/portfolio/bncc/06.jpg"
+  - src: "/_img/portfolio/bncc/06.jpg"
     alt: ""
-  - src: "/portfolio/bncc/07.jpg"
+  - src: "/_img/portfolio/bncc/07.jpg"
     alt: ""
-  - src: "/portfolio/bncc/08.jpg"
+  - src: "/_img/portfolio/bncc/08.jpg"
     alt: ""
-  - src: "/portfolio/bncc/09.jpg"
+  - src: "/_img/portfolio/bncc/09.jpg"
     alt: ""
-  - src: "/portfolio/bncc/10.jpg"
+  - src: "/_img/portfolio/bncc/10.jpg"
     alt: ""
-  - src: "/portfolio/bncc/11.jpg"
+  - src: "/_img/portfolio/bncc/11.jpg"
     alt: ""
-  - src: "/portfolio/bncc/12.jpg"
+  - src: "/_img/portfolio/bncc/12.jpg"
     alt: ""
-  - src: "/portfolio/bncc/13.jpg"
+  - src: "/_img/portfolio/bncc/13.jpg"
     alt: ""
-  - src: "/portfolio/bncc/14.jpg"
+  - src: "/_img/portfolio/bncc/14.jpg"
     alt: ""
 ---

@@ -1,12 +1,11 @@
 # Image redirects — served from Cloudflare R2
-# Cloudflare Pages does NOT support cross-origin 200 proxies in _redirects.
-# Using 302 redirects instead — browser fetches images directly from R2.
-# Built HTML pages under /portfolio/* and /vision-tech/* always take priority
-# because Cloudflare Pages matches static files before _redirects rules.
+# Images are under /_img/ to avoid colliding with /portfolio/ and /vision-tech/ page routes.
+# (Cloudflare Pages applies 302 redirects BEFORE checking static files)
 
-/portfolio/*    https://pub-681025dcca3b4bad99aa4a4d65ecc023.r2.dev/portfolio/:splat    302
-/vision-tech/*  https://pub-681025dcca3b4bad99aa4a4d65ecc023.r2.dev/vision-tech/:splat  302
-/hero-bg.jpg    https://pub-681025dcca3b4bad99aa4a4d65ecc023.r2.dev/hero-bg.jpg         302
-/hero-bg-2.jpg  https://pub-681025dcca3b4bad99aa4a4d65ecc023.r2.dev/hero-bg-2.jpg       302
-/hero-bg-3.jpg  https://pub-681025dcca3b4bad99aa4a4d65ecc023.r2.dev/hero-bg-3.jpg       302
-/laszlo.jpg     https://pub-681025dcca3b4bad99aa4a4d65ecc023.r2.dev/laszlo.jpg          302
+/_img/portfolio/*   https://pub-681025dcca3b4bad99aa4a4d65ecc023.r2.dev/portfolio/:splat    302
+/_img/vision-tech/* https://pub-681025dcca3b4bad99aa4a4d65ecc023.r2.dev/vision-tech/:splat  302
+/hero-bg.jpg        https://pub-681025dcca3b4bad99aa4a4d65ecc023.r2.dev/hero-bg.jpg         302
+/hero-bg-2.jpg      https://pub-681025dcca3b4bad99aa4a4d65ecc023.r2.dev/hero-bg-2.jpg       302
+/hero-bg-3.jpg      https://pub-681025dcca3b4bad99aa4a4d65ecc023.r2.dev/hero-bg-3.jpg       302
+/laszlo.jpg         https://pub-681025dcca3b4bad99aa4a4d65ecc023.r2.dev/laszlo.jpg          302
+/hero-about.jpg     https://pub-681025dcca3b4bad99aa4a4d65ecc023.r2.dev/hero-about.jpg      302

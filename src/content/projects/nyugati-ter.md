@@ -8,7 +8,7 @@ categories:
   - renovation
 features: []
 tags: []
-coverImage: "/portfolio/nyugati-ter/01.jpg"
+coverImage: "/_img/portfolio/nyugati-ter/01.jpg"
 published: true
 featured: false
 video: "https://youtu.be/VtPYL9VmF74"
@@ -17,32 +17,32 @@ techniques:
   - exterior
   - interior
 images:
-  - src: "/portfolio/nyugati-ter/01.jpg"
+  - src: "/_img/portfolio/nyugati-ter/01.jpg"
     alt: ""
-  - src: "/portfolio/nyugati-ter/02.jpg"
+  - src: "/_img/portfolio/nyugati-ter/02.jpg"
     alt: ""
-  - src: "/portfolio/nyugati-ter/03.jpg"
+  - src: "/_img/portfolio/nyugati-ter/03.jpg"
     alt: ""
-  - src: "/portfolio/nyugati-ter/04.jpg"
+  - src: "/_img/portfolio/nyugati-ter/04.jpg"
     alt: ""
-  - src: "/portfolio/nyugati-ter/05.jpg"
+  - src: "/_img/portfolio/nyugati-ter/05.jpg"
     alt: ""
-  - src: "/portfolio/nyugati-ter/06.jpg"
+  - src: "/_img/portfolio/nyugati-ter/06.jpg"
     alt: ""
-  - src: "/portfolio/nyugati-ter/07.jpg"
+  - src: "/_img/portfolio/nyugati-ter/07.jpg"
     alt: ""
-  - src: "/portfolio/nyugati-ter/08.jpg"
+  - src: "/_img/portfolio/nyugati-ter/08.jpg"
     alt: ""
-  - src: "/portfolio/nyugati-ter/09.jpg"
+  - src: "/_img/portfolio/nyugati-ter/09.jpg"
     alt: ""
-  - src: "/portfolio/nyugati-ter/10.jpg"
+  - src: "/_img/portfolio/nyugati-ter/10.jpg"
     alt: ""
-  - src: "/portfolio/nyugati-ter/11.jpg"
+  - src: "/_img/portfolio/nyugati-ter/11.jpg"
     alt: ""
-  - src: "/portfolio/nyugati-ter/12.jpg"
+  - src: "/_img/portfolio/nyugati-ter/12.jpg"
     alt: ""
-  - src: "/portfolio/nyugati-ter/13.jpg"
+  - src: "/_img/portfolio/nyugati-ter/13.jpg"
     alt: ""
-  - src: "/portfolio/nyugati-ter/14.jpg"
+  - src: "/_img/portfolio/nyugati-ter/14.jpg"
     alt: ""
 ---

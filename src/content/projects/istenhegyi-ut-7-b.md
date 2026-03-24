@@ -8,22 +8,22 @@ categories:
   - office
 features: []
 tags: []
-coverImage: "/portfolio/istenhegyi-ut-7-b/01.jpg"
+coverImage: "/_img/portfolio/istenhegyi-ut-7-b/01.jpg"
 published: true
 featured: false
 techniques:
   - exterior
 images:
-  - src: "/portfolio/istenhegyi-ut-7-b/01.jpg"
+  - src: "/_img/portfolio/istenhegyi-ut-7-b/01.jpg"
     alt: ""
-  - src: "/portfolio/istenhegyi-ut-7-b/02.jpg"
+  - src: "/_img/portfolio/istenhegyi-ut-7-b/02.jpg"
     alt: ""
-  - src: "/portfolio/istenhegyi-ut-7-b/03.jpg"
+  - src: "/_img/portfolio/istenhegyi-ut-7-b/03.jpg"
     alt: ""
-  - src: "/portfolio/istenhegyi-ut-7-b/04.jpg"
+  - src: "/_img/portfolio/istenhegyi-ut-7-b/04.jpg"
     alt: ""
-  - src: "/portfolio/istenhegyi-ut-7-b/05.jpg"
+  - src: "/_img/portfolio/istenhegyi-ut-7-b/05.jpg"
     alt: ""
-  - src: "/portfolio/istenhegyi-ut-7-b/06.jpg"
+  - src: "/_img/portfolio/istenhegyi-ut-7-b/06.jpg"
     alt: ""
 ---

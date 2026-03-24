@@ -6,18 +6,18 @@ categories:
   - education
 features: []
 tags: []
-coverImage: "/portfolio/nador-utca/01.jpg"
+coverImage: "/_img/portfolio/nador-utca/01.jpg"
 published: true
 featured: false
 techniques:
   - interior
 images:
-  - src: "/portfolio/nador-utca/01.jpg"
+  - src: "/_img/portfolio/nador-utca/01.jpg"
     alt: ""
-  - src: "/portfolio/nador-utca/02.jpg"
+  - src: "/_img/portfolio/nador-utca/02.jpg"
     alt: ""
-  - src: "/portfolio/nador-utca/03.jpg"
+  - src: "/_img/portfolio/nador-utca/03.jpg"
     alt: ""
-  - src: "/portfolio/nador-utca/04.jpg"
+  - src: "/_img/portfolio/nador-utca/04.jpg"
     alt: ""
 ---

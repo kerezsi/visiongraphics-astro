@@ -10,22 +10,22 @@ categories:
   - product-visualization
 features: []
 tags: []
-coverImage: "/portfolio/svoboda-catalog/01.jpg"
+coverImage: "/_img/portfolio/svoboda-catalog/01.jpg"
 published: true
 featured: false
 techniques:
   - interior
 images:
-  - src: "/portfolio/svoboda-catalog/01.jpg"
+  - src: "/_img/portfolio/svoboda-catalog/01.jpg"
     alt: ""
-  - src: "/portfolio/svoboda-catalog/02.jpg"
+  - src: "/_img/portfolio/svoboda-catalog/02.jpg"
     alt: ""
-  - src: "/portfolio/svoboda-catalog/03.jpg"
+  - src: "/_img/portfolio/svoboda-catalog/03.jpg"
     alt: ""
-  - src: "/portfolio/svoboda-catalog/04.jpg"
+  - src: "/_img/portfolio/svoboda-catalog/04.jpg"
     alt: ""
-  - src: "/portfolio/svoboda-catalog/05.jpg"
+  - src: "/_img/portfolio/svoboda-catalog/05.jpg"
     alt: ""
-  - src: "/portfolio/svoboda-catalog/06.jpg"
+  - src: "/_img/portfolio/svoboda-catalog/06.jpg"
     alt: ""
 ---

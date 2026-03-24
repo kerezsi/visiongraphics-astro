@@ -6,7 +6,7 @@ categories:
   - residential
 features: []
 tags: []
-coverImage: "/portfolio/kondorosi/01.jpg"
+coverImage: "/_img/portfolio/kondorosi/01.jpg"
 published: true
 featured: false
 techniques:
@@ -14,10 +14,10 @@ techniques:
   - aerial-photography
   - exterior
 images:
-  - src: "/portfolio/kondorosi/01.jpg"
+  - src: "/_img/portfolio/kondorosi/01.jpg"
     alt: ""
-  - src: "/portfolio/kondorosi/02.jpg"
+  - src: "/_img/portfolio/kondorosi/02.jpg"
     alt: ""
-  - src: "/portfolio/kondorosi/03.jpg"
+  - src: "/_img/portfolio/kondorosi/03.jpg"
     alt: ""
 ---

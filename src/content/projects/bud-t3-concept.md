@@ -7,27 +7,27 @@ categories:
   - transportation
 features: []
 tags: []
-coverImage: "/portfolio/bud-t3-concept/01.jpg"
+coverImage: "/_img/portfolio/bud-t3-concept/01.jpg"
 published: true
 featured: false
 techniques:
   - aerial-integration
   - exterior
 images:
-  - src: "/portfolio/bud-t3-concept/01.jpg"
+  - src: "/_img/portfolio/bud-t3-concept/01.jpg"
     alt: ""
-  - src: "/portfolio/bud-t3-concept/02.jpg"
+  - src: "/_img/portfolio/bud-t3-concept/02.jpg"
     alt: ""
-  - src: "/portfolio/bud-t3-concept/03.jpg"
+  - src: "/_img/portfolio/bud-t3-concept/03.jpg"
     alt: ""
-  - src: "/portfolio/bud-t3-concept/04.jpg"
+  - src: "/_img/portfolio/bud-t3-concept/04.jpg"
     alt: ""
-  - src: "/portfolio/bud-t3-concept/05.jpg"
+  - src: "/_img/portfolio/bud-t3-concept/05.jpg"
     alt: ""
-  - src: "/portfolio/bud-t3-concept/06.jpg"
+  - src: "/_img/portfolio/bud-t3-concept/06.jpg"
     alt: ""
-  - src: "/portfolio/bud-t3-concept/07.jpg"
+  - src: "/_img/portfolio/bud-t3-concept/07.jpg"
     alt: ""
-  - src: "/portfolio/bud-t3-concept/08.jpg"
+  - src: "/_img/portfolio/bud-t3-concept/08.jpg"
     alt: ""
 ---

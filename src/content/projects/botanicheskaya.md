@@ -12,31 +12,31 @@ categories:
   - commercial
 features: []
 tags: []
-coverImage: "/portfolio/botanicheskaya/01.jpg"
+coverImage: "/_img/portfolio/botanicheskaya/01.jpg"
 published: true
 featured: false
 techniques:
   - exterior
   - site-plan
 images:
-  - src: "/portfolio/botanicheskaya/01.jpg"
+  - src: "/_img/portfolio/botanicheskaya/01.jpg"
     alt: ""
-  - src: "/portfolio/botanicheskaya/02.jpg"
+  - src: "/_img/portfolio/botanicheskaya/02.jpg"
     alt: ""
-  - src: "/portfolio/botanicheskaya/03.jpg"
+  - src: "/_img/portfolio/botanicheskaya/03.jpg"
     alt: ""
-  - src: "/portfolio/botanicheskaya/04.jpg"
+  - src: "/_img/portfolio/botanicheskaya/04.jpg"
     alt: ""
-  - src: "/portfolio/botanicheskaya/05.jpg"
+  - src: "/_img/portfolio/botanicheskaya/05.jpg"
     alt: ""
-  - src: "/portfolio/botanicheskaya/06.jpg"
+  - src: "/_img/portfolio/botanicheskaya/06.jpg"
     alt: ""
-  - src: "/portfolio/botanicheskaya/07.jpg"
+  - src: "/_img/portfolio/botanicheskaya/07.jpg"
     alt: ""
-  - src: "/portfolio/botanicheskaya/08.jpg"
+  - src: "/_img/portfolio/botanicheskaya/08.jpg"
     alt: ""
-  - src: "/portfolio/botanicheskaya/09.jpg"
+  - src: "/_img/portfolio/botanicheskaya/09.jpg"
     alt: ""
-  - src: "/portfolio/botanicheskaya/10.jpg"
+  - src: "/_img/portfolio/botanicheskaya/10.jpg"
     alt: ""
 ---

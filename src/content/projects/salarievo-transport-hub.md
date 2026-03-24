@@ -13,18 +13,18 @@ categories:
   - transportation
 features: []
 tags: []
-coverImage: "/portfolio/salarievo-transport-hub/01.jpg"
+coverImage: "/_img/portfolio/salarievo-transport-hub/01.jpg"
 published: true
 featured: false
 images:
-  - src: "/portfolio/salarievo-transport-hub/01.jpg"
+  - src: "/_img/portfolio/salarievo-transport-hub/01.jpg"
     alt: ""
-  - src: "/portfolio/salarievo-transport-hub/02.jpg"
+  - src: "/_img/portfolio/salarievo-transport-hub/02.jpg"
     alt: ""
-  - src: "/portfolio/salarievo-transport-hub/03.jpg"
+  - src: "/_img/portfolio/salarievo-transport-hub/03.jpg"
     alt: ""
-  - src: "/portfolio/salarievo-transport-hub/04.jpg"
+  - src: "/_img/portfolio/salarievo-transport-hub/04.jpg"
     alt: ""
-  - src: "/portfolio/salarievo-transport-hub/05.jpg"
+  - src: "/_img/portfolio/salarievo-transport-hub/05.jpg"
     alt: ""
 ---

@@ -8,21 +8,21 @@ categories:
   - residential
 features: []
 tags: []
-coverImage: "/portfolio/fehervari-ut/01.jpg"
+coverImage: "/_img/portfolio/fehervari-ut/01.jpg"
 published: true
 featured: false
 techniques:
   - exterior
   - night-renderings
 images:
-  - src: "/portfolio/fehervari-ut/01.jpg"
+  - src: "/_img/portfolio/fehervari-ut/01.jpg"
     alt: ""
-  - src: "/portfolio/fehervari-ut/02.jpg"
+  - src: "/_img/portfolio/fehervari-ut/02.jpg"
     alt: ""
-  - src: "/portfolio/fehervari-ut/03.jpg"
+  - src: "/_img/portfolio/fehervari-ut/03.jpg"
     alt: ""
-  - src: "/portfolio/fehervari-ut/04.jpg"
+  - src: "/_img/portfolio/fehervari-ut/04.jpg"
     alt: ""
-  - src: "/portfolio/fehervari-ut/05.jpg"
+  - src: "/_img/portfolio/fehervari-ut/05.jpg"
     alt: ""
 ---

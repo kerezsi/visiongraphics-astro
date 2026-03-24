@@ -18,7 +18,7 @@ categories:
   - transportation
 features: []
 tags: []
-coverImage: "/portfolio/renault-automobil-2003-booth/01.jpg"
+coverImage: "/_img/portfolio/renault-automobil-2003-booth/01.jpg"
 published: true
 featured: false
 techniques:
@@ -26,18 +26,18 @@ techniques:
   - 3d-animation
   - interior
 images:
-  - src: "/portfolio/renault-automobil-2003-booth/01.jpg"
+  - src: "/_img/portfolio/renault-automobil-2003-booth/01.jpg"
     alt: ""
-  - src: "/portfolio/renault-automobil-2003-booth/02.jpg"
+  - src: "/_img/portfolio/renault-automobil-2003-booth/02.jpg"
     alt: ""
-  - src: "/portfolio/renault-automobil-2003-booth/03.jpg"
+  - src: "/_img/portfolio/renault-automobil-2003-booth/03.jpg"
     alt: ""
-  - src: "/portfolio/renault-automobil-2003-booth/04.jpg"
+  - src: "/_img/portfolio/renault-automobil-2003-booth/04.jpg"
     alt: ""
-  - src: "/portfolio/renault-automobil-2003-booth/05.jpg"
+  - src: "/_img/portfolio/renault-automobil-2003-booth/05.jpg"
     alt: ""
-  - src: "/portfolio/renault-automobil-2003-booth/06.jpg"
+  - src: "/_img/portfolio/renault-automobil-2003-booth/06.jpg"
     alt: ""
-  - src: "/portfolio/renault-automobil-2003-booth/07.jpg"
+  - src: "/_img/portfolio/renault-automobil-2003-booth/07.jpg"
     alt: ""
 ---

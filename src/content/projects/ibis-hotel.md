@@ -8,7 +8,7 @@ categories:
   - hospitality
 features: []
 tags: []
-coverImage: "/portfolio/ibis-hotel/01.jpg"
+coverImage: "/_img/portfolio/ibis-hotel/01.jpg"
 published: true
 featured: false
 techniques:
@@ -17,18 +17,18 @@ techniques:
   - exterior
   - night-renderings
 images:
-  - src: "/portfolio/ibis-hotel/01.jpg"
+  - src: "/_img/portfolio/ibis-hotel/01.jpg"
     alt: ""
-  - src: "/portfolio/ibis-hotel/02.jpg"
+  - src: "/_img/portfolio/ibis-hotel/02.jpg"
     alt: ""
-  - src: "/portfolio/ibis-hotel/03.jpg"
+  - src: "/_img/portfolio/ibis-hotel/03.jpg"
     alt: ""
-  - src: "/portfolio/ibis-hotel/04.jpg"
+  - src: "/_img/portfolio/ibis-hotel/04.jpg"
     alt: ""
-  - src: "/portfolio/ibis-hotel/05.jpg"
+  - src: "/_img/portfolio/ibis-hotel/05.jpg"
     alt: ""
-  - src: "/portfolio/ibis-hotel/06.jpg"
+  - src: "/_img/portfolio/ibis-hotel/06.jpg"
     alt: ""
-  - src: "/portfolio/ibis-hotel/07.jpg"
+  - src: "/_img/portfolio/ibis-hotel/07.jpg"
     alt: ""
 ---

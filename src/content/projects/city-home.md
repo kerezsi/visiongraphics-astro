@@ -16,20 +16,20 @@ categories:
   - residential
 features: []
 tags: []
-coverImage: "/portfolio/city-home/01.jpg"
+coverImage: "/_img/portfolio/city-home/01.jpg"
 published: true
 featured: false
 techniques:
   - exterior
 images:
-  - src: "/portfolio/city-home/01.jpg"
+  - src: "/_img/portfolio/city-home/01.jpg"
     alt: ""
-  - src: "/portfolio/city-home/02.jpg"
+  - src: "/_img/portfolio/city-home/02.jpg"
     alt: ""
-  - src: "/portfolio/city-home/03.jpg"
+  - src: "/_img/portfolio/city-home/03.jpg"
     alt: ""
-  - src: "/portfolio/city-home/04.jpg"
+  - src: "/_img/portfolio/city-home/04.jpg"
     alt: ""
-  - src: "/portfolio/city-home/05.jpg"
+  - src: "/_img/portfolio/city-home/05.jpg"
     alt: ""
 ---

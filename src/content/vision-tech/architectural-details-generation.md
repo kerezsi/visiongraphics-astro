@@ -1,7 +1,7 @@
 ---
 title: "Architectural Details Generation"
 description: "Close-up renderings of intricate architectural details and ornamentation created by AI potentially reviving or reinventing decorative traditions."
-image: "/vision-tech/architectural-details-generation.jpg"
+image: "/_img/vision-tech/architectural-details-generation.jpg"
 technique: "AI-Only"
 cost: "€"
 model3d: "Creation of 3D Model"
@@ -11,10 +11,10 @@ purpose:
   - "Decision Support"
   - "Design Development"
 gallery:
-  - "/vision-tech/architectural-details-generation/01.jpg"
-  - "/vision-tech/architectural-details-generation/02.jpeg"
-  - "/vision-tech/architectural-details-generation/03.jpeg"
-  - "/vision-tech/architectural-details-generation/04.jpeg"
+  - "/_img/vision-tech/architectural-details-generation/01.jpg"
+  - "/_img/vision-tech/architectural-details-generation/02.jpeg"
+  - "/_img/vision-tech/architectural-details-generation/03.jpeg"
+  - "/_img/vision-tech/architectural-details-generation/04.jpeg"
 relatedCategories:
   - "residential"
   - "commercial"

@@ -5,22 +5,22 @@ categories:
   - architectural-visualization
 features: []
 tags: []
-coverImage: "/portfolio/bud-airport-t2b/cover.jpg"
+coverImage: "/_img/portfolio/bud-airport-t2b/cover.jpg"
 published: true
 featured: false
 images:
-  - src: "/portfolio/bud-airport-t2b/01.jpg"
+  - src: "/_img/portfolio/bud-airport-t2b/01.jpg"
     alt: ""
-  - src: "/portfolio/bud-airport-t2b/02.jpg"
+  - src: "/_img/portfolio/bud-airport-t2b/02.jpg"
     alt: ""
-  - src: "/portfolio/bud-airport-t2b/03.jpg"
+  - src: "/_img/portfolio/bud-airport-t2b/03.jpg"
     alt: ""
-  - src: "/portfolio/bud-airport-t2b/04.jpg"
+  - src: "/_img/portfolio/bud-airport-t2b/04.jpg"
     alt: ""
-  - src: "/portfolio/bud-airport-t2b/05.jpg"
+  - src: "/_img/portfolio/bud-airport-t2b/05.jpg"
     alt: ""
-  - src: "/portfolio/bud-airport-t2b/06.jpg"
+  - src: "/_img/portfolio/bud-airport-t2b/06.jpg"
     alt: ""
-  - src: "/portfolio/bud-airport-t2b/07.jpg"
+  - src: "/_img/portfolio/bud-airport-t2b/07.jpg"
     alt: ""
 ---

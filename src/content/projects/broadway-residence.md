@@ -9,26 +9,26 @@ categories:
   - residential
 features: []
 tags: []
-coverImage: "/portfolio/broadway-residence/01.jpg"
+coverImage: "/_img/portfolio/broadway-residence/01.jpg"
 published: true
 featured: false
 techniques:
   - exterior
 images:
-  - src: "/portfolio/broadway-residence/01.jpg"
+  - src: "/_img/portfolio/broadway-residence/01.jpg"
     alt: ""
-  - src: "/portfolio/broadway-residence/02.jpg"
+  - src: "/_img/portfolio/broadway-residence/02.jpg"
     alt: ""
-  - src: "/portfolio/broadway-residence/03.jpg"
+  - src: "/_img/portfolio/broadway-residence/03.jpg"
     alt: ""
-  - src: "/portfolio/broadway-residence/04.jpg"
+  - src: "/_img/portfolio/broadway-residence/04.jpg"
     alt: ""
-  - src: "/portfolio/broadway-residence/05.jpg"
+  - src: "/_img/portfolio/broadway-residence/05.jpg"
     alt: ""
-  - src: "/portfolio/broadway-residence/06.jpg"
+  - src: "/_img/portfolio/broadway-residence/06.jpg"
     alt: ""
-  - src: "/portfolio/broadway-residence/07.jpg"
+  - src: "/_img/portfolio/broadway-residence/07.jpg"
     alt: ""
-  - src: "/portfolio/broadway-residence/08.jpg"
+  - src: "/_img/portfolio/broadway-residence/08.jpg"
     alt: ""
 ---

@@ -12,38 +12,38 @@ categories:
   - commercial
 features: []
 tags: []
-coverImage: "/portfolio/zhyulebino/01.jpg"
+coverImage: "/_img/portfolio/zhyulebino/01.jpg"
 published: true
 featured: false
 techniques:
   - interior
 images:
-  - src: "/portfolio/zhyulebino/01.jpg"
+  - src: "/_img/portfolio/zhyulebino/01.jpg"
     alt: ""
-  - src: "/portfolio/zhyulebino/02.jpg"
+  - src: "/_img/portfolio/zhyulebino/02.jpg"
     alt: ""
-  - src: "/portfolio/zhyulebino/03.jpg"
+  - src: "/_img/portfolio/zhyulebino/03.jpg"
     alt: ""
-  - src: "/portfolio/zhyulebino/04.jpg"
+  - src: "/_img/portfolio/zhyulebino/04.jpg"
     alt: ""
-  - src: "/portfolio/zhyulebino/05.jpg"
+  - src: "/_img/portfolio/zhyulebino/05.jpg"
     alt: ""
-  - src: "/portfolio/zhyulebino/06.jpg"
+  - src: "/_img/portfolio/zhyulebino/06.jpg"
     alt: ""
-  - src: "/portfolio/zhyulebino/07.jpg"
+  - src: "/_img/portfolio/zhyulebino/07.jpg"
     alt: ""
-  - src: "/portfolio/zhyulebino/08.jpg"
+  - src: "/_img/portfolio/zhyulebino/08.jpg"
     alt: ""
-  - src: "/portfolio/zhyulebino/09.jpg"
+  - src: "/_img/portfolio/zhyulebino/09.jpg"
     alt: ""
-  - src: "/portfolio/zhyulebino/10.jpg"
+  - src: "/_img/portfolio/zhyulebino/10.jpg"
     alt: ""
-  - src: "/portfolio/zhyulebino/11.jpg"
+  - src: "/_img/portfolio/zhyulebino/11.jpg"
     alt: ""
-  - src: "/portfolio/zhyulebino/12.jpg"
+  - src: "/_img/portfolio/zhyulebino/12.jpg"
     alt: ""
-  - src: "/portfolio/zhyulebino/13.jpg"
+  - src: "/_img/portfolio/zhyulebino/13.jpg"
     alt: ""
-  - src: "/portfolio/zhyulebino/14.jpg"
+  - src: "/_img/portfolio/zhyulebino/14.jpg"
     alt: ""
 ---

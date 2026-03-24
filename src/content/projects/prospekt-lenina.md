@@ -12,7 +12,7 @@ categories:
   - commercial
 features: []
 tags: []
-coverImage: "/portfolio/prospekt-lenina/01.jpg"
+coverImage: "/_img/portfolio/prospekt-lenina/01.jpg"
 published: true
 featured: false
 techniques:
@@ -20,22 +20,22 @@ techniques:
   - night-renderings
   - photo-integration
 images:
-  - src: "/portfolio/prospekt-lenina/01.jpg"
+  - src: "/_img/portfolio/prospekt-lenina/01.jpg"
     alt: ""
-  - src: "/portfolio/prospekt-lenina/02.jpg"
+  - src: "/_img/portfolio/prospekt-lenina/02.jpg"
     alt: ""
-  - src: "/portfolio/prospekt-lenina/03.jpg"
+  - src: "/_img/portfolio/prospekt-lenina/03.jpg"
     alt: ""
-  - src: "/portfolio/prospekt-lenina/04.jpg"
+  - src: "/_img/portfolio/prospekt-lenina/04.jpg"
     alt: ""
-  - src: "/portfolio/prospekt-lenina/05.jpg"
+  - src: "/_img/portfolio/prospekt-lenina/05.jpg"
     alt: ""
-  - src: "/portfolio/prospekt-lenina/06.jpg"
+  - src: "/_img/portfolio/prospekt-lenina/06.jpg"
     alt: ""
-  - src: "/portfolio/prospekt-lenina/07.jpg"
+  - src: "/_img/portfolio/prospekt-lenina/07.jpg"
     alt: ""
-  - src: "/portfolio/prospekt-lenina/08.jpg"
+  - src: "/_img/portfolio/prospekt-lenina/08.jpg"
     alt: ""
-  - src: "/portfolio/prospekt-lenina/09.jpg"
+  - src: "/_img/portfolio/prospekt-lenina/09.jpg"
     alt: ""
 ---

@@ -12,7 +12,7 @@ categories:
   - office
 features: []
 tags: []
-coverImage: "/portfolio/capital-square/01.jpg"
+coverImage: "/_img/portfolio/capital-square/01.jpg"
 published: true
 featured: false
 techniques:
@@ -20,32 +20,32 @@ techniques:
   - interior
   - photo-integration
 images:
-  - src: "/portfolio/capital-square/01.jpg"
+  - src: "/_img/portfolio/capital-square/01.jpg"
     alt: ""
-  - src: "/portfolio/capital-square/02.jpg"
+  - src: "/_img/portfolio/capital-square/02.jpg"
     alt: ""
-  - src: "/portfolio/capital-square/03.jpg"
+  - src: "/_img/portfolio/capital-square/03.jpg"
     alt: ""
-  - src: "/portfolio/capital-square/04.jpg"
+  - src: "/_img/portfolio/capital-square/04.jpg"
     alt: ""
-  - src: "/portfolio/capital-square/05.jpg"
+  - src: "/_img/portfolio/capital-square/05.jpg"
     alt: ""
-  - src: "/portfolio/capital-square/06.jpg"
+  - src: "/_img/portfolio/capital-square/06.jpg"
     alt: ""
-  - src: "/portfolio/capital-square/07.jpg"
+  - src: "/_img/portfolio/capital-square/07.jpg"
     alt: ""
-  - src: "/portfolio/capital-square/08.jpg"
+  - src: "/_img/portfolio/capital-square/08.jpg"
     alt: ""
-  - src: "/portfolio/capital-square/09.jpg"
+  - src: "/_img/portfolio/capital-square/09.jpg"
     alt: ""
-  - src: "/portfolio/capital-square/10.jpg"
+  - src: "/_img/portfolio/capital-square/10.jpg"
     alt: ""
-  - src: "/portfolio/capital-square/11.jpg"
+  - src: "/_img/portfolio/capital-square/11.jpg"
     alt: ""
-  - src: "/portfolio/capital-square/12.jpg"
+  - src: "/_img/portfolio/capital-square/12.jpg"
     alt: ""
-  - src: "/portfolio/capital-square/13.jpg"
+  - src: "/_img/portfolio/capital-square/13.jpg"
     alt: ""
-  - src: "/portfolio/capital-square/14.jpg"
+  - src: "/_img/portfolio/capital-square/14.jpg"
     alt: ""
 ---

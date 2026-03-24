@@ -7,7 +7,7 @@ categories:
   - transportation
 features: []
 tags: []
-coverImage: "/portfolio/bud-t2-expansion/01.jpg"
+coverImage: "/_img/portfolio/bud-t2-expansion/01.jpg"
 published: true
 featured: false
 video: "https://youtu.be/TFofY8cGC6o"
@@ -18,14 +18,14 @@ techniques:
   - interior
   - photo-integration
 images:
-  - src: "/portfolio/bud-t2-expansion/01.jpg"
+  - src: "/_img/portfolio/bud-t2-expansion/01.jpg"
     alt: ""
-  - src: "/portfolio/bud-t2-expansion/02.jpg"
+  - src: "/_img/portfolio/bud-t2-expansion/02.jpg"
     alt: ""
-  - src: "/portfolio/bud-t2-expansion/03.jpg"
+  - src: "/_img/portfolio/bud-t2-expansion/03.jpg"
     alt: ""
-  - src: "/portfolio/bud-t2-expansion/04.jpg"
+  - src: "/_img/portfolio/bud-t2-expansion/04.jpg"
     alt: ""
-  - src: "/portfolio/bud-t2-expansion/05.jpg"
+  - src: "/_img/portfolio/bud-t2-expansion/05.jpg"
     alt: ""
 ---

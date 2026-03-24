@@ -14,7 +14,7 @@ categories:
   - residential
 features: []
 tags: []
-coverImage: "/portfolio/nizhniy-towers/01.jpg"
+coverImage: "/_img/portfolio/nizhniy-towers/01.jpg"
 published: true
 featured: false
 techniques:
@@ -23,22 +23,22 @@ techniques:
   - photo-integration
   - site-plan
 images:
-  - src: "/portfolio/nizhniy-towers/01.jpg"
+  - src: "/_img/portfolio/nizhniy-towers/01.jpg"
     alt: ""
-  - src: "/portfolio/nizhniy-towers/02.jpg"
+  - src: "/_img/portfolio/nizhniy-towers/02.jpg"
     alt: ""
-  - src: "/portfolio/nizhniy-towers/03.jpg"
+  - src: "/_img/portfolio/nizhniy-towers/03.jpg"
     alt: ""
-  - src: "/portfolio/nizhniy-towers/04.jpg"
+  - src: "/_img/portfolio/nizhniy-towers/04.jpg"
     alt: ""
-  - src: "/portfolio/nizhniy-towers/05.jpg"
+  - src: "/_img/portfolio/nizhniy-towers/05.jpg"
     alt: ""
-  - src: "/portfolio/nizhniy-towers/06.jpg"
+  - src: "/_img/portfolio/nizhniy-towers/06.jpg"
     alt: ""
-  - src: "/portfolio/nizhniy-towers/07.jpg"
+  - src: "/_img/portfolio/nizhniy-towers/07.jpg"
     alt: ""
-  - src: "/portfolio/nizhniy-towers/08.jpg"
+  - src: "/_img/portfolio/nizhniy-towers/08.jpg"
     alt: ""
-  - src: "/portfolio/nizhniy-towers/09.jpg"
+  - src: "/_img/portfolio/nizhniy-towers/09.jpg"
     alt: ""
 ---

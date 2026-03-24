@@ -1,7 +1,7 @@
 ---
 title: "Adaptive Reuse Illustrations"
 description: "Before-and-after visualizations showing the transformation of existing structures for new purposes. These images highlight the creative repurposing of buildings and spaces."
-image: "/vision-tech/adaptive-reuse-illustrations.jpg"
+image: "/_img/vision-tech/adaptive-reuse-illustrations.jpg"
 technique: "AI-Enhanced"
 cost: "€€"
 model3d: "No 3D Model Required"
@@ -12,10 +12,10 @@ purpose:
   - "Decision Support"
   - "Design Development"
 gallery:
-  - "/vision-tech/adaptive-reuse-illustrations/01.jpg"
-  - "/vision-tech/adaptive-reuse-illustrations/02.jpg"
-  - "/vision-tech/adaptive-reuse-illustrations/03.jpg"
-  - "/vision-tech/adaptive-reuse-illustrations/04.jpg"
+  - "/_img/vision-tech/adaptive-reuse-illustrations/01.jpg"
+  - "/_img/vision-tech/adaptive-reuse-illustrations/02.jpg"
+  - "/_img/vision-tech/adaptive-reuse-illustrations/03.jpg"
+  - "/_img/vision-tech/adaptive-reuse-illustrations/04.jpg"
 relatedCategories:
   - "renovation"
   - "exhibition"

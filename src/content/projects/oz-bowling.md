@@ -22,30 +22,30 @@ categories:
   - sports
 features: []
 tags: []
-coverImage: "/portfolio/oz-bowling/01.jpg"
+coverImage: "/_img/portfolio/oz-bowling/01.jpg"
 published: true
 featured: false
 techniques:
   - interior
 images:
-  - src: "/portfolio/oz-bowling/01.jpg"
+  - src: "/_img/portfolio/oz-bowling/01.jpg"
     alt: ""
-  - src: "/portfolio/oz-bowling/02.jpg"
+  - src: "/_img/portfolio/oz-bowling/02.jpg"
     alt: ""
-  - src: "/portfolio/oz-bowling/03.jpg"
+  - src: "/_img/portfolio/oz-bowling/03.jpg"
     alt: ""
-  - src: "/portfolio/oz-bowling/04.jpg"
+  - src: "/_img/portfolio/oz-bowling/04.jpg"
     alt: ""
-  - src: "/portfolio/oz-bowling/05.jpg"
+  - src: "/_img/portfolio/oz-bowling/05.jpg"
     alt: ""
-  - src: "/portfolio/oz-bowling/06.jpg"
+  - src: "/_img/portfolio/oz-bowling/06.jpg"
     alt: ""
-  - src: "/portfolio/oz-bowling/07.jpg"
+  - src: "/_img/portfolio/oz-bowling/07.jpg"
     alt: ""
-  - src: "/portfolio/oz-bowling/08.jpg"
+  - src: "/_img/portfolio/oz-bowling/08.jpg"
     alt: ""
-  - src: "/portfolio/oz-bowling/09.jpg"
+  - src: "/_img/portfolio/oz-bowling/09.jpg"
     alt: ""
-  - src: "/portfolio/oz-bowling/10.jpg"
+  - src: "/_img/portfolio/oz-bowling/10.jpg"
     alt: ""
 ---

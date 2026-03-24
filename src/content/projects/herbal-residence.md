@@ -11,7 +11,7 @@ categories:
   - residential
 features: []
 tags: []
-coverImage: "/portfolio/herbal-residence/01.jpg"
+coverImage: "/_img/portfolio/herbal-residence/01.jpg"
 published: true
 featured: false
 techniques:
@@ -20,34 +20,34 @@ techniques:
   - exterior
   - interior
 images:
-  - src: "/portfolio/herbal-residence/01.jpg"
+  - src: "/_img/portfolio/herbal-residence/01.jpg"
     alt: ""
-  - src: "/portfolio/herbal-residence/02.jpg"
+  - src: "/_img/portfolio/herbal-residence/02.jpg"
     alt: ""
-  - src: "/portfolio/herbal-residence/03.jpg"
+  - src: "/_img/portfolio/herbal-residence/03.jpg"
     alt: ""
-  - src: "/portfolio/herbal-residence/04.jpg"
+  - src: "/_img/portfolio/herbal-residence/04.jpg"
     alt: ""
-  - src: "/portfolio/herbal-residence/05.jpg"
+  - src: "/_img/portfolio/herbal-residence/05.jpg"
     alt: ""
-  - src: "/portfolio/herbal-residence/06.jpg"
+  - src: "/_img/portfolio/herbal-residence/06.jpg"
     alt: ""
-  - src: "/portfolio/herbal-residence/07.jpg"
+  - src: "/_img/portfolio/herbal-residence/07.jpg"
     alt: ""
-  - src: "/portfolio/herbal-residence/08.jpg"
+  - src: "/_img/portfolio/herbal-residence/08.jpg"
     alt: ""
-  - src: "/portfolio/herbal-residence/09.jpg"
+  - src: "/_img/portfolio/herbal-residence/09.jpg"
     alt: ""
-  - src: "/portfolio/herbal-residence/10.jpg"
+  - src: "/_img/portfolio/herbal-residence/10.jpg"
     alt: ""
-  - src: "/portfolio/herbal-residence/11.jpg"
+  - src: "/_img/portfolio/herbal-residence/11.jpg"
     alt: ""
-  - src: "/portfolio/herbal-residence/12.jpg"
+  - src: "/_img/portfolio/herbal-residence/12.jpg"
     alt: ""
-  - src: "/portfolio/herbal-residence/13.jpg"
+  - src: "/_img/portfolio/herbal-residence/13.jpg"
     alt: ""
-  - src: "/portfolio/herbal-residence/14.jpg"
+  - src: "/_img/portfolio/herbal-residence/14.jpg"
     alt: ""
-  - src: "/portfolio/herbal-residence/15.jpg"
+  - src: "/_img/portfolio/herbal-residence/15.jpg"
     alt: ""
 ---

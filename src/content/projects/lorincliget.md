@@ -6,7 +6,7 @@ categories:
   - residential
 features: []
 tags: []
-coverImage: "/portfolio/lorincliget/01.jpg"
+coverImage: "/_img/portfolio/lorincliget/01.jpg"
 published: true
 featured: false
 video: "https://youtu.be/_Zqt3vR61EI"
@@ -16,22 +16,22 @@ techniques:
   - aerial-photography
   - exterior
 images:
-  - src: "/portfolio/lorincliget/01.jpg"
+  - src: "/_img/portfolio/lorincliget/01.jpg"
     alt: ""
-  - src: "/portfolio/lorincliget/02.jpg"
+  - src: "/_img/portfolio/lorincliget/02.jpg"
     alt: ""
-  - src: "/portfolio/lorincliget/03.jpg"
+  - src: "/_img/portfolio/lorincliget/03.jpg"
     alt: ""
-  - src: "/portfolio/lorincliget/04.jpg"
+  - src: "/_img/portfolio/lorincliget/04.jpg"
     alt: ""
-  - src: "/portfolio/lorincliget/05.jpg"
+  - src: "/_img/portfolio/lorincliget/05.jpg"
     alt: ""
-  - src: "/portfolio/lorincliget/06.jpg"
+  - src: "/_img/portfolio/lorincliget/06.jpg"
     alt: ""
-  - src: "/portfolio/lorincliget/07.jpg"
+  - src: "/_img/portfolio/lorincliget/07.jpg"
     alt: ""
-  - src: "/portfolio/lorincliget/08.jpg"
+  - src: "/_img/portfolio/lorincliget/08.jpg"
     alt: ""
-  - src: "/portfolio/lorincliget/09.jpg"
+  - src: "/_img/portfolio/lorincliget/09.jpg"
     alt: ""
 ---

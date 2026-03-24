@@ -1,7 +1,7 @@
 ---
 title: "Historical Reconstruction"
 description: "Digital recreations of historical buildings or cities based on archaeological and historical data. These visualizations bring past architectural styles and urban layouts to life."
-image: "/vision-tech/historical-reconstruction.jpg"
+image: "/_img/vision-tech/historical-reconstruction.jpg"
 technique: "Digital"
 cost: "€€€"
 model3d: "Creation of 3D Model"
@@ -12,10 +12,10 @@ purpose:
   - "Decision Support"
   - "Design Development"
 gallery:
-  - "/vision-tech/historical-reconstruction/01.jpeg"
-  - "/vision-tech/historical-reconstruction/02.jpeg"
-  - "/vision-tech/historical-reconstruction/03.jpeg"
-  - "/vision-tech/historical-reconstruction/04.jpeg"
+  - "/_img/vision-tech/historical-reconstruction/01.jpeg"
+  - "/_img/vision-tech/historical-reconstruction/02.jpeg"
+  - "/_img/vision-tech/historical-reconstruction/03.jpeg"
+  - "/_img/vision-tech/historical-reconstruction/04.jpeg"
 relatedCategories:
   - "renovation"
   - "exhibition"

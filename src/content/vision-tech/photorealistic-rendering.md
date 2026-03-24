@@ -1,7 +1,7 @@
 ---
 title: "Photorealistic Rendering"
 description: "Ultra-realistic architectural visualizations where AI fills in complex details like realistic lighting materials and environmental elements to create near-photographic quality images."
-image: "/vision-tech/photorealistic-rendering.jpg"
+image: "/_img/vision-tech/photorealistic-rendering.jpg"
 technique: "AI-Enhanced"
 cost: "€"
 model3d: "Output from 3D Model"
@@ -11,10 +11,10 @@ purpose:
   - "Communication"
   - "Design Development"
 gallery:
-  - "/vision-tech/photorealistic-rendering/01.jpeg"
-  - "/vision-tech/photorealistic-rendering/02.jpeg"
-  - "/vision-tech/photorealistic-rendering/03.jpeg"
-  - "/vision-tech/photorealistic-rendering/04.jpeg"
+  - "/_img/vision-tech/photorealistic-rendering/01.jpeg"
+  - "/_img/vision-tech/photorealistic-rendering/02.jpeg"
+  - "/_img/vision-tech/photorealistic-rendering/03.jpeg"
+  - "/_img/vision-tech/photorealistic-rendering/04.jpeg"
 relatedCategories:
   - "residential"
   - "commercial"

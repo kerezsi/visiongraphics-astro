@@ -7,18 +7,18 @@ categories:
   - residential
 features: []
 tags: []
-coverImage: "/portfolio/varosret/01.jpg"
+coverImage: "/_img/portfolio/varosret/01.jpg"
 published: true
 featured: false
 techniques:
   - exterior
 images:
-  - src: "/portfolio/varosret/01.jpg"
+  - src: "/_img/portfolio/varosret/01.jpg"
     alt: ""
-  - src: "/portfolio/varosret/02.jpg"
+  - src: "/_img/portfolio/varosret/02.jpg"
     alt: ""
-  - src: "/portfolio/varosret/03.jpg"
+  - src: "/_img/portfolio/varosret/03.jpg"
     alt: ""
-  - src: "/portfolio/varosret/04.jpg"
+  - src: "/_img/portfolio/varosret/04.jpg"
     alt: ""
 ---

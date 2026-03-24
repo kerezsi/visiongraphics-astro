@@ -13,7 +13,7 @@ categories:
   - commercial
 features: []
 tags: []
-coverImage: "/portfolio/koki_foodcourt/01.jpg"
+coverImage: "/_img/portfolio/koki_foodcourt/01.jpg"
 published: true
 featured: true
 tour360:
@@ -26,12 +26,12 @@ techniques:
   - 360-tour
   - interior
 images:
-  - src: "/portfolio/koki_foodcourt/01.jpg"
+  - src: "/_img/portfolio/koki_foodcourt/01.jpg"
     alt: ""
-  - src: "/portfolio/koki_foodcourt/02.jpg"
+  - src: "/_img/portfolio/koki_foodcourt/02.jpg"
     alt: ""
-  - src: "/portfolio/koki_foodcourt/03.jpg"
+  - src: "/_img/portfolio/koki_foodcourt/03.jpg"
     alt: ""
-  - src: "/portfolio/koki_foodcourt/04.jpg"
+  - src: "/_img/portfolio/koki_foodcourt/04.jpg"
     alt: ""
 ---

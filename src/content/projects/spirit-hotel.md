@@ -11,7 +11,7 @@ categories:
   - architectural-visualization
 features: []
 tags: []
-coverImage: "/portfolio/spirit-hotel/01.jpg"
+coverImage: "/_img/portfolio/spirit-hotel/01.jpg"
 published: true
 featured: false
 video: "https://youtu.be/HRuV9mtTJss"
@@ -22,24 +22,24 @@ techniques:
   - exterior
   - interior
 images:
-  - src: "/portfolio/spirit-hotel/01.jpg"
+  - src: "/_img/portfolio/spirit-hotel/01.jpg"
     alt: ""
-  - src: "/portfolio/spirit-hotel/02.jpg"
+  - src: "/_img/portfolio/spirit-hotel/02.jpg"
     alt: ""
-  - src: "/portfolio/spirit-hotel/03.jpg"
+  - src: "/_img/portfolio/spirit-hotel/03.jpg"
     alt: ""
-  - src: "/portfolio/spirit-hotel/04.jpg"
+  - src: "/_img/portfolio/spirit-hotel/04.jpg"
     alt: ""
-  - src: "/portfolio/spirit-hotel/05.jpg"
+  - src: "/_img/portfolio/spirit-hotel/05.jpg"
     alt: ""
-  - src: "/portfolio/spirit-hotel/06.jpg"
+  - src: "/_img/portfolio/spirit-hotel/06.jpg"
     alt: ""
-  - src: "/portfolio/spirit-hotel/07.jpg"
+  - src: "/_img/portfolio/spirit-hotel/07.jpg"
     alt: ""
-  - src: "/portfolio/spirit-hotel/08.jpg"
+  - src: "/_img/portfolio/spirit-hotel/08.jpg"
     alt: ""
-  - src: "/portfolio/spirit-hotel/09.jpg"
+  - src: "/_img/portfolio/spirit-hotel/09.jpg"
     alt: ""
-  - src: "/portfolio/spirit-hotel/10.jpg"
+  - src: "/_img/portfolio/spirit-hotel/10.jpg"
     alt: ""
 ---

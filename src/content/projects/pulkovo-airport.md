@@ -8,7 +8,7 @@ categories:
   - transportation
 features: []
 tags: []
-coverImage: "/portfolio/pulkovo-airport/01.jpg"
+coverImage: "/_img/portfolio/pulkovo-airport/01.jpg"
 published: true
 featured: false
 video: "https://youtu.be/yRAKgH65LBc"
@@ -17,22 +17,22 @@ techniques:
   - exterior
   - interior
 images:
-  - src: "/portfolio/pulkovo-airport/01.jpg"
+  - src: "/_img/portfolio/pulkovo-airport/01.jpg"
     alt: ""
-  - src: "/portfolio/pulkovo-airport/02.jpg"
+  - src: "/_img/portfolio/pulkovo-airport/02.jpg"
     alt: ""
-  - src: "/portfolio/pulkovo-airport/03.jpg"
+  - src: "/_img/portfolio/pulkovo-airport/03.jpg"
     alt: ""
-  - src: "/portfolio/pulkovo-airport/04.jpg"
+  - src: "/_img/portfolio/pulkovo-airport/04.jpg"
     alt: ""
-  - src: "/portfolio/pulkovo-airport/05.jpg"
+  - src: "/_img/portfolio/pulkovo-airport/05.jpg"
     alt: ""
-  - src: "/portfolio/pulkovo-airport/06.jpg"
+  - src: "/_img/portfolio/pulkovo-airport/06.jpg"
     alt: ""
-  - src: "/portfolio/pulkovo-airport/07.jpg"
+  - src: "/_img/portfolio/pulkovo-airport/07.jpg"
     alt: ""
-  - src: "/portfolio/pulkovo-airport/08.jpg"
+  - src: "/_img/portfolio/pulkovo-airport/08.jpg"
     alt: ""
-  - src: "/portfolio/pulkovo-airport/09.jpg"
+  - src: "/_img/portfolio/pulkovo-airport/09.jpg"
     alt: ""
 ---

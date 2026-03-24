@@ -1,7 +1,7 @@
 ---
 title: "Architectural Styling"
 description: "Renderings that showcase how AI can transform basic 3D models into different architectural styles or periods allowing quick visualization of design alternatives."
-image: "/vision-tech/architectural-styling.jpg"
+image: "/_img/vision-tech/architectural-styling.jpg"
 technique: "AI-Enhanced"
 cost: "€"
 model3d: "Output from 3D Model"
@@ -10,10 +10,10 @@ reality: "Conceptual Reality"
 purpose:
   - "Design Development"
 gallery:
-  - "/vision-tech/architectural-styling/01.jpeg"
-  - "/vision-tech/architectural-styling/02.jpeg"
-  - "/vision-tech/architectural-styling/03.jpeg"
-  - "/vision-tech/architectural-styling/04.jpeg"
+  - "/_img/vision-tech/architectural-styling/01.jpeg"
+  - "/_img/vision-tech/architectural-styling/02.jpeg"
+  - "/_img/vision-tech/architectural-styling/03.jpeg"
+  - "/_img/vision-tech/architectural-styling/04.jpeg"
 relatedCategories:
   - "residential"
   - "commercial"

@@ -13,23 +13,23 @@ categories:
   - residential
 features: []
 tags: []
-coverImage: "/portfolio/pushkinskaya/01.jpg"
+coverImage: "/_img/portfolio/pushkinskaya/01.jpg"
 published: true
 featured: false
 techniques:
   - exterior
   - night-renderings
 images:
-  - src: "/portfolio/pushkinskaya/01.jpg"
+  - src: "/_img/portfolio/pushkinskaya/01.jpg"
     alt: ""
-  - src: "/portfolio/pushkinskaya/02.jpg"
+  - src: "/_img/portfolio/pushkinskaya/02.jpg"
     alt: ""
-  - src: "/portfolio/pushkinskaya/03.jpg"
+  - src: "/_img/portfolio/pushkinskaya/03.jpg"
     alt: ""
-  - src: "/portfolio/pushkinskaya/04.jpg"
+  - src: "/_img/portfolio/pushkinskaya/04.jpg"
     alt: ""
-  - src: "/portfolio/pushkinskaya/05.jpg"
+  - src: "/_img/portfolio/pushkinskaya/05.jpg"
     alt: ""
-  - src: "/portfolio/pushkinskaya/06.jpg"
+  - src: "/_img/portfolio/pushkinskaya/06.jpg"
     alt: ""
 ---

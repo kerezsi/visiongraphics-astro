@@ -7,7 +7,7 @@ categories:
   - residential
 features: []
 tags: []
-coverImage: "/portfolio/romai-terrasse/01.jpg"
+coverImage: "/_img/portfolio/romai-terrasse/01.jpg"
 published: true
 featured: false
 video: "https://youtu.be/1ttWTqKYRHw"
@@ -17,28 +17,28 @@ techniques:
   - aerial-photography
   - exterior
 images:
-  - src: "/portfolio/romai-terrasse/01.jpg"
+  - src: "/_img/portfolio/romai-terrasse/01.jpg"
     alt: ""
-  - src: "/portfolio/romai-terrasse/02.jpg"
+  - src: "/_img/portfolio/romai-terrasse/02.jpg"
     alt: ""
-  - src: "/portfolio/romai-terrasse/03.jpg"
+  - src: "/_img/portfolio/romai-terrasse/03.jpg"
     alt: ""
-  - src: "/portfolio/romai-terrasse/04.jpg"
+  - src: "/_img/portfolio/romai-terrasse/04.jpg"
     alt: ""
-  - src: "/portfolio/romai-terrasse/05.jpg"
+  - src: "/_img/portfolio/romai-terrasse/05.jpg"
     alt: ""
-  - src: "/portfolio/romai-terrasse/06.jpg"
+  - src: "/_img/portfolio/romai-terrasse/06.jpg"
     alt: ""
-  - src: "/portfolio/romai-terrasse/07.jpg"
+  - src: "/_img/portfolio/romai-terrasse/07.jpg"
     alt: ""
-  - src: "/portfolio/romai-terrasse/08.jpg"
+  - src: "/_img/portfolio/romai-terrasse/08.jpg"
     alt: ""
-  - src: "/portfolio/romai-terrasse/09.jpg"
+  - src: "/_img/portfolio/romai-terrasse/09.jpg"
     alt: ""
-  - src: "/portfolio/romai-terrasse/10.jpg"
+  - src: "/_img/portfolio/romai-terrasse/10.jpg"
     alt: ""
-  - src: "/portfolio/romai-terrasse/11.jpg"
+  - src: "/_img/portfolio/romai-terrasse/11.jpg"
     alt: ""
-  - src: "/portfolio/romai-terrasse/12.jpg"
+  - src: "/_img/portfolio/romai-terrasse/12.jpg"
     alt: ""
 ---

@@ -7,7 +7,7 @@ categories:
   - industrial
 features: []
 tags: []
-coverImage: "/portfolio/rgk-vi/01.jpg"
+coverImage: "/_img/portfolio/rgk-vi/01.jpg"
 published: true
 featured: false
 techniques:
@@ -15,18 +15,18 @@ techniques:
   - exterior
   - photo-integration
 images:
-  - src: "/portfolio/rgk-vi/01.jpg"
+  - src: "/_img/portfolio/rgk-vi/01.jpg"
     alt: ""
-  - src: "/portfolio/rgk-vi/02.jpg"
+  - src: "/_img/portfolio/rgk-vi/02.jpg"
     alt: ""
-  - src: "/portfolio/rgk-vi/03.jpg"
+  - src: "/_img/portfolio/rgk-vi/03.jpg"
     alt: ""
-  - src: "/portfolio/rgk-vi/04.jpg"
+  - src: "/_img/portfolio/rgk-vi/04.jpg"
     alt: ""
-  - src: "/portfolio/rgk-vi/05.jpg"
+  - src: "/_img/portfolio/rgk-vi/05.jpg"
     alt: ""
-  - src: "/portfolio/rgk-vi/06.jpg"
+  - src: "/_img/portfolio/rgk-vi/06.jpg"
     alt: ""
-  - src: "/portfolio/rgk-vi/07.jpg"
+  - src: "/_img/portfolio/rgk-vi/07.jpg"
     alt: ""
 ---

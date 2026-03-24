@@ -12,33 +12,33 @@ categories:
   - residential
 features: []
 tags: []
-coverImage: "/portfolio/frunzenskaya/01.jpg"
+coverImage: "/_img/portfolio/frunzenskaya/01.jpg"
 published: true
 featured: false
 techniques:
   - exterior
   - photo-integration
 images:
-  - src: "/portfolio/frunzenskaya/01.jpg"
+  - src: "/_img/portfolio/frunzenskaya/01.jpg"
     alt: ""
-  - src: "/portfolio/frunzenskaya/02.jpg"
+  - src: "/_img/portfolio/frunzenskaya/02.jpg"
     alt: ""
-  - src: "/portfolio/frunzenskaya/03.jpg"
+  - src: "/_img/portfolio/frunzenskaya/03.jpg"
     alt: ""
-  - src: "/portfolio/frunzenskaya/04.jpg"
+  - src: "/_img/portfolio/frunzenskaya/04.jpg"
     alt: ""
-  - src: "/portfolio/frunzenskaya/05.jpg"
+  - src: "/_img/portfolio/frunzenskaya/05.jpg"
     alt: ""
-  - src: "/portfolio/frunzenskaya/06.jpg"
+  - src: "/_img/portfolio/frunzenskaya/06.jpg"
     alt: ""
-  - src: "/portfolio/frunzenskaya/07.jpg"
+  - src: "/_img/portfolio/frunzenskaya/07.jpg"
     alt: ""
-  - src: "/portfolio/frunzenskaya/08.jpg"
+  - src: "/_img/portfolio/frunzenskaya/08.jpg"
     alt: ""
-  - src: "/portfolio/frunzenskaya/09.jpg"
+  - src: "/_img/portfolio/frunzenskaya/09.jpg"
     alt: ""
-  - src: "/portfolio/frunzenskaya/10.jpg"
+  - src: "/_img/portfolio/frunzenskaya/10.jpg"
     alt: ""
-  - src: "/portfolio/frunzenskaya/11.jpg"
+  - src: "/_img/portfolio/frunzenskaya/11.jpg"
     alt: ""
 ---

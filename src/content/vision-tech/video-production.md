@@ -1,7 +1,7 @@
 ---
 title: "Video Production"
 description: "Professional video production combining custom 3D animations, filmed footage, and curated stock material to create compelling visual narratives about buildings, spaces, and design processes."
-image: "/vision-tech/video-production.jpg"
+image: "/_img/vision-tech/video-production.jpg"
 technique: "Hybrid"
 cost: "€€€€"
 model3d: "Output from 3D Model"

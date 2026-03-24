@@ -7,24 +7,24 @@ categories:
   - infrastructure
 features: []
 tags: []
-coverImage: "/portfolio/upc-shops/01.jpg"
+coverImage: "/_img/portfolio/upc-shops/01.jpg"
 published: true
 featured: false
 images:
-  - src: "/portfolio/upc-shops/01.jpg"
+  - src: "/_img/portfolio/upc-shops/01.jpg"
     alt: ""
-  - src: "/portfolio/upc-shops/02.jpg"
+  - src: "/_img/portfolio/upc-shops/02.jpg"
     alt: ""
-  - src: "/portfolio/upc-shops/03.jpg"
+  - src: "/_img/portfolio/upc-shops/03.jpg"
     alt: ""
-  - src: "/portfolio/upc-shops/04.jpg"
+  - src: "/_img/portfolio/upc-shops/04.jpg"
     alt: ""
-  - src: "/portfolio/upc-shops/05.jpg"
+  - src: "/_img/portfolio/upc-shops/05.jpg"
     alt: ""
-  - src: "/portfolio/upc-shops/06.jpg"
+  - src: "/_img/portfolio/upc-shops/06.jpg"
     alt: ""
-  - src: "/portfolio/upc-shops/07.jpg"
+  - src: "/_img/portfolio/upc-shops/07.jpg"
     alt: ""
-  - src: "/portfolio/upc-shops/08.jpg"
+  - src: "/_img/portfolio/upc-shops/08.jpg"
     alt: ""
 ---

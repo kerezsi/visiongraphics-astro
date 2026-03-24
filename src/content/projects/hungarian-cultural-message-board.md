@@ -13,7 +13,7 @@ categories:
   - exhibition
 features: []
 tags: []
-coverImage: "/portfolio/hungarian-cultural-message-board/01.jpg"
+coverImage: "/_img/portfolio/hungarian-cultural-message-board/01.jpg"
 published: true
 featured: false
 tour360:
@@ -28,22 +28,22 @@ techniques:
   - interior
   - video-production
 images:
-  - src: "/portfolio/hungarian-cultural-message-board/01.jpg"
+  - src: "/_img/portfolio/hungarian-cultural-message-board/01.jpg"
     alt: ""
-  - src: "/portfolio/hungarian-cultural-message-board/02.jpg"
+  - src: "/_img/portfolio/hungarian-cultural-message-board/02.jpg"
     alt: ""
-  - src: "/portfolio/hungarian-cultural-message-board/03.jpg"
+  - src: "/_img/portfolio/hungarian-cultural-message-board/03.jpg"
     alt: ""
-  - src: "/portfolio/hungarian-cultural-message-board/04.jpg"
+  - src: "/_img/portfolio/hungarian-cultural-message-board/04.jpg"
     alt: ""
-  - src: "/portfolio/hungarian-cultural-message-board/05.jpg"
+  - src: "/_img/portfolio/hungarian-cultural-message-board/05.jpg"
     alt: ""
-  - src: "/portfolio/hungarian-cultural-message-board/06.jpg"
+  - src: "/_img/portfolio/hungarian-cultural-message-board/06.jpg"
     alt: ""
-  - src: "/portfolio/hungarian-cultural-message-board/07.jpg"
+  - src: "/_img/portfolio/hungarian-cultural-message-board/07.jpg"
     alt: ""
-  - src: "/portfolio/hungarian-cultural-message-board/08.jpg"
+  - src: "/_img/portfolio/hungarian-cultural-message-board/08.jpg"
     alt: ""
-  - src: "/portfolio/hungarian-cultural-message-board/09.jpg"
+  - src: "/_img/portfolio/hungarian-cultural-message-board/09.jpg"
     alt: ""
 ---

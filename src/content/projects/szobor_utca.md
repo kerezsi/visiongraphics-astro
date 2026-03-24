@@ -15,23 +15,23 @@ categories:
   - residential
 features: []
 tags: []
-coverImage: "/portfolio/szobor_utca/01.jpg"
+coverImage: "/_img/portfolio/szobor_utca/01.jpg"
 published: true
 featured: false
 techniques:
   - exterior
   - night-renderings
 images:
-  - src: "/portfolio/szobor_utca/01.jpg"
+  - src: "/_img/portfolio/szobor_utca/01.jpg"
     alt: ""
-  - src: "/portfolio/szobor_utca/02.jpg"
+  - src: "/_img/portfolio/szobor_utca/02.jpg"
     alt: ""
-  - src: "/portfolio/szobor_utca/03.jpg"
+  - src: "/_img/portfolio/szobor_utca/03.jpg"
     alt: ""
-  - src: "/portfolio/szobor_utca/04.jpg"
+  - src: "/_img/portfolio/szobor_utca/04.jpg"
     alt: ""
-  - src: "/portfolio/szobor_utca/05.jpg"
+  - src: "/_img/portfolio/szobor_utca/05.jpg"
     alt: ""
-  - src: "/portfolio/szobor_utca/06.jpg"
+  - src: "/_img/portfolio/szobor_utca/06.jpg"
     alt: ""
 ---

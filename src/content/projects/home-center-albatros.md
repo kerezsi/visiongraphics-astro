@@ -14,7 +14,7 @@ categories:
   - residential
 features: []
 tags: []
-coverImage: "/portfolio/home-center-albatros/01.jpg"
+coverImage: "/_img/portfolio/home-center-albatros/01.jpg"
 published: true
 featured: false
 techniques:
@@ -23,18 +23,18 @@ techniques:
   - interior
   - marketing-level-plan
 images:
-  - src: "/portfolio/home-center-albatros/01.jpg"
+  - src: "/_img/portfolio/home-center-albatros/01.jpg"
     alt: ""
-  - src: "/portfolio/home-center-albatros/02.jpg"
+  - src: "/_img/portfolio/home-center-albatros/02.jpg"
     alt: ""
-  - src: "/portfolio/home-center-albatros/03.jpg"
+  - src: "/_img/portfolio/home-center-albatros/03.jpg"
     alt: ""
-  - src: "/portfolio/home-center-albatros/04.jpg"
+  - src: "/_img/portfolio/home-center-albatros/04.jpg"
     alt: ""
-  - src: "/portfolio/home-center-albatros/05.jpg"
+  - src: "/_img/portfolio/home-center-albatros/05.jpg"
     alt: ""
-  - src: "/portfolio/home-center-albatros/06.jpg"
+  - src: "/_img/portfolio/home-center-albatros/06.jpg"
     alt: ""
-  - src: "/portfolio/home-center-albatros/07.jpg"
+  - src: "/_img/portfolio/home-center-albatros/07.jpg"
     alt: ""
 ---

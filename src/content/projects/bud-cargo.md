@@ -8,30 +8,30 @@ categories:
   - transportation
 features: []
 tags: []
-coverImage: "/portfolio/bud-cargo/01.jpg"
+coverImage: "/_img/portfolio/bud-cargo/01.jpg"
 published: true
 featured: false
 techniques:
   - exterior
 images:
-  - src: "/portfolio/bud-cargo/01.jpg"
+  - src: "/_img/portfolio/bud-cargo/01.jpg"
     alt: ""
-  - src: "/portfolio/bud-cargo/02.jpg"
+  - src: "/_img/portfolio/bud-cargo/02.jpg"
     alt: ""
-  - src: "/portfolio/bud-cargo/03.jpg"
+  - src: "/_img/portfolio/bud-cargo/03.jpg"
     alt: ""
-  - src: "/portfolio/bud-cargo/04.jpg"
+  - src: "/_img/portfolio/bud-cargo/04.jpg"
     alt: ""
-  - src: "/portfolio/bud-cargo/05.jpg"
+  - src: "/_img/portfolio/bud-cargo/05.jpg"
     alt: ""
-  - src: "/portfolio/bud-cargo/06.jpg"
+  - src: "/_img/portfolio/bud-cargo/06.jpg"
     alt: ""
-  - src: "/portfolio/bud-cargo/07.jpg"
+  - src: "/_img/portfolio/bud-cargo/07.jpg"
     alt: ""
-  - src: "/portfolio/bud-cargo/08.jpg"
+  - src: "/_img/portfolio/bud-cargo/08.jpg"
     alt: ""
-  - src: "/portfolio/bud-cargo/09.jpg"
+  - src: "/_img/portfolio/bud-cargo/09.jpg"
     alt: ""
-  - src: "/portfolio/bud-cargo/10.jpg"
+  - src: "/_img/portfolio/bud-cargo/10.jpg"
     alt: ""
 ---

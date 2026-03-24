@@ -7,7 +7,7 @@ categories:
   - office
 features: []
 tags: []
-coverImage: "/portfolio/raiffeisen-bank-design-guide/01.jpg"
+coverImage: "/_img/portfolio/raiffeisen-bank-design-guide/01.jpg"
 published: true
 featured: false
 techniques:
@@ -16,22 +16,22 @@ techniques:
   - exterior
   - interior
 images:
-  - src: "/portfolio/raiffeisen-bank-design-guide/01.jpg"
+  - src: "/_img/portfolio/raiffeisen-bank-design-guide/01.jpg"
     alt: ""
-  - src: "/portfolio/raiffeisen-bank-design-guide/02.jpg"
+  - src: "/_img/portfolio/raiffeisen-bank-design-guide/02.jpg"
     alt: ""
-  - src: "/portfolio/raiffeisen-bank-design-guide/03.jpg"
+  - src: "/_img/portfolio/raiffeisen-bank-design-guide/03.jpg"
     alt: ""
-  - src: "/portfolio/raiffeisen-bank-design-guide/04.jpg"
+  - src: "/_img/portfolio/raiffeisen-bank-design-guide/04.jpg"
     alt: ""
-  - src: "/portfolio/raiffeisen-bank-design-guide/05.jpg"
+  - src: "/_img/portfolio/raiffeisen-bank-design-guide/05.jpg"
     alt: ""
-  - src: "/portfolio/raiffeisen-bank-design-guide/06.jpg"
+  - src: "/_img/portfolio/raiffeisen-bank-design-guide/06.jpg"
     alt: ""
-  - src: "/portfolio/raiffeisen-bank-design-guide/07.jpg"
+  - src: "/_img/portfolio/raiffeisen-bank-design-guide/07.jpg"
     alt: ""
-  - src: "/portfolio/raiffeisen-bank-design-guide/08.jpg"
+  - src: "/_img/portfolio/raiffeisen-bank-design-guide/08.jpg"
     alt: ""
-  - src: "/portfolio/raiffeisen-bank-design-guide/09.jpg"
+  - src: "/_img/portfolio/raiffeisen-bank-design-guide/09.jpg"
     alt: ""
 ---

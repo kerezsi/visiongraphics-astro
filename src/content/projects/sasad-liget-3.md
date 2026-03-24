@@ -13,7 +13,7 @@ categories:
   - residential
 features: []
 tags: []
-coverImage: "/portfolio/sasad-liget-3/01.jpg"
+coverImage: "/_img/portfolio/sasad-liget-3/01.jpg"
 published: true
 featured: false
 video: "https://youtu.be/RJm7AEw5TCo"
@@ -22,20 +22,20 @@ techniques:
   - exterior
   - interior
 images:
-  - src: "/portfolio/sasad-liget-3/01.jpg"
+  - src: "/_img/portfolio/sasad-liget-3/01.jpg"
     alt: ""
-  - src: "/portfolio/sasad-liget-3/02.jpg"
+  - src: "/_img/portfolio/sasad-liget-3/02.jpg"
     alt: ""
-  - src: "/portfolio/sasad-liget-3/03.jpg"
+  - src: "/_img/portfolio/sasad-liget-3/03.jpg"
     alt: ""
-  - src: "/portfolio/sasad-liget-3/04.jpg"
+  - src: "/_img/portfolio/sasad-liget-3/04.jpg"
     alt: ""
-  - src: "/portfolio/sasad-liget-3/05.jpg"
+  - src: "/_img/portfolio/sasad-liget-3/05.jpg"
     alt: ""
-  - src: "/portfolio/sasad-liget-3/06.jpg"
+  - src: "/_img/portfolio/sasad-liget-3/06.jpg"
     alt: ""
-  - src: "/portfolio/sasad-liget-3/07.jpg"
+  - src: "/_img/portfolio/sasad-liget-3/07.jpg"
     alt: ""
-  - src: "/portfolio/sasad-liget-3/08.jpg"
+  - src: "/_img/portfolio/sasad-liget-3/08.jpg"
     alt: ""
 ---

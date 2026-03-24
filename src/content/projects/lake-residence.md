@@ -10,7 +10,7 @@ categories:
   - sports
 features: []
 tags: []
-coverImage: "/portfolio/lake-residence/01.jpg"
+coverImage: "/_img/portfolio/lake-residence/01.jpg"
 published: true
 featured: false
 tour360:
@@ -24,28 +24,28 @@ techniques:
   - exterior
   - video-production
 images:
-  - src: "/portfolio/lake-residence/01.jpg"
+  - src: "/_img/portfolio/lake-residence/01.jpg"
     alt: ""
-  - src: "/portfolio/lake-residence/02.jpg"
+  - src: "/_img/portfolio/lake-residence/02.jpg"
     alt: ""
-  - src: "/portfolio/lake-residence/03.jpg"
+  - src: "/_img/portfolio/lake-residence/03.jpg"
     alt: ""
-  - src: "/portfolio/lake-residence/04.jpg"
+  - src: "/_img/portfolio/lake-residence/04.jpg"
     alt: ""
-  - src: "/portfolio/lake-residence/05.jpg"
+  - src: "/_img/portfolio/lake-residence/05.jpg"
     alt: ""
-  - src: "/portfolio/lake-residence/06.jpg"
+  - src: "/_img/portfolio/lake-residence/06.jpg"
     alt: ""
-  - src: "/portfolio/lake-residence/07.jpg"
+  - src: "/_img/portfolio/lake-residence/07.jpg"
     alt: ""
-  - src: "/portfolio/lake-residence/08.jpg"
+  - src: "/_img/portfolio/lake-residence/08.jpg"
     alt: ""
-  - src: "/portfolio/lake-residence/09.jpg"
+  - src: "/_img/portfolio/lake-residence/09.jpg"
     alt: ""
-  - src: "/portfolio/lake-residence/10.jpg"
+  - src: "/_img/portfolio/lake-residence/10.jpg"
     alt: ""
-  - src: "/portfolio/lake-residence/11.jpg"
+  - src: "/_img/portfolio/lake-residence/11.jpg"
     alt: ""
-  - src: "/portfolio/lake-residence/12.jpg"
+  - src: "/_img/portfolio/lake-residence/12.jpg"
     alt: ""
 ---

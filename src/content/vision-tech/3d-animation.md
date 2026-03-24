@@ -1,7 +1,7 @@
 ---
 title: "3D Animation"
 description: "Moving visual content created using three-dimensional computer graphics. 3D animations can showcase architectural designs product features or complex processes in a dynamic and engaging manner."
-image: "/vision-tech/3d-animation.jpg"
+image: "/_img/vision-tech/3d-animation.jpg"
 technique: ""
 cost: "€€€€"
 model3d: "Output from 3D Model"

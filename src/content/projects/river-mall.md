@@ -12,23 +12,23 @@ categories:
   - commercial
 features: []
 tags: []
-coverImage: "/portfolio/river-mall/01.jpg"
+coverImage: "/_img/portfolio/river-mall/01.jpg"
 published: true
 featured: false
 techniques:
   - exterior
   - night-renderings
 images:
-  - src: "/portfolio/river-mall/01.jpg"
+  - src: "/_img/portfolio/river-mall/01.jpg"
     alt: ""
-  - src: "/portfolio/river-mall/02.jpg"
+  - src: "/_img/portfolio/river-mall/02.jpg"
     alt: ""
-  - src: "/portfolio/river-mall/03.jpg"
+  - src: "/_img/portfolio/river-mall/03.jpg"
     alt: ""
-  - src: "/portfolio/river-mall/04.jpg"
+  - src: "/_img/portfolio/river-mall/04.jpg"
     alt: ""
-  - src: "/portfolio/river-mall/05.jpg"
+  - src: "/_img/portfolio/river-mall/05.jpg"
     alt: ""
-  - src: "/portfolio/river-mall/06.jpg"
+  - src: "/_img/portfolio/river-mall/06.jpg"
     alt: ""
 ---

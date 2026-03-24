@@ -13,7 +13,7 @@ categories:
   - residential
 features: []
 tags: []
-coverImage: "/portfolio/europa-residential-garden/01.jpg"
+coverImage: "/_img/portfolio/europa-residential-garden/01.jpg"
 published: true
 featured: false
 techniques:
@@ -23,26 +23,26 @@ techniques:
   - marketing-level-plan
   - site-plan
 images:
-  - src: "/portfolio/europa-residential-garden/01.jpg"
+  - src: "/_img/portfolio/europa-residential-garden/01.jpg"
     alt: ""
-  - src: "/portfolio/europa-residential-garden/02.jpg"
+  - src: "/_img/portfolio/europa-residential-garden/02.jpg"
     alt: ""
-  - src: "/portfolio/europa-residential-garden/03.jpg"
+  - src: "/_img/portfolio/europa-residential-garden/03.jpg"
     alt: ""
-  - src: "/portfolio/europa-residential-garden/04.jpg"
+  - src: "/_img/portfolio/europa-residential-garden/04.jpg"
     alt: ""
-  - src: "/portfolio/europa-residential-garden/05.jpg"
+  - src: "/_img/portfolio/europa-residential-garden/05.jpg"
     alt: ""
-  - src: "/portfolio/europa-residential-garden/06.jpg"
+  - src: "/_img/portfolio/europa-residential-garden/06.jpg"
     alt: ""
-  - src: "/portfolio/europa-residential-garden/07.jpg"
+  - src: "/_img/portfolio/europa-residential-garden/07.jpg"
     alt: ""
-  - src: "/portfolio/europa-residential-garden/08.jpg"
+  - src: "/_img/portfolio/europa-residential-garden/08.jpg"
     alt: ""
-  - src: "/portfolio/europa-residential-garden/09.jpg"
+  - src: "/_img/portfolio/europa-residential-garden/09.jpg"
     alt: ""
-  - src: "/portfolio/europa-residential-garden/10.jpg"
+  - src: "/_img/portfolio/europa-residential-garden/10.jpg"
     alt: ""
-  - src: "/portfolio/europa-residential-garden/11.jpg"
+  - src: "/_img/portfolio/europa-residential-garden/11.jpg"
     alt: ""
 ---

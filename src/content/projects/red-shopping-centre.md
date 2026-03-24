@@ -12,21 +12,21 @@ categories:
   - commercial
 features: []
 tags: []
-coverImage: "/portfolio/red-shopping-centre/01.jpg"
+coverImage: "/_img/portfolio/red-shopping-centre/01.jpg"
 published: true
 featured: false
 techniques:
   - exterior
   - night-renderings
 images:
-  - src: "/portfolio/red-shopping-centre/01.jpg"
+  - src: "/_img/portfolio/red-shopping-centre/01.jpg"
     alt: ""
-  - src: "/portfolio/red-shopping-centre/02.jpg"
+  - src: "/_img/portfolio/red-shopping-centre/02.jpg"
     alt: ""
-  - src: "/portfolio/red-shopping-centre/03.jpg"
+  - src: "/_img/portfolio/red-shopping-centre/03.jpg"
     alt: ""
-  - src: "/portfolio/red-shopping-centre/04.jpg"
+  - src: "/_img/portfolio/red-shopping-centre/04.jpg"
     alt: ""
-  - src: "/portfolio/red-shopping-centre/05.jpg"
+  - src: "/_img/portfolio/red-shopping-centre/05.jpg"
     alt: ""
 ---

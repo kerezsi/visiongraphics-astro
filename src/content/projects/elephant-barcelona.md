@@ -13,28 +13,28 @@ categories:
   - residential
 features: []
 tags: []
-coverImage: "/portfolio/elephant-barcelona/01.jpg"
+coverImage: "/_img/portfolio/elephant-barcelona/01.jpg"
 published: true
 featured: false
 techniques:
   - exterior
 images:
-  - src: "/portfolio/elephant-barcelona/01.jpg"
+  - src: "/_img/portfolio/elephant-barcelona/01.jpg"
     alt: ""
-  - src: "/portfolio/elephant-barcelona/02.jpg"
+  - src: "/_img/portfolio/elephant-barcelona/02.jpg"
     alt: ""
-  - src: "/portfolio/elephant-barcelona/03.jpg"
+  - src: "/_img/portfolio/elephant-barcelona/03.jpg"
     alt: ""
-  - src: "/portfolio/elephant-barcelona/04.jpg"
+  - src: "/_img/portfolio/elephant-barcelona/04.jpg"
     alt: ""
-  - src: "/portfolio/elephant-barcelona/05.jpg"
+  - src: "/_img/portfolio/elephant-barcelona/05.jpg"
     alt: ""
-  - src: "/portfolio/elephant-barcelona/06.jpg"
+  - src: "/_img/portfolio/elephant-barcelona/06.jpg"
     alt: ""
-  - src: "/portfolio/elephant-barcelona/07.jpg"
+  - src: "/_img/portfolio/elephant-barcelona/07.jpg"
     alt: ""
-  - src: "/portfolio/elephant-barcelona/08.jpg"
+  - src: "/_img/portfolio/elephant-barcelona/08.jpg"
     alt: ""
-  - src: "/portfolio/elephant-barcelona/09.jpg"
+  - src: "/_img/portfolio/elephant-barcelona/09.jpg"
     alt: ""
 ---
