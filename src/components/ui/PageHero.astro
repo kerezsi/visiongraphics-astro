@@ -1,49 +1,59 @@
 ---
 // src/components/ui/PageHero.astro
-// Uniform page banner used on all interior pages.
-// Matches dev.visiongraphics.eu visual style:
-//   - Full-width dark banner, ~300px tall
-//   - Image on the right, fading to dark on the left
-//   - label = small red text (line 1)
-//   - title = large bold white text (line 2)
+//
+// Two variants — matched to dev.visiongraphics.eu measured heights:
+//
+//   variant="page"    → ~560px  — top-level section pages (services, portfolio, about…)
+//   variant="section" → ~420px  — service sub-pages and detail pages
+//
+// Props:
+//   image    — path to banner image, e.g. "/_img/banners/banner-services.jpg"
+//   label    — small red line 1, e.g. "Visuals & Solutions"
+//   title    — large bold white line 2, e.g. "Show It, Scale It, Build It."
+//   variant  — "page" (default) | "section"
 
 interface Props {
-  image: string;       // path to banner image, e.g. "/_img/banners/banner-services.jpg"
-  label: string;       // small red line, e.g. "Visuals & Solutions"
-  title: string;       // large white heading, e.g. "Show It, Scale It, Build It."
+  image:    string;
+  label:    string;
+  title:    string;
+  variant?: 'page' | 'section';
   imageAlt?: string;
 }
 
-const { image, label, title, imageAlt = '' } = Astro.props;
+const { image, label, title, variant = 'page', imageAlt = '' } = Astro.props;
 ---
 
-<div class="page-hero">
-  <div class="page-hero-bg">
+<div class={`page-hero page-hero--${variant}`}>
+  <div class="page-hero__bg">
     <img src={image} alt={imageAlt} loading="eager" decoding="async" />
   </div>
-  <div class="page-hero-content container">
-    <p class="page-hero-label">{label}</p>
-    <h1 class="page-hero-title">{title}</h1>
+  <div class="page-hero__content container">
+    <p class="page-hero__label">{label}</p>
+    <h1 class="page-hero__title">{title}</h1>
   </div>
 </div>
 
 <style>
+  /* ── Shared base ─────────────────────────────────────────── */
   .page-hero {
     position: relative;
     width: 100%;
-    height: clamp(200px, 28vw, 340px);
     overflow: hidden;
     background: var(--color-surface);
     border-bottom: 1px solid var(--color-border);
   }
 
-  /* Background image — right-aligned, fades to dark on the left */
-  .page-hero-bg {
+  /* ── Variant heights (matching dev.visiongraphics.eu) ──── */
+  .page-hero--page    { height: clamp(320px, 42vw, 560px); }
+  .page-hero--section { height: clamp(260px, 33vw, 420px); }
+
+  /* ── Background image ───────────────────────────────────── */
+  .page-hero__bg {
     position: absolute;
     inset: 0;
   }
 
-  .page-hero-bg img {
+  .page-hero__bg img {
     position: absolute;
     inset: 0;
     width: 100%;
@@ -53,37 +63,36 @@ const { image, label, title, imageAlt = '' } = Astro.props;
     display: block;
   }
 
-  /* Gradient: solid dark on left, transparent on right */
-  .page-hero-bg::after {
+  /* Dark gradient: solid on left, transparent on right */
+  .page-hero__bg::after {
     content: '';
     position: absolute;
     inset: 0;
     background: linear-gradient(
       to right,
       var(--color-bg) 0%,
-      var(--color-bg) 30%,
-      rgba(26, 26, 26, 0.82) 55%,
-      rgba(26, 26, 26, 0.35) 75%,
+      var(--color-bg) 28%,
+      rgba(26, 26, 26, 0.80) 52%,
+      rgba(26, 26, 26, 0.28) 72%,
       transparent 100%
     );
   }
 
-  /* Text — sits above the gradient */
-  .page-hero-content {
+  /* ── Text content ───────────────────────────────────────── */
+  .page-hero__content {
     position: relative;
     z-index: 1;
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 0.4rem;
-    padding-block: 2rem;
-    max-width: 55%;
+    gap: 0.5rem;
+    padding-block: 2.5rem;
+    max-width: 60%;
   }
 
-  .page-hero-label {
+  .page-hero__label {
     font-family: var(--font-body);
-    font-size: clamp(0.8rem, 1.5vw, 1rem);
     font-weight: 700;
     color: var(--color-accent);
     letter-spacing: 0.02em;
@@ -91,27 +100,39 @@ const { image, label, title, imageAlt = '' } = Astro.props;
     line-height: 1.2;
   }
 
-  .page-hero-title {
+  .page-hero__title {
     font-family: var(--font-body);
-    font-size: clamp(1.8rem, 4.5vw, 3.5rem);
     font-weight: 700;
     color: var(--color-text);
-    line-height: 1.05;
-    letter-spacing: -0.02em;
+    line-height: 1.02;
+    letter-spacing: -0.025em;
     margin: 0;
   }
 
+  /* ── Variant font sizes ─────────────────────────────────── */
+  .page-hero--page .page-hero__label   { font-size: clamp(0.9rem, 1.6vw, 1.1rem); }
+  .page-hero--page .page-hero__title   { font-size: clamp(2.2rem, 5.5vw, 4.5rem); }
+
+  .page-hero--section .page-hero__label { font-size: clamp(0.8rem, 1.3vw, 0.95rem); }
+  .page-hero--section .page-hero__title { font-size: clamp(1.8rem, 4.2vw, 3.4rem); }
+
+  /* ── Mobile ─────────────────────────────────────────────── */
   @media (max-width: 640px) {
-    .page-hero-content {
-      max-width: 100%;
+    .page-hero--page    { height: clamp(260px, 55vw, 340px); }
+    .page-hero--section { height: clamp(200px, 45vw, 280px); }
+
+    .page-hero__content {
+      max-width: 90%;
+      padding-inline: 0;
     }
-    .page-hero-bg::after {
+
+    .page-hero__bg::after {
       background: linear-gradient(
         to right,
         var(--color-bg) 0%,
-        var(--color-bg) 50%,
-        rgba(26, 26, 26, 0.9) 75%,
-        rgba(26, 26, 26, 0.7) 100%
+        var(--color-bg) 45%,
+        rgba(26, 26, 26, 0.88) 70%,
+        rgba(26, 26, 26, 0.65) 100%
       );
     }
   }
