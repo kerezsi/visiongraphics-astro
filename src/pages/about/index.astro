@@ -1,26 +1,27 @@
 ---
 // src/pages/about/index.astro
 
-import Page from '../../layouts/Page.astro';
-import PageHero from '../../components/ui/PageHero.astro';
-import timeline from '../../data/about-timeline.json';
+import Page          from '../../layouts/Page.astro';
+import PageHero      from '../../components/ui/PageHero.astro';
+import SectionBanner from '../../components/ui/SectionBanner.astro';
+import timeline      from '../../data/about-timeline.json';
 
 const specialists = [
   { role: '3D Scanning Specialist',      desc: 'Detailed digital copies of buildings and objects using scanning equipment.' },
-  { role: 'Architecture Photographer',   desc: 'High-quality site photography to match real-world detail in 3D work.' },
-  { role: 'Character Animator',          desc: 'Natural-movement digital people that make spaces feel lived-in and active.' },
+  { role: 'Architecture Photographer',   desc: 'High-quality site photography matched to real-world detail in 3D work.' },
+  { role: 'Character Animator',          desc: 'Natural movement for digital people that make spaces feel lived-in.' },
   { role: 'Character Artist',            desc: 'Digital people — from casual passersby to office workers.' },
-  { role: 'Environment Artist',          desc: 'Rich digital worlds: parks, gardens, cityscapes.' },
+  { role: 'Environment Artist',          desc: 'Rich digital worlds: parks, gardens, cityscapes at any scale.' },
   { role: 'UI/UX Designer',              desc: 'Interaction design for interactive projects and VR experiences.' },
-  { role: 'Graphic Designer',            desc: '2D elements that complement 3D work: logos, layouts, infographics.' },
-  { role: 'Interior Designer',           desc: 'Furniture, materials, and space feel for interior projects.' },
-  { role: 'Web Developer',               desc: 'Websites and platforms where work is presented and embedded.' },
-  { role: 'Photogrammetry Expert',       desc: 'Turns site photos into accurate 3D models — the digital twin approach.' },
-  { role: '3D Generalist',               desc: 'All-around 3D modelling, texturing, and rendering across any brief.' },
-  { role: 'Unreal Engine Developer',     desc: 'Real-time 3D experiences: walkthrough VR, interactive kiosks.' },
-  { role: 'Drone Pilot',                 desc: 'Aerial photography and video showing how projects fit their surroundings.' },
+  { role: 'Graphic Designer',            desc: '2D elements that complement 3D: logos, layouts, infographics.' },
+  { role: 'Interior Designer',           desc: 'Furniture, materials and spatial feel for interior projects.' },
+  { role: 'Web Developer',               desc: 'Websites and platforms for presenting embedded 3D work online.' },
+  { role: 'Photogrammetry Expert',       desc: 'Site photos turned into accurate 3D models — the digital twin approach.' },
+  { role: '3D Generalist',               desc: 'All-round modelling, texturing and rendering across any brief.' },
+  { role: 'Unreal Engine Developer',     desc: 'Real-time 3D experiences: VR walkthroughs, interactive kiosks.' },
+  { role: 'Drone Pilot',                 desc: 'Aerial photography and video showing how projects fit surroundings.' },
   { role: 'BIM Specialist',              desc: 'Visual accuracy cross-checked against technical building data.' },
-  { role: 'Crowd Simulator',             desc: 'Realistic crowd behaviour for large public spaces and transport hubs.' },
+  { role: 'Crowd Simulator',             desc: 'Realistic crowd behaviour for large public spaces and transit hubs.' },
 ];
 ---
 
@@ -31,36 +32,44 @@ const specialists = [
 >
   <div class="about-page">
 
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- PAGE HERO                                               -->
+    <!-- ═══════════════════════════════════════════════════════ -->
     <PageHero
       image="/_img/banners/banner-general.jpg"
       label="30 Years"
       title="Making Complex Ideas Visible"
     />
 
-    <!-- ══════════════════════════════════════════════════════ -->
-    <!-- COMPANY OVERVIEW                                       -->
-    <!-- ══════════════════════════════════════════════════════ -->
-    <section class="overview-section section">
-      <div class="container overview-inner">
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- SECTION 1 — ABOUT THE STUDIO                           -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <SectionBanner
+      image="/_img/banners/banner-large-scale.jpg"
+      label="Vision Graphics"
+      title="About the Studio"
+    />
 
-        <div class="overview-left">
-          <p class="section-label">Vision Graphics</p>
-          <h2 class="display-md overview-h2">About<br />the Studio</h2>
+    <section class="about-studio section">
+      <div class="container two-col">
+
+        <div class="col-left">
+          <p class="body-lead">
+            We've been bringing architectural ideas to life through 3D visualization
+            for over 30 years. What started as a small Budapest studio has grown
+            into a globally active practice — airport terminals, urban masterplans,
+            VR experiences, and retail rollouts across four continents.
+          </p>
         </div>
 
-        <div class="overview-right">
-          <p class="overview-body">
-            We've been bringing architectural ideas to life through 3D visualization
-            for over 30 years. What started as a small Budapest studio has grown into
-            a globally active practice — airport terminals, urban masterplans, VR
-            experiences, and retail rollouts across four continents.
-          </p>
-          <div class="overview-diff">
-            <p class="overview-diff-label">What makes us different</p>
-            <p class="overview-body">
-              We solve communication problems, not just render problems. Whether you need
-              to win investor approval, succeed in a design competition, or show a
-              neighbourhood what's coming — we build the visual argument that makes it happen.
+        <div class="col-right">
+          <div class="diff-block">
+            <p class="diff-label">What makes us different</p>
+            <p class="body-text">
+              We solve communication problems, not just render problems.
+              Whether you need to win investor approval, succeed in a design
+              competition, or show a neighbourhood what's coming — we build
+              the visual argument that makes it happen.
             </p>
           </div>
         </div>
@@ -68,114 +77,125 @@ const specialists = [
       </div>
     </section>
 
-    <hr class="page-rule" />
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- SECTION 2 — MEET THE EXPERT                            -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <SectionBanner
+      image="/_img/banners/banner-general.jpg"
+      label="Founder"
+      title="Meet the Expert"
+    />
 
-    <!-- ══════════════════════════════════════════════════════ -->
-    <!-- LÁSZLÓ SECTION                                         -->
-    <!-- ══════════════════════════════════════════════════════ -->
-    <section class="laszlo-section section">
-      <div class="container laszlo-inner">
+    <section class="founder-section section">
+      <div class="container founder-inner">
 
-        <div class="laszlo-text">
-          <p class="section-label">Founder</p>
-          <h2 class="display-md">László Kerezsi</h2>
-          <p class="laszlo-tagline">Visualization Director</p>
+        <!-- Text column -->
+        <div class="founder-text">
+          <p class="founder-name-label">László Kerezsi</p>
+          <p class="founder-role">Visualization Director</p>
 
-          <p class="laszlo-body">
+          <p class="body-text">
             László started Vision Graphics in 1996. Before AI was a buzzword,
             he was writing custom MAXScript tools to solve production problems.
             Before VR was mainstream, he was building walkthrough experiences
             for real estate clients.
           </p>
-          <p class="laszlo-body">
-            He works directly on client projects — from initial brief through
+          <p class="body-text">
+            He works directly on every client project — from initial brief through
             final delivery. No layers of project managers between you and the
             person making decisions about your visuals.
           </p>
-          <p class="laszlo-body">
+          <p class="body-text">
             Currently: integrating AI tools into production workflows,
             building custom desktop utilities for visualization pipelines,
             and preparing a presentation on AI-driven disruption in
             architectural visualization for the Ybl Conference 2026.
           </p>
 
-          <div class="laszlo-contact">
+          <div class="founder-contact">
             <a href="tel:+36309454179" class="contact-link">
               <span class="contact-link-label">Phone</span>
-              <span>+36 30 945 4179</span>
+              <span class="contact-link-value">+36 30 945 4179</span>
             </a>
             <a href="mailto:info@visiongraphics.eu" class="contact-link">
               <span class="contact-link-label">Email</span>
-              <span>info@visiongraphics.eu</span>
+              <span class="contact-link-value">info@visiongraphics.eu</span>
             </a>
           </div>
         </div>
 
-        <div class="laszlo-photo-col">
-          <div class="laszlo-photo-wrap">
+        <!-- Photo + stats column -->
+        <div class="founder-aside">
+          <div class="founder-photo-wrap">
             <img
               src="/laszlo.jpg"
               alt="László Kerezsi — Founder, Vision Graphics"
-              class="laszlo-photo"
-              width="240"
-              height="240"
+              class="founder-photo"
+              width="400"
+              height="520"
               loading="lazy"
             />
           </div>
-          <div class="laszlo-stats">
-          {[
-            { n: '30+',  l: 'Years in 3ds Max' },
-            { n: '15+',  l: 'Years with V-Ray' },
-            { n: '500+', l: 'Projects delivered' },
-            { n: '4',    l: 'Continents' },
-          ].map(s => (
-            <div class="stat-block">
-              <span class="stat-block-n">{s.n}</span>
-              <span class="stat-block-l">{s.l}</span>
-            </div>
-          ))}
+          <div class="founder-stats">
+            {[
+              { n: '30+',  l: 'Years in 3ds Max' },
+              { n: '15+',  l: 'Years with V-Ray' },
+              { n: '500+', l: 'Projects delivered' },
+              { n: '4',    l: 'Continents' },
+            ].map(s => (
+              <div class="stat-block">
+                <span class="stat-n">{s.n}</span>
+                <span class="stat-l">{s.l}</span>
+              </div>
+            ))}
           </div>
         </div>
 
       </div>
     </section>
 
-    <hr class="page-rule" />
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- SECTION 3 — HOW WE WORK                                -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <SectionBanner
+      image="/_img/banners/banner-workflow.jpg"
+      label="Structure"
+      title="How We Work"
+    />
 
-    <!-- ══════════════════════════════════════════════════════ -->
-    <!-- HOW WE WORK                                            -->
-    <!-- ══════════════════════════════════════════════════════ -->
     <section class="how-section section">
       <div class="container">
 
-        <div class="how-inner">
-          <div class="how-header">
-            <p class="section-label">Structure</p>
-            <h2 class="display-md">Small Team,<br />Big Results.</h2>
-          </div>
-          <div class="how-body">
-            <p>
-              Think of us as the conductors of an orchestra — we bring in the right
-              experts at the right time to make your project work. We're a small
-              core team that can tackle large-scale commissions through our network
-              of tested specialists.
+        <div class="two-col how-intro">
+          <div class="col-left">
+            <h3 class="section-sub-heading">Small Team, Big Results</h3>
+            <p class="body-lead">
+              Think of us as the conductors of an orchestra — we bring in the
+              right experts at the right time to make your project work.
             </p>
-            <p class="how-inhouse-label">We keep the most critical parts in-house:</p>
+          </div>
+          <div class="col-right">
+            <p class="body-text">
+              We're a small core team that can tackle large-scale commissions
+              through our network of tested specialists. You always work with
+              László directly. The team scales around the project, not around overhead.
+            </p>
+            <p class="inhouse-label">We keep the most critical parts in-house:</p>
             <ul class="how-list">
               <li>Project management — one point of contact, start to finish</li>
-              <li>Render farm operation and quality control before delivery</li>
+              <li>Render farm operation and quality control before every delivery</li>
               <li>Core 3D work requiring 30 years of judgement to get right</li>
-              <li>Final output — formats your team can actually use</li>
+              <li>Final output in the formats your team can actually use</li>
             </ul>
-            <a href="/contact/" class="btn btn-primary how-cta">Start a Conversation</a>
+            <a href="/contact/" class="btn btn-primary">Start a Conversation</a>
           </div>
         </div>
 
-        <!-- Network of experts -->
-        <div class="specialists-section">
+        <!-- Specialist network -->
+        <div class="specialists-block">
           <div class="specialists-header">
-            <p class="section-label">Our network of specialists</p>
-            <p class="specialists-intro">
+            <p class="block-label">Our Network of Experts</p>
+            <p class="body-text specialists-intro">
               When your project needs something special, we bring in the right expert.
               Every specialist below has been tested on real commissions.
             </p>
@@ -190,18 +210,18 @@ const specialists = [
           </div>
         </div>
 
-        <!-- Why this works -->
-        <div class="benefits-section">
-          <p class="section-label">Why this works so well</p>
+        <!-- Why it works -->
+        <div class="benefits-block">
+          <p class="block-label">Why This Works So Well</p>
           <div class="benefits-grid">
             {[
-              { t: 'Move quickly',       b: 'Small core means fast decisions. No committee approvals for scope changes.' },
-              { t: 'Right talent',        b: 'Cutting-edge specialists brought in exactly when needed — not carried as overhead.' },
-              { t: 'Quality stays high',  b: 'László reviews everything before it leaves the studio. No exceptions.' },
-              { t: 'Precise scope',       b: 'You get exactly what your project needs. Not a one-size-fits-all solution.' },
+              { t: 'Move quickly',        b: 'Small core means fast decisions. No committee approvals for scope changes.' },
+              { t: 'Right talent',         b: 'Cutting-edge specialists brought in when needed — not carried as overhead.' },
+              { t: 'Quality stays high',   b: 'László reviews everything before it leaves the studio. No exceptions.' },
+              { t: 'Precise scope',        b: 'You get exactly what your project needs, not a one-size-fits-all solution.' },
             ].map(b => (
               <div class="benefit-item">
-                <h3 class="benefit-title">{b.t}</h3>
+                <h4 class="benefit-title">{b.t}</h4>
                 <p class="benefit-body">{b.b}</p>
               </div>
             ))}
@@ -211,40 +231,53 @@ const specialists = [
       </div>
     </section>
 
-    <hr class="page-rule" />
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- SECTION 4 — TIMELINE                                   -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <SectionBanner
+      image="/_img/banners/banner-arch-viz.jpg"
+      label="History"
+      title="Our Story"
+    />
 
-    <!-- ══════════════════════════════════════════════════════ -->
-    <!-- TIMELINE                                               -->
-    <!-- ══════════════════════════════════════════════════════ -->
     <section class="timeline-section section">
       <div class="container">
-        <p class="section-label">History</p>
-        <h2 class="display-md timeline-heading">History &amp; Milestones</h2>
-      </div>
-      <div class="timeline container">
-        {timeline.map((era) => (
-          <div class="timeline-era">
-            <div class="era-left">
-              <span class="era-years">{era.years}</span>
-              <div class="era-line" aria-hidden="true"></div>
-            </div>
-            <div class="era-right">
-              <h3 class="era-title">{era.title}</h3>
-              <p class="era-summary">{era.summary}</p>
-              <ul class="era-projects">
-                {era.projects.map(p => (
-                  <li>{p}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        ))}
+
+        <p class="body-text timeline-intro">
+          30 years. 10 eras. A record of how the studio grew, adapted, and kept delivering.
+          Click any era to expand the details.
+        </p>
+
+        <div class="timeline" id="about-timeline">
+          {timeline.map((era, i) => (
+            <details class="era" data-index={i} open={i === timeline.length - 1}>
+              <summary class="era-summary-row">
+                <div class="era-left">
+                  <span class="era-years">{era.years}</span>
+                </div>
+                <div class="era-center">
+                  <span class="era-title">{era.title}</span>
+                </div>
+                <span class="era-toggle" aria-hidden="true"></span>
+              </summary>
+              <div class="era-body">
+                <div class="era-body-inner">
+                  <p class="era-text">{era.summary}</p>
+                  <ul class="era-projects">
+                    {era.projects.map(p => <li>{p}</li>)}
+                  </ul>
+                </div>
+              </div>
+            </details>
+          ))}
+        </div>
+
       </div>
     </section>
 
-    <!-- ══════════════════════════════════════════════════════ -->
+    <!-- ═══════════════════════════════════════════════════════ -->
     <!-- CTA                                                    -->
-    <!-- ══════════════════════════════════════════════════════ -->
+    <!-- ═══════════════════════════════════════════════════════ -->
     <section class="about-cta">
       <div class="container about-cta-inner">
         <div>
@@ -258,108 +291,137 @@ const specialists = [
   </div>
 </Page>
 
+<script>
+  // Interactive accordion timeline — smooth expand/collapse
+  document.querySelectorAll<HTMLDetailsElement>('.era').forEach(details => {
+    const body = details.querySelector<HTMLElement>('.era-body');
+    if (!body) return;
+
+    // Set initial height for animation
+    if (details.open) {
+      body.style.maxHeight = body.scrollHeight + 'px';
+    } else {
+      body.style.maxHeight = '0';
+    }
+
+    details.addEventListener('toggle', () => {
+      if (details.open) {
+        body.style.maxHeight = body.scrollHeight + 'px';
+      } else {
+        body.style.maxHeight = '0';
+      }
+    });
+  });
+</script>
+
 <style>
   .about-page { width: 100%; }
 
-  .page-rule {
-    border-color: var(--color-border);
-    margin-inline: auto;
-    max-width: 1320px;
+  /* ── Shared typography ───────────────────────────────────── */
+  .body-lead {
+    font-family: var(--font-body);
+    font-size: clamp(1rem, 1.5vw, 1.15rem);
+    font-weight: 300;
+    color: var(--color-text-muted);
+    line-height: 1.8;
+    margin: 0;
   }
 
-  /* ── Company overview section ────────────────────────────── */
-  .overview-inner {
+  .body-text {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 300;
+    color: var(--color-text-muted);
+    line-height: 1.8;
+    margin: 0;
+    max-width: 60ch;
+  }
+
+  .block-label {
+    font-family: var(--font-body);
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin: 0 0 1.25rem;
+  }
+
+  .section-sub-heading {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    font-weight: 300;
+    color: var(--color-text);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin: 0 0 1.25rem;
+  }
+
+  /* ── Two-column layout (shared) ──────────────────────────── */
+  .two-col {
     display: grid;
-    grid-template-columns: 1fr 1.6fr;
+    grid-template-columns: 1fr 1.4fr;
     gap: clamp(3rem, 6vw, 7rem);
     align-items: start;
   }
 
-  .overview-left { padding-top: 0.25rem; }
-
-  .overview-h2 { margin: 0.75rem 0 0; }
-
-  .overview-body {
-    font-size: 0.97rem;
-    color: var(--color-text-muted);
-    max-width: 62ch;
-    line-height: 1.8;
-    margin-bottom: 1rem;
+  /* ── Section 1: About the studio ────────────────────────── */
+  .about-studio {
+    padding-block: clamp(3rem, 5vw, 5rem);
   }
 
-  .overview-diff {
-    margin-top: 2rem;
-    padding-top: 2rem;
-    border-top: 1px solid var(--color-border);
+  .diff-block {
+    padding: 2rem;
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
   }
 
-  .overview-diff-label {
+  .diff-label {
     font-family: var(--font-body);
     font-size: 0.62rem;
     font-weight: 600;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--color-accent);
-    margin-bottom: 0.75rem;
+    margin: 0 0 0.75rem;
   }
 
-  /* ── László founder section ──────────────────────────────── */
-  .laszlo-inner {
+  /* ── Section 2: Founder ──────────────────────────────────── */
+  .founder-section {
+    padding-block: clamp(3rem, 5vw, 5rem);
+  }
+
+  .founder-inner {
     display: grid;
     grid-template-columns: 1fr auto;
     gap: clamp(3rem, 6vw, 7rem);
     align-items: start;
   }
 
-  .laszlo-photo-col {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2rem;
+  .founder-name-label {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 300;
+    color: var(--color-text);
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin: 0 0 0.4rem;
   }
 
-  .laszlo-photo-wrap {
-    width: 240px;
-    height: 240px;
-    border-radius: 50%;
-    overflow: hidden;
-    border: 1px solid var(--color-border);
-    flex-shrink: 0;
-    aspect-ratio: 1;
-  }
-
-  .laszlo-photo {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: top center;
-    display: block;
-    transition: filter 400ms ease;
-  }
-
-  .laszlo-photo-wrap:hover .laszlo-photo { filter: brightness(1.05); }
-
-  .laszlo-tagline {
+  .founder-role {
     font-family: var(--font-body);
     font-size: 0.7rem;
     font-weight: 600;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--color-accent);
-    margin: 0.4rem 0 1.75rem;
+    margin: 0 0 2rem;
   }
 
-  .laszlo-body {
-    font-size: 0.95rem;
-    color: var(--color-text-muted);
-    max-width: 58ch;
-    line-height: 1.8;
-    margin-bottom: 1rem;
-  }
+  .founder-text .body-text { margin-bottom: 1rem; max-width: 58ch; }
+  .founder-text .body-text:last-of-type { margin-bottom: 2rem; }
 
-  .laszlo-body:last-of-type { margin-bottom: 2rem; }
-
-  .laszlo-contact {
+  .founder-contact {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
@@ -370,15 +432,11 @@ const specialists = [
     display: flex;
     align-items: center;
     gap: 1rem;
-    font-size: 0.88rem;
-    color: var(--color-text-muted);
     text-decoration: none;
+    padding: 0.4rem 0;
     cursor: pointer;
-    transition: color 200ms ease;
-    padding: 0.35rem 0;
+    transition: color 200ms;
   }
-
-  .contact-link:hover { color: var(--color-text); }
 
   .contact-link-label {
     font-family: var(--font-body);
@@ -390,75 +448,93 @@ const specialists = [
     min-width: 3.5rem;
   }
 
-  /* ── Stat blocks — 2×2 grid ──────────────────────────────── */
-  .laszlo-stats {
+  .contact-link-value {
+    font-size: 0.88rem;
+    color: var(--color-text-muted);
+    transition: color 200ms;
+  }
+
+  .contact-link:hover .contact-link-value { color: var(--color-text); }
+
+  /* Photo — portrait rectangle, squared corners */
+  .founder-aside {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+  }
+
+  .founder-photo-wrap {
+    width: 320px;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  .founder-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    display: block;
+    transition: transform 600ms ease;
+  }
+
+  .founder-photo-wrap:hover .founder-photo { transform: scale(1.03); }
+
+  /* Stat blocks */
+  .founder-stats {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1px;
     background: var(--color-border);
     border: 1px solid var(--color-border);
-    align-self: start;
-    min-width: 260px;
+    width: 100%;
   }
 
   .stat-block {
     background: var(--color-surface);
-    padding: 1.75rem 1.5rem;
+    padding: 1.5rem 1.25rem;
     display: flex;
     flex-direction: column;
-    gap: 0.35rem;
+    gap: 0.3rem;
+    transition: background 200ms;
   }
 
-  .stat-block-n {
+  .stat-block:hover { background: var(--color-surface-2); }
+
+  .stat-n {
     font-family: var(--font-display);
-    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-size: clamp(1.75rem, 3vw, 2.75rem);
     font-weight: 300;
     color: var(--color-accent);
     line-height: 1;
     letter-spacing: -0.03em;
   }
 
-  .stat-block-l {
+  .stat-l {
     font-family: var(--font-body);
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     font-weight: 400;
     color: var(--color-text-muted);
-    letter-spacing: 0.02em;
     line-height: 1.4;
   }
 
-  /* ── How We Work section ─────────────────────────────────── */
-  .how-inner {
-    display: grid;
-    grid-template-columns: 1fr 1.3fr;
-    gap: clamp(3rem, 6vw, 7rem);
-    align-items: start;
-    margin-bottom: 4rem;
-  }
+  /* ── Section 3: How We Work ──────────────────────────────── */
+  .how-section { padding-block: clamp(3rem, 5vw, 5rem); }
 
-  .how-header h2 { margin: 0.75rem 0 0; }
+  .how-intro { margin-bottom: 4rem; }
 
-  .how-body {
-    display: flex;
-    flex-direction: column;
-    gap: 1.1rem;
-  }
-
-  .how-body p {
-    font-size: 0.95rem;
-    color: var(--color-text-muted);
-    max-width: 58ch;
-    line-height: 1.8;
-  }
-
-  .how-inhouse-label {
+  .inhouse-label {
     font-family: var(--font-body);
     font-size: 0.62rem;
     font-weight: 600;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--color-text-faint);
-    margin-bottom: 0 !important;
+    margin: 1.5rem 0 0.75rem;
   }
 
   .how-list {
@@ -467,6 +543,7 @@ const specialists = [
     display: flex;
     flex-direction: column;
     gap: 0.45rem;
+    margin-bottom: 2rem;
   }
 
   .how-list li {
@@ -474,7 +551,7 @@ const specialists = [
     color: var(--color-text-muted);
     padding-left: 1.2rem;
     position: relative;
-    line-height: 1.55;
+    line-height: 1.6;
   }
 
   .how-list li::before {
@@ -482,35 +559,26 @@ const specialists = [
     position: absolute;
     left: 0;
     color: var(--color-accent);
-    font-size: 0.7rem;
-    top: 0.12em;
+    font-size: 0.68rem;
+    top: 0.18em;
   }
 
-  .how-cta { align-self: flex-start; }
-
-  /* ── Specialist network grid ─────────────────────────────── */
-  .specialists-section {
-    padding-top: 3rem;
+  /* Specialist grid */
+  .specialists-block {
     border-top: 1px solid var(--color-border);
-    margin-bottom: 3.5rem;
+    padding-top: 3rem;
+    margin-bottom: 3rem;
   }
 
   .specialists-header {
     display: grid;
-    grid-template-columns: 1fr 1.3fr;
+    grid-template-columns: 1fr 1.4fr;
     gap: clamp(3rem, 6vw, 7rem);
-    margin-bottom: 2.5rem;
+    margin-bottom: 2rem;
     align-items: start;
   }
 
-  .specialists-intro {
-    font-size: 0.9rem;
-    color: var(--color-text-muted);
-    line-height: 1.7;
-    max-width: 56ch;
-    margin: 0;
-    padding-top: 0.1rem;
-  }
+  .specialists-intro { max-width: 56ch; }
 
   .specialists-grid {
     display: grid;
@@ -525,8 +593,8 @@ const specialists = [
     padding: 1.25rem 1.5rem;
     display: flex;
     flex-direction: column;
-    gap: 0.35rem;
-    transition: background 200ms ease;
+    gap: 0.3rem;
+    transition: background 200ms;
   }
 
   .specialist-card:hover { background: var(--color-surface-2); }
@@ -541,113 +609,170 @@ const specialists = [
   }
 
   .specialist-desc {
-    font-size: 0.75rem;
+    font-size: 0.73rem;
     color: var(--color-text-faint);
     line-height: 1.55;
     margin: 0;
-    max-width: none;
   }
 
-  /* ── Benefits grid ───────────────────────────────────────── */
-  .benefits-section {
-    padding-top: 3rem;
+  /* Benefits */
+  .benefits-block {
     border-top: 1px solid var(--color-border);
+    padding-top: 3rem;
   }
 
   .benefits-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 2.5rem;
-    margin-top: 1.75rem;
+    gap: 2rem;
+    margin-top: 1.5rem;
   }
 
-  .benefit-item {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
+  .benefit-item { display: flex; flex-direction: column; gap: 0.5rem; }
 
   .benefit-title {
     font-family: var(--font-display);
-    font-size: 1.2rem;
-    font-weight: 300;
+    font-size: 1.25rem;
+    font-weight: 400;
     color: var(--color-text);
     letter-spacing: -0.01em;
+    margin: 0;
     line-height: 1.1;
   }
 
   .benefit-body {
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     color: var(--color-text-muted);
     line-height: 1.65;
     margin: 0;
-    max-width: none;
   }
 
-  /* ── Timeline ────────────────────────────────────────────── */
-  .timeline-heading { margin: 0.75rem 0 2.5rem; }
+  /* ── Section 4: Interactive Timeline ─────────────────────── */
+  .timeline-section { padding-block: clamp(3rem, 5vw, 5rem); }
 
-  .timeline {
-    display: flex;
-    flex-direction: column;
+  .timeline-intro {
+    max-width: 68ch;
+    margin-bottom: 2.5rem;
+    color: var(--color-text-faint);
+    font-size: 0.88rem;
   }
 
-  .timeline-era {
-    display: grid;
-    grid-template-columns: 160px 1fr;
-    gap: 3rem;
-    padding-block: 2.75rem;
+  .timeline { display: flex; flex-direction: column; }
+
+  /* Era — details/summary accordion */
+  .era {
     border-top: 1px solid var(--color-border);
+    list-style: none;
   }
 
-  .timeline-era:last-child { border-bottom: 1px solid var(--color-border); }
+  .era:last-child { border-bottom: 1px solid var(--color-border); }
 
-  .era-left {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-    padding-top: 0.25rem;
+  .era-summary-row {
+    display: grid;
+    grid-template-columns: 160px 1fr auto;
+    gap: 2rem;
+    align-items: center;
+    padding: 1.5rem 0;
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+    transition: background 200ms;
   }
+
+  /* Remove default browser marker */
+  .era-summary-row::-webkit-details-marker { display: none; }
+  .era-summary-row::marker { display: none; }
+
+  .era-summary-row:hover { background: rgba(255,255,255,0.02); }
 
   .era-years {
     font-family: var(--font-mono);
-    font-size: 0.78rem;
+    font-size: 0.8rem;
     font-weight: 400;
     color: var(--color-accent);
     letter-spacing: 0.06em;
     white-space: nowrap;
   }
 
-  .era-line {
-    width: 1px;
-    flex: 1;
-    min-height: 2rem;
-    background: linear-gradient(to bottom, var(--color-border), transparent);
-    margin-left: 0.3rem;
-  }
-
-  .era-right {
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-  }
-
   .era-title {
     font-family: var(--font-display);
-    font-size: clamp(1.4rem, 2.5vw, 2rem);
+    font-size: clamp(1.3rem, 2.5vw, 1.9rem);
     font-weight: 300;
     color: var(--color-text);
     letter-spacing: -0.02em;
     line-height: 1.1;
   }
 
-  .era-summary {
+  /* +/× toggle icon */
+  .era-toggle {
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--color-border);
+    border-radius: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+    transition: border-color 200ms, background 200ms;
+  }
+
+  .era-toggle::before,
+  .era-toggle::after {
+    content: '';
+    position: absolute;
+    background: var(--color-text-faint);
+    border-radius: 1px;
+    transition: transform 250ms ease, opacity 200ms ease, background 200ms;
+  }
+
+  /* Horizontal bar */
+  .era-toggle::before {
+    width: 12px;
+    height: 1px;
+  }
+
+  /* Vertical bar */
+  .era-toggle::after {
+    width: 1px;
+    height: 12px;
+  }
+
+  /* Open state — rotate to × */
+  .era[open] .era-toggle {
+    border-color: var(--color-accent);
+    background: rgba(218, 19, 19, 0.08);
+  }
+
+  .era[open] .era-toggle::before,
+  .era[open] .era-toggle::after { background: var(--color-accent); }
+
+  .era[open] .era-toggle::before { transform: rotate(45deg); }
+  .era[open] .era-toggle::after  { transform: rotate(45deg); }
+
+  .era[open] .era-title { color: var(--color-text); }
+
+  /* Animated body */
+  .era-body {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 350ms cubic-bezier(0.4, 0, 0.2, 1);
+    padding-left: calc(160px + 2rem);  /* align with title column */
+  }
+
+  .era-body-inner {
+    padding-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .era-text {
     font-size: 0.88rem;
     color: var(--color-text-muted);
     line-height: 1.75;
     max-width: 65ch;
-    margin-top: 0.1rem;
+    margin: 0;
   }
 
   .era-projects {
@@ -656,7 +781,7 @@ const specialists = [
     display: flex;
     flex-wrap: wrap;
     gap: 0.3rem 0.5rem;
-    margin-top: 0.5rem;
+    margin: 0;
   }
 
   .era-projects li {
@@ -665,11 +790,10 @@ const specialists = [
     font-weight: 400;
     color: var(--color-text-faint);
     letter-spacing: 0.04em;
-    padding: 0.18rem 0.55rem;
+    padding: 0.2rem 0.55rem;
     border: 1px solid var(--color-border);
     border-radius: 1px;
     transition: color 200ms ease, border-color 200ms ease;
-    cursor: default;
   }
 
   .era-projects li:hover {
@@ -709,35 +833,31 @@ const specialists = [
   }
 
   /* ── Responsive ──────────────────────────────────────────── */
-  @media (max-width: 1200px) {
-    .specialists-grid { grid-template-columns: repeat(3, 1fr); }
-    .benefits-grid { grid-template-columns: repeat(2, 1fr); }
-  }
-
   @media (max-width: 1100px) {
-    .overview-inner { grid-template-columns: 1fr; gap: 2rem; }
-    .laszlo-inner { grid-template-columns: 1fr; gap: 3rem; }
-    .laszlo-photo-col { flex-direction: row; align-items: flex-start; gap: 2rem; }
-    .laszlo-stats { grid-template-columns: repeat(4, 1fr); min-width: unset; width: 100%; }
-    .how-inner { grid-template-columns: 1fr; gap: 2rem; }
+    .two-col            { grid-template-columns: 1fr; gap: 2rem; }
+    .founder-inner      { grid-template-columns: 1fr; gap: 2rem; }
+    .founder-aside      { flex-direction: row; align-items: flex-start; gap: 2rem; }
+    .founder-photo-wrap { width: 240px; }
+    .founder-stats      { grid-template-columns: repeat(4, 1fr); width: auto; flex: 1; }
     .specialists-header { grid-template-columns: 1fr; gap: 1rem; }
+    .benefits-grid      { grid-template-columns: repeat(2, 1fr); }
   }
 
-  @media (max-width: 768px) {
-    .laszlo-photo-col { flex-direction: column; align-items: flex-start; }
-    .laszlo-photo-wrap { width: 180px; height: 180px; }
-    .laszlo-stats { grid-template-columns: repeat(2, 1fr); }
-    .specialists-grid { grid-template-columns: repeat(2, 1fr); }
-    .benefits-grid { grid-template-columns: 1fr; gap: 1.5rem; }
-    .timeline-era { grid-template-columns: 1fr; gap: 0.5rem; }
-    .era-line { display: none; }
-    .about-cta-inner { flex-direction: column; align-items: flex-start; }
-    .about-cta { padding-block: 3.5rem; }
+  @media (max-width: 860px) {
+    .specialists-grid   { grid-template-columns: repeat(2, 1fr); }
+    .era-summary-row    { grid-template-columns: 120px 1fr auto; gap: 1rem; }
+    .era-body           { padding-left: 0; }
   }
 
-  @media (max-width: 480px) {
-    .laszlo-stats { grid-template-columns: 1fr 1fr; }
-    .specialists-grid { grid-template-columns: 1fr; }
-    .timeline-era { padding-block: 2rem; }
+  @media (max-width: 600px) {
+    .founder-aside      { flex-direction: column; }
+    .founder-photo-wrap { width: 100%; max-width: 280px; }
+    .founder-stats      { grid-template-columns: repeat(2, 1fr); width: 100%; }
+    .specialists-grid   { grid-template-columns: 1fr; }
+    .benefits-grid      { grid-template-columns: 1fr; gap: 1.5rem; }
+    .era-summary-row    { grid-template-columns: 1fr auto; gap: 0.75rem; }
+    .era-years          { display: none; }
+    .about-cta-inner    { flex-direction: column; align-items: flex-start; }
+    .about-cta          { padding-block: 3.5rem; }
   }
 </style>

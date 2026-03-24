@@ -1,0 +1,112 @@
+---
+// src/components/ui/SectionBanner.astro
+// Mid-page section header banner — smaller variant of PageHero
+// Used to introduce major sections within a page (e.g. About sections)
+
+interface Props {
+  image:     string;
+  label:     string;
+  title:     string;
+  imageAlt?: string;
+  align?:    'left' | 'center';
+}
+
+const {
+  image,
+  label,
+  title,
+  imageAlt = '',
+  align    = 'left',
+} = Astro.props;
+---
+
+<div class={`section-banner section-banner--${align}`}>
+  <div class="section-banner__bg">
+    <img src={image} alt={imageAlt} loading="lazy" decoding="async" />
+  </div>
+  <div class="section-banner__overlay" aria-hidden="true"></div>
+  <div class="section-banner__content container">
+    <p class="section-banner__label">{label}</p>
+    <h2 class="section-banner__title">{title}</h2>
+  </div>
+</div>
+
+<style>
+  .section-banner {
+    position: relative;
+    height: clamp(180px, 22vw, 300px);
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    width: 100%;
+  }
+
+  /* Background image */
+  .section-banner__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .section-banner__bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 30%;
+    display: block;
+  }
+
+  /* Dark gradient — darker than PageHero since these are smaller */
+  .section-banner__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(
+      105deg,
+      rgba(10, 10, 10, 0.92) 0%,
+      rgba(10, 10, 10, 0.72) 55%,
+      rgba(10, 10, 10, 0.45) 100%
+    );
+  }
+
+  .section-banner--center .section-banner__overlay {
+    background: linear-gradient(
+      180deg,
+      rgba(10, 10, 10, 0.3) 0%,
+      rgba(10, 10, 10, 0.85) 100%
+    );
+  }
+
+  /* Content */
+  .section-banner__content {
+    position: relative;
+    z-index: 2;
+    padding-bottom: clamp(1.5rem, 3vw, 2.25rem);
+    padding-top: 1.5rem;
+    width: 100%;
+  }
+
+  .section-banner__label {
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin: 0 0 0.6rem;
+    line-height: 1;
+  }
+
+  .section-banner__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 300;
+    color: var(--color-text);
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin: 0;
+  }
+
+  .section-banner--center .section-banner__content { text-align: center; }
+  .section-banner--center .section-banner__label { justify-content: center; display: flex; }
+</style>
