@@ -2,7 +2,6 @@
 // src/pages/about/index.astro
 
 import Page          from '../../layouts/Page.astro';
-import PageHero      from '../../components/ui/PageHero.astro';
 import SectionBanner from '../../components/ui/SectionBanner.astro';
 import timeline      from '../../data/about-timeline.json';
 
@@ -33,21 +32,14 @@ const specialists = [
   <div class="about-page">
 
     <!-- ═══════════════════════════════════════════════════════ -->
-    <!-- PAGE HERO                                               -->
-    <!-- ═══════════════════════════════════════════════════════ -->
-    <PageHero
-      image="/_img/banners/banner-general.jpg"
-      label="30 Years"
-      title="Making Complex Ideas Visible"
-    />
-
-    <!-- ═══════════════════════════════════════════════════════ -->
-    <!-- SECTION 1 — ABOUT THE STUDIO                           -->
+    <!-- PAGE HEADER / SECTION 1 — ABOUT THE STUDIO            -->
     <!-- ═══════════════════════════════════════════════════════ -->
     <SectionBanner
       image="/_img/banners/banner-large-scale.jpg"
       label="Vision Graphics"
       title="About the Studio"
+      headingLevel="h1"
+      size="page"
     />
 
     <section class="about-studio section">

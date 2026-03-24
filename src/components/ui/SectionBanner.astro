@@ -4,30 +4,36 @@
 // Used to introduce major sections within a page (e.g. About sections)
 
 interface Props {
-  image:     string;
-  label:     string;
-  title:     string;
-  imageAlt?: string;
-  align?:    'left' | 'center';
+  image:         string;
+  label:         string;
+  title:         string;
+  imageAlt?:     string;
+  align?:        'left' | 'center';
+  headingLevel?: 'h1' | 'h2';
+  size?:         'page' | 'section';   // page = taller hero-like, section = compact mid-page
 }
 
 const {
   image,
   label,
   title,
-  imageAlt = '',
-  align    = 'left',
+  imageAlt     = '',
+  align        = 'left',
+  headingLevel = 'h2',
+  size         = 'section',
 } = Astro.props;
+
+const HeadingTag = headingLevel;
 ---
 
-<div class={`section-banner section-banner--${align}`}>
+<div class={`section-banner section-banner--${align} section-banner--${size}`}>
   <div class="section-banner__bg">
     <img src={image} alt={imageAlt} loading="lazy" decoding="async" />
   </div>
   <div class="section-banner__overlay" aria-hidden="true"></div>
   <div class="section-banner__content container">
     <p class="section-banner__label">{label}</p>
-    <h2 class="section-banner__title">{title}</h2>
+    <HeadingTag class="section-banner__title">{title}</HeadingTag>
   </div>
 </div>
 
@@ -39,6 +45,11 @@ const {
     display: flex;
     align-items: flex-end;
     width: 100%;
+  }
+
+  /* Page-header size — matches PageHero height */
+  .section-banner--page {
+    height: clamp(320px, 45vw, 560px);
   }
 
   /* Background image */
