@@ -28,10 +28,11 @@ Target: rebuild in Astro, deploy to Cloudflare Pages.
 | Styling | Tailwind CSS v3 |
 | Interactivity | React islands (`client:load`) |
 | Search | Pagefind (post-build, static) |
-| Images | `astro:assets` — auto WebP/AVIF |
+| Images | Raw `<img>` tags — images served from Cloudflare R2 |
 | Content | Astro Content Collections (typed) |
-| Hosting | Cloudflare Pages |
-| CI/CD | GitHub → Cloudflare Pages (auto-deploy on push) |
+| Hosting | Cloudflare Pages (staging: visiongraphics-astro.pages.dev) |
+| Image Storage | Cloudflare R2 bucket: `visiongraphics-images` |
+| CI/CD | GitHub → Cloudflare Pages (auto-deploy on push to master) |
 | Email | Google Workspace (not on this server — do not configure) |
 
 ---
@@ -61,10 +62,34 @@ npm run preview      # preview built output
 ## Deployment
 
 - Platform: Cloudflare Pages
+- Staging URL: https://visiongraphics-astro.pages.dev
+- GitHub repo: https://github.com/kerezsi/visiongraphics-astro
 - Build command: `npm run build`
 - Output directory: `dist`
 - Node version: 20
 - Environment variables: none required for static build
+
+### Image Hosting (Cloudflare R2)
+
+Images are NOT in Git. They live in R2 bucket `visiongraphics-images`.
+Public R2 URL: `https://pub-681025dcca3b4bad99aa4a4d65ecc023.r2.dev`
+
+**URL structure:**
+- Portfolio images: `/_img/portfolio/[project-slug]/[filename]`  → 302 redirect → R2 `portfolio/[project-slug]/[filename]`
+- Tech images:      `/_img/vision-tech/[slug]/[filename]`         → 302 redirect → R2 `vision-tech/[slug]/[filename]`
+- Root images (hero, laszlo): `/hero-bg.jpg` etc.                 → 302 redirect → R2 root
+
+**Why `/_img/` prefix?** Cloudflare Pages applies 302 redirects BEFORE static files.
+`/portfolio/*` would intercept HTML page routes. `/_img/portfolio/*` avoids the conflict.
+
+**To upload images:**
+```
+upload-images.bat   (in project root — uses rclone)
+```
+
+**rclone remote name:** `r2`
+**rclone bucket:** `r2:visiongraphics-images`
+**rclone flag required:** `--s3-no-check-bucket` (API token has no bucket management perms)
 
 ---
 
@@ -77,16 +102,18 @@ else steps back. Think: deep space, warm light, refined type.
 
 ### Color Palette (CSS variables — defined in `src/styles/global.css`)
 
+Dark neutral — matched to dev.visiongraphics.eu (no blue tint).
+
 ```css
---color-bg:           #0a0a12;   /* near-black blue-black — page background */
---color-surface:      #11111e;   /* slightly lighter — cards, panels */
---color-surface-2:    #1a1a2e;   /* raised surfaces, hover states */
---color-border:       #2a2a42;   /* subtle borders */
---color-accent:       #c8a96e;   /* warm gold — primary accent, headings highlight */
---color-accent-2:     #e85d3a;   /* ember/coral — CTAs, key actions */
---color-text:         #f0ede8;   /* warm white — primary text */
---color-text-muted:   #8b8ba7;   /* secondary text, captions */
---color-text-faint:   #4a4a62;   /* disabled, placeholders */
+--color-bg:          #1a1a1a;   /* page background */
+--color-surface:     #121212;   /* cards, panels */
+--color-surface-2:   #0f0f0f;   /* raised surfaces, hover */
+--color-border:      #2a2a2a;   /* subtle borders */
+--color-accent:      #da1313;   /* brand red — primary accent, CTAs */
+--color-accent-2:    #da1313;   /* same brand red */
+--color-text:        #f0f0f1;   /* near-white — primary text */
+--color-text-muted:  #bbbbbb;   /* secondary text, captions */
+--color-text-faint:  #7a7a7a;   /* disabled, placeholders */
 ```
 
 ### Typography
@@ -127,29 +154,34 @@ DM+Mono:wght@400
 theme: {
   extend: {
     fontFamily: {
-      display: ['Cormorant Garamond', 'Georgia', 'serif'],
-      body: ['DM Sans', 'system-ui', 'sans-serif'],
-      mono: ['DM Mono', 'monospace'],
+      display: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+      body:    ['"DM Sans"', 'system-ui', 'sans-serif'],
+      mono:    ['"DM Mono"', 'monospace'],
     },
     colors: {
-      bg:       '#0a0a12',
-      surface:  '#11111e',
-      surface2: '#1a1a2e',
-      border:   '#2a2a42',
-      accent:   '#c8a96e',
-      accent2:  '#e85d3a',
-    }
+      bg:       '#1a1a1a',
+      surface:  '#121212',
+      surface2: '#0f0f0f',
+      border:   '#2a2a2a',
+      accent:   '#da1313',
+      accent2:  '#da1313',
+      muted:    '#bbbbbb',
+      faint:    '#7a7a7a',
+    },
   }
 }
 ```
 
 ### Visual Details
-- Subtle grain texture overlay on `body` (SVG noise, opacity 0.03)
-- Cards: `bg-surface border border-border rounded-sm` — squared corners, not rounded-xl
-- Hover on cards: border-color shifts to `accent` with `transition-colors duration-300`
+- Cards: `bg-surface border rounded-sm` — squared corners (--radius-sm: 2px), not rounded-xl
+- **Portfolio cards** (projects): white border `rgba(255,255,255,0.12)` → hover `rgba(255,255,255,0.35)`
+- **Tech cards** (vision-tech): red border `var(--color-accent)` always
+- Hover on all cards: `transform: translateY(-2px)` + border-color shift
+- Card image: `aspect-ratio: 16/9`, `object-fit: cover`, `overflow: hidden`
+- Card body layout: category badge + year (top row) → title → client/location sub
 - Section dividers: single pixel `border-border` lines, or generous whitespace — never decorative squiggles
-- Images: always `object-cover`, never stretched, overflow hidden
 - No box shadows — use border + background contrast instead
+- Image lightbox: `ImageLightbox.tsx` React island — used on all gallery sections
 
 ---
 

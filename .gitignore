@@ -28,9 +28,11 @@ Thumbs.db
 public/pagefind/
 
 # Images — stored in Cloudflare R2, not Git
+# Upload with: upload-images.bat
 public/portfolio/
 public/vision-tech/
 public/hero-bg.jpg
 public/hero-bg-2.jpg
 public/hero-bg-3.jpg
+public/hero-about.jpg
 public/laszlo.jpg
