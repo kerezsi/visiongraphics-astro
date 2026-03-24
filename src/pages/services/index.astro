@@ -87,19 +87,14 @@ const services = [
   />
   <div class="services-page">
 
-    <!-- Hero -->
-    <section class="services-hero section">
-      <div class="page-hero-bg" aria-hidden="true"></div>
-      <div class="page-hero-overlay" aria-hidden="true"></div>
-      <div class="container page-hero-content">
-        <p class="section-label">Services</p>
-        <h1 class="display-xl services-h1">Show It.<br />Scale It.<br /><em>Build It.</em></h1>
+    <div class="services-intro section-sm">
+      <div class="container">
         <p class="services-sub">
           From single architectural renders to airport-scale animations.
           From custom MAXScript tools to AI-enhanced image pipelines.
         </p>
       </div>
-    </section>
+    </div>
 
     <hr class="page-rule" />
 
@@ -158,39 +153,8 @@ const services = [
 <style>
   .services-page { width: 100%; }
 
-  .services-hero {
-    padding-top: clamp(3rem, 6vw, 5rem);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .page-hero-bg {
-    position: absolute;
-    inset: 0;
-    background: url('/hero-bg-3.jpg') center/cover no-repeat;
-    z-index: 0;
-  }
-
-  .page-hero-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(105deg, rgba(26,26,26,0.93) 0%, rgba(26,26,26,0.75) 60%, rgba(26,26,26,0.55) 100%);
-    z-index: 1;
-  }
-
-  .page-hero-content {
-    position: relative;
-    z-index: 2;
-  }
-
-  .services-h1 {
-    margin: 0.75rem 0 1.5rem;
-    line-height: 0.92;
-  }
-
-  .services-h1 em {
-    font-style: italic;
-    color: var(--color-accent);
+  .services-intro {
+    padding-block: clamp(1.5rem, 3vw, 2rem);
   }
 
   .services-sub {
