@@ -19,9 +19,9 @@ export default {
         faint:    '#7a7a7a',
       },
       fontSize: {
-        'display-xl': ['clamp(3rem, 8vw, 6rem)', { lineHeight: '1.0', letterSpacing: '-0.02em' }],
-        'display-lg': ['clamp(2.5rem, 6vw, 4.5rem)', { lineHeight: '1.05', letterSpacing: '-0.02em' }],
-        'display-md': ['clamp(1.75rem, 4vw, 3rem)',  { lineHeight: '1.1',  letterSpacing: '-0.01em' }],
+        'display-xl': ['clamp(3.2rem, 1.75rem + 2.33vw, 6.4rem)', { lineHeight: '1.0', letterSpacing: '-0.02em' }],
+        'display-lg': ['clamp(2.5rem, 1.36rem + 1.82vw, 5rem)',  { lineHeight: '1.05', letterSpacing: '-0.02em' }],
+        'display-md': ['clamp(1.75rem, 0.95rem + 1.27vw, 3.5rem)', { lineHeight: '1.1', letterSpacing: '-0.01em' }],
       },
       spacing: {
         'section': '6rem',
