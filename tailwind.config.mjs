@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        display: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+        display: ['"Work Sans"', 'system-ui', 'sans-serif'],
         body:    ['"Work Sans"', 'system-ui', 'sans-serif'],
         mono:    ['"DM Mono"', 'monospace'],
       },
