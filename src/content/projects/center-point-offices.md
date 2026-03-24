@@ -1,0 +1,50 @@
+---
+title: "Center Point Offices"
+year: 2005
+location: "Budapest, Hungary"
+designer: "Zoboki-Demeter"
+clientType: "architect"
+categories:
+  - office
+features: []
+tags: []
+coverImage: "/portfolio/center-point-offices/01.jpg"
+published: true
+featured: false
+techniques:
+  - aerial-integration
+  - exterior
+images:
+  - src: "/portfolio/center-point-offices/01.jpg"
+    alt: ""
+  - src: "/portfolio/center-point-offices/02.jpg"
+    alt: ""
+  - src: "/portfolio/center-point-offices/03.jpg"
+    alt: ""
+  - src: "/portfolio/center-point-offices/04.jpg"
+    alt: ""
+  - src: "/portfolio/center-point-offices/05.jpg"
+    alt: ""
+  - src: "/portfolio/center-point-offices/06.jpg"
+    alt: ""
+  - src: "/portfolio/center-point-offices/07.jpg"
+    alt: ""
+  - src: "/portfolio/center-point-offices/08.jpg"
+    alt: ""
+  - src: "/portfolio/center-point-offices/09.jpg"
+    alt: ""
+  - src: "/portfolio/center-point-offices/10.jpg"
+    alt: ""
+  - src: "/portfolio/center-point-offices/11.jpg"
+    alt: ""
+  - src: "/portfolio/center-point-offices/12.jpg"
+    alt: ""
+  - src: "/portfolio/center-point-offices/13.jpg"
+    alt: ""
+  - src: "/portfolio/center-point-offices/14.jpg"
+    alt: ""
+  - src: "/portfolio/center-point-offices/15.jpg"
+    alt: ""
+  - src: "/portfolio/center-point-offices/16.jpg"
+    alt: ""
+---

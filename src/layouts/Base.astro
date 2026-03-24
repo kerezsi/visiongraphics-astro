@@ -1,0 +1,80 @@
+---
+// src/layouts/Base.astro
+// Root HTML shell — used by all pages
+
+interface Props {
+  title:       string;
+  description?: string;
+  image?:      string;  // OG image path
+  noIndex?:    boolean;
+}
+
+const {
+  title,
+  description = 'Expert 3D architectural visualization. Budapest-based, working globally since 1996. Stills, animation, VR, AI-enhanced workflows.',
+  image = '/og-default.jpg',
+  noIndex = false,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+const fullTitle = title === 'Vision Graphics'
+  ? 'Vision Graphics Kft. — Architectural Visualization, Budapest'
+  : `${title} | Vision Graphics Kft.`;
+---
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="generator" content={Astro.generator} />
+
+  <!-- Primary Meta -->
+  <title>{fullTitle}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  {noIndex && <meta name="robots" content="noindex, nofollow" />}
+
+  <!-- Open Graph -->
+  <meta property="og:title"       content={fullTitle} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image"       content={new URL(image, Astro.site).toString()} />
+  <meta property="og:url"         content={canonical} />
+  <meta property="og:type"        content="website" />
+  <meta property="og:site_name"   content="Vision Graphics Kft." />
+
+  <!-- Twitter -->
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:title"       content={fullTitle} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image"       content={new URL(image, Astro.site).toString()} />
+
+  <!-- Favicon -->
+  <link rel="icon"             type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon"             type="image/png"     href="/favicon.png" />
+  <link rel="apple-touch-icon"                      href="/apple-touch-icon.png" />
+
+  <!-- Fonts (preconnect first, then load) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400&display=swap"
+  />
+
+  <!-- Global Styles -->
+  <link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
+</head>
+<body>
+  <slot />
+
+  <!-- Pagefind (loaded async, only activates on search pages) -->
+  <script>
+    // Pagefind is initialized per-page — see search components
+  </script>
+</body>
+</html>
+
+<style is:global>
+  @import '../styles/global.css';
+</style>

@@ -1,0 +1,35 @@
+---
+title: "Esztergom Ship Station"
+year: 2002
+location: "Esztergom, Hungary"
+designer: "Puhl Antal"
+clientType: "architect"
+description: "The Esztergom International Ship Station competition in 2002 for Puhl Antal. This project involved creating photo-integrated architectural visualizations that showcased the proposed design for the new ship station in Esztergom, a historic city located on the Danube River."
+story: |
+  The competition for the Esztergom Ship Station required a design that would respect the city's rich architectural heritage while creating a modern facility to serve river tourism along the Danube. This project was particularly significant as it aimed to enhance Esztergom's connection to the Danube, reinforcing the city's historical relationship with the river that had been central to its development since medieval times.
+tasks: |
+  For the Esztergom International Ship Station competition, we created sophisticated photo-integrated renderings that seamlessly blended the proposed architectural design into actual photographs of the site. These visualizations were crucial in communicating how the new ship station would harmonize with Esztergom's existing urban fabric and riverscape.
+categories:
+  - transportation
+features: []
+tags: []
+coverImage: "/portfolio/esztergom-ship-station/01.jpg"
+published: true
+featured: false
+techniques:
+  - exterior
+  - photo-integration
+images:
+  - src: "/portfolio/esztergom-ship-station/01.jpg"
+    alt: ""
+  - src: "/portfolio/esztergom-ship-station/02.jpg"
+    alt: ""
+  - src: "/portfolio/esztergom-ship-station/03.jpg"
+    alt: ""
+  - src: "/portfolio/esztergom-ship-station/04.jpg"
+    alt: ""
+  - src: "/portfolio/esztergom-ship-station/05.jpg"
+    alt: ""
+  - src: "/portfolio/esztergom-ship-station/06.jpg"
+    alt: ""
+---

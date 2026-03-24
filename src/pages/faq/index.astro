@@ -1,0 +1,355 @@
+---
+// src/pages/faq/index.astro
+
+import Page from '../../layouts/Page.astro';
+
+const sections = [
+  {
+    title: 'Getting Started',
+    items: [
+      {
+        q: 'What do you need from me to start?',
+        a: 'Plans (CAD, PDF, sketch — any level of detail), references you like, and your deadline. We\'ll guide you through the rest. You don\'t need a polished brief — we\'re used to working from rough materials.',
+      },
+      {
+        q: 'How do I get a quote?',
+        a: 'Send us your plans and a brief description of what you need. We\'ll respond with a realistic scope and price within one business day. Call +36 30 945 4179 or email info@visiongraphics.eu.',
+      },
+      {
+        q: 'Do you work in Hungarian and English?',
+        a: 'Yes. László is fluent in both. Most of our international project communication is in English; Hungarian clients can work entirely in Hungarian.',
+      },
+      {
+        q: 'Can I start without a firm brief?',
+        a: 'Yes. A 30-minute conversation is often enough to scope a project. We ask the right questions so you don\'t have to write a detailed RFP.',
+      },
+    ],
+  },
+  {
+    title: 'Timelines',
+    items: [
+      {
+        q: 'How long does a typical project take?',
+        a: 'Most architectural renders: 1–2 weeks. Multi-image sets: 2–3 weeks. Animations: 3–6 weeks. We\'ll give you a detailed timeline in our first conversation.',
+      },
+      {
+        q: 'Can you work to a tight deadline?',
+        a: 'Often yes. Rush delivery is possible and costs more — we\'ll tell you upfront what\'s realistic given the scope. We don\'t agree to timelines we can\'t meet.',
+      },
+      {
+        q: 'What happens if the design changes mid-project?',
+        a: 'Minor changes within agreed scope: included. Significant design changes after 3D work has begun: we scope and price the additional work before proceeding. No surprises.',
+      },
+    ],
+  },
+  {
+    title: 'Working Together',
+    items: [
+      {
+        q: 'Who will actually work on my project?',
+        a: 'László Kerezsi works directly on every project. For large-scale commissions requiring specialists (character animation, BIM, photogrammetry, etc.), we bring in tested partners — and László remains your point of contact throughout.',
+      },
+      {
+        q: 'How many revision rounds are included?',
+        a: 'Typically two rounds of client feedback per deliverable. Additional rounds are priced in the quote if you anticipate needing more flexibility.',
+      },
+      {
+        q: 'How do you handle feedback?',
+        a: 'We work from annotated images, PDFs, or calls — whatever\'s clearest for you. We document feedback and confirm interpretation before implementing, so we don\'t waste rounds on misunderstandings.',
+      },
+      {
+        q: 'Can you handle large-scale projects?',
+        a: 'Yes. Our specialist network lets us scale to airport terminals, urban masterplans, and exhibition content — while László stays as your single point of contact. Past work includes Budapest Airport, Antalya Airport T2, Sochi, Pulkovo, and the Road Safety Centre Doha.',
+      },
+    ],
+  },
+  {
+    title: 'Deliverables & Files',
+    items: [
+      {
+        q: 'What file formats do you deliver in?',
+        a: 'Still images: high-resolution TIFF or PNG, web-optimized JPG. Animations: H.264 or ProRes MP4. VR: standalone executable or web embed via Pano2VR. We deliver what your team can actually use.',
+      },
+      {
+        q: 'Do I own the final files?',
+        a: 'Yes. You receive full rights to all final deliverables. Raw 3D scene files are generally not included but can be licensed separately if needed.',
+      },
+      {
+        q: 'Can you deliver source files or editable 3D scenes?',
+        a: 'Yes, by arrangement. Scene files are priced separately as they represent significant additional value.',
+      },
+    ],
+  },
+  {
+    title: 'Technical Details',
+    items: [
+      {
+        q: 'What software do you use?',
+        a: '3ds Max (since version 1), V-Ray (15+ years), Unreal Engine for VR and real-time, Blender, ComfyUI/SwarmUI for AI-assisted work, Pano2VR for 360° tours, DaVinci Resolve for video.',
+      },
+      {
+        q: 'Can you work with BIM models (Revit, ArchiCAD)?',
+        a: 'Yes. We import and work with BIM exports daily. We\'ll usually ask for geometry exports rather than native files, but we can work with both.',
+      },
+      {
+        q: 'What image resolution do you deliver?',
+        a: 'Print-quality stills: minimum 4000px on the long edge. Marketing materials: as required by the brief. Animations: up to 4K (3840×2160).',
+      },
+      {
+        q: 'Do you do VR?',
+        a: 'Yes. Both 360° interactive panoramas (Pano2VR) and real-time VR walkthroughs (Unreal Engine). VR can be added to any project at any stage — it\'s not a separate workflow.',
+      },
+      {
+        q: 'What\'s your render infrastructure?',
+        a: 'We operate our own render farm and have access to additional render nodes as needed. We don\'t outsource rendering for quality-critical work.',
+      },
+    ],
+  },
+  {
+    title: 'Pricing',
+    items: [
+      {
+        q: 'How much does architectural visualization cost?',
+        a: 'Starting from €5,000 for a single-building still set. Multi-image packages from €15,000. Animations are significantly more. We price based on actual scope — use our pricing page for ranges, then contact us for a real quote.',
+      },
+      {
+        q: 'What drives cost up?',
+        a: 'Animations vs. stills (significantly more). Number of unique camera angles. Interior detail level. Tight deadlines. Multiple revision rounds beyond the included set.',
+      },
+      {
+        q: 'What keeps cost down?',
+        a: 'A clear brief upfront. Good source materials (CAD, not sketches). Flexible timeline. AI-assisted workflows where appropriate.',
+      },
+      {
+        q: 'What are the payment terms?',
+        a: 'Standard structure: 30–40% deposit to begin, progress payments at project milestones, balance on delivery. Flexible terms negotiable for larger or longer projects. Invoiced in EUR.',
+      },
+      {
+        q: 'Do you charge for the initial consultation?',
+        a: 'No. The first 30-minute conversation is free with no obligation. We want to understand your project before either of us commits to anything.',
+      },
+    ],
+  },
+  {
+    title: 'Confidentiality',
+    items: [
+      {
+        q: 'How do you handle confidential projects?',
+        a: 'We sign NDAs on request before any project materials are shared. Secure file transfer, access controls, and data encryption are standard on all projects. Confidential projects are not included in our portfolio without explicit permission.',
+      },
+      {
+        q: 'Do you work with sensitive or unreleased developments?',
+        a: 'Yes, frequently. Pre-announcement real estate, commercial developments, and competition entries all require discretion. We\'re accustomed to operating under embargo and NDA for the full duration of a project.',
+      },
+    ],
+  },
+  {
+    title: 'After Delivery',
+    items: [
+      {
+        q: 'What does final delivery include?',
+        a: 'Final approved files in all agreed formats, technical documentation, usage guidelines, and archive copies. Source 3D files included where contracted.',
+      },
+      {
+        q: 'How long do you keep project files?',
+        a: 'Active projects indefinitely. Completed projects: five years, with multiple backup locations. 360° tour hosting: three years by default, extendable. Archive access available on request.',
+      },
+      {
+        q: 'Can I request changes after delivery?',
+        a: 'Yes. Post-delivery amendments are handled with quick turnaround, fair pricing, and priority processing. The existing 3D scene is the starting point — updates don\'t require rebuilding from scratch.',
+      },
+      {
+        q: 'What if I\'m not satisfied with the result?',
+        a: 'We have a clear revision process, quality guarantees, and a solution-focused approach. Issues are rare because we do checkpoint reviews throughout the project rather than revealing the final result cold.',
+      },
+    ],
+  },
+];
+---
+
+<Page
+  title="FAQ"
+  description="Answers to common questions about working with Vision Graphics Kft. — timelines, pricing, deliverables, software, and how we work."
+>
+  <div class="faq-page">
+
+    <!-- Header -->
+    <div class="faq-header">
+      <div class="page-hero-bg" aria-hidden="true"></div>
+      <div class="page-hero-overlay" aria-hidden="true"></div>
+      <div class="faq-header-content">
+        <p class="section-label">Questions &amp; Answers</p>
+        <h1 class="display-lg faq-h1">Frequently Asked Questions</h1>
+        <p class="faq-intro">
+          Can't find what you're looking for?
+          Call <a href="tel:+36309454179">+36 30 945 4179</a> or
+          email <a href="mailto:info@visiongraphics.eu">info@visiongraphics.eu</a> — we answer same day.
+        </p>
+      </div>
+    </div>
+
+    <!-- Sections -->
+    <div class="faq-sections">
+      {sections.map(section => (
+        <section class="faq-section">
+          <h2 class="faq-section-title">{section.title}</h2>
+          <div class="faq-list">
+            {section.items.map(item => (
+              <details class="faq-item">
+                <summary class="faq-q">{item.q}</summary>
+                <p class="faq-a">{item.a}</p>
+              </details>
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
+
+    <!-- CTA -->
+    <div class="faq-cta">
+      <p class="faq-cta-text">Still have a question?</p>
+      <a href="/contact/" class="btn btn-primary">Talk to Us</a>
+    </div>
+
+  </div>
+</Page>
+
+<style>
+  .faq-page { max-width: 860px; }
+
+  .faq-header {
+    margin-bottom: 3.5rem;
+    position: relative;
+    overflow: hidden;
+    padding: clamp(3rem, 6vw, 5rem) 0 clamp(2rem, 4vw, 3rem);
+  }
+
+  .page-hero-bg {
+    position: absolute;
+    inset: 0;
+    background: url('/hero-bg.jpg') center/cover no-repeat;
+    z-index: 0;
+  }
+
+  .page-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, rgba(26,26,26,0.95) 0%, rgba(26,26,26,0.8) 60%, rgba(26,26,26,0.65) 100%);
+    z-index: 1;
+  }
+
+  .faq-header-content {
+    position: relative;
+    z-index: 2;
+    max-width: 1320px;
+    margin-inline: auto;
+    padding-inline: clamp(1.5rem, 5vw, 4rem);
+  }
+
+  .faq-h1 { margin: 0.75rem 0 1.25rem; }
+
+  .faq-intro {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    max-width: 52ch;
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  .faq-intro a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .faq-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    margin-bottom: 3rem;
+  }
+
+  /* Section */
+  .faq-section-title {
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-text-faint);
+    margin-bottom: 0.75rem;
+  }
+
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Item */
+  .faq-item {
+    border-top: 1px solid var(--color-border);
+    padding-block: 1.25rem;
+  }
+
+  .faq-item:last-child { border-bottom: 1px solid var(--color-border); }
+
+  .faq-q {
+    font-family: var(--font-body);
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: var(--color-text);
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    line-height: 1.4;
+  }
+
+  .faq-q::-webkit-details-marker { display: none; }
+
+  .faq-q::after {
+    content: '+';
+    font-family: var(--font-mono);
+    font-size: 1.2rem;
+    color: var(--color-text-faint);
+    flex-shrink: 0;
+    transition: transform 200ms ease, color 200ms ease;
+  }
+
+  details[open] .faq-q::after {
+    transform: rotate(45deg);
+    color: var(--color-accent);
+  }
+
+  .faq-a {
+    font-size: 0.87rem;
+    color: var(--color-text-muted);
+    line-height: 1.75;
+    margin-top: 0.85rem;
+    max-width: none;
+  }
+
+  /* CTA */
+  .faq-cta {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 2rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+  }
+
+  .faq-cta-text {
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+    margin: 0;
+    max-width: none;
+  }
+
+  @media (max-width: 560px) {
+    .faq-cta { flex-direction: column; align-items: flex-start; }
+  }
+</style>

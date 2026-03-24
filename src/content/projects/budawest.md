@@ -1,0 +1,59 @@
+---
+title: "Budawest"
+year: 2009
+location: "Budapest, Hungary"
+description: "The BudaWest Office Building is an A-category office complex located in Gazdagrét, Budapest, adjacent to the Eleven Center shopping mall. Designed by architects Gyula Csizmár, Marcell Sas, and Zoltán Fuchs, this transparent structure features a distinctive glass façade and was recognized as \"The …"
+story: |
+  Completed in 2011, the BudaWest project transformed a former industrial-commercial site in Budapest's XI district into a modern office space. The building's design emphasizes transparency and connection with its surroundings, offering exceptional views of the mountains and city that can be experienced even from inside the building. The structure features a rational interior layout that prioritizes functionality while accommodating changing needs over time. Its environmentally conscious design includes terraces, balconies, and sustainable features that contributed to its green building recognition.
+tasks: |
+  At Vision Graphics, we created comprehensive visual materials for the BudaWest Office Building project, including exterior renderings, aerial photo integrations, 3D animations, and photorealistic sections. Our visualization work showcased the building's distinctive transparent façade with its ALPOLIC composite aluminum panel system and structural glass walls. We highlighted the building's relationship with its urban context, emphasizing the public space created at the curve of Rétköz Street and the connection between interior and exterior spaces. Our photorealistic sections revealed the building's sophisticated structure with its monolithic reinforced concrete walls, pillars, and slab floors, helping stakeholders understand both the aesthetic and technical aspects of this sustainable office development.
+categories:
+  - office
+features: []
+tags: []
+coverImage: "/portfolio/budawest/01.jpg"
+published: true
+featured: false
+video: "https://youtu.be/pFS6YidLKU0"
+techniques:
+  - 3d-animation
+  - aerial-integration
+  - aerial-photography
+  - exterior
+  - section
+images:
+  - src: "/portfolio/budawest/01.jpg"
+    alt: ""
+  - src: "/portfolio/budawest/02.jpg"
+    alt: ""
+  - src: "/portfolio/budawest/03.jpg"
+    alt: ""
+  - src: "/portfolio/budawest/04.jpg"
+    alt: ""
+  - src: "/portfolio/budawest/05.jpg"
+    alt: ""
+  - src: "/portfolio/budawest/06.jpg"
+    alt: ""
+  - src: "/portfolio/budawest/07.jpg"
+    alt: ""
+  - src: "/portfolio/budawest/08.jpg"
+    alt: ""
+  - src: "/portfolio/budawest/09.jpg"
+    alt: ""
+  - src: "/portfolio/budawest/10.jpg"
+    alt: ""
+  - src: "/portfolio/budawest/11.jpg"
+    alt: ""
+  - src: "/portfolio/budawest/12.jpg"
+    alt: ""
+  - src: "/portfolio/budawest/13.jpg"
+    alt: ""
+  - src: "/portfolio/budawest/14.jpg"
+    alt: ""
+  - src: "/portfolio/budawest/15.jpg"
+    alt: ""
+  - src: "/portfolio/budawest/16.jpg"
+    alt: ""
+  - src: "/portfolio/budawest/17.jpg"
+    alt: ""
+---

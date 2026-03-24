@@ -1,0 +1,38 @@
+---
+title: "Central Park Budapest"
+year: 2019
+client: "Futureal"
+location: "Budapest, Hungary"
+description: "Full visualization package for a large mixed-use residential and commercial development in Budapest — interior and exterior stills, aerial context renders, and marketing materials."
+categories:
+  - residential
+  - commercial
+  - architectural-visualization
+features:
+  - "Exterior"
+  - "Interior"
+  - "Aerial Integration"
+  - "Marketing Materials"
+tags:
+  - residential
+  - budapest
+  - mixed-use
+  - hungary
+  - futureal
+coverImage: "/portfolio/central-park-budapest/cover.jpg"
+images:
+  - src: "/portfolio/central-park-budapest/01.jpg"
+    alt: "Residential tower exterior, daytime"
+  - src: "/portfolio/central-park-budapest/02.jpg"
+    alt: "Ground floor commercial activation"
+  - src: "/portfolio/central-park-budapest/03.jpg"
+    alt: "Courtyard and landscaping"
+  - src: "/portfolio/central-park-budapest/04.jpg"
+    alt: "Interior apartment — living room"
+featured: true
+published: false
+---
+
+Central Park Budapest is a large-scale mixed-use development combining residential apartments, commercial spaces, and public realm in one of Budapest's urban regeneration zones.
+
+The visualization scope covered the complete marketing package — exterior renders for planning and sales collateral, interior stills for apartment marketing, and aerial context renders showing the development's relationship to the surrounding city fabric.

@@ -1,0 +1,248 @@
+---
+import Page from '../../layouts/Page.astro';
+---
+
+<Page
+  title="Large-Scale Projects"
+  description="Airport terminals, urban masterplans, infrastructure corridors. Vision Graphics Kft. — Budapest-based, working globally since 1996."
+>
+  <div class="service-page">
+
+    <div class="service-breadcrumb">
+      <a href="/services/">Services</a>
+      <span>→</span>
+      <span>Large-Scale Projects</span>
+    </div>
+
+    <p class="section-label">Service</p>
+    <h1 class="display-lg service-h1">Large-Scale Projects</h1>
+    <p class="service-tagline-large">Big projects need a studio that's done it before.</p>
+
+    <p class="service-lead">
+      Airport terminals, urban masterplans, infrastructure corridors, exhibition pavilions.
+      We know how to communicate complex multi-phase projects to multiple stakeholder audiences —
+      from planning committees to international investors.
+    </p>
+
+    <hr class="service-rule" />
+
+    <div class="service-body-grid">
+      <div class="service-main">
+
+        <h2 class="service-section-h2">Notable past work</h2>
+        <div class="notable-grid">
+          {[
+            { name: 'Budapest Airport — Terminal 2B', year: '1996 & 2009' },
+            { name: 'Antalya Airport — Terminal 2', year: '2023–2024' },
+            { name: 'Sochi Airport', year: '2006–2008' },
+            { name: 'Pulkovo Airport', year: '2006–2008' },
+            { name: 'Road Safety Centre, Doha', year: '2012–2014' },
+            { name: 'Mol Campus, Budapest', year: '2015–2017' },
+            { name: 'Hungexpo, Budapest', year: '2018–2021' },
+            { name: 'Agora Budapest', year: '2021' },
+          ].map(p => (
+            <div class="notable-item">
+              <span class="notable-name">{p.name}</span>
+              <span class="notable-year">{p.year}</span>
+            </div>
+          ))}
+        </div>
+
+        <h2 class="service-section-h2">What we handle</h2>
+        <ul class="results-list">
+          <li>Multi-phase visualization — show each stage clearly</li>
+          <li>Multiple stakeholder outputs from one 3D model</li>
+          <li>Planning authority submissions — clear, compliant, persuasive</li>
+          <li>Investor and board-level presentations</li>
+          <li>Public communication materials (microsite, VR, film)</li>
+          <li>4K animations for international marketing campaigns</li>
+        </ul>
+
+        <h2 class="service-section-h2">Why scale is different</h2>
+        <p class="body-text">
+          Large projects have more stakeholders, more phases, and more ways to misalign.
+          We've been on both sides of those problems — and we know which visual approaches
+          actually clarify complex projects rather than just looking impressive.
+        </p>
+        <p class="body-text">
+          We also bring in the right specialists — BIM experts, drone pilots, photogrammetry
+          specialists, character animators — while keeping László as your single contact throughout.
+        </p>
+
+      </div>
+
+      <aside class="service-sidebar">
+        <div class="sidebar-block">
+          <h3 class="sidebar-label">Pricing</h3>
+          <p class="sidebar-price">Custom</p>
+          <p class="sidebar-note">Scoped individually to your project. Quote within one business day of receiving materials.</p>
+        </div>
+
+        <div class="sidebar-cta">
+          <a href="/contact/" class="btn btn-primary sidebar-btn">Talk to Us</a>
+          <a href="/portfolio/?cat=airport,infrastructure,urban" class="btn btn-ghost">See portfolio</a>
+        </div>
+      </aside>
+    </div>
+
+  </div>
+</Page>
+
+<style>
+  .service-page { max-width: 1060px; }
+
+  .service-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    color: var(--color-text-faint);
+    margin-bottom: 2rem;
+  }
+
+  .service-breadcrumb a { color: var(--color-text-muted); text-decoration: none; transition: color 200ms; }
+  .service-breadcrumb a:hover { color: var(--color-accent); }
+
+  .service-h1 { margin: 0.5rem 0 0.75rem; }
+
+  .service-tagline-large {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-style: italic;
+    color: var(--color-accent);
+    margin-bottom: 1.5rem;
+  }
+
+  .service-lead {
+    font-size: 0.98rem;
+    color: var(--color-text-muted);
+    max-width: 65ch;
+    line-height: 1.75;
+    margin: 0 0 2rem;
+  }
+
+  .service-rule { border-color: var(--color-border); margin-bottom: 2.5rem; }
+
+  .service-body-grid {
+    display: grid;
+    grid-template-columns: 1fr 240px;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .service-main { display: flex; flex-direction: column; gap: 2.5rem; }
+
+  .service-section-h2 {
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-text-faint);
+    margin-bottom: 1rem;
+  }
+
+  .notable-grid {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--color-border);
+  }
+
+  .notable-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--color-border);
+    gap: 1rem;
+    transition: background 200ms;
+  }
+
+  .notable-item:last-child { border-bottom: none; }
+  .notable-item:hover { background: var(--color-surface); }
+
+  .notable-name { font-size: 0.88rem; color: var(--color-text-muted); }
+
+  .notable-year {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-text-faint);
+    white-space: nowrap;
+  }
+
+  .results-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .results-list li {
+    font-size: 0.88rem;
+    color: var(--color-text-muted);
+    padding-left: 1.25rem;
+    position: relative;
+    line-height: 1.5;
+  }
+
+  .results-list li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--color-accent);
+    font-size: 0.7rem;
+  }
+
+  .body-text {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    max-width: 65ch;
+    line-height: 1.75;
+    margin: 0;
+  }
+
+  .service-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    position: sticky;
+    top: 5rem;
+  }
+
+  .sidebar-block { display: flex; flex-direction: column; gap: 0.6rem; }
+
+  .sidebar-label {
+    font-family: var(--font-body);
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-text-faint);
+  }
+
+  .sidebar-price {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: var(--color-text);
+    margin: 0;
+  }
+
+  .sidebar-note {
+    font-size: 0.75rem;
+    color: var(--color-text-faint);
+    line-height: 1.5;
+    margin: 0;
+    max-width: none;
+  }
+
+  .sidebar-cta { display: flex; flex-direction: column; gap: 0.75rem; }
+  .sidebar-btn { width: 100%; justify-content: center; }
+
+  @media (max-width: 900px) {
+    .service-body-grid { grid-template-columns: 1fr; }
+    .service-sidebar { position: static; }
+  }
+</style>

@@ -1,0 +1,25 @@
+---
+title: "Architectural Styling"
+description: "Renderings that showcase how AI can transform basic 3D models into different architectural styles or periods allowing quick visualization of design alternatives."
+image: "/vision-tech/architectural-styling.jpg"
+technique: "AI-Enhanced"
+cost: "€"
+model3d: "Output from 3D Model"
+complexity: "2 - Intermediate"
+reality: "Conceptual Reality"
+purpose:
+  - "Design Development"
+gallery:
+  - "/vision-tech/architectural-styling/01.jpeg"
+  - "/vision-tech/architectural-styling/02.jpeg"
+  - "/vision-tech/architectural-styling/03.jpeg"
+  - "/vision-tech/architectural-styling/04.jpeg"
+relatedCategories:
+  - "residential"
+  - "commercial"
+  - "office"
+relatedFeatures: []
+blocks:
+  - type: text
+    html: "<h2>What Is Architectural Styling?</h2><p>It's pretty simple. We take your 3D building model or even just a photo and show you how it would look in different architectural styles. Classical? Art Deco? Bauhaus? Gothic? You name it, we can show it.</p> \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n  \n <h2>Why This Matters</h2><p>Architects often get stuck on one design direction. Clients struggle to imagine alternatives. This tool breaks that logjam.</p><p>We're not trying to design your final building. We're helping you explore options quickly. Sometimes seeing your modern office as a Victorian masterpiece sparks ideas you wouldn't have thought of otherwise.</p> \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n  \n <h2>How It Works</h2><p>We've trained AI on thousands of buildings from different periods and styles. It learned what makes Gothic look Gothic, or what details create that Mid-Century Modern feel.</p><p>Here's the process:</p><ol><li>You give us your basic design - a 3D model, a sketch, or even just a photo</li><li>Tell us what styles interest you</li><li>The AI transforms your design into those styles</li><li>You see options side by side</li><li>We refine the ones you like</li></ol><p>What's cool is how this works at different levels. Want subtle Georgian touches? Or a full-blown Spanish Colonial makeover? We can adjust the strength to match what you're after.</p> \n \n \n \n \n \n \n \n \n \n \n  \n <h2>When To Use It</h2><p>This works best when:</p><ul><li>You're still in early design phases</li><li>You want to explore different directions quickly</li><li>Clients are having trouble visualizing options</li><li>You're stuck and need fresh ideas</li><li>You need to show how a building might fit into a historic district</li></ul><p>It's not for creating final construction plans. Think of it as a starting point for discussions.</p> \n \n \n \n \n \n \n \n \n \n \n \n \n \n  \n <h2>What We Need From You</h2><p>The more you give us, the better the results:</p><ul><li>3D models work best</li><li>Good photos from multiple angles help</li><li>References of styles you like</li><li>Clear goals for what you're trying to learn</li></ul> \n \n \n \n \n \n \n \n \n \n \n \n \n  \n \n \n <h2>What You Get Back</h2><p>Depending on what you need:</p><ul><li>Side-by-side comparisons in different styles</li><li>Detailed views of specific elements</li><li>Presentations for clients</li><li>Style reference guides for your team</li></ul> \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n  \n <h2>The Secret Sauce</h2><p>What makes our approach different is how we handle details. The AI doesn't just paste decorative elements onto your building. It thinks about:</p><ul><li>How structural elements would change</li><li>Where windows and doors would naturally go in each style</li><li>How materials would be used</li><li>What proportions make sense</li><li>How light and shadow create the right feel</li></ul><p>The results feel real because we've taught the AI the underlying principles, not just surface appearances.</p> \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n  \n <h2>From Seeing to Building</h2><p>Once you pick a direction, we can help turn these style concepts into actual architectural details. We can:</p><ul><li>Focus on specific elements you want to keep</li><li>Break down why certain styles work better for your site</li><li>Help your architects understand what to incorporate</li><li>Connect you with specialists in particular styles</li></ul> \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n  \n <h2>Ready to Try It?</h2><p>We need:</p><ul><li>Your basic design</li><li>Styles you'd like to see</li><li>What you're hoping to learn</li><li>Your timeline</li></ul><p>Then we'll show you possibilities you haven't imagined yet.</p><p>Sometimes the best design comes from seeing what doesn't work. Our quick style tests help you rule out options and focus on what feels right.</p> \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n  \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n  \n \n \n \n \n \n \n \n \n \n \n \n \n \n  \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n "
+---

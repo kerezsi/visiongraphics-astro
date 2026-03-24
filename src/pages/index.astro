@@ -1,0 +1,909 @@
+---
+// src/pages/index.astro
+// Homepage — corrected content, no fake testimonials, proper order
+
+import Base from '../layouts/Base.astro';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import Icon from '../components/ui/Icon.astro';
+import { getCollection } from 'astro:content';
+
+// Featured projects for homepage preview
+const allProjects = await getCollection('projects', ({ data }) =>
+  data.published && data.featured
+);
+const featuredProjects = allProjects
+  .sort((a, b) => b.data.year - a.data.year)
+  .slice(0, 6);
+---
+
+<Base
+  title="Vision Graphics"
+  description="Expert 3D architectural visualization. 30 years, 500+ projects. Budapest-based, working globally. Stills, animation, VR, AI-enhanced workflows."
+>
+  <Header />
+
+  <main id="content">
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- HERO                                                        -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <section class="hero">
+      <div class="container hero-inner">
+        <div class="hero-content">
+          <p class="section-label hero-label">30 Years · 500+ Projects · Budapest</p>
+          <h1 class="hero-h1">
+            Architecture<br />
+            Deserves Better<br />
+            <em>Visuals</em>
+          </h1>
+          <p class="hero-sub">
+            We turn complex architectural plans into visuals that get projects approved,
+            properties sold, and stakeholders aligned.
+            Budapest-based. Working globally since 1996.
+          </p>
+          <div class="hero-ctas">
+            <a href="/portfolio/" class="btn btn-primary">See Our Work</a>
+            <a href="/contact/"   class="btn btn-secondary">Talk to Us</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Background: large architectural image (add your best render here) -->
+      <div class="hero-bg" aria-hidden="true">
+        <div class="hero-bg-overlay"></div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- CLIENT LOGOS                                                -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <section class="logos-strip section-sm">
+      <div class="container">
+        <p class="section-label logos-label">Trusted by</p>
+        <div class="logos-row">
+          {[
+            'Mol Campus', 'Hungexpo', 'Budapest Airport',
+            'Antalya Airport', 'Korda Studios', 'Opera / Eiffel Art Studios',
+            'K&H Bank', 'Agora Budapest',
+          ].map(name => (
+            <span class="logo-name-text">{name}</span>
+          ))}
+        </div>
+        <p class="logos-note">
+          Replace with actual logo files when available.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- STATS                                                       -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <section class="stats-bar section-sm">
+      <div class="container">
+        <div class="stats-grid">
+          {[
+            { number: '30+',  label: 'Years of experience' },
+            { number: '500+', label: 'Projects delivered' },
+            { number: '4',    label: 'Continents' },
+            { number: '1996', label: 'Founded' },
+          ].map(s => (
+            <div class="stat">
+              <span class="stat-number">{s.number}</span>
+              <span class="stat-label">{s.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <hr class="container-rule" />
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- PAIN POINTS                                                 -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <section class="section pain-section">
+      <div class="container">
+        <p class="section-label">The Problem</p>
+        <h2 class="display-md pain-h2">
+          Getting Good 3D Visuals<br />Is Harder Than It Should Be
+        </h2>
+        <div class="pain-grid">
+          {[
+            { icon: 'clock',         title: 'Late deliveries',      body: 'You miss your pitch window while revisions pile up.' },
+            { icon: 'layers',        title: 'Generic output',       body: 'Renders that could belong to any project, any studio.' },
+            { icon: 'user-x',        title: 'Disappearing acts',    body: 'Freelancers who go quiet at the worst possible moment.' },
+            { icon: 'repeat',        title: 'Endless back-and-forth', body: 'Revisions that stretch weeks into months.' },
+            { icon: 'trending-down', title: 'Can\'t scale up',      body: 'Teams that can\'t handle it when the project grows.' },
+            { icon: 'help-circle',   title: 'Visuals that confuse', body: 'Stakeholders leave the meeting more uncertain than before.' },
+          ].map(p => (
+            <div class="pain-card">
+              <span class="pain-icon"><Icon name={p.icon} size={22} /></span>
+              <h3 class="pain-title">{p.title}</h3>
+              <p class="pain-body">{p.body}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- SOLUTION                                                    -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <section class="section solution-section">
+      <div class="container solution-inner">
+        <div class="solution-text">
+          <p class="section-label">The Solution</p>
+          <h2 class="display-md">Vision Graphics</h2>
+
+          <!-- László portrait -->
+          <div class="laszlo-portrait">
+            <img
+              src="/laszlo.jpg"
+              alt="László Kerezsi — Founder, Vision Graphics"
+              class="laszlo-img"
+              width="200"
+              height="200"
+              loading="lazy"
+            />
+            <div class="laszlo-caption">
+              <strong class="laszlo-name">László Kerezsi</strong>
+              <span class="laszlo-role">Founder &amp; Visualization Director</span>
+            </div>
+          </div>
+
+          <p class="solution-body">
+            László Kerezsi has been doing this for 30 years. He works directly on your
+            project — no account managers, no handoffs to juniors. When your project needs
+            more firepower, he brings in a tested network of specialists. You get one
+            point of contact and the output of a full studio.
+          </p>
+          <blockquote class="solution-callout">
+            "We catch problems in your plans before they become expensive construction
+            mistakes. That's 30 years of pattern recognition working for you."
+          </blockquote>
+          <a href="/about/" class="btn btn-ghost">About the studio</a>
+        </div>
+
+        <div class="differentiators">
+          {[
+            {
+              n: '01',
+              title: 'Direct Access',
+              body: 'You work with László, not a project coordinator. He\'s been doing this since 3ds Max was version 1.',
+            },
+            {
+              n: '02',
+              title: 'Scalable Without the Overhead',
+              body: 'Small project? Just us. Airport terminal? We bring in the right specialists. You pay for what the project needs.',
+            },
+            {
+              n: '03',
+              title: 'AI Where It Helps',
+              body: 'AI integrated into the workflow — not as a gimmick, but to deliver faster drafts, more variations, and better QC on large file sets.',
+            },
+          ].map(d => (
+            <div class="diff-card">
+              <span class="diff-n">{d.n}</span>
+              <h3 class="diff-title">{d.title}</h3>
+              <p class="diff-body">{d.body}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- FEATURED WORK                                               -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    {featuredProjects.length > 0 && (
+      <section class="section featured-section">
+        <div class="container">
+          <div class="featured-header">
+            <div>
+              <p class="section-label">Selected Work</p>
+              <h2 class="display-md">30 Years of Projects</h2>
+            </div>
+            <a href="/portfolio/" class="btn btn-secondary">Full Portfolio</a>
+          </div>
+          <div class="featured-grid">
+            {featuredProjects.map((project, i) => (
+              <a
+                href={`/portfolio/${project.slug}/`}
+                class:list={['featured-card', { 'featured-card--large': i === 0 }]}
+              >
+                <div class="featured-card-image">
+                  <img
+                    src={project.data.coverImage}
+                    alt={project.data.title}
+                    loading={i === 0 ? 'eager' : 'lazy'}
+                  />
+                </div>
+                <div class="featured-card-body">
+                  <span class="featured-card-year">{project.data.year}</span>
+                  <h3 class="featured-card-title">{project.data.title}</h3>
+                  {project.data.location && (
+                    <span class="featured-card-location">{project.data.location}</span>
+                  )}
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- HOW IT WORKS  (corrected order)                             -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <section class="section process-section">
+      <div class="container">
+        <p class="section-label">How It Works</p>
+        <h2 class="display-md">Three Steps to Finished Visuals</h2>
+        <div class="process-steps">
+          {[
+            {
+              step: '1',
+              title: 'Quick Start',
+              time:  '2–3 days',
+              items: [
+                'Send your plans — we take it from there',
+                'Clear timing and costs before we begin',
+                'No lengthy briefing forms',
+              ],
+            },
+            {
+              step: '2',
+              title: 'Working Together',
+              time:  '1–2 weeks',
+              items: [
+                'First drafts within days',
+                'Regular check-ins, no surprises',
+                'Fix things as we go',
+              ],
+            },
+            {
+              step: '3',
+              title: 'Ready to Present',
+              time:  'Final week',
+              items: [
+                'Visuals prepared for your format: pitch, planning, or marketing',
+                'Files delivered in formats your team can use',
+                'VR upgrade available at any stage',
+              ],
+            },
+          ].map(s => (
+            <div class="process-step">
+              <div class="process-step-header">
+                <span class="process-n">{s.step}</span>
+                <div>
+                  <h3 class="process-title">{s.title}</h3>
+                  <span class="process-time">{s.time}</span>
+                </div>
+              </div>
+              <ul class="process-list">
+                {s.items.map(item => <li>{item}</li>)}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- FAQ PREVIEW                                                 -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <section class="section faq-preview-section">
+      <div class="container faq-preview-inner">
+        <div class="faq-preview-header">
+          <p class="section-label">Quick Answers</p>
+          <h2 class="display-md">Common Questions</h2>
+          <a href="/faq/" class="btn btn-ghost">All FAQs</a>
+        </div>
+        <div class="faq-preview-list">
+          {[
+            {
+              q: 'How long does a typical project take?',
+              a: 'Most architectural renders: 1–2 weeks. Multi-image sets: 2–3 weeks. Animations: 3–6 weeks. We give a detailed timeline in our first conversation.',
+            },
+            {
+              q: 'What do you need from me to start?',
+              a: 'Plans (CAD, PDF, sketch — any level of detail), references you like, and your deadline. We\'ll guide you through the rest.',
+            },
+            {
+              q: 'Can you handle large-scale projects?',
+              a: 'Yes. Our specialist network lets us scale to airport terminals and urban masterplans — while László stays as your single point of contact.',
+            },
+            {
+              q: 'What makes you different from other studios?',
+              a: '30 years of project pattern recognition. Direct founder access. AI-enhanced workflows that cut iteration time. And we\'ve worked on airports on four continents.',
+            },
+          ].map(faq => (
+            <details class="faq-item">
+              <summary class="faq-q">{faq.q}</summary>
+              <p class="faq-a">{faq.a}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- CTA BANNER                                                  -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <section class="cta-banner">
+      <div class="container cta-banner-inner">
+        <div>
+          <h2 class="cta-h2">Let's Talk About Your Project</h2>
+          <p class="cta-sub">30-minute consultation. No charge. No obligation.</p>
+        </div>
+        <a href="/contact/" class="btn btn-primary">Get in Touch</a>
+      </div>
+    </section>
+
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  /* ── Hero ─────────────────────────────────────────────────── */
+  .hero {
+    position: relative;
+    min-height: 92vh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .hero-inner {
+    position: relative;
+    z-index: 2;
+    padding-block: 8rem 5rem;
+  }
+
+  .hero-content { max-width: 700px; }
+
+  .hero-label {
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.2s forwards;
+  }
+
+  .hero-h1 {
+    font-family: var(--font-display);
+    font-size: clamp(3.5rem, 9vw, 7rem);
+    font-weight: 300;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    color: var(--color-text);
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.35s forwards;
+  }
+
+  .hero-h1 em {
+    font-style: italic;
+    color: var(--color-accent);
+  }
+
+  .hero-sub {
+    font-size: 1rem;
+    font-weight: 300;
+    color: var(--color-text-muted);
+    max-width: 48ch;
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.5s forwards;
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.65s forwards;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background:
+      url('/hero-bg.jpg') center/cover no-repeat,
+      linear-gradient(135deg, #0a0a18 0%, #0d0d20 50%, #0a0a12 100%);
+  }
+
+  .hero-bg-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      105deg,
+      rgba(10, 10, 18, 0.92) 0%,
+      rgba(10, 10, 18, 0.70) 50%,
+      rgba(10, 10, 18, 0.40) 100%
+    );
+  }
+
+  /* ── Logos ────────────────────────────────────────────────── */
+  .logos-label { margin-bottom: 1.25rem; }
+
+  .logos-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 2rem;
+    align-items: center;
+  }
+
+  .logo-name-text {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-text-faint);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: color 200ms ease;
+  }
+
+  .logo-name-text:hover { color: var(--color-text-muted); }
+
+  .logos-note {
+    display: none; /* remove once real logos are in */
+  }
+
+  /* ── Stats ────────────────────────────────────────────────── */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--color-border);
+    border: 1px solid var(--color-border);
+  }
+
+  .stat {
+    background: var(--color-surface);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .stat-number {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 300;
+    color: var(--color-accent);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    font-weight: 300;
+  }
+
+  .container-rule {
+    border-color: var(--color-border);
+    margin-inline: auto;
+    max-width: 1320px;
+    padding-inline: clamp(1.5rem, 5vw, 4rem);
+  }
+
+  /* ── Pain ─────────────────────────────────────────────────── */
+  .pain-h2 { margin: 1rem 0 3rem; }
+
+  .pain-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--color-border);
+    border: 1px solid var(--color-border);
+  }
+
+  .pain-card {
+    background: var(--color-surface);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    transition: background 200ms ease;
+  }
+
+  .pain-card:hover { background: var(--color-surface-2); }
+
+  .pain-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    color: var(--color-accent);
+    margin-bottom: 0.75rem;
+    flex-shrink: 0;
+  }
+
+  .pain-title {
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--color-text);
+  }
+
+  .pain-body {
+    font-size: 0.82rem;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    max-width: none;
+    margin: 0;
+  }
+
+  /* ── Solution ─────────────────────────────────────────────── */
+  .solution-section { background: var(--color-surface); border-block: 1px solid var(--color-border); }
+
+  .solution-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: start;
+  }
+
+  /* László portrait */
+  .laszlo-portrait {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 1.5rem 0 1.25rem;
+  }
+
+  .laszlo-img {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--color-border);
+    flex-shrink: 0;
+  }
+
+  .laszlo-caption {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .laszlo-name {
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  .laszlo-role {
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+    letter-spacing: 0.04em;
+  }
+
+  .solution-body {
+    margin: 0 0 1.5rem;
+    font-size: 0.95rem;
+    max-width: 52ch;
+  }
+
+  .solution-callout {
+    border-left: 2px solid var(--color-accent);
+    padding-left: 1.25rem;
+    margin: 1.5rem 0 2rem;
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+
+  .differentiators {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 1px solid var(--color-border);
+  }
+
+  .diff-card {
+    padding: 1.75rem 2rem;
+    border-bottom: 1px solid var(--color-border);
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto;
+    column-gap: 1.25rem;
+    row-gap: 0.35rem;
+  }
+
+  .diff-card:last-child { border-bottom: none; }
+
+  .diff-n {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--color-accent);
+    grid-row: 1;
+    grid-column: 1;
+    padding-top: 0.1rem;
+  }
+
+  .diff-title {
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--color-text);
+    grid-row: 1;
+    grid-column: 2;
+  }
+
+  .diff-body {
+    font-size: 0.82rem;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    grid-row: 2;
+    grid-column: 2;
+    margin: 0;
+    max-width: none;
+  }
+
+  /* ── Featured Work ────────────────────────────────────────── */
+  .featured-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 2rem;
+  }
+
+  .featured-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto auto;
+    gap: 1px;
+    background: var(--color-border);
+  }
+
+  .featured-card {
+    display: block;
+    text-decoration: none;
+    background: var(--color-bg);
+    overflow: hidden;
+    transition: background 200ms ease;
+  }
+
+  .featured-card:hover { background: var(--color-surface); }
+  .featured-card--large { grid-column: span 2; grid-row: span 2; }
+
+  .featured-card-image {
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    background: var(--color-surface-2);
+  }
+
+  .featured-card--large .featured-card-image { aspect-ratio: unset; height: 100%; min-height: 350px; }
+
+  .featured-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 500ms ease;
+  }
+
+  .featured-card:hover .featured-card-image img { transform: scale(1.04); }
+
+  .featured-card-body {
+    padding: 1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .featured-card-year {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--color-text-faint);
+  }
+
+  .featured-card-title {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: var(--color-text);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+
+  .featured-card-location {
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    color: var(--color-text-faint);
+  }
+
+  /* ── Process ──────────────────────────────────────────────── */
+  .process-steps {
+    margin-top: 2.5rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--color-border);
+    border: 1px solid var(--color-border);
+  }
+
+  .process-step {
+    background: var(--color-surface);
+    padding: 2.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .process-step-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .process-n {
+    font-family: var(--font-display);
+    font-size: 3.5rem;
+    font-weight: 300;
+    color: var(--color-border);
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    flex-shrink: 0;
+  }
+
+  .process-title {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--color-text);
+    margin-bottom: 0.2rem;
+  }
+
+  .process-time {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-accent);
+  }
+
+  .process-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0;
+  }
+
+  .process-list li {
+    font-size: 0.82rem;
+    color: var(--color-text-muted);
+    padding-left: 1rem;
+    position: relative;
+    line-height: 1.5;
+  }
+
+  .process-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--color-border);
+    font-size: 0.7rem;
+  }
+
+  /* ── FAQ Preview ──────────────────────────────────────────── */
+  .faq-preview-inner {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 5rem;
+    align-items: start;
+  }
+
+  .faq-preview-header { display: flex; flex-direction: column; gap: 1rem; }
+  .faq-preview-header h2 { margin: 0; }
+
+  .faq-preview-list { display: flex; flex-direction: column; }
+
+  .faq-item {
+    border-top: 1px solid var(--color-border);
+    padding-block: 1.25rem;
+  }
+
+  .faq-item:last-child { border-bottom: 1px solid var(--color-border); }
+
+  .faq-q {
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--color-text);
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .faq-q::-webkit-details-marker { display: none; }
+
+  .faq-q::after {
+    content: '+';
+    font-family: var(--font-mono);
+    font-size: 1.2rem;
+    color: var(--color-text-faint);
+    flex-shrink: 0;
+    transition: transform 200ms ease, color 200ms ease;
+  }
+
+  details[open] .faq-q::after {
+    transform: rotate(45deg);
+    color: var(--color-accent);
+  }
+
+  .faq-a {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    margin-top: 0.75rem;
+    max-width: none;
+  }
+
+  /* ── CTA Banner ───────────────────────────────────────────── */
+  .cta-banner {
+    background: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+    padding-block: 4rem;
+    margin-top: 6rem;
+  }
+
+  .cta-banner-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .cta-h2 {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    font-weight: 300;
+    color: var(--color-text);
+    margin-bottom: 0.5rem;
+  }
+
+  .cta-sub {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  /* ── Animations ───────────────────────────────────────────── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Responsive ───────────────────────────────────────────── */
+  @media (max-width: 1024px) {
+    .solution-inner { grid-template-columns: 1fr; gap: 3rem; }
+    .featured-grid  { grid-template-columns: repeat(2, 1fr); }
+    .featured-card--large { grid-column: span 2; grid-row: span 1; }
+  }
+
+  @media (max-width: 768px) {
+    .stats-grid   { grid-template-columns: repeat(2, 1fr); }
+    .pain-grid    { grid-template-columns: 1fr; }
+    .process-steps{ grid-template-columns: 1fr; }
+    .faq-preview-inner { grid-template-columns: 1fr; gap: 2rem; }
+    .featured-grid{ grid-template-columns: 1fr; }
+    .featured-card--large { grid-column: span 1; }
+    .cta-banner-inner { flex-direction: column; text-align: center; }
+  }
+</style>

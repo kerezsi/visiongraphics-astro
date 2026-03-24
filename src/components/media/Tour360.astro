@@ -1,0 +1,163 @@
+---
+// src/components/media/Tour360.astro
+// Click-to-load Pano2VR embed
+// Never auto-loads the iframe — only on explicit user click
+
+interface Props {
+  url:        string;
+  title:      string;
+  coverImage?: string;  // optional cover — falls back to styled placeholder
+}
+
+const { url, title, coverImage } = Astro.props;
+---
+
+<div class="tour-wrap" data-tour-url={url}>
+  {coverImage
+    ? <img src={coverImage} alt={`${title} — 360° tour preview`} class="tour-cover" loading="lazy" />
+    : <div class="tour-cover tour-cover--placeholder">
+        <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="tour-icon-bg">
+          <circle cx="40" cy="40" r="30" stroke="currentColor" stroke-width="1" opacity="0.15"/>
+          <path d="M20 40 Q40 28 60 40 Q40 52 20 40Z" stroke="currentColor" stroke-width="1" opacity="0.2" fill="none"/>
+        </svg>
+      </div>
+  }
+
+  <div class="tour-overlay">
+    <button class="tour-launch-btn" aria-label={`Launch 360° tour: ${title}`}>
+      <svg class="tour-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M7 12 Q12 8 17 12 Q12 16 7 12Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+        <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
+      </svg>
+      <span class="tour-btn-label">Launch 360° Tour</span>
+    </button>
+    <span class="tour-name">{title}</span>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.tour-wrap').forEach(wrap => {
+    const btn = wrap.querySelector('.tour-launch-btn');
+    if (!btn) return;
+
+    btn.addEventListener('click', () => {
+      const url = wrap.dataset.tourUrl;
+      if (!url) return;
+
+      // Replace with iframe
+      const iframe = document.createElement('iframe');
+      iframe.src = url;
+      iframe.allow = 'fullscreen; gyroscope; accelerometer';
+      iframe.allowFullscreen = true;
+      iframe.title = 'Interactive 360° Tour';
+      iframe.style.cssText = 'width:100%;height:100%;border:none;display:block;';
+      wrap.innerHTML = '';
+      wrap.appendChild(iframe);
+      wrap.classList.add('tour-wrap--active');
+    });
+  });
+</script>
+
+<style>
+  .tour-wrap {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: var(--color-surface-2);
+    cursor: pointer;
+    overflow: hidden;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-border);
+    transition: border-color 300ms ease;
+  }
+
+  .tour-wrap:hover {
+    border-color: var(--color-accent);
+  }
+
+  .tour-cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.6);
+    transition: filter 400ms ease, transform 400ms ease;
+  }
+
+  .tour-cover--placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--color-surface-2), var(--color-surface));
+  }
+
+  .tour-icon-bg {
+    width: 5rem;
+    height: 5rem;
+    color: var(--color-text-muted);
+  }
+
+  .tour-wrap:hover .tour-cover {
+    filter: brightness(0.45);
+    transform: scale(1.02);
+  }
+
+  .tour-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  .tour-launch-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    background: none;
+    border: 1px solid rgba(200, 169, 110, 0.4);
+    border-radius: var(--radius-sm);
+    padding: 1rem 2rem;
+    cursor: pointer;
+    color: var(--color-text);
+    transition: all 250ms ease;
+  }
+
+  .tour-wrap:hover .tour-launch-btn {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    background: rgba(200, 169, 110, 0.06);
+  }
+
+  .tour-icon {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .tour-btn-label {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .tour-name {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    color: rgba(240, 237, 232, 0.6);
+    letter-spacing: 0.05em;
+  }
+
+  .tour-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+
+  .tour-wrap--active {
+    border-color: var(--color-border);
+  }
+</style>

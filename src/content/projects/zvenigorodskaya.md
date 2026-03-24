@@ -1,0 +1,42 @@
+---
+title: "Zvenigorodskaya"
+year: 2013
+location: "Moscow, Russia"
+designer: "Dyer Group"
+description: "Zvenigorodskaya is a massive 650,000 sqm multifunctional complex in Moscow, designed in 2013 with box-shaped towers as its distinctive architectural feature. The development was conceived as a significant addition to Moscow's evolving skyline, positioned along Zvenigorodskaya highway."
+story: |
+  This ambitious project represents a significant milestone in Moscow's urban development, designed to create a recognizable architectural statement along Zvenigorodskaya highway. The complex was planned to include residential, commercial, and recreational spaces, creating a comprehensive urban environment. The design aimed to maximize views for all units while establishing a strong visual presence in the cityscape.
+tasks: |
+  We created exterior visualizations and photo-integrated renders for an early version of the Zvenigorodskaya project, showcasing the distinctive box-shaped tower composition. Our renderings highlighted how the geometrical layout provides a strong recognizable character for the entire development. The visualizations demonstrated the scale and urban presence of the complex, illustrating how it would integrate with Moscow's skyline. Our work helped communicate the project's vision during its initial design phase, before later iterations evolved the concept into different architectural forms.
+categories:
+  - residential
+features: []
+tags: []
+coverImage: "/portfolio/zvenigorodskaya/01.jpg"
+published: true
+featured: false
+techniques:
+  - exterior
+  - photo-integration
+images:
+  - src: "/portfolio/zvenigorodskaya/01.jpg"
+    alt: ""
+  - src: "/portfolio/zvenigorodskaya/02.jpg"
+    alt: ""
+  - src: "/portfolio/zvenigorodskaya/03.jpg"
+    alt: ""
+  - src: "/portfolio/zvenigorodskaya/04.jpg"
+    alt: ""
+  - src: "/portfolio/zvenigorodskaya/05.jpg"
+    alt: ""
+  - src: "/portfolio/zvenigorodskaya/06.jpg"
+    alt: ""
+  - src: "/portfolio/zvenigorodskaya/07.jpg"
+    alt: ""
+  - src: "/portfolio/zvenigorodskaya/08.jpg"
+    alt: ""
+  - src: "/portfolio/zvenigorodskaya/09.jpg"
+    alt: ""
+  - src: "/portfolio/zvenigorodskaya/10.jpg"
+    alt: ""
+---

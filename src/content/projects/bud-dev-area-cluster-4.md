@@ -1,0 +1,66 @@
+---
+title: "BUD development area 4"
+year: 2011
+location: "Budapest, Hungary"
+client: "Budapest Airport"
+designer: "Bánáti-Hartvig"
+clientType: "developer"
+description: "Budapest Airport commissioned the development of the 70-hectare Cluster 4 area, transforming unused land into a strategic business zone for logistics services, retail, and a business park. The project features innovative green technologies and distinctive architectural elements designed to be vis…"
+story: |
+  The development was carefully planned with key principles focusing on proportionate plot division, aesthetic appeal from aerial views, and innovative green technologies that complement the area's natural character. Since the initial planning in 2010, the project has seen successful implementation with the first major tenant - DHL's Hungarian headquarters - seamlessly integrating into the development concept. This success validates the thoughtful planning approach and demonstrates the project's viability for future expansion.
+tasks: |
+  Our team created detailed 3D architectural animations and visualizations to bring the Budapest Airport Cluster 4 development to life, showcasing the planned logistics facilities, retail spaces, and business park areas. We developed comprehensive exterior renderings that highlight the project's innovative design elements visible from the air, while also demonstrating how the development integrates with the airport's existing infrastructure and surrounding environment. Our animations provide stakeholders with immersive walkthroughs of the development, helping them visualize the completed project and understand its strategic importance to Budapest Airport's long-term growth plans.
+categories:
+  - commercial
+  - transportation
+features: []
+tags: []
+coverImage: "/portfolio/bud-dev-area-cluster-4/01.jpg"
+published: true
+featured: false
+video: "https://youtu.be/65yJ-bqK3eQ"
+techniques:
+  - 3d-animation
+  - exterior
+images:
+  - src: "/portfolio/bud-dev-area-cluster-4/01.jpg"
+    alt: ""
+  - src: "/portfolio/bud-dev-area-cluster-4/02.jpg"
+    alt: ""
+  - src: "/portfolio/bud-dev-area-cluster-4/03.jpg"
+    alt: ""
+  - src: "/portfolio/bud-dev-area-cluster-4/04.jpg"
+    alt: ""
+  - src: "/portfolio/bud-dev-area-cluster-4/05.jpg"
+    alt: ""
+  - src: "/portfolio/bud-dev-area-cluster-4/06.jpg"
+    alt: ""
+  - src: "/portfolio/bud-dev-area-cluster-4/07.jpg"
+    alt: ""
+  - src: "/portfolio/bud-dev-area-cluster-4/08.jpg"
+    alt: ""
+  - src: "/portfolio/bud-dev-area-cluster-4/09.jpg"
+    alt: ""
+  - src: "/portfolio/bud-dev-area-cluster-4/10.jpg"
+    alt: ""
+  - src: "/portfolio/bud-dev-area-cluster-4/11.jpg"
+    alt: ""
+  - src: "/portfolio/bud-dev-area-cluster-4/12.jpg"
+    alt: ""
+  - src: "/portfolio/bud-dev-area-cluster-4/13.jpg"
+    alt: ""
+  - src: "/portfolio/bud-dev-area-cluster-4/14.jpg"
+    alt: ""
+  - src: "/portfolio/bud-dev-area-cluster-4/15.jpg"
+    alt: ""
+  - src: "/portfolio/bud-dev-area-cluster-4/16.jpg"
+    alt: ""
+  - src: "/portfolio/bud-dev-area-cluster-4/17.jpg"
+    alt: ""
+  - src: "/portfolio/bud-dev-area-cluster-4/18.jpg"
+    alt: ""
+  - src: "/portfolio/bud-dev-area-cluster-4/19.jpg"
+    alt: ""
+  - src: "/portfolio/bud-dev-area-cluster-4/20.jpg"
+    alt: ""
+---

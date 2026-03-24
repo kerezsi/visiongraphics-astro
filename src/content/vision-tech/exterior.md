@@ -1,0 +1,29 @@
+---
+title: "Exterior"
+description: "Images or renderings focusing on the outside appearance of buildings or structures. Exterior visuals showcase architectural design materials and how a building interacts with its surroundings."
+image: "/vision-tech/exterior.jpg"
+technique: "AI-Enhanced"
+cost: "€"
+model3d: "Output from 3D Model"
+complexity: "1 - Basic"
+reality: "Conceptual Reality"
+purpose:
+  - "Communication"
+  - "Decision Support"
+gallery:
+  - "/vision-tech/exterior/01.jpg"
+  - "/vision-tech/exterior/02.jpg"
+  - "/vision-tech/exterior/03.jpg"
+  - "/vision-tech/exterior/04.jpg"
+relatedCategories:
+  - "residential"
+  - "commercial"
+  - "office"
+  - "hospitality"
+  - "airport"
+relatedFeatures:
+  - "Exterior"
+blocks:
+  - type: text
+    html: "<h2>What are Exterior Visualizations?</h2><p>They're images that show the outside of your building before it exists. Think of them as digital photos of your future project - showing facades, materials, landscaping, and how it all fits together.</p> \n \n \n \n \n \n \n \n \n  \n <h2>Why Create Exterior Visuals?</h2><p>They help everyone see what you're planning to build:</p><ul><li>Get clients excited about the design</li><li>Show planning authorities what you're proposing</li><li>Start marketing before construction</li><li>Test different design options quickly</li><li>See how materials work together</li></ul><p>Good exterior visuals can sell a project, win approvals, and catch problems early.</p><h2>How We Create Them</h2><p>We build everything digitally, then make it look like a photo:</p><ol><li>Create accurate 3D models from plans</li><li>Add site context and landscaping</li><li>Apply real-world materials</li><li>Set up natural lighting</li><li>Add people and activities</li><li>Render with photorealistic quality</li></ol><p>We pay special attention to scale, context, and atmosphere to make the images feel real.</p> \n \n \n <h2>When to Use Exterior Visuals</h2><p>These work best when:</p><ul><li>You need to present designs to clients</li><li>Submitting planning applications</li><li>Marketing to buyers or tenants</li><li>Testing facade options</li><li>Showing how a building fits its surroundings</li></ul> \n \n \n <h2>What You Get</h2><p>We deliver:</p><ul><li>High-resolution exterior images</li><li>Multiple viewpoints</li><li>Different times of day (including <a href=\"#\">Night Renderings</a> if needed)</li><li>Seasonal variations if required</li><li>Files ready for print or digital use</li></ul> \n \n \n \n \n  \n \n \n <h2>What We Need From You</h2><p>To create good exterior visuals, we need:</p><ul><li>Plans and elevations</li><li>Site information</li><li>Material specifications</li><li>Landscape plans if available</li><li>Any context information</li><li>Reference images you like</li></ul><h2>Our Approach</h2><p>We believe exteriors need to show more than just the building. They should tell a story about:</p><ul><li>How people will use the space</li><li>How the building fits its neighborhood</li><li>What the atmosphere will be like</li><li>How it changes with light and weather</li><li>What makes your project special</li></ul> \n \n \n \n \n \n \n  \n <h2>Getting Started</h2><p>Ready to see your building? Let's talk about what you need:</p><ul><li>Project type and scale</li><li>How many views</li><li>Your timeline</li><li>How you'll use the images</li><li>Any special requirements</li></ul><p>We'll help you figure out the best approach.</p><p>Want to see inside too? Check out our <a href=\"/vision-tech/interior/\">Interior</a> visualization services. For real context, consider <a href=\"/vision-tech/photo-integration/\">Photo Integration</a>.</p>"
+---

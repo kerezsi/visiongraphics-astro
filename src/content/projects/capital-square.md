@@ -1,0 +1,51 @@
+---
+title: "Capital Square"
+year: 2008
+location: "Budapest, Hungary"
+designer: "Finta Studio"
+description: "Capital Square is a defining A+ category office building located on Váci út, Budapest's most successful office corridor. Completed in the summer of 2009, this modern iconic building offers approximately 34,000 square meters of rentable space and features a distinctive ceramic facade with a striki…"
+story: |
+  The Capital Square office complex strategically sits at the intersection of Váci út and Dózsa György út, providing excellent visibility from both major thoroughfares. The building encloses a peaceful green inner courtyard that brings a sense of nature into the bustling urban environment. In 2009, it won the Construction & Investment Journal (CIJ) prize for Best Office Development, and later received BREEAM "Very Good" certification for its sustainable operations and maintenance, demonstrating its commitment to energy efficiency, water conservation, and reduced CO2 emissions
+tasks: |
+  At Vision Graphics, we created comprehensive visual materials for the Capital Square project, including exterior renderings, interior visualizations, aerial photos and integrations. Our work showcased the building's unique architectural elements - the six office complexes connected by stairwells and U-shaped grassy courtyards, the impressive three-level high-rise-style reception area, and the spectacular roof terrace offering superb views. We highlighted how the building's ceramic facade and distinctive roof design would transform the Váci út business district skyline, helping stakeholders visualize this prestigious development that would become one of Budapest's most modern cityscape-shaping buildings
+categories:
+  - office
+features: []
+tags: []
+coverImage: "/portfolio/capital-square/01.jpg"
+published: true
+featured: false
+techniques:
+  - exterior
+  - interior
+  - photo-integration
+images:
+  - src: "/portfolio/capital-square/01.jpg"
+    alt: ""
+  - src: "/portfolio/capital-square/02.jpg"
+    alt: ""
+  - src: "/portfolio/capital-square/03.jpg"
+    alt: ""
+  - src: "/portfolio/capital-square/04.jpg"
+    alt: ""
+  - src: "/portfolio/capital-square/05.jpg"
+    alt: ""
+  - src: "/portfolio/capital-square/06.jpg"
+    alt: ""
+  - src: "/portfolio/capital-square/07.jpg"
+    alt: ""
+  - src: "/portfolio/capital-square/08.jpg"
+    alt: ""
+  - src: "/portfolio/capital-square/09.jpg"
+    alt: ""
+  - src: "/portfolio/capital-square/10.jpg"
+    alt: ""
+  - src: "/portfolio/capital-square/11.jpg"
+    alt: ""
+  - src: "/portfolio/capital-square/12.jpg"
+    alt: ""
+  - src: "/portfolio/capital-square/13.jpg"
+    alt: ""
+  - src: "/portfolio/capital-square/14.jpg"
+    alt: ""
+---

@@ -1,0 +1,62 @@
+---
+title: "Eger Shopping Center"
+year: 2010
+location: "Eger, Hungary"
+designer: "Schön Architects"
+clientType: "architect"
+categories:
+  - commercial
+features: []
+tags: []
+coverImage: "/portfolio/eger-shopping-center/01.jpg"
+published: true
+featured: false
+techniques:
+  - exterior
+  - night-renderings
+images:
+  - src: "/portfolio/eger-shopping-center/01.jpg"
+    alt: ""
+  - src: "/portfolio/eger-shopping-center/02.jpg"
+    alt: ""
+  - src: "/portfolio/eger-shopping-center/03.jpg"
+    alt: ""
+  - src: "/portfolio/eger-shopping-center/04.jpg"
+    alt: ""
+  - src: "/portfolio/eger-shopping-center/05.jpg"
+    alt: ""
+  - src: "/portfolio/eger-shopping-center/06.jpg"
+    alt: ""
+  - src: "/portfolio/eger-shopping-center/07.jpg"
+    alt: ""
+  - src: "/portfolio/eger-shopping-center/08.jpg"
+    alt: ""
+  - src: "/portfolio/eger-shopping-center/09.jpg"
+    alt: ""
+  - src: "/portfolio/eger-shopping-center/10.jpg"
+    alt: ""
+  - src: "/portfolio/eger-shopping-center/11.jpg"
+    alt: ""
+  - src: "/portfolio/eger-shopping-center/12.jpg"
+    alt: ""
+  - src: "/portfolio/eger-shopping-center/13.jpg"
+    alt: ""
+  - src: "/portfolio/eger-shopping-center/14.jpg"
+    alt: ""
+  - src: "/portfolio/eger-shopping-center/15.jpg"
+    alt: ""
+  - src: "/portfolio/eger-shopping-center/16.jpg"
+    alt: ""
+  - src: "/portfolio/eger-shopping-center/17.jpg"
+    alt: ""
+  - src: "/portfolio/eger-shopping-center/18.jpg"
+    alt: ""
+  - src: "/portfolio/eger-shopping-center/19.jpg"
+    alt: ""
+  - src: "/portfolio/eger-shopping-center/20.jpg"
+    alt: ""
+  - src: "/portfolio/eger-shopping-center/21.jpg"
+    alt: ""
+  - src: "/portfolio/eger-shopping-center/22.jpg"
+    alt: ""
+---

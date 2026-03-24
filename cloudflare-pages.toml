@@ -1,0 +1,17 @@
+# Cloudflare Pages deployment config
+# Set these in the Cloudflare Pages dashboard:
+#
+#   Build command:    npm run build
+#   Build output dir: dist
+#   Root directory:   / (leave blank)
+#   Node version:     20
+#
+# Environment variables (set in CF dashboard, not here):
+#   NODE_VERSION = 20
+
+[build]
+command = "npm run build"
+destination = "dist"
+
+[build.environment]
+NODE_VERSION = "20"

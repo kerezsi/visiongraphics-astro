@@ -1,0 +1,426 @@
+---
+// src/pages/contact/index.astro
+// New page — did not exist on the WordPress prototype
+// Form uses Formspree (replace YOUR_FORM_ID with actual Formspree endpoint)
+
+import Page from '../../layouts/Page.astro';
+---
+
+<Page
+  title="Contact"
+  description="Start a conversation about your visualization project. 30-minute consultation, no charge. Vision Graphics Kft., Budapest."
+>
+  <div class="contact-page">
+
+    <div class="contact-header">
+      <p class="section-label">Get in Touch</p>
+      <h1 class="display-lg">Let's Talk About<br /><em>Your Project</em></h1>
+      <p class="contact-intro">
+        30-minute consultation, no charge. Tell us what you're building
+        and we'll tell you what's realistic.
+      </p>
+    </div>
+
+    <div class="contact-layout">
+
+      <!-- Contact info -->
+      <div class="contact-info">
+
+        <div class="info-block">
+          <h3 class="info-label">Direct contact</h3>
+          <div class="info-items">
+            <a href="tel:+36309454179" class="info-item">
+              <span class="info-icon" aria-hidden="true">📞</span>
+              <div>
+                <span class="info-item-label">Phone</span>
+                <span class="info-item-value">+36 30 945 4179</span>
+              </div>
+            </a>
+            <a href="mailto:info@visiongraphics.eu" class="info-item">
+              <span class="info-icon" aria-hidden="true">✉</span>
+              <div>
+                <span class="info-item-label">Email</span>
+                <span class="info-item-value">info@visiongraphics.eu</span>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <div class="info-block">
+          <h3 class="info-label">Studio</h3>
+          <address class="studio-address">
+            Vision Graphics Kft.<br />
+            Hollósy Simon utca 15.<br />
+            1126 Budapest, Hungary
+          </address>
+        </div>
+
+        <div class="info-block">
+          <h3 class="info-label">Useful to have ready</h3>
+          <ul class="prep-list">
+            <li>Project type and rough scope</li>
+            <li>Plans or reference materials (any format)</li>
+            <li>Your deadline</li>
+            <li>Budget range, if known</li>
+          </ul>
+          <p class="prep-note">
+            None of these are required — we can work out details together.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Form -->
+      <div class="contact-form-wrap">
+        <h2 class="form-title">Send a Message</h2>
+
+        <!--
+          Replace action URL with your Formspree endpoint:
+          https://formspree.io/f/YOUR_FORM_ID
+          Or use Cloudflare Pages Forms if available.
+        -->
+        <form
+          class="contact-form"
+          action="https://formspree.io/f/YOUR_FORM_ID"
+          method="POST"
+          id="contact-form"
+          novalidate
+        >
+          <div class="form-row">
+            <div class="form-field">
+              <label for="name" class="form-label">Name *</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                class="form-input"
+                required
+                autocomplete="name"
+                placeholder="Your name"
+              />
+            </div>
+            <div class="form-field">
+              <label for="email" class="form-label">Email *</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                class="form-input"
+                required
+                autocomplete="email"
+                placeholder="you@company.com"
+              />
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="company" class="form-label">Company / Organisation</label>
+            <input
+              type="text"
+              id="company"
+              name="company"
+              class="form-input"
+              autocomplete="organization"
+              placeholder="Optional"
+            />
+          </div>
+
+          <div class="form-field">
+            <label for="project-type" class="form-label">Project type</label>
+            <select id="project-type" name="project_type" class="form-select">
+              <option value="">Select…</option>
+              <option value="architectural-visualization">Architectural Visualization</option>
+              <option value="large-scale">Large-Scale / Infrastructure</option>
+              <option value="product">Product Visualization</option>
+              <option value="vr">VR / Real-time Experience</option>
+              <option value="animation">Animation</option>
+              <option value="ai-services">AI-Enhanced Services</option>
+              <option value="workflow">Workflow Optimization / 3ds Max Tools</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label for="message" class="form-label">Brief description *</label>
+            <textarea
+              id="message"
+              name="message"
+              class="form-textarea"
+              required
+              rows="5"
+              placeholder="Tell us about your project — what you're building, who the audience is, and what outcome you need from the visuals."
+            ></textarea>
+          </div>
+
+          <div class="form-field">
+            <label for="deadline" class="form-label">Deadline</label>
+            <input
+              type="text"
+              id="deadline"
+              name="deadline"
+              class="form-input"
+              placeholder="e.g. End of March, or flexible"
+            />
+          </div>
+
+          <!-- Honeypot (spam prevention) -->
+          <input type="text" name="_gotcha" style="display:none" tabindex="-1" />
+
+          <button type="submit" class="btn btn-primary form-submit">
+            Send →
+          </button>
+
+          <p id="form-status" class="form-status" aria-live="polite"></p>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</Page>
+
+<script>
+  // Progressive enhancement: handle Formspree submission with fetch
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const status = document.getElementById('form-status');
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const data = new FormData(form);
+    const submitBtn = form.querySelector<HTMLButtonElement>('[type="submit"]');
+    if (submitBtn) submitBtn.disabled = true;
+    if (status) status.textContent = 'Sending…';
+
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: data,
+        headers: { Accept: 'application/json' },
+      });
+
+      if (res.ok) {
+        if (status) {
+          status.textContent = 'Message sent — we\'ll be in touch within one business day.';
+          status.classList.add('form-status--ok');
+        }
+        form.reset();
+      } else {
+        throw new Error('Server error');
+      }
+    } catch {
+      if (status) {
+        status.textContent = 'Something went wrong. Please email us directly at info@visiongraphics.eu';
+        status.classList.add('form-status--err');
+      }
+      if (submitBtn) submitBtn.disabled = false;
+    }
+  });
+</script>
+
+<style>
+  .contact-page { max-width: 1100px; margin-inline: auto; }
+
+  .contact-header { margin-bottom: 3.5rem; }
+
+  .contact-header h1 {
+    margin: 0.75rem 0 1.25rem;
+  }
+
+  .contact-header h1 em {
+    font-style: italic;
+    color: var(--color-accent);
+  }
+
+  .contact-intro {
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+    max-width: 52ch;
+  }
+
+  /* Layout */
+  .contact-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 5rem;
+    align-items: start;
+  }
+
+  /* Info blocks */
+  .contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  .info-label {
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-text-faint);
+    margin-bottom: 0.75rem;
+  }
+
+  .info-items { display: flex; flex-direction: column; gap: 0.75rem; }
+
+  .info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    text-decoration: none;
+    color: inherit;
+    transition: color 200ms ease;
+  }
+
+  .info-item:hover { color: var(--color-accent); }
+
+  .info-icon { font-size: 1rem; margin-top: 0.1rem; flex-shrink: 0; }
+
+  .info-item-label {
+    display: block;
+    font-size: 0.65rem;
+    color: var(--color-text-faint);
+    font-family: var(--font-body);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 0.1rem;
+  }
+
+  .info-item-value {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    font-family: var(--font-body);
+    font-weight: 400;
+  }
+
+  .studio-address {
+    font-style: normal;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    line-height: 1.8;
+  }
+
+  .prep-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .prep-list li {
+    font-size: 0.82rem;
+    color: var(--color-text-muted);
+    padding-left: 1rem;
+    position: relative;
+  }
+
+  .prep-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--color-text-faint);
+    font-size: 0.7rem;
+  }
+
+  .prep-note {
+    font-size: 0.75rem;
+    color: var(--color-text-faint);
+    margin-top: 0.75rem;
+  }
+
+  /* Form */
+  .form-title {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: var(--color-text);
+    margin-bottom: 2rem;
+  }
+
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .form-label {
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-faint);
+  }
+
+  .form-input,
+  .form-select,
+  .form-textarea {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 0.75rem 1rem;
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    font-weight: 300;
+    color: var(--color-text);
+    outline: none;
+    transition: border-color 200ms ease;
+    width: 100%;
+  }
+
+  .form-input::placeholder,
+  .form-textarea::placeholder { color: var(--color-text-faint); }
+
+  .form-input:focus,
+  .form-select:focus,
+  .form-textarea:focus { border-color: var(--color-accent); }
+
+  .form-select {
+    appearance: none;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%234a4a62' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.85rem center;
+    background-size: 10px;
+    padding-right: 2.5rem;
+  }
+
+  .form-textarea { resize: vertical; min-height: 140px; }
+
+  .form-submit {
+    align-self: flex-start;
+    min-width: 160px;
+  }
+
+  .form-status {
+    font-size: 0.82rem;
+    color: var(--color-text-muted);
+    min-height: 1.5rem;
+  }
+
+  .form-status--ok  { color: #6adb8a; }
+  .form-status--err { color: var(--color-accent-2); }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .contact-layout { grid-template-columns: 1fr; gap: 3rem; }
+  }
+
+  @media (max-width: 560px) {
+    .form-row { grid-template-columns: 1fr; }
+  }
+</style>

@@ -1,0 +1,42 @@
+---
+title: "Sputnik Towers"
+year: 2011
+location: "Sochi, Russia"
+designer: "Dyer Group"
+description: "The Sputnik Towers development was designed as a landmark mixed-use complex in the heart of Sochi's old town, overlooking the historic harbor. This 35,000 sqm project combined a retail podium with residential towers housing serviced apartments, creating an iconic destination in this Black Sea res…"
+story: |
+  Located in a prominent elevated position along Kurortny Prospekt, Sochi's main boulevard, the development was positioned as a symbolic gateway to the city and a beacon on the coastline. The project consisted of two slinky-like towers rising 19 stories above a two-level elevated retail and entertainment plinth. The design cleverly incorporated the sloping park landscape as a series of terraces for outdoor dining, with public routes from the park to the marina becoming public malls at ground and roof level. The towers' distinctive wavy white balconies against set-back glazing made a gentle maritime reference, perfectly suited to their Black Sea setting.
+tasks: |
+  Our team created comprehensive exterior visualizations for the Sputnik Towers development, capturing the project's distinctive "slinky" aesthetic with its irregular stacked radial plan and unique balcony configurations. We developed detailed renderings showcasing how the two towers would serve as a new landmark for Sochi, overlooking the main harbor and marina. Our visualizations highlighted the project's integration with its parkland setting, demonstrating how the retail podium would incorporate landscaped roof gardens, swimming pools, and al fresco dining areas. Through our work, we helped communicate how this £75 million development would create a striking architectural presence on Sochi's skyline.
+categories:
+  - commercial
+  - residential
+features: []
+tags: []
+coverImage: "/portfolio/sputnik-towers/01.jpg"
+published: true
+featured: false
+techniques:
+  - exterior
+images:
+  - src: "/portfolio/sputnik-towers/01.jpg"
+    alt: ""
+  - src: "/portfolio/sputnik-towers/02.jpg"
+    alt: ""
+  - src: "/portfolio/sputnik-towers/03.jpg"
+    alt: ""
+  - src: "/portfolio/sputnik-towers/04.jpg"
+    alt: ""
+  - src: "/portfolio/sputnik-towers/05.jpg"
+    alt: ""
+  - src: "/portfolio/sputnik-towers/06.jpg"
+    alt: ""
+  - src: "/portfolio/sputnik-towers/07.jpg"
+    alt: ""
+  - src: "/portfolio/sputnik-towers/08.jpg"
+    alt: ""
+  - src: "/portfolio/sputnik-towers/09.jpg"
+    alt: ""
+  - src: "/portfolio/sputnik-towers/10.jpg"
+    alt: ""
+---

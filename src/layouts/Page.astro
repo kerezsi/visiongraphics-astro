@@ -1,0 +1,29 @@
+---
+// src/layouts/Page.astro
+// Standard page shell: Base + Header + main content + Footer
+
+import Base from './Base.astro';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+
+interface Props {
+  title:        string;
+  description?: string;
+  image?:       string;
+  noIndex?:     boolean;
+  fullBleed?:   boolean;  // true = no container wrap (portfolio grid, hero)
+}
+
+const { title, description, image, noIndex, fullBleed = false } = Astro.props;
+---
+
+<Base {title} {description} {image} {noIndex}>
+  <Header />
+  <main id="content">
+    {fullBleed
+      ? <slot />
+      : <div class="container section"><slot /></div>
+    }
+  </main>
+  <Footer />
+</Base>

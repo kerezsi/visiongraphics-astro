@@ -1,0 +1,27 @@
+---
+title: "Adaptive Reuse Illustrations"
+description: "Before-and-after visualizations showing the transformation of existing structures for new purposes. These images highlight the creative repurposing of buildings and spaces."
+image: "/vision-tech/adaptive-reuse-illustrations.jpg"
+technique: "AI-Enhanced"
+cost: "€€"
+model3d: "No 3D Model Required"
+complexity: "2 - Intermediate"
+reality: "Hybrid Reality-Vision"
+purpose:
+  - "Communication"
+  - "Decision Support"
+  - "Design Development"
+gallery:
+  - "/vision-tech/adaptive-reuse-illustrations/01.jpg"
+  - "/vision-tech/adaptive-reuse-illustrations/02.jpg"
+  - "/vision-tech/adaptive-reuse-illustrations/03.jpg"
+  - "/vision-tech/adaptive-reuse-illustrations/04.jpg"
+relatedCategories:
+  - "renovation"
+  - "exhibition"
+  - "urban"
+relatedFeatures: []
+blocks:
+  - type: text
+    html: "<h3>What Are Adaptive Reuse Illustrations?</h3><p>These visuals tell the story of how old buildings can become something new. We create before-and-after images that show the transformation of existing structures. Think of it as a window into the future - seeing how that old factory could become modern apartments, or how a historic warehouse might transform into a vibrant community space.</p> \n <path d=\"M14.625 5.3999L16.3 7.0749L11.35 12.0249L16.3 16.9749L14.625 18.6499L7.99999 12.0249L14.625 5.3999Z\" fill=\"#0F172A\"/></svg>' data-next-icon=''>\n \n \n <h6>Why They Matter</h6><p>Cities are always looking for smart ways to grow without sprawling outward. Reusing old buildings makes sense, but it's often hard to get everyone on board. After all, when you're standing in a run-down industrial space, it takes real vision to see its potential as a modern office or living space. Our illustrations bridge that gap, helping everyone see what's possible.</p><h3>The Fastest Way: AI-Enhanced Creation</h3><p>We've developed a quick way to explore possibilities using AI. Here's how it works:</p><h6>Rapid Concept Generation</h6><p>Take a photo of the existing building, describe what you want it to become, and our AI tools can show you different options in minutes. This helps architects and developers try out ideas quickly before diving into detailed designs.</p><h6>Smart Detail Enhancement</h6><p>The AI understands architectural styles and can add historically accurate details. It knows how materials age and can show realistic weathering patterns. This means you get convincing visuals fast.</p><h6>Automatic Context Building</h6><p>Need to show how the building fits into its neighborhood? The AI can generate surrounding context that matches the local style, saving hours of manual modeling.</p><h3>Our Technical Approach</h3><p>We use several methods to create these transformations, picking the right one for each project.</p> \n <path d=\"M14.625 5.3999L16.3 7.0749L11.35 12.0249L16.3 16.9749L14.625 18.6499L7.99999 12.0249L14.625 5.3999Z\" fill=\"#0F172A\"/></svg>' data-next-icon=''>\n \n \n <path d=\"M14.625 5.3999L16.3 7.0749L11.35 12.0249L16.3 16.9749L14.625 18.6499L7.99999 12.0249L14.625 5.3999Z\" fill=\"#0F172A\"/></svg>' data-next-icon=''>\n \n \n <h6>Documentation Phase</h6><p>First, we capture everything about the existing building using laser scans, photos, and drone footage. We look through old documents and study how the building was constructed. This gives us an accurate starting point.</p><h6>Digital Recreation</h6><p>Next, we create an exact digital copy of the building. We process laser scans, clean up the data, and add in details from our photos. This becomes our \"before\" state.</p><h3>Visualization Methods</h3><p>We've got three main ways to show these transformations:</p><h6>Photo-Based</h6><p>When we're mainly showing exterior changes, we start with high-quality photos. We clean them up, add new elements, and adjust materials and lighting to show the transformation.</p><h6>3D-Based</h6><p>For bigger changes, especially inside the building, we create everything in 3D. This lets us move walls, add floors, or completely reimagine the space while keeping everything accurate.</p><h6>Hybrid Approach</h6><p>Sometimes we mix both methods. We might use real photos for the background and context, but add 3D elements for the new parts of the building. This gives us the best of both worlds - realism and flexibility.</p><h3>Getting the Details Right</h3><p>We check everything carefully: Is it historically accurate? Could it actually be built? Do the materials look right? Is the lighting consistent? Does it match the right scale? Each image goes through this review process.</p><h2>What You Get</h2><p>You'll receive high-resolution images that work everywhere - from big presentation screens to websites. Want to show the transformation interactively? We can create sliding before/after comparisons that let people explore the changes themselves.</p><h3>How Long Does It Take?</h3><p>Using traditional methods, you're looking at 2-3 weeks from start to finish. But with our AI-enhanced workflow, we can show you initial concepts in days, then refine them based on your feedback.</p><h3>What We Need From You</h3><p>To get started, we need:</p><ul><li>Some good photos of the building</li><li>Basic info about what you want to create</li><li>Any historical documents you have</li><li>Your timeline and budget</li><li>Ideas about how you'll use the images</li></ul><p>Want to see how we could transform your building? Let's talk about your project.</p>"
+---

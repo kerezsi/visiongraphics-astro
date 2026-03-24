@@ -1,0 +1,47 @@
+---
+title: "Eiffel Art Studios"
+year: 2015
+location: "Budapest, Hungary"
+designer: "Közti"
+description: "The Eiffel Art Studios project transformed the historic Northern Railway Maintenance and Engineering Works into a state-of-the-art rehearsal and production center for the Hungarian State Opera. Our team created comprehensive 3D animations showcasing this ambitious 22,000 sqm adaptive reuse projec…"
+story: |
+  Located on a 6.7-hectare site in Budapest's Kőbányai Road area, this project represents a pioneering example of brownfield redevelopment, breathing new life into an industrial monument that operated for 124 years until 2009. The complex houses the Opera's nine production workshops, rehearsal spaces, storage facilities for sets, props, and approximately 400,000 costumes, along with performance venues including the 500-seat Bánffy Stage. The design carefully balances preservation requirements with modern functionality, following a house-in-house concept that maintains the impressive scale and character of the original structure while incorporating state-of-the-art theatrical technology. The project was completed in 2020, with official inauguration taking place on October 25, 2021 with a festive gala entitled "Rebirth-Day"
+tasks: |
+  Our team developed a comprehensive 13:20 length 3D animation that captured both the exterior and interior transformations of this remarkable industrial-to-cultural conversion. We created detailed visualizations showcasing the building's impressive five-nave structure and how the new design preserves the original riveted steel framework while accommodating modern theatrical functions. Our animations highlight distinctive features like the grand entrance hall displaying the restored 1912 steam locomotive No. 327.141 and its teak dining car that now houses the Orient Restaurant. We illustrated how the complex accommodates both public-facing spaces like the Bánffy Stage and behind-the-scenes production areas including workshops, rehearsal spaces, and the innovative costume storage system with its rolling cabinets. Through our work, we helped communicate how this ambitious project by KÖZTI architects under Miklós Marosi successfully transformed a historic industrial monument into a vibrant cultural destination.
+categories:
+  - commercial
+features: []
+tags: []
+coverImage: "/portfolio/eiffel-art-studios/01.jpg"
+published: true
+featured: false
+video: "https://www.youtube.com/watch?v=hYO10"
+techniques:
+  - 3d-animation
+  - adaptive-reuse-illustrations
+  - exterior
+  - interior
+images:
+  - src: "/portfolio/eiffel-art-studios/01.jpg"
+    alt: ""
+  - src: "/portfolio/eiffel-art-studios/02.jpg"
+    alt: ""
+  - src: "/portfolio/eiffel-art-studios/03.jpg"
+    alt: ""
+  - src: "/portfolio/eiffel-art-studios/04.jpg"
+    alt: ""
+  - src: "/portfolio/eiffel-art-studios/05.jpg"
+    alt: ""
+  - src: "/portfolio/eiffel-art-studios/06.jpg"
+    alt: ""
+  - src: "/portfolio/eiffel-art-studios/07.jpg"
+    alt: ""
+  - src: "/portfolio/eiffel-art-studios/08.jpg"
+    alt: ""
+  - src: "/portfolio/eiffel-art-studios/09.jpg"
+    alt: ""
+  - src: "/portfolio/eiffel-art-studios/10.jpg"
+    alt: ""
+  - src: "/portfolio/eiffel-art-studios/11.jpg"
+    alt: ""
+---

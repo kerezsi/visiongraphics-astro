@@ -1,0 +1,35 @@
+---
+title: "Pushkinskaya"
+year: 2013
+location: "Moscow, Russia"
+designer: "Dyer Group"
+description: "Pushkinskaya is a 167,000 sqm mixed-use development designed for central Moscow in 2013. Located near the iconic Pushkin Square, this residential-led project aimed to transform a dense inner-city urban block by utilizing internal courtyard space while respecting the historical context of the area."
+story: |
+  Designed for Tashir Investment Company, the project planned to deliver 47,000 sqm of new homes alongside a 144-bed hotel, 15,000 sqm of office space, a 33,000 sqm shopping center, and approximately 30,000 sqm of underground parking. The development was conceived as a layered system, with car parking at the bottom, followed by the shopping center and street retail, then offices, with apartments at the very top to maximize natural daylight. Despite filling most of the internal courtyard with new construction, the design preserved two classical buildings worth saving, restoring their original facades while completely redeveloping their interiors.
+tasks: |
+  We created exterior visualizations for the Pushkinskaya project, showcasing how this ambitious mixed-use development would transform an underutilized inner-city block while responding specifically to its context on each edge. Our renderings highlighted the project's limited direct street exposure, with only the hotel building featuring a full-scale classical façade opposite Pushkin Square. The visualizations also illustrated how new open public spaces, mini gardens, and roof terraces would tie together the proposed and existing buildings, creating a harmonious composition that would enhance the overall quality of this central Moscow city block.
+categories:
+  - hospitality
+  - residential
+features: []
+tags: []
+coverImage: "/portfolio/pushkinskaya/01.jpg"
+published: true
+featured: false
+techniques:
+  - exterior
+  - night-renderings
+images:
+  - src: "/portfolio/pushkinskaya/01.jpg"
+    alt: ""
+  - src: "/portfolio/pushkinskaya/02.jpg"
+    alt: ""
+  - src: "/portfolio/pushkinskaya/03.jpg"
+    alt: ""
+  - src: "/portfolio/pushkinskaya/04.jpg"
+    alt: ""
+  - src: "/portfolio/pushkinskaya/05.jpg"
+    alt: ""
+  - src: "/portfolio/pushkinskaya/06.jpg"
+    alt: ""
+---

@@ -1,0 +1,57 @@
+---
+title: "Loft 52"
+year: 2022
+location: "Budapest, Hungary"
+client: "Indotek"
+clientType: "developer"
+description: "Loft 52 is a newly constructed residential complex located in Budapest's XIII. district, specifically on Petneházy Street. This development is designed to evoke the atmosphere of loft living, characterized by large glass surfaces and high ceilings, providing a unique living experience along with …"
+story: |
+  Location and Accessibility
+  Situated in a rapidly developing area, Loft 52 offers excellent public transport links, including nearby bus, tram, and metro stations, making it easy to reach any part of Budapest2.
+  The vicinity includes various amenities such as schools, shops, medical facilities, and recreational areas like Városliget and Margit-sziget2.
+  Building Specifications
+  The complex comprises 84 modern apartments spread across three staircases, featuring energy-efficient designs with low utility costs12.
+  Each apartment benefits from spacious interiors and a post-industrial aesthetic, which includes high ceilings and expansive windows that enhance natural light24.
+  Sustainability Features
+  The design emphasizes sustainability with renewable energy solutions and energy-efficient systems like a high-efficiency VRF heating-cooling system2.
+  The building includes a secure courtyard with landscaped green areas and parking facilities for over 70 vehicles, including spots for electric car charging12.
+  Investment Potential
+  The XIII. district has been noted for its dynamic real estate market, attracting both residents and businesses due to its continuous improvement in infrastructure and services14.
+  Loft 52 is positioned as not only a comfortable living space but also a sound investment opportunity in a thriving area of Budapest1.
+  Conclusion
+  Loft 52 represents a blend of modern living with an industrial heritage feel. Its strategic location, combined with sustainable features and community amenities, makes it an attractive option for potential homeowners and investors alike.
+categories:
+  - residential
+features: []
+tags: []
+coverImage: "/portfolio/loft52/01.jpg"
+published: true
+featured: false
+techniques:
+  - exterior
+  - interactive-3d
+  - marketing-apartment-plan
+  - marketing-level-plan
+  - photo-integration
+images:
+  - src: "/portfolio/loft52/01.jpg"
+    alt: ""
+  - src: "/portfolio/loft52/02.jpg"
+    alt: ""
+  - src: "/portfolio/loft52/03.jpg"
+    alt: ""
+  - src: "/portfolio/loft52/04.jpg"
+    alt: ""
+  - src: "/portfolio/loft52/05.jpg"
+    alt: ""
+  - src: "/portfolio/loft52/06.jpg"
+    alt: ""
+  - src: "/portfolio/loft52/07.jpg"
+    alt: ""
+  - src: "/portfolio/loft52/08.jpg"
+    alt: ""
+  - src: "/portfolio/loft52/09.jpg"
+    alt: ""
+  - src: "/portfolio/loft52/10.jpg"
+    alt: ""
+---

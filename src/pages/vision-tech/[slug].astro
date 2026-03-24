@@ -1,0 +1,574 @@
+---
+// src/pages/vision-tech/[slug].astro
+import { getCollection, type CollectionEntry } from 'astro:content';
+import Page from '../../layouts/Page.astro';
+import Tour360 from '../../components/media/Tour360.astro';
+import FilmEmbed from '../../components/media/FilmEmbed.astro';
+import YouTubeEmbed from '../../components/media/YouTubeEmbed.astro';
+import ImageLightbox from '../../components/media/ImageLightbox';
+
+export async function getStaticPaths() {
+  const all = await getCollection('vision-tech');
+  return all.map(entry => ({
+    params: { slug: entry.slug },
+    props:  { entry },
+  }));
+}
+
+type Props = { entry: CollectionEntry<'vision-tech'> };
+const { entry } = Astro.props;
+const { data } = entry;
+const { Content } = await entry.render();
+
+// Related portfolio projects
+const allProjects = await getCollection('projects', p => p.data.published);
+
+// 1. Specific match: relatedCategories (subcategory) + relatedFeatures
+const specificMatches = allProjects.filter(p => {
+  const catMatch = data.relatedCategories.length === 0 ||
+    data.relatedCategories.some(c => p.data.categories.includes(c as any));
+  const featMatch = data.relatedFeatures.length === 0 ||
+    data.relatedFeatures.some(f => p.data.features.includes(f));
+  return catMatch && featMatch;
+}).sort((a, b) => b.data.year - a.data.year);
+
+// 2. If fewer than 6 specific matches, fill with featured arch-viz projects
+let related: typeof allProjects;
+if (specificMatches.length >= 6) {
+  related = specificMatches.slice(0, 8);
+} else {
+  const specificSlugs = new Set(specificMatches.map(p => p.slug));
+  const fallback = allProjects
+    .filter(p => !specificSlugs.has(p.slug) && p.data.categories.includes('architectural-visualization' as any))
+    .sort((a, b) => (b.data.featured ? 1 : 0) - (a.data.featured ? 1 : 0) || b.data.year - a.data.year);
+  related = [...specificMatches, ...fallback].slice(0, 8);
+}
+---
+
+<Page
+  title={`${data.title} | Vision Graphics Technologies`}
+  description={data.description}
+  fullBleed
+>
+
+  <!-- ─── Hero ─────────────────────────────────────────────── -->
+  <section class="vt-detail-hero">
+    <div class="vt-detail-hero-img">
+      <img src={data.image} alt={data.title} />
+    </div>
+    <div class="vt-detail-hero-overlay">
+      <div class="container">
+        <a href="/vision-tech/" class="vt-back">&larr; All Techniques</a>
+        <p class="section-label">{data.technique}</p>
+        <h1 class="display-lg">{data.title}</h1>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Attributes strip ─────────────────────────────────── -->
+  <section class="vt-attrs">
+    <div class="container vt-attrs-inner">
+      <div class="vt-attr">
+        <span class="vt-attr-label">Cost</span>
+        <span class="vt-attr-val">{data.cost}</span>
+      </div>
+      <div class="vt-attr">
+        <span class="vt-attr-label">3D Model</span>
+        <span class="vt-attr-val">{data.model3d}</span>
+      </div>
+      <div class="vt-attr">
+        <span class="vt-attr-label">Complexity</span>
+        <span class="vt-attr-val">{data.complexity}</span>
+      </div>
+      <div class="vt-attr">
+        <span class="vt-attr-label">Reality spectrum</span>
+        <span class="vt-attr-val">{data.reality}</span>
+      </div>
+      <div class="vt-attr">
+        <span class="vt-attr-label">Purpose</span>
+        <span class="vt-attr-val">{data.purpose.join(' · ')}</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Description + blocks ─────────────────────────────── -->
+  <section class="section vt-first-section">
+    <div class="container vt-desc-inner">
+      <div class="vt-desc-text">
+        <p class="section-label">About this technique</p>
+        <h2 class="display-md">{data.title}</h2>
+        <p class="vt-desc-body">{data.description}</p>
+      </div>
+      <aside class="vt-meta-sidebar">
+        <h3 class="vt-sidebar-title">Technical Profile</h3>
+        <dl class="vt-meta-list">
+          <div class="vt-meta-item">
+            <dt>Technique</dt>
+            <dd>{data.technique}</dd>
+          </div>
+          <div class="vt-meta-item">
+            <dt>Cost tier</dt>
+            <dd>{data.cost}</dd>
+          </div>
+          <div class="vt-meta-item">
+            <dt>Complexity</dt>
+            <dd>{data.complexity}</dd>
+          </div>
+          <div class="vt-meta-item">
+            <dt>3D model</dt>
+            <dd>{data.model3d}</dd>
+          </div>
+          <div class="vt-meta-item">
+            <dt>Reality</dt>
+            <dd>{data.reality}</dd>
+          </div>
+          {data.purpose.map(p => (
+            <div class="vt-meta-item">
+              <dt>Purpose</dt>
+              <dd>{p}</dd>
+            </div>
+          ))}
+        </dl>
+      </aside>
+    </div>
+  </section>
+
+  {data.blocks && data.blocks.length > 0 ? (
+    data.blocks.map((block) => {
+      if (block.type === 'text') {
+        return (
+          <section class="vt-block-section">
+            <div class="container">
+              <div class="vt-body-content" set:html={block.html} />
+            </div>
+          </section>
+        );
+      }
+      if (block.type === 'tour360') {
+        return (
+          <section class="vt-block-section vt-block-section--media">
+            <Tour360 url={block.url} title={block.title ?? ''} />
+          </section>
+        );
+      }
+      if (block.type === 'gallery') {
+        return (
+          <section class="vt-block-section vt-block-section--media">
+            <div class="container">
+              <ImageLightbox images={block.images} title={block.title} client:load />
+            </div>
+          </section>
+        );
+      }
+      if (block.type === 'film') {
+        return (
+          <section class="vt-block-section vt-block-section--media">
+            <FilmEmbed vimeoId={block.vimeoId} title={block.title ?? ''} />
+          </section>
+        );
+      }
+      if (block.type === 'youtube') {
+        return (
+          <section class="vt-block-section vt-block-section--media">
+            <YouTubeEmbed url={block.url} title={block.title ?? ''} />
+          </section>
+        );
+      }
+    })
+  ) : (
+    <section class="vt-block-section">
+      <div class="container">
+        <div class="vt-body-content">
+          <Content />
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- CTA after all blocks -->
+  <section class="vt-block-section">
+    <div class="container">
+      <a href="/contact/" class="btn btn-primary">Discuss Your Project</a>
+    </div>
+  </section>
+
+  <!-- ─── Gallery ─────────────────────────────────────────── -->
+  {data.gallery && data.gallery.length > 0 && (
+    <section class="vt-gallery-section">
+      <div class="container">
+        <p class="section-label">Examples</p>
+        <ImageLightbox images={data.gallery} title="Examples" client:load />
+      </div>
+    </section>
+  )}
+
+  <!-- ─── Related projects ─────────────────────────────────── -->
+  {related.length > 0 && (
+    <section class="section vt-related-section">
+      <div class="container">
+        <p class="section-label">Portfolio</p>
+        <h2 class="display-md">Projects Using This Technique</h2>
+        <div class="vt-related-grid">
+          {related.map(p => (
+            <a href={`/portfolio/${p.slug}/`} class="vt-related-card">
+              <div class="vt-related-img">
+                <img src={p.data.coverImage} alt={p.data.title} loading="lazy" />
+              </div>
+              <div class="vt-related-body">
+                <div class="vt-related-meta">
+                  <span class="vt-related-cat">{p.data.categories[0]?.replace(/-/g, '\u00A0')}</span>
+                  <span class="vt-related-year">{p.data.year}</span>
+                </div>
+                <h3 class="vt-related-title">{p.data.title}</h3>
+                {p.data.client && <span class="vt-related-client">{p.data.client}</span>}
+              </div>
+            </a>
+          ))}
+        </div>
+        <div class="vt-related-more">
+          <a href="/portfolio/" class="btn btn-secondary">Full Portfolio</a>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- ─── Nav to other techniques ──────────────────────────── -->
+  <section class="section-sm vt-nav-section">
+    <div class="container vt-nav-inner">
+      <a href="/vision-tech/" class="btn btn-ghost">&larr; All Techniques</a>
+      <a href="/contact/" class="btn btn-primary">Talk to Us</a>
+    </div>
+  </section>
+
+</Page>
+
+<style>
+  /* ─── Hero ─────────────────────────────────────────────── */
+  .vt-detail-hero {
+    position: relative;
+    height: clamp(280px, 40vh, 480px);
+    overflow: hidden;
+  }
+
+  .vt-detail-hero-img {
+    position: absolute;
+    inset: 0;
+  }
+
+  .vt-detail-hero-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .vt-detail-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(26,26,26,0.95) 0%, rgba(26,26,26,0.4) 60%, transparent 100%);
+    display: flex;
+    align-items: flex-end;
+    padding-bottom: 3rem;
+  }
+
+  .vt-back {
+    display: inline-block;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    margin-bottom: 1rem;
+    transition: color 200ms ease;
+  }
+  .vt-back:hover { color: var(--color-text); }
+
+  .vt-detail-hero-overlay .section-label { margin-bottom: 0.4rem; }
+  .vt-detail-hero-overlay h1 { text-shadow: 0 2px 12px rgba(0,0,0,0.5); }
+
+  /* ─── Attributes strip ──────────────────────────────────── */
+  .vt-attrs {
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    padding-block: 1.25rem;
+  }
+
+  .vt-attrs-inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+
+  .vt-attr {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .vt-attr-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-text-faint);
+    font-weight: 500;
+  }
+
+  .vt-attr-val {
+    font-size: 0.85rem;
+    color: var(--color-text);
+    font-weight: 500;
+  }
+
+  /* ─── Description ───────────────────────────────────────── */
+  .vt-first-section { padding-bottom: 0; }
+
+  .vt-desc-inner {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .vt-desc-body {
+    font-size: 1rem;
+    line-height: 1.75;
+    color: var(--color-text-muted);
+    margin-top: 1.25rem;
+    max-width: 60ch;
+  }
+
+  /* ─── Sidebar ───────────────────────────────────────────── */
+  .vt-meta-sidebar {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 1.5rem;
+    position: sticky;
+    top: 6rem;
+  }
+
+  .vt-sidebar-title {
+    font-family: var(--font-body);
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-text-faint);
+    margin-bottom: 1rem;
+  }
+
+  .vt-meta-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .vt-meta-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.55rem 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .vt-meta-item:last-child { border-bottom: none; }
+
+  .vt-meta-item dt {
+    font-size: 0.72rem;
+    color: var(--color-text-faint);
+    font-weight: 400;
+  }
+
+  .vt-meta-item dd {
+    font-size: 0.78rem;
+    color: var(--color-text);
+    font-weight: 500;
+    text-align: right;
+  }
+
+  /* ─── Block sections ────────────────────────────────────── */
+  .vt-block-section {
+    padding-block: 2.5rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .vt-block-section--media {
+    padding-block: 0;
+    border-top: none;
+  }
+
+  /* ─── Rich body content ─────────────────────────────────── */
+  .vt-body-content {
+    margin-top: 1.5rem;
+    max-width: 62ch;
+  }
+
+  /* Use :global() so styles apply to <Content /> rendered elements
+     which don't receive the Astro scoped data-astro-cid-* attribute */
+  .vt-body-content :global(h2) {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin: 2rem 0 0.6rem;
+    line-height: 1.25;
+  }
+
+  .vt-body-content :global(h3) {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin: 1.5rem 0 0.5rem;
+  }
+
+  .vt-body-content :global(p) {
+    font-size: 0.93rem;
+    line-height: 1.75;
+    color: var(--color-text-muted);
+    margin: 0.6rem 0;
+  }
+
+  .vt-body-content :global(ul),
+  .vt-body-content :global(ol) {
+    margin: 0.6rem 0 0.6rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .vt-body-content :global(li) {
+    font-size: 0.93rem;
+    line-height: 1.65;
+    color: var(--color-text-muted);
+  }
+
+  .vt-body-content :global(strong) {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  .vt-body-content :global(a) {
+    color: var(--color-accent);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 150ms ease;
+  }
+
+  .vt-body-content :global(a:hover) {
+    border-bottom-color: var(--color-accent);
+  }
+
+  /* .gallery-section-label, .gallery-viewer, .gallery-main, .gallery-thumbs,
+     .lightbox, etc. — all defined in global.css */
+
+  /* ─── Gallery ───────────────────────────────────────────── */
+  .vt-gallery-section {
+    border-top: 1px solid var(--color-border);
+    padding-block: 3rem;
+  }
+
+  .vt-gallery-section .section-label { margin-bottom: 1.5rem; }
+
+  /* ─── Related projects ──────────────────────────────────── */
+  .vt-related-section {
+    border-top: 1px solid var(--color-border);
+  }
+
+  .vt-related-section h2 { margin: 0.5rem 0 2rem; }
+
+  .vt-related-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  /* Portfolio items — white border */
+  .vt-related-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--color-surface);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    text-decoration: none;
+    transition: border-color 250ms ease, transform 250ms ease;
+  }
+
+  .vt-related-card:hover { border-color: rgba(255, 255, 255, 0.35); transform: translateY(-2px); }
+
+  .vt-related-img {
+    aspect-ratio: 16/9;
+    overflow: hidden;
+    background: var(--color-surface-2);
+  }
+
+  .vt-related-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 400ms ease;
+  }
+
+  .vt-related-card:hover .vt-related-img img { transform: scale(1.04); }
+
+  .vt-related-body {
+    padding: 1rem 1.1rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    flex: 1;
+  }
+
+  .vt-related-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .vt-related-cat {
+    font-size: 0.64rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .vt-related-year {
+    font-size: 0.75rem;
+    color: var(--color-text-faint);
+    font-family: var(--font-mono);
+  }
+
+  .vt-related-title {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-text);
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  .vt-related-client {
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+  }
+
+  .vt-related-more {
+    margin-top: 2rem;
+    text-align: center;
+  }
+
+  /* ─── Bottom nav ────────────────────────────────────────── */
+  .vt-nav-section { border-top: 1px solid var(--color-border); }
+  .vt-nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
+
+  /* ─── Responsive ────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    .vt-desc-inner { grid-template-columns: 1fr; gap: 2rem; }
+    .vt-meta-sidebar { position: static; }
+    .vt-attrs-inner { gap: 1.25rem; }
+    .vt-nav-inner { flex-direction: column; align-items: flex-start; }
+    .vt-related-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  }
+</style>

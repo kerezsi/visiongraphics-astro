@@ -1,0 +1,81 @@
+---
+title: "Planet 2023"
+year: 2023
+location: "Budapest"
+designer: "Unger &amp; Partners"
+clientType: "designer"
+description: "Planet 2023 was a sustainability expo and experience center featuring interactive installations across 18 thematic islands. The exhibition aimed to educate visitors about environmental challenges and sustainable living through immersive, visual storytelling."
+story: |
+  The Planet Budapest event combined a professional trade fair with an educational exhibition open to the public. With limited time for development and construction, our team needed to create a streamlined process for handling the complex 3D environments. The exhibition featured two main areas: Planet Expo for businesses showcasing sustainable innovations, and Your Planet where visitors could learn about climate change impacts and practical sustainability solutions. Both areas required extensive visualization during development and later became part of the permanent digital experience on the Planet Budapest website.
+tasks: |
+  We developed a custom automation system to handle the complex visualization needs of the project. Our team created an intelligent workflow that processed the base 3D models, automatically naming and dimensioning all surfaces for print, interactive displays, paint, and projection. We generated placeholder texture files with printed dimensions for the graphic design team, allowing them to create content that could be instantly applied to the 3D model with a single button press. The custom MAXScript we developed eliminated the need for multiple rounds of manual modifications - a critical requirement given the tight timeline. While we produced some still images, our main deliverables were two comprehensive virtual tours (Planet Expo and Your Planet), each containing 40-50 viewpoints. These tours were updated daily during design development and construction phases, helping teams coordinate effectively. Today, these virtual tours remain accessible on the Planet Budapest website, allowing online visitors to explore the exhibition virtually.
+categories:
+  - exhibition
+features: []
+tags: []
+coverImage: "/portfolio/planet-2023/01.jpg"
+published: true
+featured: false
+tour360:
+  - title: "360° Tour"
+    url: "https://visiongraphics.eu/PANO/PLANET_2023_A/"
+techniques:
+  - 360-renderings
+  - 360-tour
+  - interior
+images:
+  - src: "/portfolio/planet-2023/01.jpg"
+    alt: ""
+  - src: "/portfolio/planet-2023/02.jpg"
+    alt: ""
+  - src: "/portfolio/planet-2023/03.jpg"
+    alt: ""
+  - src: "/portfolio/planet-2023/04.jpg"
+    alt: ""
+  - src: "/portfolio/planet-2023/05.jpg"
+    alt: ""
+  - src: "/portfolio/planet-2023/06.jpg"
+    alt: ""
+  - src: "/portfolio/planet-2023/07.jpg"
+    alt: ""
+  - src: "/portfolio/planet-2023/08.jpg"
+    alt: ""
+  - src: "/portfolio/planet-2023/09.jpg"
+    alt: ""
+  - src: "/portfolio/planet-2023/10.jpg"
+    alt: ""
+  - src: "/portfolio/planet-2023/11.jpg"
+    alt: ""
+  - src: "/portfolio/planet-2023/12.jpg"
+    alt: ""
+  - src: "/portfolio/planet-2023/13.jpg"
+    alt: ""
+  - src: "/portfolio/planet-2023/14.jpg"
+    alt: ""
+  - src: "/portfolio/planet-2023/15.jpg"
+    alt: ""
+  - src: "/portfolio/planet-2023/16.jpg"
+    alt: ""
+  - src: "/portfolio/planet-2023/17.jpg"
+    alt: ""
+  - src: "/portfolio/planet-2023/18.jpg"
+    alt: ""
+  - src: "/portfolio/planet-2023/19.jpg"
+    alt: ""
+  - src: "/portfolio/planet-2023/20.jpg"
+    alt: ""
+  - src: "/portfolio/planet-2023/21.jpg"
+    alt: ""
+  - src: "/portfolio/planet-2023/22.jpg"
+    alt: ""
+  - src: "/portfolio/planet-2023/23.jpg"
+    alt: ""
+  - src: "/portfolio/planet-2023/24.jpg"
+    alt: ""
+  - src: "/portfolio/planet-2023/25.jpg"
+    alt: ""
+  - src: "/portfolio/planet-2023/26.jpg"
+    alt: ""
+  - src: "/portfolio/planet-2023/27.jpg"
+    alt: ""
+---

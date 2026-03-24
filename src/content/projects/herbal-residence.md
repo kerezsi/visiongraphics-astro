@@ -1,0 +1,53 @@
+---
+title: "Herbal Residence"
+year: 2017
+location: "Budapest, Hungary"
+description: "The Herbal Residence project showcases an exclusive luxury residential development nestled in Budapest's prestigious XII district, at the foot of Kis-Svábhegy. Our team created comprehensive visual materials including exterior and interior renderings, 360° virtual tours of unfurnished apartments,…"
+story: |
+  Herbal Residence represents sophisticated urban living in one of Budapest's most desirable green areas. Located just 7 minutes from downtown, this development features three distinct multi-story buildings harmoniously integrated into a 4000 square meter park with mature trees. The project offers 19 luxury villas ranging from 66-111 square meters, each designed with premium materials and finishes. Completed in 2018, these residences blend the tranquility of a green environment with proximity to city amenities, creating a unique living experience in an area where new development opportunities are extremely limited.
+tasks: |
+  Vision Graphics was commissioned to create a complete visual package that would effectively market these exclusive properties to discerning buyers. We developed photorealistic exterior renderings showcasing the three buildings within their preserved natural setting, as well as detailed interior visualizations highlighting the premium finishes and spatial qualities of each residence. Our team produced comprehensive 360° virtual tours of all unfurnished apartments, allowing potential buyers to experience the spaces and understand their potential. Additionally, we created marketing floorplans and level plans that clearly communicated the layout and flow of each unit, along with custom marketing sheets that presented the unique features and specifications of all 19 residences in an elegant, cohesive format.
+categories:
+  - residential
+features: []
+tags: []
+coverImage: "/portfolio/herbal-residence/01.jpg"
+published: true
+featured: false
+techniques:
+  - 360-renderings
+  - 360-tour
+  - exterior
+  - interior
+images:
+  - src: "/portfolio/herbal-residence/01.jpg"
+    alt: ""
+  - src: "/portfolio/herbal-residence/02.jpg"
+    alt: ""
+  - src: "/portfolio/herbal-residence/03.jpg"
+    alt: ""
+  - src: "/portfolio/herbal-residence/04.jpg"
+    alt: ""
+  - src: "/portfolio/herbal-residence/05.jpg"
+    alt: ""
+  - src: "/portfolio/herbal-residence/06.jpg"
+    alt: ""
+  - src: "/portfolio/herbal-residence/07.jpg"
+    alt: ""
+  - src: "/portfolio/herbal-residence/08.jpg"
+    alt: ""
+  - src: "/portfolio/herbal-residence/09.jpg"
+    alt: ""
+  - src: "/portfolio/herbal-residence/10.jpg"
+    alt: ""
+  - src: "/portfolio/herbal-residence/11.jpg"
+    alt: ""
+  - src: "/portfolio/herbal-residence/12.jpg"
+    alt: ""
+  - src: "/portfolio/herbal-residence/13.jpg"
+    alt: ""
+  - src: "/portfolio/herbal-residence/14.jpg"
+    alt: ""
+  - src: "/portfolio/herbal-residence/15.jpg"
+    alt: ""
+---

@@ -1,0 +1,37 @@
+---
+title: "KÖKI FoodPort"
+year: 2022
+location: "Budapest, Hungary"
+designer: "ArtFront"
+clientType: "architect"
+description: "The KÖKI Plaza's FOODPORT renovation project created a brighter, more sustainable, and user-friendly space with distinct zones for different consumer groups, adhering to ESG principles and emphasizing green solutions."
+story: |
+  The KÖKI Plaza's new owner, Adventum Group, transformed the food court (renamed FOODPORT) by making it brighter and more livable while optimizing consumer and rental areas. The redesign focused on ESG principles, emphasizing "green solutions" and creating a sense of renewal and closeness to nature through extensive use of plants. The space was divided into zones with distinct color schemes to cater to different consumer groups: olive green for the business zone, sunny yellow for the youth area, mauve for the family zone, and a neutral warm gray connecting these areas. The project incorporated environmentally-friendly practices, social responsibility, and good governance principles in its design and implementation.
+tasks: |
+  Our team was tasked with creating a photorealistic 3D model of the FOODPORT renovation project at KÖKI Plaza. We utilized the provided CAD model and 3D scans as a foundation for our work. The project was divided into two phases - preliminary and final - during which we produced high-quality visuals and an immersive 360-degree tour. To enhance the realism of the 360-degree renders, we captured on-site 360-degree photographs. This approach allowed us to seamlessly integrate our 3D model into the existing environment, eliminating the need to model unchanged parts of the building in 3D. By combining these techniques, we were able to create a highly accurate and visually compelling representation of the renovated space.
+categories:
+  - commercial
+features: []
+tags: []
+coverImage: "/portfolio/koki_foodcourt/01.jpg"
+published: true
+featured: true
+tour360:
+  - title: "360° Tour"
+    url: "https://visiongraphics.eu/PANO/KOKI_FC_KIVITELI"
+techniques:
+  - 360-photo-integration
+  - 360-photography
+  - 360-renderings
+  - 360-tour
+  - interior
+images:
+  - src: "/portfolio/koki_foodcourt/01.jpg"
+    alt: ""
+  - src: "/portfolio/koki_foodcourt/02.jpg"
+    alt: ""
+  - src: "/portfolio/koki_foodcourt/03.jpg"
+    alt: ""
+  - src: "/portfolio/koki_foodcourt/04.jpg"
+    alt: ""
+---

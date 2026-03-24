@@ -1,0 +1,55 @@
+---
+title: "Detsky Mir"
+year: 2013
+location: "Moscow, Russia"
+designer: "Dyer Group"
+description: "Detsky Mir is a 22,000 sqm iconic children's retail space located in the heart of Moscow, completed in 2013. The design features a unique \"RIBBON\" concept that connects various interior zones, creating a dynamic journey through this historic building that has played a significant role in the educ…"
+story: |
+  The Detsky Mir (Children's World) brand has a rich history in Russia, first opening its doors in 1957 and growing to become the Soviet Union's largest and most recognizable purveyor of toys and entertainment. The redesign of this flagship store aimed to bridge history with the future, creating spaces that honor traditions while embracing modern trends in gaming, fashion, and toys. The architects moved away from static interior expressions, instead developing a fluid, sculptural approach that encourages discovery and interaction across multiple floors.
+tasks: |
+  We created detailed 3D visualizations for the Detsky Mir project, delivering the interior renderings in four batches as the design evolved. Our visualizations brought to life the innovative "RIBBON" concept, showcasing how this sculptural element connects different functional zones and creates interactive surfaces throughout the space. Our renderings helped the architects communicate their vision of a dynamic, evolving retail environment that balances historical significance with contemporary design, highlighting the journey of discovery that would captivate visitors as they explore the various floors of activities and interactive spaces.
+categories:
+  - commercial
+features: []
+tags: []
+coverImage: "/portfolio/detsky-mir/01.jpg"
+published: true
+featured: false
+techniques:
+  - interior
+images:
+  - src: "/portfolio/detsky-mir/01.jpg"
+    alt: ""
+  - src: "/portfolio/detsky-mir/02.jpg"
+    alt: ""
+  - src: "/portfolio/detsky-mir/03.jpg"
+    alt: ""
+  - src: "/portfolio/detsky-mir/04.jpg"
+    alt: ""
+  - src: "/portfolio/detsky-mir/05.jpg"
+    alt: ""
+  - src: "/portfolio/detsky-mir/06.jpg"
+    alt: ""
+  - src: "/portfolio/detsky-mir/07.jpg"
+    alt: ""
+  - src: "/portfolio/detsky-mir/08.jpg"
+    alt: ""
+  - src: "/portfolio/detsky-mir/09.jpg"
+    alt: ""
+  - src: "/portfolio/detsky-mir/10.jpg"
+    alt: ""
+  - src: "/portfolio/detsky-mir/11.jpg"
+    alt: ""
+  - src: "/portfolio/detsky-mir/12.jpg"
+    alt: ""
+  - src: "/portfolio/detsky-mir/13.jpg"
+    alt: ""
+  - src: "/portfolio/detsky-mir/14.jpg"
+    alt: ""
+  - src: "/portfolio/detsky-mir/15.jpg"
+    alt: ""
+  - src: "/portfolio/detsky-mir/16.jpg"
+    alt: ""
+  - src: "/portfolio/detsky-mir/17.jpg"
+    alt: ""
+---

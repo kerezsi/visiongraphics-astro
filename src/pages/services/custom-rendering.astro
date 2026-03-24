@@ -1,0 +1,135 @@
+---
+import Page from '../../layouts/Page.astro';
+---
+
+<Page
+  title="Custom Rendering"
+  description="Scene optimization, V-Ray problem-solving, render farm access. 15+ years with V-Ray. We handle MAX files that crash everywhere else."
+>
+  <div class="service-page">
+
+    <div class="service-breadcrumb">
+      <a href="/services/">Services</a>
+      <span>→</span>
+      <span>Custom Rendering</span>
+    </div>
+
+    <p class="section-label">Service</p>
+    <h1 class="display-lg service-h1">Custom Rendering</h1>
+    <p class="service-tagline-large">When your files won't render, we fix that.</p>
+
+    <p class="service-lead">
+      Scene optimization, V-Ray problem-solving, render farm access.
+      15+ years with V-Ray. We handle MAX files that crash everywhere else —
+      and we deliver within deadline even when the scene is a mess.
+    </p>
+
+    <hr class="service-rule" />
+
+    <div class="service-body-grid">
+      <div class="service-main">
+
+        <h2 class="service-section-h2">What we handle</h2>
+        <div class="deliverable-grid">
+          {[
+            {
+              title: 'V-Ray Problem Solving',
+              desc: 'Artifacts, GI flickering, incorrect exposure, material issues, render crashes. We diagnose and fix V-Ray scenes that aren\'t rendering correctly.',
+            },
+            {
+              title: 'Scene Optimization',
+              desc: 'Reduce render times without reducing quality. Polygon reduction, proxy workflows, lighting optimization, render element configuration.',
+            },
+            {
+              title: 'Render Farm Access',
+              desc: 'Submit your scenes to our render farm for fast turnaround on deadline. We manage the queue and handle scene issues that arise.',
+            },
+            {
+              title: 'Large File Rescue',
+              desc: 'We specialize in complex, large-scale 3ds Max files that exhaust RAM or crash on other machines. Heavy scene management is a core skill.',
+            },
+            {
+              title: 'Legacy Scene Conversion',
+              desc: 'Update older MAX scenes to current rendering standards. Re-light, re-material, update to modern V-Ray while preserving the geometry.',
+            },
+            {
+              title: 'Output Pipeline',
+              desc: 'Set up render output pipelines: passes, render elements, compositing-ready outputs. Deliver in formats your post-production team needs.',
+            },
+          ].map(d => (
+            <div class="deliverable-card">
+              <h3 class="deliverable-title">{d.title}</h3>
+              <p class="deliverable-desc">{d.desc}</p>
+            </div>
+          ))}
+        </div>
+
+        <h2 class="service-section-h2">Experience</h2>
+        <p class="body-text">
+          15+ years with V-Ray across dozens of versions. We've seen every
+          rendering problem that production can produce — missing UVs, viewport
+          vs. render discrepancies, light cache artifacts, proxy geometry failures —
+          and we know the fastest path to fixing each one.
+        </p>
+        <p class="body-text">
+          We also operate our own render farm, which means we can take on
+          urgent rendering jobs without competing for nodes.
+        </p>
+
+      </div>
+
+      <aside class="service-sidebar">
+        <div class="sidebar-block">
+          <h3 class="sidebar-label">Render farm</h3>
+          <ul class="sidebar-list">
+            <li>Own hardware, no shared queue</li>
+            <li>V-Ray standalone</li>
+            <li>Rush priority available</li>
+          </ul>
+        </div>
+
+        <div class="sidebar-block">
+          <h3 class="sidebar-label">Pricing</h3>
+          <p class="sidebar-price">By scope</p>
+          <p class="sidebar-note">Hourly for diagnostics. Render farm by node-hour. Quote within hours for urgent jobs.</p>
+        </div>
+
+        <div class="sidebar-cta">
+          <a href="/contact/" class="btn btn-primary sidebar-btn">Send Your Scene</a>
+        </div>
+      </aside>
+    </div>
+
+  </div>
+</Page>
+
+<style>
+  .service-page { max-width: 1060px; }
+  .service-breadcrumb { display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-body); font-size: 0.72rem; color: var(--color-text-faint); margin-bottom: 2rem; }
+  .service-breadcrumb a { color: var(--color-text-muted); text-decoration: none; transition: color 200ms; }
+  .service-breadcrumb a:hover { color: var(--color-accent); }
+  .service-h1 { margin: 0.5rem 0 0.75rem; }
+  .service-tagline-large { font-family: var(--font-display); font-size: 1.2rem; font-style: italic; color: var(--color-accent); margin-bottom: 1.5rem; }
+  .service-lead { font-size: 0.98rem; color: var(--color-text-muted); max-width: 65ch; line-height: 1.75; margin: 0 0 2rem; }
+  .service-rule { border-color: var(--color-border); margin-bottom: 2.5rem; }
+  .service-body-grid { display: grid; grid-template-columns: 1fr 240px; gap: 4rem; align-items: start; }
+  .service-main { display: flex; flex-direction: column; gap: 2.5rem; }
+  .service-section-h2 { font-family: var(--font-body); font-size: 0.65rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--color-text-faint); margin-bottom: 1rem; }
+  .deliverable-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--color-border); border: 1px solid var(--color-border); }
+  .deliverable-card { background: var(--color-surface); padding: 1.5rem; transition: background 200ms; }
+  .deliverable-card:hover { background: var(--color-surface-2); }
+  .deliverable-title { font-family: var(--font-body); font-size: 0.875rem; font-weight: 500; color: var(--color-text); margin-bottom: 0.4rem; }
+  .deliverable-desc { font-size: 0.8rem; color: var(--color-text-muted); line-height: 1.6; margin: 0; max-width: none; }
+  .body-text { font-size: 0.9rem; color: var(--color-text-muted); max-width: 65ch; line-height: 1.75; margin: 0; }
+  .service-sidebar { display: flex; flex-direction: column; gap: 2rem; position: sticky; top: 5rem; }
+  .sidebar-block { display: flex; flex-direction: column; gap: 0.6rem; }
+  .sidebar-label { font-family: var(--font-body); font-size: 0.62rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--color-text-faint); }
+  .sidebar-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.35rem; }
+  .sidebar-list li { font-size: 0.8rem; color: var(--color-text-muted); padding-left: 0.9rem; position: relative; }
+  .sidebar-list li::before { content: '—'; position: absolute; left: 0; color: var(--color-border); font-size: 0.7rem; }
+  .sidebar-price { font-family: var(--font-display); font-size: 1.5rem; font-weight: 300; color: var(--color-text); margin: 0; }
+  .sidebar-note { font-size: 0.75rem; color: var(--color-text-faint); line-height: 1.5; margin: 0; max-width: none; }
+  .sidebar-cta { display: flex; flex-direction: column; gap: 0.75rem; }
+  .sidebar-btn { width: 100%; justify-content: center; }
+  @media (max-width: 900px) { .service-body-grid { grid-template-columns: 1fr; } .service-sidebar { position: static; } .deliverable-grid { grid-template-columns: 1fr; } }
+</style>

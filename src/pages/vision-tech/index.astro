@@ -1,0 +1,265 @@
+---
+// src/pages/vision-tech/index.astro
+import { getCollection } from 'astro:content';
+import Page from '../../layouts/Page.astro';
+
+const allTech = await getCollection('vision-tech');
+const techniques = allTech.sort((a, b) => a.data.title.localeCompare(b.data.title));
+
+const techniques_vals = [...new Set(techniques.map(t => t.data.technique).filter(Boolean))].sort();
+const costs_vals      = ['€','€€','€€€','€€€€','€€€€€'];
+const model3d_vals    = [...new Set(techniques.map(t => t.data.model3d))].sort();
+const complexity_vals = ['1 - Basic','2 - Intermediate','3 - Advanced','4 - Expert','5 - Cutting-Edge'];
+const reality_vals    = ['Pure Reality','Enhanced Reality','Hybrid Reality-Vision','Conceptual Reality','Pure Vision'];
+const purpose_vals    = [...new Set(techniques.flatMap(t => t.data.purpose))].sort();
+---
+
+<Page
+  title="Technologies | Vision Graphics"
+  description="26 visualization techniques — photorealistic rendering, VR, 360° tours, AI workflows and more."
+  fullBleed
+>
+
+  <section class="vt-hero">
+    <div class="container">
+      <p class="section-label">Technologies</p>
+      <h1 class="display-lg">Tech Gets It Done</h1>
+      <p class="vt-hero-sub">
+        Every visualization sits somewhere on a matrix of cost, complexity, and realism.
+        Filter to find which technique fits your project and budget.
+      </p>
+    </div>
+  </section>
+
+  <section class="vt-filter-section">
+    <div class="container">
+      <div class="vt-filters">
+
+        <div class="vt-filter-group">
+          <span class="vt-filter-label">Technique</span>
+          <div class="vt-pills" data-filter="technique">
+            {techniques_vals.map(v => <button class="vt-pill" data-val={v}>{v}</button>)}
+          </div>
+        </div>
+
+        <div class="vt-filter-group">
+          <span class="vt-filter-label">Cost</span>
+          <div class="vt-pills" data-filter="cost">
+            {costs_vals.map(v => <button class="vt-pill" data-val={v}>{v}</button>)}
+          </div>
+        </div>
+
+        <div class="vt-filter-group">
+          <span class="vt-filter-label">3D Model</span>
+          <div class="vt-pills" data-filter="model3d">
+            {model3d_vals.map(v => <button class="vt-pill" data-val={v}>{v}</button>)}
+          </div>
+        </div>
+
+        <div class="vt-filter-group">
+          <span class="vt-filter-label">Complexity</span>
+          <div class="vt-pills" data-filter="complexity">
+            {complexity_vals.map(v => <button class="vt-pill" data-val={v}>{v}</button>)}
+          </div>
+        </div>
+
+        <div class="vt-filter-group">
+          <span class="vt-filter-label">Reality spectrum</span>
+          <div class="vt-pills" data-filter="reality">
+            {reality_vals.map(v => <button class="vt-pill" data-val={v}>{v}</button>)}
+          </div>
+        </div>
+
+        <div class="vt-filter-group">
+          <span class="vt-filter-label">Purpose</span>
+          <div class="vt-pills" data-filter="purpose">
+            {purpose_vals.map(v => <button class="vt-pill" data-val={v}>{v}</button>)}
+          </div>
+        </div>
+
+        <div class="vt-filter-meta">
+          <span id="vt-count">Showing all {techniques.length} techniques</span>
+          <button class="vt-reset" id="vt-reset" hidden>Reset filters</button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="section vt-grid-section">
+    <div class="container">
+      <div class="vt-grid" id="vt-grid">
+        {techniques.map(t => (
+          <a
+            href={`/vision-tech/${t.slug}/`}
+            class="vt-card"
+            data-technique={t.data.technique}
+            data-cost={t.data.cost}
+            data-model3d={t.data.model3d}
+            data-complexity={t.data.complexity}
+            data-reality={t.data.reality}
+            data-purpose={t.data.purpose.join('|')}
+          >
+            <div class="vt-card-img">
+              <img src={t.data.image} alt={t.data.title} loading="lazy" />
+            </div>
+            <div class="vt-card-body">
+              <div class="vt-card-meta">
+                {t.data.technique && <span class="vt-badge">{t.data.technique}</span>}
+                <span class="vt-cost">{t.data.cost}</span>
+              </div>
+              <h3 class="vt-card-title">{t.data.title}</h3>
+              <p class="vt-card-desc">{t.data.description.substring(0, 100)}…</p>
+              <div class="vt-card-tags">
+                <span class="vt-tag-small">{t.data.complexity}</span>
+                <span class="vt-tag-small">{t.data.reality}</span>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+      <div class="vt-empty" id="vt-empty" hidden>
+        <p>No techniques match those filters.</p>
+        <button class="btn btn-secondary" id="vt-reset-2">Reset filters</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section vt-tools-section">
+    <div class="container">
+      <p class="section-label">Tools We Use</p>
+      <h2 class="display-md">Our Tech Stack</h2>
+      <div class="vt-tools-grid">
+        {[
+          {name:'3ds Max',note:'Since version 1'},{name:'V-Ray',note:'15+ years'},
+          {name:'Unreal Engine',note:'VR & real-time'},{name:'Blender',note:'Secondary modelling'},
+          {name:'Pano2VR',note:'360\u00b0 tours'},{name:'ComfyUI',note:'AI workflows'},
+          {name:'SwarmUI',note:'AI workflows'},{name:'Python',note:'Automation'},
+          {name:'MAXScript',note:'Custom tools'},{name:'DaVinci Resolve',note:'Video post'},
+          {name:'Cloudflare',note:'Hosting & CDN'},{name:'Astro',note:'This site'},
+        ].map(tool => (
+          <div class="vt-tool">
+            <span class="vt-tool-name">{tool.name}</span>
+            <span class="vt-tool-note">{tool.note}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section-sm vt-cta">
+    <div class="container vt-cta-inner">
+      <p class="vt-cta-text">Not sure which approach fits your project?</p>
+      <a href="/contact/" class="btn btn-primary">Talk to Us</a>
+    </div>
+  </section>
+
+</Page>
+
+<script>
+  const grid    = document.getElementById('vt-grid')!;
+  const empty   = document.getElementById('vt-empty')!;
+  const countEl = document.getElementById('vt-count')!;
+  const resetBtns = [document.getElementById('vt-reset'), document.getElementById('vt-reset-2')];
+  const total = grid.querySelectorAll('.vt-card').length;
+  const active: Record<string,string> = {};
+
+  function applyFilters() {
+    const cards = grid.querySelectorAll<HTMLElement>('.vt-card');
+    let visible = 0;
+    cards.forEach(card => {
+      const show = Object.entries(active).every(([key, val]) => {
+        if (key === 'purpose') return (card.dataset.purpose || '').split('|').includes(val);
+        return (card.dataset as any)[key] === val;
+      });
+      card.hidden = !show;
+      if (show) visible++;
+    });
+    const hasFilter = Object.keys(active).length > 0;
+    countEl.textContent = hasFilter
+      ? `Showing ${visible} of ${total} techniques`
+      : `Showing all ${total} techniques`;
+    empty.hidden = visible > 0;
+    resetBtns.forEach(b => { if (b) b.hidden = !hasFilter; });
+  }
+
+  document.querySelectorAll('.vt-pills').forEach(group => {
+    const filterKey = (group as HTMLElement).dataset.filter!;
+    group.querySelectorAll('.vt-pill').forEach(pill => {
+      pill.addEventListener('click', () => {
+        const val = (pill as HTMLElement).dataset.val!;
+        if (active[filterKey] === val) {
+          delete active[filterKey];
+          pill.classList.remove('active');
+        } else {
+          group.querySelectorAll('.vt-pill').forEach(p => p.classList.remove('active'));
+          active[filterKey] = val;
+          pill.classList.add('active');
+        }
+        applyFilters();
+      });
+    });
+  });
+
+  function reset() {
+    Object.keys(active).forEach(k => delete active[k]);
+    document.querySelectorAll('.vt-pill').forEach(p => p.classList.remove('active'));
+    applyFilters();
+  }
+  resetBtns.forEach(b => b?.addEventListener('click', reset));
+</script>
+
+<style>
+  .vt-hero { padding-block: clamp(3rem,6vw,5rem) clamp(2rem,4vw,3rem); border-bottom: 1px solid var(--color-border); }
+  .vt-hero-sub { max-width: 60ch; margin-top: 1rem; font-size: 1rem; color: var(--color-text-muted); }
+
+  .vt-filter-section { padding-block: 1.5rem; background: var(--color-surface); border-bottom: 1px solid var(--color-border); }
+  .vt-filters { display: flex; flex-direction: column; gap: 0.6rem; }
+  .vt-filter-group { display: flex; align-items: flex-start; gap: 1rem; }
+  .vt-filter-label { font-size: 0.67rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-text-faint); white-space: nowrap; padding-top: 0.35rem; min-width: 9rem; }
+  .vt-pills { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+  .vt-pill { font-family: var(--font-body); font-size: 0.71rem; font-weight: 500; padding: 0.25rem 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: transparent; color: var(--color-text-muted); cursor: pointer; transition: all 180ms ease; white-space: nowrap; }
+  .vt-pill:hover { border-color: var(--color-text-muted); color: var(--color-text); }
+  .vt-pill.active { border-color: var(--color-accent); color: var(--color-accent); background: rgba(218,19,19,0.08); }
+  .vt-filter-meta { display: flex; align-items: center; gap: 1.5rem; padding-top: 0.5rem; border-top: 1px solid var(--color-border); }
+  #vt-count { font-size: 0.74rem; color: var(--color-text-faint); }
+  .vt-reset { font-size: 0.72rem; color: var(--color-accent); background: none; border: none; cursor: pointer; padding: 0; font-family: var(--font-body); }
+
+  .vt-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+  /* Tech items — red border */
+  .vt-card { display: flex; flex-direction: column; background: var(--color-surface); border: 1px solid var(--color-accent); border-radius: var(--radius-sm); overflow: hidden; text-decoration: none; transition: border-color 250ms ease, transform 250ms ease; }
+  .vt-card:hover { border-color: var(--color-accent); transform: translateY(-2px); }
+  .vt-card[hidden] { display: none; }
+  .vt-card-img { aspect-ratio: 16/9; overflow: hidden; background: var(--color-surface-2); }
+  .vt-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 400ms ease; }
+  .vt-card:hover .vt-card-img img { transform: scale(1.04); }
+  .vt-card-body { padding: 1rem 1.1rem 1.2rem; display: flex; flex-direction: column; gap: 0.45rem; flex: 1; }
+  .vt-card-meta { display: flex; align-items: center; justify-content: space-between; }
+  .vt-badge { font-size: 0.64rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-accent); }
+  .vt-cost { font-size: 0.75rem; color: var(--color-text-faint); font-family: var(--font-mono); }
+  .vt-card-title { font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: var(--color-text); line-height: 1.2; margin: 0; }
+  .vt-card-desc { font-size: 0.78rem; color: var(--color-text-muted); line-height: 1.5; max-width: none; }
+  .vt-card-tags { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: auto; padding-top: 0.25rem; }
+  .vt-tag-small { font-size: 0.6rem; letter-spacing: 0.08em; padding: 0.12rem 0.4rem; border: 1px solid var(--color-border); border-radius: 2px; color: var(--color-text-faint); text-transform: uppercase; }
+
+  .vt-empty { text-align: center; padding: 4rem 0; color: var(--color-text-muted); }
+  .vt-empty p { margin-bottom: 1.5rem; }
+
+  .vt-tools-section { border-top: 1px solid var(--color-border); background: var(--color-surface); }
+  .vt-tools-section h2 { margin: 0.5rem 0 2rem; }
+  .vt-tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); gap: 1px; background: var(--color-border); border: 1px solid var(--color-border); }
+  .vt-tool { background: var(--color-surface); padding: 0.9rem 1.1rem; display: flex; flex-direction: column; gap: 0.15rem; }
+  .vt-tool-name { font-family: var(--font-display); font-size: 0.88rem; font-weight: 700; color: var(--color-text); }
+  .vt-tool-note { font-size: 0.7rem; color: var(--color-text-faint); }
+
+  .vt-cta { border-top: 1px solid var(--color-border); }
+  .vt-cta-inner { display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
+  .vt-cta-text { font-family: var(--font-display); font-size: 1.15rem; font-weight: 600; color: var(--color-text); max-width: none; }
+
+  @media (max-width: 768px) {
+    .vt-filter-group { flex-direction: column; gap: 0.4rem; }
+    .vt-filter-label { min-width: auto; }
+    .vt-cta-inner { flex-direction: column; align-items: flex-start; }
+    .vt-tools-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>

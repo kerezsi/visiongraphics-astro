@@ -1,0 +1,44 @@
+---
+title: "Frunzenskaya"
+year: 2014
+location: "Moscow, Russia"
+designer: "Dyer Group"
+description: "The Frunzenskaya development is an elegant luxury residential complex situated along the prestigious Frunzenskaya Embankment in central Moscow, near the Moskva River. Designed to accommodate 1300 high-end apartments across ten individual buildings, the project combines traditional classic values …"
+story: |
+  Located in the prestigious Khamovniki district, this 170,000 sqm development offers residents direct access to the Moskva River and expansive green spaces including Gorky Park, Neskuchny Garden, and Vorobyovy Gory - totaling 219 hectares of natural parkland. The architectural approach focuses on elegant, sculptural facades that maintain a traditional and classic appearance while incorporating superior quality materials throughout, including marble, bespoke oak floors, and dramatic feature stone walls. The embankment location provides ideal routes for jogging, walking, and cycling, making it perfect for those embracing an active lifestyle.
+tasks: |
+  Our team created detailed exterior visualizations and photo integrations for the Frunzenskaya residential complex, showcasing the elegant architectural design and its harmonious integration with the surrounding urban environment. We developed comprehensive 3D renderings highlighting the sculptural facades and the project's relationship to the Moskva River, helping potential buyers envision the luxury living experience. Our visualizations emphasized the classic values and superior materials planned for the development, effectively communicating the project's vision of becoming one of Moscow's most prestigious residential addresses.
+categories:
+  - residential
+features: []
+tags: []
+coverImage: "/portfolio/frunzenskaya/01.jpg"
+published: true
+featured: false
+techniques:
+  - exterior
+  - photo-integration
+images:
+  - src: "/portfolio/frunzenskaya/01.jpg"
+    alt: ""
+  - src: "/portfolio/frunzenskaya/02.jpg"
+    alt: ""
+  - src: "/portfolio/frunzenskaya/03.jpg"
+    alt: ""
+  - src: "/portfolio/frunzenskaya/04.jpg"
+    alt: ""
+  - src: "/portfolio/frunzenskaya/05.jpg"
+    alt: ""
+  - src: "/portfolio/frunzenskaya/06.jpg"
+    alt: ""
+  - src: "/portfolio/frunzenskaya/07.jpg"
+    alt: ""
+  - src: "/portfolio/frunzenskaya/08.jpg"
+    alt: ""
+  - src: "/portfolio/frunzenskaya/09.jpg"
+    alt: ""
+  - src: "/portfolio/frunzenskaya/10.jpg"
+    alt: ""
+  - src: "/portfolio/frunzenskaya/11.jpg"
+    alt: ""
+---

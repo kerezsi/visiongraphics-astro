@@ -1,0 +1,513 @@
+---
+// src/pages/about/index.astro
+
+import Page from '../../layouts/Page.astro';
+import timeline from '../../data/about-timeline.json';
+---
+
+<Page
+  title="About"
+  description="Vision Graphics Kft. — Budapest-based architectural visualization studio founded 1996 by László Kerezsi. 30 years, 500+ projects across four continents."
+  fullBleed
+>
+  <div class="about-page">
+
+    <!-- ══════════════════════════════════════════════════════ -->
+    <!-- HERO                                                   -->
+    <!-- ══════════════════════════════════════════════════════ -->
+    <section class="about-hero section">
+      <div class="page-hero-bg" aria-hidden="true"></div>
+      <div class="page-hero-overlay" aria-hidden="true"></div>
+      <div class="container page-hero-content">
+        <p class="section-label">About</p>
+        <h1 class="display-xl about-h1">
+          30 Years of Making<br />
+          <em>Complex Ideas Visible</em>
+        </h1>
+        <p class="about-hero-sub">
+          Vision Graphics Kft. was founded in Budapest in 1996.
+          We've worked on airport terminals, urban masterplans, VR experiences,
+          and retail chains across four continents.
+        </p>
+      </div>
+    </section>
+
+    <hr class="page-rule" />
+
+    <!-- ══════════════════════════════════════════════════════ -->
+    <!-- LÁSZLÓ SECTION                                         -->
+    <!-- ══════════════════════════════════════════════════════ -->
+    <section class="laszlo-section section">
+      <div class="container laszlo-inner">
+
+        <div class="laszlo-text">
+          <p class="section-label">Founder</p>
+          <h2 class="display-md">László Kerezsi</h2>
+          <p class="laszlo-tagline">Visualization Director</p>
+
+          <p class="laszlo-body">
+            László started Vision Graphics in 1996. Before AI was a buzzword,
+            he was writing custom MAXScript tools to solve production problems.
+            Before VR was mainstream, he was building walkthrough experiences
+            for real estate clients.
+          </p>
+          <p class="laszlo-body">
+            He works directly on client projects — from initial brief through
+            final delivery. No layers of project managers between you and the
+            person making decisions about your visuals.
+          </p>
+          <p class="laszlo-body">
+            Currently: integrating AI tools into production workflows,
+            building custom desktop utilities for visualization pipelines,
+            and preparing a presentation on AI-driven disruption in
+            architectural visualization for the Ybl Conference 2026.
+          </p>
+
+          <div class="laszlo-contact">
+            <a href="tel:+36309454179" class="contact-link">
+              <span class="contact-link-label">Phone</span>
+              <span>+36 30 945 4179</span>
+            </a>
+            <a href="mailto:info@visiongraphics.eu" class="contact-link">
+              <span class="contact-link-label">Email</span>
+              <span>info@visiongraphics.eu</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="laszlo-photo-col">
+          <div class="laszlo-photo-wrap">
+            <img
+              src="/laszlo.jpg"
+              alt="László Kerezsi — Founder, Vision Graphics"
+              class="laszlo-photo"
+              width="280"
+              height="280"
+              loading="lazy"
+            />
+          </div>
+          <div class="laszlo-stats">
+          {[
+            { n: '30+',  l: 'Years in 3ds Max' },
+            { n: '15+',  l: 'Years with V-Ray' },
+            { n: '500+', l: 'Projects delivered' },
+            { n: '4',    l: 'Continents' },
+          ].map(s => (
+            <div class="stat-block">
+              <span class="stat-block-n">{s.n}</span>
+              <span class="stat-block-l">{s.l}</span>
+            </div>
+          ))}
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <hr class="page-rule" />
+
+    <!-- ══════════════════════════════════════════════════════ -->
+    <!-- HOW WE WORK                                            -->
+    <!-- ══════════════════════════════════════════════════════ -->
+    <section class="how-section section">
+      <div class="container how-inner">
+        <div class="how-header">
+          <p class="section-label">Structure</p>
+          <h2 class="display-md">Small Core.<br />Right Specialists When You Need Them.</h2>
+        </div>
+        <div class="how-body">
+          <p>
+            We keep the critical parts in-house: project management, quality
+            control, render farm operation, and the 3D work that requires
+            30 years of experience to get right.
+          </p>
+          <p>
+            When a project calls for it, we bring in tested specialists:
+            character animators, BIM experts, drone pilots, Unreal Engine
+            developers, photogrammetry specialists, 3D scanning specialists,
+            architectural photographers, character artists, environment artists,
+            graphic designers, interior designers, crowd simulation experts,
+            web developers, and more.
+          </p>
+          <p>
+            You always work with László directly. The team scales around
+            the project, not around overhead.
+          </p>
+          <a href="/contact/" class="btn btn-primary how-cta">Start a Conversation</a>
+        </div>
+      </div>
+    </section>
+
+    <hr class="page-rule" />
+
+    <!-- ══════════════════════════════════════════════════════ -->
+    <!-- TIMELINE                                               -->
+    <!-- ══════════════════════════════════════════════════════ -->
+    <section class="timeline-section section">
+      <div class="container">
+        <p class="section-label">History</p>
+        <h2 class="display-md timeline-heading">28 Years of Work</h2>
+      </div>
+      <div class="timeline container">
+        {timeline.map((era, i) => (
+          <div class="timeline-era">
+            <div class="era-left">
+              <span class="era-years">{era.years}</span>
+              <div class="era-line" aria-hidden="true"></div>
+            </div>
+            <div class="era-right">
+              <h3 class="era-title">{era.title}</h3>
+              <p class="era-summary">{era.summary}</p>
+              <ul class="era-projects">
+                {era.projects.map(p => (
+                  <li>{p}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════ -->
+    <!-- CTA                                                    -->
+    <!-- ══════════════════════════════════════════════════════ -->
+    <section class="about-cta">
+      <div class="container about-cta-inner">
+        <div>
+          <h2 class="cta-heading">Ready to Work Together?</h2>
+          <p class="cta-sub">30-minute consultation. No charge. No obligation.</p>
+        </div>
+        <a href="/contact/" class="btn btn-primary">Get in Touch</a>
+      </div>
+    </section>
+
+  </div>
+</Page>
+
+<style>
+  .about-page { width: 100%; }
+
+  /* Hero */
+  .about-hero {
+    padding-top: clamp(3rem, 6vw, 5rem);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .page-hero-bg {
+    position: absolute;
+    inset: 0;
+    background: url('/hero-bg-2.jpg') center/cover no-repeat;
+    z-index: 0;
+  }
+
+  .page-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, rgba(26,26,26,0.93) 0%, rgba(26,26,26,0.75) 60%, rgba(26,26,26,0.55) 100%);
+    z-index: 1;
+  }
+
+  .page-hero-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  .about-h1 {
+    margin: 0.75rem 0 1.5rem;
+    max-width: 18ch;
+  }
+
+  .about-h1 em {
+    font-style: italic;
+    color: var(--color-accent);
+  }
+
+  .about-hero-sub {
+    font-size: 1rem;
+    color: var(--color-text-muted);
+    max-width: 56ch;
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  .page-rule {
+    border-color: var(--color-border);
+    margin-inline: auto;
+    max-width: 1320px;
+    padding-inline: clamp(1.5rem, 5vw, 4rem);
+  }
+
+  /* László */
+  .laszlo-inner {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 5rem;
+    align-items: start;
+  }
+
+  .laszlo-photo-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .laszlo-photo-wrap {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid var(--color-border);
+  }
+
+  .laszlo-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+  }
+
+  .laszlo-tagline {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin: 0.5rem 0 2rem;
+  }
+
+  .laszlo-body {
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+    max-width: 58ch;
+    line-height: 1.75;
+    margin-bottom: 1rem;
+  }
+
+  .laszlo-body:last-of-type { margin-bottom: 2rem; }
+
+  .laszlo-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin-top: 1rem;
+  }
+
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: color 200ms ease;
+  }
+
+  .contact-link:hover { color: var(--color-accent); }
+
+  .contact-link-label {
+    font-family: var(--font-body);
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-text-faint);
+    min-width: 3rem;
+  }
+
+  /* Stats block */
+  .laszlo-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--color-border);
+    border: 1px solid var(--color-border);
+    align-self: start;
+    min-width: 240px;
+  }
+
+  .stat-block {
+    background: var(--color-surface);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .stat-block-n {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-weight: 300;
+    color: var(--color-accent);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .stat-block-l {
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    color: var(--color-text-muted);
+    font-weight: 300;
+  }
+
+  /* How section */
+  .how-inner {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 5rem;
+    align-items: start;
+  }
+
+  .how-header h2 { margin: 0.75rem 0; }
+
+  .how-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .how-body p {
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+    max-width: 58ch;
+    line-height: 1.75;
+  }
+
+  .how-cta { margin-top: 1rem; align-self: flex-start; }
+
+  /* Timeline */
+  .timeline-heading { margin: 0.75rem 0 3rem; }
+
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .timeline-era {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 3rem;
+    padding-block: 2.5rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .timeline-era:last-child { border-bottom: 1px solid var(--color-border); }
+
+  .era-left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding-top: 0.15rem;
+  }
+
+  .era-years {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-accent);
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+
+  .era-line {
+    width: 1px;
+    flex: 1;
+    min-height: 1.5rem;
+    background: var(--color-border);
+    margin-left: 0.25rem;
+  }
+
+  .era-right {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .era-title {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 300;
+    color: var(--color-text);
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+  }
+
+  .era-summary {
+    font-size: 0.88rem;
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    max-width: 65ch;
+  }
+
+  .era-projects {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 0.75rem;
+    margin-top: 0.25rem;
+  }
+
+  .era-projects li {
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    color: var(--color-text-faint);
+    letter-spacing: 0.03em;
+    padding: 0.2rem 0.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: 1px;
+    transition: color 200ms, border-color 200ms;
+  }
+
+  .era-projects li:hover {
+    color: var(--color-text-muted);
+    border-color: var(--color-text-faint);
+  }
+
+  /* CTA */
+  .about-cta {
+    background: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+    padding-block: 4rem;
+  }
+
+  .about-cta-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .cta-heading {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    font-weight: 300;
+    color: var(--color-text);
+    margin-bottom: 0.5rem;
+  }
+
+  .cta-sub {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .laszlo-inner { grid-template-columns: 1fr; gap: 3rem; }
+    .laszlo-stats { grid-template-columns: repeat(4, 1fr); min-width: unset; }
+    .how-inner { grid-template-columns: 1fr; gap: 2rem; }
+  }
+
+  @media (max-width: 768px) {
+    .laszlo-stats { grid-template-columns: repeat(2, 1fr); }
+    .timeline-era { grid-template-columns: 1fr; gap: 0.75rem; }
+    .era-line { display: none; }
+    .about-cta-inner { flex-direction: column; text-align: center; }
+  }
+</style>

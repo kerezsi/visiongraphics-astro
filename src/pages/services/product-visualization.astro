@@ -1,0 +1,135 @@
+---
+import Page from '../../layouts/Page.astro';
+---
+
+<Page
+  title="Product Visualization"
+  description="Product shots, configurators, exploded views, launch materials. Vision Graphics Kft. — Budapest-based studio, working globally since 1996."
+>
+  <div class="service-page">
+
+    <div class="service-breadcrumb">
+      <a href="/services/">Services</a>
+      <span>→</span>
+      <span>Product Visualization</span>
+    </div>
+
+    <p class="section-label">Service</p>
+    <h1 class="display-lg service-h1">Product Visualization</h1>
+    <p class="service-tagline-large">Market before you manufacture.</p>
+
+    <p class="service-lead">
+      Product shots, configurators, exploded views, launch materials.
+      We've worked on everything from retail display design to industrial equipment.
+      If it has a form, we can make it look right.
+    </p>
+
+    <hr class="service-rule" />
+
+    <div class="service-body-grid">
+      <div class="service-main">
+
+        <h2 class="service-section-h2">What we deliver</h2>
+        <div class="deliverable-grid">
+          {[
+            {
+              title: 'Hero Product Shots',
+              desc: 'Studio-quality renders for e-commerce, print, and campaign use. Multiple angles, lighting setups, and background options.',
+            },
+            {
+              title: 'Exploded Views',
+              desc: 'Technical exploded-view animations showing assembly and components. Ideal for instruction manuals, sales materials, and trade shows.',
+            },
+            {
+              title: 'Configurators',
+              desc: 'Interactive 3D product configurators for web. Let customers explore color, material, and option variants in real time.',
+            },
+            {
+              title: 'Launch Animations',
+              desc: 'Short product reveal animations for social media, trade shows, and digital campaigns.',
+            },
+            {
+              title: 'Retail & Display Design',
+              desc: 'Visualization of retail stands, POS displays, and in-store environments showing products in context.',
+            },
+            {
+              title: 'Industrial Equipment',
+              desc: 'Technical accuracy for complex industrial machinery — for sales presentations, safety documentation, and tender submissions.',
+            },
+          ].map(d => (
+            <div class="deliverable-card">
+              <h3 class="deliverable-title">{d.title}</h3>
+              <p class="deliverable-desc">{d.desc}</p>
+            </div>
+          ))}
+        </div>
+
+        <h2 class="service-section-h2">Why it matters</h2>
+        <p class="body-text">
+          Physical prototypes are expensive. Photography requires the product to exist.
+          3D visualization lets you produce campaign-quality imagery from CAD files alone —
+          months before the first unit ships. Changes are easy; re-shoots are not.
+        </p>
+        <p class="body-text">
+          We've produced product visuals for retail chains, consumer electronics, furniture,
+          and industrial equipment. The workflow is the same; the level of technical accuracy varies.
+        </p>
+
+      </div>
+
+      <aside class="service-sidebar">
+        <div class="sidebar-block">
+          <h3 class="sidebar-label">What you need to start</h3>
+          <ul class="sidebar-list">
+            <li>CAD files or technical drawings</li>
+            <li>Material / colour references</li>
+            <li>Target use (print, web, video)</li>
+          </ul>
+        </div>
+
+        <div class="sidebar-block">
+          <h3 class="sidebar-label">Pricing</h3>
+          <p class="sidebar-price">from €3,000</p>
+          <p class="sidebar-note">Depends on complexity and number of variants. Quote within one business day.</p>
+        </div>
+
+        <div class="sidebar-cta">
+          <a href="/contact/" class="btn btn-primary sidebar-btn">Get a Quote</a>
+          <a href="/portfolio/?cat=product-visualization" class="btn btn-ghost">See portfolio</a>
+        </div>
+      </aside>
+    </div>
+
+  </div>
+</Page>
+
+<style>
+  .service-page { max-width: 1060px; }
+  .service-breadcrumb { display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-body); font-size: 0.72rem; color: var(--color-text-faint); margin-bottom: 2rem; }
+  .service-breadcrumb a { color: var(--color-text-muted); text-decoration: none; transition: color 200ms; }
+  .service-breadcrumb a:hover { color: var(--color-accent); }
+  .service-h1 { margin: 0.5rem 0 0.75rem; }
+  .service-tagline-large { font-family: var(--font-display); font-size: 1.2rem; font-style: italic; color: var(--color-accent); margin-bottom: 1.5rem; }
+  .service-lead { font-size: 0.98rem; color: var(--color-text-muted); max-width: 65ch; line-height: 1.75; margin: 0 0 2rem; }
+  .service-rule { border-color: var(--color-border); margin-bottom: 2.5rem; }
+  .service-body-grid { display: grid; grid-template-columns: 1fr 240px; gap: 4rem; align-items: start; }
+  .service-main { display: flex; flex-direction: column; gap: 2.5rem; }
+  .service-section-h2 { font-family: var(--font-body); font-size: 0.65rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--color-text-faint); margin-bottom: 1rem; }
+  .deliverable-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--color-border); border: 1px solid var(--color-border); }
+  .deliverable-card { background: var(--color-surface); padding: 1.5rem; transition: background 200ms; }
+  .deliverable-card:hover { background: var(--color-surface-2); }
+  .deliverable-title { font-family: var(--font-body); font-size: 0.875rem; font-weight: 500; color: var(--color-text); margin-bottom: 0.4rem; }
+  .deliverable-desc { font-size: 0.8rem; color: var(--color-text-muted); line-height: 1.6; margin: 0; max-width: none; }
+  .body-text { font-size: 0.9rem; color: var(--color-text-muted); max-width: 65ch; line-height: 1.75; margin: 0; }
+  .service-sidebar { display: flex; flex-direction: column; gap: 2rem; position: sticky; top: 5rem; }
+  .sidebar-block { display: flex; flex-direction: column; gap: 0.6rem; }
+  .sidebar-label { font-family: var(--font-body); font-size: 0.62rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--color-text-faint); }
+  .sidebar-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.35rem; }
+  .sidebar-list li { font-size: 0.8rem; color: var(--color-text-muted); padding-left: 0.9rem; position: relative; }
+  .sidebar-list li::before { content: '—'; position: absolute; left: 0; color: var(--color-border); font-size: 0.7rem; }
+  .sidebar-price { font-family: var(--font-display); font-size: 1.5rem; font-weight: 300; color: var(--color-text); margin: 0; }
+  .sidebar-note { font-size: 0.75rem; color: var(--color-text-faint); line-height: 1.5; margin: 0; max-width: none; }
+  .sidebar-cta { display: flex; flex-direction: column; gap: 0.75rem; }
+  .sidebar-btn { width: 100%; justify-content: center; }
+  @media (max-width: 900px) { .service-body-grid { grid-template-columns: 1fr; } .service-sidebar { position: static; } .deliverable-grid { grid-template-columns: 1fr; } }
+</style>

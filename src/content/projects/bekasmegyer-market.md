@@ -1,0 +1,64 @@
+---
+title: "Békásmegyer Market"
+year: 2016
+location: "Budapest, Hungary"
+designer: "Óbuda Group"
+description: "The Békásmegyer Market project involved creating comprehensive visual materials for a significant urban development in Budapest's Békásmegyer district. Our team at Vision Graphics developed exterior and interior visualizations, 360° virtual tour, and 3D animation to showcase this modern marketpla…"
+story: |
+  The Békásmegyer Market represents a complete transformation of an outdated 40-year-old temporary market structure into a modern commercial and community space. Designed by Óbuda Építész Stúdió, the new market features 50 retail spaces, a 188-space underground parking garage, and incorporates sustainable architectural elements including a green roof with solar panels. This project was part of a larger urban renewal initiative aimed at improving the livability of Békásmegyer, enhancing community infrastructure, and providing residents with a sophisticated shopping and meeting place
+tasks: |
+  Vision Graphics was commissioned to create detailed architectural visualizations that would help stakeholders envision the completed project before construction began. We developed photorealistic exterior renderings showing the market's integration into the surrounding urban landscape, as well as interior visualizations highlighting the spacious retail areas. Our team also produced immersive 360° virtual tours allowing potential tenants and the public to experience the space virtually, complemented by dynamic 3D animations that demonstrated the flow and functionality of this community-centered development
+categories:
+  - civic
+  - commercial
+features: []
+tags: []
+coverImage: "/portfolio/bekasmegyer-market/01.jpg"
+published: true
+featured: false
+tour360:
+  - title: "360° Tour"
+    url: "https://visiongraphics.eu/PANO/PIAC/"
+video: "https://youtu.be/JsyyLxKKbvw"
+techniques:
+  - 360-renderings
+  - 360-tour
+  - 3d-animation
+  - exterior
+  - interior
+images:
+  - src: "/portfolio/bekasmegyer-market/01.jpg"
+    alt: ""
+  - src: "/portfolio/bekasmegyer-market/02.jpg"
+    alt: ""
+  - src: "/portfolio/bekasmegyer-market/03.jpg"
+    alt: ""
+  - src: "/portfolio/bekasmegyer-market/04.jpg"
+    alt: ""
+  - src: "/portfolio/bekasmegyer-market/05.jpg"
+    alt: ""
+  - src: "/portfolio/bekasmegyer-market/06.jpg"
+    alt: ""
+  - src: "/portfolio/bekasmegyer-market/07.jpg"
+    alt: ""
+  - src: "/portfolio/bekasmegyer-market/08.jpg"
+    alt: ""
+  - src: "/portfolio/bekasmegyer-market/09.jpg"
+    alt: ""
+  - src: "/portfolio/bekasmegyer-market/10.jpg"
+    alt: ""
+  - src: "/portfolio/bekasmegyer-market/11.jpg"
+    alt: ""
+  - src: "/portfolio/bekasmegyer-market/12.jpg"
+    alt: ""
+  - src: "/portfolio/bekasmegyer-market/13.jpg"
+    alt: ""
+  - src: "/portfolio/bekasmegyer-market/14.jpg"
+    alt: ""
+  - src: "/portfolio/bekasmegyer-market/15.jpg"
+    alt: ""
+  - src: "/portfolio/bekasmegyer-market/16.jpg"
+    alt: ""
+  - src: "/portfolio/bekasmegyer-market/17.jpg"
+    alt: ""
+---

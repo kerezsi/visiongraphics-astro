@@ -1,0 +1,32 @@
+---
+title: "Garibaldi 4"
+year: 2005
+location: "Budapest, Hungary"
+categories:
+  - residential
+features: []
+tags: []
+coverImage: "/portfolio/garibaldi-4/01.jpg"
+published: true
+featured: false
+video: "https://youtu.be/iHty1OoKQ0U"
+techniques:
+  - 3d-animation
+  - exterior
+  - interior
+images:
+  - src: "/portfolio/garibaldi-4/01.jpg"
+    alt: ""
+  - src: "/portfolio/garibaldi-4/02.jpg"
+    alt: ""
+  - src: "/portfolio/garibaldi-4/03.jpg"
+    alt: ""
+  - src: "/portfolio/garibaldi-4/04.jpg"
+    alt: ""
+  - src: "/portfolio/garibaldi-4/05.jpg"
+    alt: ""
+  - src: "/portfolio/garibaldi-4/06.jpg"
+    alt: ""
+  - src: "/portfolio/garibaldi-4/07.jpg"
+    alt: ""
+---

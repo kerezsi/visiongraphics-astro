@@ -1,0 +1,342 @@
+---
+// src/pages/services/index.astro
+
+import Page from '../../layouts/Page.astro';
+
+const services = [
+  {
+    n: '01',
+    title: 'Architectural Visualization',
+    tagline: 'Turn plans into decisions.',
+    body: 'We convert technical drawings into clear 3D views that get projects approved and properties sold. Stills, animations, 360° tours, VR walkthroughs — whatever the audience needs.',
+    results: [
+      'Pre-sell properties before construction begins',
+      'Catch design conflicts before they reach the site',
+      'Get planning approval with visuals that explain, not just impress',
+    ],
+    href: '/services/architectural-visualization/',
+  },
+  {
+    n: '02',
+    title: 'Product Visualization',
+    tagline: 'Market before you manufacture.',
+    body: 'Product shots, configurators, exploded views, launch materials. We\'ve worked on everything from retail display design to industrial equipment.',
+    results: [],
+    href: '/services/product-visualization/',
+  },
+  {
+    n: '03',
+    title: 'Large-Scale Projects',
+    tagline: 'Big projects need a studio that\'s done it before.',
+    body: 'Airport terminals, urban masterplans, infrastructure corridors, exhibition pavilions. We know how to communicate complex multi-phase projects to multiple stakeholder audiences.',
+    results: [
+      'Past work: Budapest Airport, Antalya Airport T2, Sochi Airport, Pulkovo Airport',
+      'Road Safety Centre Doha, Mol Campus',
+    ],
+    href: '/services/large-scale-projects/',
+  },
+  {
+    n: '04',
+    title: 'AI-Enhanced Services',
+    tagline: 'Useful AI. Not hype.',
+    body: 'We\'ve integrated AI tools into our actual production workflow — not as a demo, but because it makes real projects faster and better. Batch image processing, AI-assisted render correction, automated file organization, ComfyUI pipelines for rapid concept variations.',
+    results: [
+      'We\'ll tell you where AI helps and where it doesn\'t',
+      'Not every problem needs an AI solution',
+    ],
+    href: '/services/advanced-ai-services/',
+  },
+  {
+    n: '05',
+    title: 'Workflow Optimization',
+    tagline: 'Your pipeline is probably slower than it needs to be.',
+    body: 'We audit visualization workflows and build fixes: automated batch processes, tool integrations, MAXScript utilities, AI-assisted QC. We\'ve been optimizing our own pipeline for 30 years — we know where the time goes.',
+    results: [],
+    href: '/services/workflow-optimization/',
+  },
+  {
+    n: '06',
+    title: '3ds Max Tools & Scripting',
+    tagline: 'Custom tools for MAX users who\'ve hit the ceiling.',
+    body: 'MAXScript and Python tools for batch processing, scene cleanup, render management, and workflow automation. We\'ve been using MAX since version 1 — we know what breaks and why.',
+    results: [],
+    href: '/services/3ds-max-tools/',
+  },
+  {
+    n: '07',
+    title: 'Custom Rendering',
+    tagline: 'When your files won\'t render, we fix that.',
+    body: 'Scene optimization, V-Ray problem-solving, render farm access. 15+ years with V-Ray. We handle MAX files that crash everywhere else.',
+    results: [],
+    href: '/services/custom-rendering/',
+  },
+];
+---
+
+<Page
+  title="Services"
+  description="Architectural visualization, AI-enhanced workflows, 3ds Max scripting, custom rendering. Budapest-based, working globally since 1996."
+  fullBleed
+>
+  <div class="services-page">
+
+    <!-- Hero -->
+    <section class="services-hero section">
+      <div class="page-hero-bg" aria-hidden="true"></div>
+      <div class="page-hero-overlay" aria-hidden="true"></div>
+      <div class="container page-hero-content">
+        <p class="section-label">Services</p>
+        <h1 class="display-xl services-h1">Show It.<br />Scale It.<br /><em>Build It.</em></h1>
+        <p class="services-sub">
+          From single architectural renders to airport-scale animations.
+          From custom MAXScript tools to AI-enhanced image pipelines.
+        </p>
+      </div>
+    </section>
+
+    <hr class="page-rule" />
+
+    <!-- Services list -->
+    <section class="services-list section">
+      <div class="container">
+        {services.map(s => (
+          <article class="service-row">
+            <div class="service-row-header">
+              <span class="service-n">{s.n}</span>
+              <div class="service-heading">
+                <h2 class="service-title">{s.title}</h2>
+                <p class="service-tagline">{s.tagline}</p>
+              </div>
+              <a href={s.href} class="btn btn-secondary service-link">Learn more</a>
+            </div>
+            <div class="service-row-body">
+              <p class="service-body">{s.body}</p>
+              {s.results.length > 0 && (
+                <ul class="service-results">
+                  {s.results.map(r => <li>{r}</li>)}
+                </ul>
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <hr class="page-rule" />
+
+    <!-- Pricing teaser -->
+    <section class="section">
+      <div class="container pricing-teaser">
+        <div>
+          <p class="section-label">Pricing</p>
+          <h2 class="display-md pricing-heading">Transparent from the Start</h2>
+          <p class="pricing-body">
+            Essential from €5,000 · Professional from €15,000 · Enterprise custom.
+            We quote based on actual scope, not package tiers.
+          </p>
+          <div class="pricing-ctas">
+            <a href="/pricing/" class="btn btn-secondary">See Pricing</a>
+            <a href="/contact/" class="btn btn-primary">Get a Quote</a>
+          </div>
+        </div>
+        <div class="pricing-note">
+          <p>"Not sure which fits?<br />30-minute consultation, no charge."</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</Page>
+
+<style>
+  .services-page { width: 100%; }
+
+  .services-hero {
+    padding-top: clamp(3rem, 6vw, 5rem);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .page-hero-bg {
+    position: absolute;
+    inset: 0;
+    background: url('/hero-bg-3.jpg') center/cover no-repeat;
+    z-index: 0;
+  }
+
+  .page-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, rgba(26,26,26,0.93) 0%, rgba(26,26,26,0.75) 60%, rgba(26,26,26,0.55) 100%);
+    z-index: 1;
+  }
+
+  .page-hero-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  .services-h1 {
+    margin: 0.75rem 0 1.5rem;
+    line-height: 0.92;
+  }
+
+  .services-h1 em {
+    font-style: italic;
+    color: var(--color-accent);
+  }
+
+  .services-sub {
+    font-size: 1rem;
+    color: var(--color-text-muted);
+    max-width: 52ch;
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  .page-rule {
+    border-color: var(--color-border);
+    margin-inline: auto;
+    max-width: 1320px;
+  }
+
+  /* Service rows */
+  .services-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .service-row {
+    padding-block: 2.5rem;
+    border-top: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .service-row:last-child { border-bottom: 1px solid var(--color-border); }
+
+  .service-row-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1.25rem;
+  }
+
+  .service-n {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--color-text-faint);
+    flex-shrink: 0;
+    padding-top: 0.2rem;
+  }
+
+  .service-heading { flex: 1; }
+
+  .service-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    font-weight: 300;
+    color: var(--color-text);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 0.3rem;
+  }
+
+  .service-tagline {
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    color: var(--color-accent);
+    font-style: italic;
+    margin: 0;
+  }
+
+  .service-link { flex-shrink: 0; }
+
+  .service-row-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    padding-left: calc(1.25rem + 2rem); /* align with heading */
+  }
+
+  .service-body {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    max-width: 58ch;
+    margin: 0;
+  }
+
+  .service-results {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .service-results li {
+    font-size: 0.82rem;
+    color: var(--color-text-muted);
+    padding-left: 1rem;
+    position: relative;
+    line-height: 1.5;
+  }
+
+  .service-results li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--color-accent);
+    font-size: 0.7rem;
+  }
+
+  /* Pricing teaser */
+  .pricing-teaser {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .pricing-heading { margin: 0.75rem 0 1rem; }
+
+  .pricing-body {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    max-width: 52ch;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+  }
+
+  .pricing-ctas { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+
+  .pricing-note {
+    border: 1px solid var(--color-border);
+    padding: 2rem;
+    border-radius: var(--radius-sm);
+    background: var(--color-surface);
+  }
+
+  .pricing-note p {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+    margin: 0;
+    max-width: none;
+  }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .pricing-teaser { grid-template-columns: 1fr; gap: 2rem; }
+  }
+
+  @media (max-width: 768px) {
+    .service-row-header { flex-wrap: wrap; }
+    .service-link { width: 100%; }
+    .service-row-body { grid-template-columns: 1fr; padding-left: 0; }
+  }
+</style>

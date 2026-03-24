@@ -1,0 +1,81 @@
+---
+// src/pages/portfolio/index.astro
+
+import Page from '../../layouts/Page.astro';
+import PortfolioFilter from '../../components/portfolio/PortfolioFilter';
+import { getCollection } from 'astro:content';
+import type { ProjectMeta } from '../../components/portfolio/PortfolioFilter';
+
+const allProjects = await getCollection('projects', ({ data }) => data.published);
+
+// Serialize to plain objects for the React island
+const projectData: ProjectMeta[] = allProjects.map(p => ({
+  slug:        p.slug,
+  title:       p.data.title,
+  year:        p.data.year,
+  client:      p.data.client,
+  location:    p.data.location,
+  description: p.data.description,
+  categories:  p.data.categories,
+  features:    p.data.features,
+  tags:        p.data.tags,
+  coverImage:  p.data.coverImage,
+  featured:    p.data.featured,
+  has360:      (p.data.tour360?.length ?? 0) > 0,
+  hasFilm:     (p.data.films?.length ?? 0) > 0,
+}));
+
+const years = projectData.map(p => p.year);
+const minYear = Math.min(...years);
+const maxYear = Math.max(...years);
+---
+
+<Page
+  title="Portfolio"
+  description="30 years of architectural visualization. 500+ projects across airports, residential, commercial, urban, and VR. Budapest-based, working globally."
+  fullBleed
+>
+  <div class="portfolio-page">
+    <div class="portfolio-header container">
+      <p class="section-label">Our Work</p>
+      <h1 class="display-lg">Selected Projects</h1>
+      <p class="portfolio-sub">
+        30 years. 500+ projects. A selection across sectors and scales.
+      </p>
+    </div>
+
+    <div class="portfolio-body container">
+      <PortfolioFilter
+        projects={projectData}
+        minYear={minYear}
+        maxYear={maxYear}
+        client:load
+      />
+    </div>
+  </div>
+</Page>
+
+<style>
+  .portfolio-page {
+    padding-block: clamp(3rem, 6vw, 5rem);
+  }
+
+  .portfolio-header {
+    margin-bottom: 3rem;
+  }
+
+  .portfolio-header h1 {
+    margin: 0.75rem 0 1rem;
+  }
+
+  .portfolio-sub {
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+    margin: 0;
+    max-width: 52ch;
+  }
+
+  .portfolio-body {
+    /* Full width grid with container padding */
+  }
+</style>

@@ -1,0 +1,41 @@
+---
+title: "Gundel Restaurant"
+year: 2000
+location: "Budapest, Hungary"
+designer: "CGT"
+clientType: "architect"
+description: "The Gundel restaurant project involved creating visual assets for one of Hungary's most iconic and historic dining establishments. Located in Budapest's City Park, Gundel has been a cornerstone of Hungarian gastronomy since 1894, with Károly Gundel taking over the establishment in 1910 and transf…"
+story: |
+  In 2000, the Gundel restaurant was undergoing significant renovations to restore its former glory while making it more accessible to a wider audience. The Winter Garden, with its impressive glass walls overlooking the lush garden and park, was a key focus of this renovation. This space was designed to create a seamless connection between the interior dining experience and the natural beauty of the surrounding environment. The entrance visuals needed to capture the restaurant's rich heritage dating back to the late 19th century while conveying its renewed commitment to Hungarian culinary traditions. This project was part of a larger effort to revitalize Gundel's image and position it as both a prestigious dining destination and an accessible venue for various occasions.
+tasks: |
+  For this prestigious project, we created comprehensive visualizations of the Winter Garden and entrance areas of the Gundel restaurant. Our work focused on capturing the elegant atmosphere of these spaces, highlighting architectural features such as the Winter Garden's expansive glass walls that offer views of the garden and the centuries-old trees that provide shade and ambiance.
+  
+  We developed detailed renderings that showcased how natural light would interact with the interior spaces throughout different times of day, emphasizing the connection between the indoor dining experience and the outdoor garden environment. The visualizations illustrated how the Winter Garden could transform from a bright, airy space during daytime to an intimate, warmly lit venue in the evening.
+categories:
+  - hospitality
+features: []
+tags: []
+coverImage: "/portfolio/gundel-restaurant/01.jpg"
+published: true
+featured: false
+techniques:
+  - exterior
+  - interior
+images:
+  - src: "/portfolio/gundel-restaurant/01.jpg"
+    alt: ""
+  - src: "/portfolio/gundel-restaurant/02.jpg"
+    alt: ""
+  - src: "/portfolio/gundel-restaurant/03.jpg"
+    alt: ""
+  - src: "/portfolio/gundel-restaurant/04.jpg"
+    alt: ""
+  - src: "/portfolio/gundel-restaurant/05.jpg"
+    alt: ""
+  - src: "/portfolio/gundel-restaurant/06.jpg"
+    alt: ""
+  - src: "/portfolio/gundel-restaurant/07.jpg"
+    alt: ""
+  - src: "/portfolio/gundel-restaurant/08.jpg"
+    alt: ""
+---

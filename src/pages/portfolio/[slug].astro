@@ -1,0 +1,683 @@
+---
+// src/pages/portfolio/[slug].astro
+
+import Page from '../../layouts/Page.astro';
+import FilmEmbed from '../../components/media/FilmEmbed.astro';
+import Tour360 from '../../components/media/Tour360.astro';
+import YouTubeEmbed from '../../components/media/YouTubeEmbed.astro';
+import ImageLightbox from '../../components/media/ImageLightbox';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects', ({ data }) => data.published);
+  return projects.map(project => ({
+    params: { slug: project.slug },
+    props:  { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { data } = project;
+const { Content } = await project.render();
+
+// Category display labels
+const CATEGORY_LABELS: Record<string, string> = {
+  'architectural-visualization': 'Architectural Visualization',
+  'residential':      'Residential',
+  'commercial':       'Commercial',
+  'office':           'Office',
+  'airport':          'Airport',
+  'infrastructure':   'Infrastructure',
+  'urban':            'Urban',
+  'hospitality':      'Hospitality',
+  'industrial':       'Industrial',
+  'product-visualization': 'Product Visualization',
+  'vr-experience':    'VR Experience',
+  'animation':        'Animation',
+  'exhibition':       'Exhibition',
+  'education':        'Education',
+  'healthcare':       'Healthcare',
+  'sports':           'Sports',
+  'civic':            'Civic',
+  'agriculture':      'Agriculture',
+  'renovation':       'Renovation',
+  'transportation':   'Transportation',
+};
+
+// Adjacent projects for prev/next navigation
+const allProjects = await getCollection('projects', ({ data }) => data.published);
+const sorted = allProjects.sort((a, b) => b.data.year - a.data.year);
+const currentIndex = sorted.findIndex(p => p.slug === project.slug);
+const prevProject = sorted[currentIndex + 1] ?? null;
+const nextProject = sorted[currentIndex - 1] ?? null;
+
+// Story paragraphs — split on any newline, filter empty
+const storyParagraphs = data.story
+  ? data.story.trim().split(/\n{1,}/).filter((s: string) => s.trim())
+  : [];
+
+const tasksParagraphs = data.tasks
+  ? data.tasks.trim().split(/\n{1,}/).filter((s: string) => s.trim())
+  : [];
+
+// Use blocks system when defined, otherwise fall back to old field layout
+const hasBlocks = data.blocks && data.blocks.length > 0;
+---
+
+<Page
+  title={data.title}
+  description={data.description ?? `${data.title} — architectural visualization by Vision Graphics Kft.`}
+  image={data.coverImage}
+  fullBleed
+>
+  <!-- Hero image -->
+  <div class="project-hero">
+    <img
+      src={data.coverImage}
+      alt={data.title}
+      class="project-hero-img"
+      loading="eager"
+    />
+    <div class="project-hero-overlay">
+      <div class="container">
+        <div class="project-hero-meta">
+          <a href="/portfolio/" class="back-link">← Portfolio</a>
+          <div class="project-cats">
+            {data.categories.map((cat: string) => (
+              <a href={`/portfolio/category/${cat}/`} class="project-cat-tag">
+                {CATEGORY_LABELS[cat] ?? cat}
+              </a>
+            ))}
+          </div>
+        </div>
+        <h1 class="project-title">{data.title}</h1>
+        <div class="project-subtitle-row">
+          <span class="project-year">{data.year}</span>
+          {data.client   && <span class="project-client">{data.client}</span>}
+          {data.location && <span class="project-location">{data.location}</span>}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Single-column content area -->
+  <div class="project-content-area">
+
+    <!-- Meta strip -->
+    <div class="project-meta-strip">
+      <div class="meta-pair">
+        <span class="meta-label">Year</span>
+        <span class="meta-value">{data.year}</span>
+      </div>
+      {data.client && (
+        <div class="meta-pair">
+          <span class="meta-label">Client</span>
+          <span class="meta-value">{data.client}</span>
+        </div>
+      )}
+      {data.location && (
+        <div class="meta-pair">
+          <span class="meta-label">Location</span>
+          <span class="meta-value">{data.location}</span>
+        </div>
+      )}
+      {data.designer && (
+        <div class="meta-pair">
+          <span class="meta-label">Architect</span>
+          <span class="meta-value">{data.designer}</span>
+        </div>
+      )}
+    </div>
+
+    <!-- Description -->
+    {data.description && (
+      <p class="project-description">{data.description}</p>
+    )}
+
+    <!-- MDX body content (if any) -->
+    <div class="project-content prose">
+      <Content />
+    </div>
+
+    <!-- Technique tags -->
+    {data.techniques && data.techniques.length > 0 && (
+      <div class="project-tags-block">
+        <div class="block-label">Techniques</div>
+        <div class="tags-row">
+          {data.techniques.map((slug: string) => (
+            <a href={`/vision-tech/${slug}/`} class="tech-tag">
+              {slug.replace(/-/g, '\u00A0').replace(/\b\w/g, (c: string) => c.toUpperCase())}
+            </a>
+          ))}
+        </div>
+      </div>
+    )}
+
+    <!-- Feature / output type tags -->
+    {data.features && data.features.length > 0 && (
+      <div class="project-tags-block">
+        <div class="block-label">Output Type</div>
+        <div class="tags-row">
+          {data.features.map((f: string) => (
+            <span class="tag">{f}</span>
+          ))}
+        </div>
+      </div>
+    )}
+
+    <!-- ═══════════════════════════════════════════════════════════
+         CONTENT BODY — blocks if defined, else legacy field layout
+         ═══════════════════════════════════════════════════════════ -->
+
+    {hasBlocks ? (
+      /* ── Blocks renderer (ordered, interleaved) ─────────────── */
+      <div class="project-blocks">
+        {data.blocks!.map((block: any) => {
+          if (block.type === 'text') return (
+            <section class="project-block project-block--text">
+              <div class="project-block-prose" set:html={block.html} />
+            </section>
+          );
+          if (block.type === 'gallery') return (
+            <section class="project-block project-block--media">
+              <ImageLightbox images={block.images} title={block.title || undefined} client:load />
+            </section>
+          );
+          if (block.type === 'tour360') return (
+            <section class="project-block project-block--media">
+              <Tour360 url={block.url} title={block.title ?? ''} />
+            </section>
+          );
+          if (block.type === 'film') return (
+            <section class="project-block project-block--media">
+              <FilmEmbed vimeoId={block.vimeoId} title={block.title ?? ''} />
+            </section>
+          );
+          if (block.type === 'youtube') return (
+            <section class="project-block project-block--media">
+              <YouTubeEmbed url={block.url} title={block.title ?? ''} />
+            </section>
+          );
+          return null;
+        })}
+      </div>
+    ) : (
+      /* ── Legacy layout (separate sections, appended) ────────── */
+      <>
+        <!-- Background / Story -->
+        {storyParagraphs.length > 0 && (
+          <section class="project-section">
+            <h2 class="project-section-title">Background</h2>
+            <div class="story-text">
+              {storyParagraphs.map((para: string) => (
+                <p>{para.trim()}</p>
+              ))}
+            </div>
+          </section>
+        )}
+
+        <!-- What We Did -->
+        {tasksParagraphs.length > 0 && (
+          <section class="project-section">
+            <h2 class="project-section-title">What We Did</h2>
+            <div class="story-text">
+              {tasksParagraphs.map((para: string) => (
+                <p>{para.trim()}</p>
+              ))}
+            </div>
+          </section>
+        )}
+
+        <!-- Image Gallery -->
+        {data.images && data.images.length > 0 && (
+          <section class="project-section project-section--media">
+            {data.images.length > 1 && (
+              <h2 class="project-section-title">Images</h2>
+            )}
+            <ImageLightbox images={data.images} client:load />
+          </section>
+        )}
+
+        <!-- 360° Tours -->
+        {data.tour360 && data.tour360.length > 0 && (
+          <section class="project-section project-section--media">
+            <h2 class="project-section-title">360° Tours</h2>
+            <div class="tours-grid">
+              {data.tour360.map((tour: { url: string; title: string }) => (
+                <Tour360
+                  url={tour.url}
+                  title={tour.title}
+                  coverImage={data.coverImage}
+                />
+              ))}
+            </div>
+          </section>
+        )}
+
+        <!-- Films -->
+        {data.films && data.films.length > 0 && (
+          <section class="project-section project-section--media">
+            <h2 class="project-section-title">Films</h2>
+            <div class="films-grid">
+              {data.films.map((film: { vimeoId: string; title: string }) => (
+                <FilmEmbed
+                  vimeoId={film.vimeoId}
+                  title={film.title}
+                />
+              ))}
+            </div>
+          </section>
+        )}
+
+        <!-- Video (YouTube) -->
+        {data.video && (
+          <section class="project-section project-section--media">
+            <h2 class="project-section-title">Video</h2>
+            <YouTubeEmbed url={data.video} title={data.title} />
+          </section>
+        )}
+      </>
+    )}
+
+    <!-- CTA block -->
+    <div class="project-cta">
+      <p>Similar project in mind?</p>
+      <a href="/contact/" class="btn btn-primary">Talk to Us</a>
+    </div>
+
+    <!-- Project navigation -->
+    <nav class="project-nav" aria-label="Project navigation">
+      {prevProject && (
+        <a href={`/portfolio/${prevProject.slug}/`} class="project-nav-link project-nav-link--prev">
+          <span class="nav-dir">← Previous</span>
+          <span class="nav-title">{prevProject.data.title}</span>
+        </a>
+      )}
+      <a href="/portfolio/" class="project-nav-link project-nav-link--all">All Projects</a>
+      {nextProject && (
+        <a href={`/portfolio/${nextProject.slug}/`} class="project-nav-link project-nav-link--next">
+          <span class="nav-dir">Next →</span>
+          <span class="nav-title">{nextProject.data.title}</span>
+        </a>
+      )}
+    </nav>
+
+  </div>
+</Page>
+
+<style>
+  /* =====================
+     Hero
+     ===================== */
+  .project-hero {
+    position: relative;
+    height: 70vh;
+    min-height: 400px;
+    overflow: hidden;
+  }
+
+  .project-hero-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.45);
+  }
+
+  .project-hero-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    background: linear-gradient(to top, rgba(10,10,18,0.92) 0%, rgba(10,10,18,0.2) 50%, transparent 80%);
+    padding-bottom: 3rem;
+  }
+
+  .project-hero-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .back-link {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: color 200ms ease;
+    letter-spacing: 0.05em;
+  }
+  .back-link:hover { color: var(--color-text); }
+
+  .project-cats { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+
+  .project-cat-tag {
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    text-decoration: none;
+    border: 1px solid rgba(218, 19, 19, 0.4);
+    padding: 0.2rem 0.5rem;
+    border-radius: 1px;
+    transition: all 200ms ease;
+  }
+  .project-cat-tag:hover {
+    background: rgba(218, 19, 19, 0.12);
+    border-color: var(--color-accent);
+  }
+
+  .project-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 6vw, 4rem);
+    font-weight: 300;
+    color: var(--color-text);
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    margin-bottom: 0.75rem;
+  }
+
+  .project-subtitle-row {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+  }
+
+  /* =====================
+     Content area
+     ===================== */
+  .project-content-area {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 1.5rem 4rem;
+  }
+
+  /* =====================
+     Meta strip
+     ===================== */
+  .project-meta-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 2.5rem;
+    padding: 1.5rem 0 2rem;
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: 2rem;
+  }
+
+  .meta-pair {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .meta-label {
+    font-family: var(--font-body);
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-text-faint);
+  }
+
+  .meta-value {
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+  }
+
+  /* =====================
+     Description & prose
+     ===================== */
+  .project-description {
+    font-size: 1rem;
+    color: var(--color-text);
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    max-width: 68ch;
+  }
+
+  .project-content.prose {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    line-height: 1.8;
+    max-width: 68ch;
+    margin-bottom: 2rem;
+  }
+  .project-content.prose p { margin-bottom: 1rem; }
+
+  /* =====================
+     Tag rows
+     ===================== */
+  .project-tags-block { margin-bottom: 2rem; }
+
+  .block-label {
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-text-faint);
+    margin-bottom: 0.6rem;
+  }
+
+  .tags-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .tech-tag {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    padding: 0.3rem 0.8rem;
+    border: 1px solid var(--color-border);
+    border-radius: 2px;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: border-color 200ms, color 200ms;
+  }
+  .tech-tag:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  .tag {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    padding: 0.3rem 0.8rem;
+    background: var(--color-surface-2);
+    border-radius: 2px;
+    color: var(--color-text-muted);
+  }
+
+  /* =====================
+     Blocks (ordered interleaved content)
+     ===================== */
+  .project-blocks {
+    margin-top: 0;
+  }
+
+  .project-block {
+    padding-block: 2.5rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .project-block--media {
+    padding-inline: 0;
+    /* full-width within the content-area column */
+  }
+
+  .project-block-prose {
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+    line-height: 1.85;
+    max-width: 68ch;
+  }
+
+  .project-block-prose :global(h2) {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--color-text);
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.01em;
+  }
+
+  .project-block-prose :global(h3) {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: var(--color-text);
+    margin-bottom: 0.5rem;
+  }
+
+  .project-block-prose :global(p) {
+    margin-bottom: 1rem;
+    color: var(--color-text-muted);
+    max-width: 68ch;
+  }
+
+  .project-block-prose :global(ul),
+  .project-block-prose :global(ol) {
+    padding-left: 1.4rem;
+    margin-bottom: 1rem;
+  }
+
+  .project-block-prose :global(li) {
+    margin-bottom: 0.4rem;
+    color: var(--color-text-muted);
+  }
+
+  .project-block-prose :global(a) {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* =====================
+     Legacy sections (no blocks)
+     ===================== */
+  .project-section {
+    margin-bottom: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .project-section--media {
+    border-top: none;
+    padding-top: 0;
+  }
+
+  .project-section-title {
+    font-family: var(--font-body);
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-text-faint);
+    margin-bottom: 1rem;
+  }
+
+  .story-text p {
+    font-size: 0.95rem;
+    line-height: 1.85;
+    color: var(--color-text-muted);
+    margin-bottom: 1rem;
+    max-width: 70ch;
+  }
+
+  /* =====================
+     Tours & Films
+     ===================== */
+  .tours-grid,
+  .films-grid {
+    display: grid;
+    gap: 1rem;
+  }
+
+  /* =====================
+     CTA block
+     ===================== */
+  .project-cta {
+    margin-block: 3rem;
+    padding: 2rem;
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    text-align: center;
+  }
+
+  .project-cta p {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    margin-bottom: 1rem;
+    max-width: none;
+  }
+
+  /* =====================
+     Project nav
+     ===================== */
+  .project-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-border);
+    gap: 1rem;
+  }
+
+  .project-nav-link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    text-decoration: none;
+    transition: color 200ms;
+    max-width: 35%;
+  }
+
+  .nav-dir {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-text-faint);
+    letter-spacing: 0.1em;
+  }
+
+  .nav-title {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    color: var(--color-text-muted);
+    transition: color 200ms;
+  }
+
+  .project-nav-link:hover .nav-title { color: var(--color-accent); }
+
+  .project-nav-link--all {
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-faint);
+    flex-direction: row;
+    align-items: center;
+    max-width: none;
+  }
+  .project-nav-link--all:hover { color: var(--color-text); }
+
+  .project-nav-link--next {
+    text-align: right;
+    align-items: flex-end;
+  }
+
+  /* =====================
+     Responsive
+     ===================== */
+  @media (max-width: 600px) {
+    .project-content-area { padding-inline: 1rem; }
+  }
+</style>

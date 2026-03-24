@@ -1,0 +1,202 @@
+---
+// src/components/layout/Footer.astro
+// Corrected: no newsletter widget, consistent contact info
+
+const year = new Date().getFullYear();
+
+const services = [
+  { label: 'Architectural Visualization', href: '/services/architectural-visualization/' },
+  { label: 'Large-Scale Projects',        href: '/services/large-scale-projects/' },
+  { label: 'AI-Enhanced Services',        href: '/services/advanced-ai-services/' },
+  { label: 'Workflow Optimization',       href: '/services/workflow-optimization/' },
+  { label: '3ds Max Tools',               href: '/services/3ds-max-tools/' },
+  { label: 'Custom Rendering',            href: '/services/custom-rendering/' },
+];
+
+const links = [
+  { label: 'Portfolio',    href: '/portfolio/' },
+  { label: 'Technologies', href: '/vision-tech/' },
+  { label: 'FAQ',          href: '/faq/' },
+  { label: 'Pricing',      href: '/pricing/' },
+  { label: 'Blog',         href: '/articles/' },
+  { label: 'About',        href: '/about/' },
+  { label: 'Contact',      href: '/contact/' },
+];
+---
+
+<footer class="site-footer">
+  <div class="container">
+
+    <div class="footer-grid">
+
+      <!-- Brand column -->
+      <div class="footer-brand">
+        <a href="/" class="footer-logo" aria-label="Vision Graphics — Home">
+          <img src="/logo.png" alt="Vision Graphics Kft." class="footer-logo-img" width="140" height="34" />
+        </a>
+        <p class="footer-bio">
+          Architectural visualization, Budapest.
+          Working globally since 1996.
+        </p>
+        <address class="footer-address">
+          Hollósy Simon utca 15.<br />
+          1126 Budapest, Hungary
+        </address>
+        <div class="footer-contact">
+          <a href="tel:+36309454179">+36 30 945 4179</a>
+          <a href="mailto:info@visiongraphics.eu">info@visiongraphics.eu</a>
+        </div>
+      </div>
+
+      <!-- Services column -->
+      <div class="footer-col">
+        <h4 class="footer-col-title">Services</h4>
+        <nav aria-label="Services links">
+          {services.map(s => (
+            <a href={s.href} class="footer-link">{s.label}</a>
+          ))}
+        </nav>
+      </div>
+
+      <!-- Quick links column -->
+      <div class="footer-col">
+        <h4 class="footer-col-title">Studio</h4>
+        <nav aria-label="Studio links">
+          {links.map(l => (
+            <a href={l.href} class="footer-link">{l.label}</a>
+          ))}
+        </nav>
+      </div>
+
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="footer-bottom">
+      <span>© Vision Graphics Kft. {year}</span>
+      <span class="footer-bottom-right">
+        Budapest · Est. 1996
+      </span>
+    </div>
+
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--color-border);
+    padding-block: 4rem 2rem;
+    margin-top: 6rem;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 3rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  /* Logo */
+  .footer-logo {
+    display: inline-block;
+    margin-bottom: 1rem;
+    text-decoration: none;
+    opacity: 0.85;
+    transition: opacity 200ms ease;
+  }
+
+  .footer-logo:hover { opacity: 1; }
+
+  .footer-logo-img {
+    height: 30px;
+    width: auto;
+    display: block;
+  }
+
+  .footer-bio {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    margin-bottom: 1.25rem;
+    max-width: 28ch;
+    line-height: 1.6;
+  }
+
+  .footer-address {
+    font-style: normal;
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    margin-bottom: 0.75rem;
+  }
+
+  .footer-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .footer-contact a {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: color 200ms ease;
+  }
+
+  .footer-contact a:hover {
+    color: var(--color-accent);
+  }
+
+  /* Columns */
+  .footer-col-title {
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-text-faint);
+    margin-bottom: 1rem;
+  }
+
+  .footer-col nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .footer-link {
+    font-size: 0.82rem;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: color 200ms ease;
+    line-height: 1.4;
+  }
+
+  .footer-link:hover {
+    color: var(--color-text);
+  }
+
+  /* Bottom bar */
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1.5rem;
+    font-size: 0.75rem;
+    color: var(--color-text-faint);
+    font-family: var(--font-body);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .footer-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .footer-bottom {
+      flex-direction: column;
+      gap: 0.5rem;
+      text-align: center;
+    }
+  }
+</style>

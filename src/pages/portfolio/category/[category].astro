@@ -1,0 +1,217 @@
+---
+// src/pages/portfolio/category/[category].astro
+// Pre-built category pages for SEO
+
+import Page from '../../../layouts/Page.astro';
+import { getCollection } from 'astro:content';
+
+const CATEGORY_LABELS: Record<string, string> = {
+  'architectural-visualization': 'Architectural Visualization',
+  'residential':      'Residential',
+  'commercial':       'Commercial',
+  'office':           'Office',
+  'airport':          'Airport',
+  'infrastructure':   'Infrastructure',
+  'urban':            'Urban',
+  'hospitality':      'Hospitality',
+  'industrial':       'Industrial',
+  'product-visualization': 'Product Visualization',
+  'vr-experience':    'VR Experience',
+  'animation':        'Animation',
+  'exhibition':       'Exhibition',
+};
+
+export async function getStaticPaths() {
+  const allProjects = await getCollection('projects', ({ data }) => data.published);
+  const categories = [...new Set(allProjects.flatMap(p => p.data.categories))];
+
+  return categories.map(category => {
+    const projects = allProjects
+      .filter(p => p.data.categories.includes(category))
+      .sort((a, b) => b.data.year - a.data.year);
+
+    return {
+      params: { category },
+      props: { category, projects },
+    };
+  });
+}
+
+const { category, projects } = Astro.props;
+const label = CATEGORY_LABELS[category] ?? category;
+---
+
+<Page
+  title={`${label} — Portfolio`}
+  description={`${label} projects by Vision Graphics Kft. ${projects.length} projects. Budapest-based, working globally since 1996.`}
+  fullBleed
+>
+  <div class="category-page">
+
+    <div class="category-header container">
+      <div class="category-breadcrumb">
+        <a href="/portfolio/">Portfolio</a>
+        <span>→</span>
+        <span>{label}</span>
+      </div>
+      <p class="section-label">Portfolio</p>
+      <h1 class="display-lg category-h1">{label}</h1>
+      <p class="category-sub">
+        {projects.length} project{projects.length !== 1 ? 's' : ''} in this category.
+        <a href="/portfolio/">Browse all →</a>
+      </p>
+    </div>
+
+    <div class="category-grid container">
+      {projects.map((project, i) => (
+        <a href={`/portfolio/${project.slug}/`} class="cat-card">
+          <div class="cat-card-image">
+            <img
+              src={project.data.coverImage}
+              alt={project.data.title}
+              loading={i < 4 ? 'eager' : 'lazy'}
+              decoding="async"
+            />
+          </div>
+          <div class="cat-card-body">
+            <div class="cat-card-meta">
+              <span class="cat-card-cat">{label}</span>
+              <span class="cat-card-year">{project.data.year}</span>
+            </div>
+            <h2 class="cat-card-title">{project.data.title}</h2>
+            {(project.data.client || project.data.location) && (
+              <span class="cat-card-sub">{project.data.client || project.data.location}</span>
+            )}
+          </div>
+        </a>
+      ))}
+    </div>
+
+    <div class="category-cta container">
+      <a href="/portfolio/" class="btn btn-secondary">← All Projects</a>
+      <a href="/contact/" class="btn btn-primary">Start a Project</a>
+    </div>
+
+  </div>
+</Page>
+
+<style>
+  .category-page { padding-block: clamp(3rem, 6vw, 5rem); }
+
+  .category-header { margin-bottom: 3rem; }
+
+  .category-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    color: var(--color-text-faint);
+    margin-bottom: 1.5rem;
+  }
+
+  .category-breadcrumb a { color: var(--color-text-muted); text-decoration: none; transition: color 200ms; }
+  .category-breadcrumb a:hover { color: var(--color-accent); }
+
+  .category-h1 { margin: 0.5rem 0 1rem; }
+
+  .category-sub {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .category-sub a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    margin-left: 0.5rem;
+  }
+
+  /* Grid — matches vt-grid */
+  .category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+  }
+
+  /* Portfolio card — white border */
+  .cat-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--color-surface);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    text-decoration: none;
+    transition: border-color 250ms ease, transform 250ms ease;
+  }
+
+  .cat-card:hover { border-color: rgba(255, 255, 255, 0.35); transform: translateY(-2px); }
+
+  .cat-card-image {
+    aspect-ratio: 16/9;
+    overflow: hidden;
+    background: var(--color-surface-2);
+  }
+
+  .cat-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 400ms ease;
+  }
+
+  .cat-card:hover .cat-card-image img { transform: scale(1.04); }
+
+  .cat-card-body {
+    padding: 1rem 1.1rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    flex: 1;
+  }
+
+  .cat-card-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .cat-card-cat {
+    font-family: var(--font-body);
+    font-size: 0.64rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .cat-card-year {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-text-faint);
+  }
+
+  .cat-card-title {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-text);
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  .cat-card-sub {
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+  }
+
+  /* CTA */
+  .category-cta {
+    display: flex;
+    gap: 0.75rem;
+  }
+</style>

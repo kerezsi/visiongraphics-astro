@@ -1,0 +1,350 @@
+---
+// src/pages/articles/[slug].astro
+
+import Page from '../../layouts/Page.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const articles = await getCollection('articles', ({ data }) => data.published);
+  return articles.map(article => ({
+    params: { slug: article.slug },
+    props: { article },
+  }));
+}
+
+const { article } = Astro.props;
+const { data } = article;
+const { Content } = await article.render();
+
+function formatDate(date: Date): string {
+  return new Intl.DateTimeFormat('en-GB', {
+    day: 'numeric', month: 'long', year: 'numeric',
+  }).format(date);
+}
+
+// Adjacent articles for navigation
+const allArticles = await getCollection('articles', ({ data }) => data.published);
+const sorted = allArticles.sort((a, b) =>
+  new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+);
+const currentIndex = sorted.findIndex(a => a.slug === article.slug);
+const prevArticle = sorted[currentIndex + 1] ?? null;
+const nextArticle = sorted[currentIndex - 1] ?? null;
+---
+
+<Page
+  title={data.title}
+  description={data.excerpt}
+  image={data.coverImage}
+>
+  <div class="article-page">
+
+    <!-- Breadcrumb -->
+    <div class="article-breadcrumb">
+      <a href="/articles/">Articles</a>
+      <span>→</span>
+      <span>{data.title}</span>
+    </div>
+
+    <!-- Header -->
+    <header class="article-header">
+      <div class="article-meta">
+        <time class="article-date" datetime={data.date.toISOString()}>
+          {formatDate(data.date)}
+        </time>
+        {data.tags.length > 0 && (
+          <div class="article-tags">
+            {data.tags.map(tag => (
+              <span class="article-tag">{tag}</span>
+            ))}
+          </div>
+        )}
+      </div>
+      <h1 class="display-lg article-h1">{data.title}</h1>
+      <p class="article-excerpt">{data.excerpt}</p>
+    </header>
+
+    {data.coverImage && (
+      <div class="article-cover">
+        <img src={data.coverImage} alt={data.title} loading="eager" />
+      </div>
+    )}
+
+    <!-- Content -->
+    <div class="article-layout">
+      <div class="article-content prose">
+        <Content />
+      </div>
+
+      <aside class="article-sidebar">
+        <div class="sidebar-block">
+          <h3 class="sidebar-label">About the author</h3>
+          <p class="sidebar-author-name">László Kerezsi</p>
+          <p class="sidebar-author-bio">
+            Founder, Vision Graphics Kft. 30 years in architectural visualization,
+            3ds Max since version 1, AI integration since it became useful.
+          </p>
+        </div>
+
+        <div class="sidebar-block">
+          <h3 class="sidebar-label">Contact</h3>
+          <a href="/contact/" class="btn btn-primary sidebar-btn">Start a Project</a>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="article-nav" aria-label="Article navigation">
+      {prevArticle && (
+        <a href={`/articles/${prevArticle.slug}/`} class="article-nav-link article-nav-link--prev">
+          <span class="nav-dir">← Older</span>
+          <span class="nav-title">{prevArticle.data.title}</span>
+        </a>
+      )}
+      <a href="/articles/" class="article-nav-link article-nav-link--all">All Articles</a>
+      {nextArticle && (
+        <a href={`/articles/${nextArticle.slug}/`} class="article-nav-link article-nav-link--next">
+          <span class="nav-dir">Newer →</span>
+          <span class="nav-title">{nextArticle.data.title}</span>
+        </a>
+      )}
+    </nav>
+
+  </div>
+</Page>
+
+<style>
+  .article-page { max-width: 900px; }
+
+  .article-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    color: var(--color-text-faint);
+    margin-bottom: 2rem;
+  }
+
+  .article-breadcrumb a { color: var(--color-text-muted); text-decoration: none; transition: color 200ms; }
+  .article-breadcrumb a:hover { color: var(--color-accent); }
+
+  /* Header */
+  .article-header { margin-bottom: 2rem; }
+
+  .article-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+
+  .article-date {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--color-text-faint);
+  }
+
+  .article-tags { display: flex; gap: 0.35rem; flex-wrap: wrap; }
+
+  .article-tag {
+    font-family: var(--font-body);
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-faint);
+    border: 1px solid var(--color-border);
+    padding: 0.15rem 0.45rem;
+    border-radius: 1px;
+  }
+
+  .article-h1 { margin: 0 0 1rem; }
+
+  .article-excerpt {
+    font-size: 1rem;
+    color: var(--color-text-muted);
+    max-width: 62ch;
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  /* Cover */
+  .article-cover {
+    margin-bottom: 3rem;
+    aspect-ratio: 16/7;
+    overflow: hidden;
+    background: var(--color-surface-2);
+    border-radius: var(--radius-sm);
+  }
+
+  .article-cover img { width: 100%; height: 100%; object-fit: cover; }
+
+  /* Layout */
+  .article-layout {
+    display: grid;
+    grid-template-columns: 1fr 220px;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  /* Prose content */
+  .article-content.prose {
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+    line-height: 1.8;
+    max-width: 65ch;
+  }
+
+  .article-content.prose :global(h2) {
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+    font-weight: 300;
+    color: var(--color-text);
+    margin: 2.5rem 0 1rem;
+    letter-spacing: -0.01em;
+  }
+
+  .article-content.prose :global(h3) {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--color-text);
+    margin: 2rem 0 0.75rem;
+  }
+
+  .article-content.prose :global(p) {
+    margin-bottom: 1.25rem;
+    max-width: none;
+  }
+
+  .article-content.prose :global(ul),
+  .article-content.prose :global(ol) {
+    padding-left: 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .article-content.prose :global(li) {
+    margin-bottom: 0.4rem;
+    color: var(--color-text-muted);
+    font-size: 0.92rem;
+  }
+
+  .article-content.prose :global(code) {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    background: var(--color-surface-2);
+    padding: 0.1rem 0.35rem;
+    border-radius: 2px;
+    color: var(--color-accent);
+  }
+
+  .article-content.prose :global(blockquote) {
+    border-left: 2px solid var(--color-accent);
+    padding-left: 1.25rem;
+    margin: 1.5rem 0;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--color-text-muted);
+  }
+
+  /* Sidebar */
+  .article-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    position: sticky;
+    top: 5rem;
+  }
+
+  .sidebar-block { display: flex; flex-direction: column; gap: 0.6rem; }
+
+  .sidebar-label {
+    font-family: var(--font-body);
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-text-faint);
+  }
+
+  .sidebar-author-name {
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-text);
+    margin: 0;
+    max-width: none;
+  }
+
+  .sidebar-author-bio {
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    margin: 0;
+    max-width: none;
+  }
+
+  .sidebar-btn { width: 100%; justify-content: center; }
+
+  /* Navigation */
+  .article-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-border);
+    gap: 1rem;
+  }
+
+  .article-nav-link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    text-decoration: none;
+    transition: color 200ms;
+    max-width: 35%;
+  }
+
+  .article-nav-link--all {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-faint);
+    flex-direction: row;
+    align-items: center;
+    max-width: none;
+  }
+
+  .article-nav-link--all:hover { color: var(--color-text); }
+  .article-nav-link--next { text-align: right; align-items: flex-end; }
+
+  .nav-dir {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--color-text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .nav-title {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    color: var(--color-text-muted);
+    line-height: 1.3;
+    transition: color 200ms;
+  }
+
+  .article-nav-link:hover .nav-title { color: var(--color-accent); }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .article-layout { grid-template-columns: 1fr; }
+    .article-sidebar { position: static; }
+  }
+</style>

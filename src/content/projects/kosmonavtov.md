@@ -1,0 +1,60 @@
+---
+title: "Kosmonavtov"
+year: 2013
+location: "Ekaterinburg, Russia"
+designer: "Dyer Group"
+description: "Kosmonavtov is a massive 250,000 sqm retail and entertainment center located in Ekaterinburg, Russia, the plans were completed in 2013. The development stands out with its state-of-the-art façades featuring large aluminum-clad folded panels and an undulating wave form clad with limestone effect p…"
+story: |
+  This ambitious project was designed to set a new benchmark for retail developments in Ekaterinburg, serving as a destination for the entire region. Unlike traditional box-type shopping centers, Kosmonavtov features an ever-changing movement in its façades, with a dramatic four-story glazed entrance atrium that offers spectacular views and a direct visual link to roller coaster rides shooting through the void on the top level. The development's strategic location near a metro station, combined with 6,200 parking spaces on two levels below the center, ensures excellent accessibility for visitors throughout the region.
+tasks: |
+  We created comprehensive exterior and interior visualizations for the Kosmonavtov Shopping Mall, bringing to life the architect's vision of a dynamic, movement-oriented design. Our renderings showcased the distinctive façade elements, including the color-changing LED lighting on the folded panels and the limestone-clad wavy canopy that accentuates the building's horizontal movement. For the interiors, we focused on illustrating the spacious shopping areas with abundant natural daylight, lush landscaping, and carefully selected materials that create a total family shopping experience. Our visualizations helped communicate how this development would offer both shoppers and tenants a unique balance of convenience and distinctive identity.
+categories:
+  - commercial
+features: []
+tags: []
+coverImage: "/portfolio/kosmonavtov/01.jpg"
+published: true
+featured: false
+techniques:
+  - exterior
+  - interior
+images:
+  - src: "/portfolio/kosmonavtov/01.jpg"
+    alt: ""
+  - src: "/portfolio/kosmonavtov/02.jpg"
+    alt: ""
+  - src: "/portfolio/kosmonavtov/03.jpg"
+    alt: ""
+  - src: "/portfolio/kosmonavtov/04.jpg"
+    alt: ""
+  - src: "/portfolio/kosmonavtov/05.jpg"
+    alt: ""
+  - src: "/portfolio/kosmonavtov/06.jpg"
+    alt: ""
+  - src: "/portfolio/kosmonavtov/07.jpg"
+    alt: ""
+  - src: "/portfolio/kosmonavtov/08.jpg"
+    alt: ""
+  - src: "/portfolio/kosmonavtov/09.jpg"
+    alt: ""
+  - src: "/portfolio/kosmonavtov/10.jpg"
+    alt: ""
+  - src: "/portfolio/kosmonavtov/11.jpg"
+    alt: ""
+  - src: "/portfolio/kosmonavtov/12.jpg"
+    alt: ""
+  - src: "/portfolio/kosmonavtov/13.jpg"
+    alt: ""
+  - src: "/portfolio/kosmonavtov/14.jpg"
+    alt: ""
+  - src: "/portfolio/kosmonavtov/15.jpg"
+    alt: ""
+  - src: "/portfolio/kosmonavtov/16.jpg"
+    alt: ""
+  - src: "/portfolio/kosmonavtov/17.jpg"
+    alt: ""
+  - src: "/portfolio/kosmonavtov/18.jpg"
+    alt: ""
+  - src: "/portfolio/kosmonavtov/19.jpg"
+    alt: ""
+---

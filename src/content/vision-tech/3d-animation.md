@@ -1,0 +1,25 @@
+---
+title: "3D Animation"
+description: "Moving visual content created using three-dimensional computer graphics. 3D animations can showcase architectural designs product features or complex processes in a dynamic and engaging manner."
+image: "/vision-tech/3d-animation.jpg"
+technique: ""
+cost: "€€€€"
+model3d: "Output from 3D Model"
+complexity: "3 - Advanced"
+reality: "Conceptual Reality"
+purpose:
+  - "Communication"
+  - "Decision Support"
+gallery: []
+relatedCategories:
+  - "animation"
+  - "airport"
+  - "commercial"
+  - "residential"
+relatedFeatures:
+  - "3D Animation"
+  - "4K Animation"
+blocks:
+  - type: text
+    html: "<h2>What's 3D Animation?</h2><p>3D animation uses computer graphics to create moving visuals of your designs. Unlike still images, animations show how spaces flow together, how things move, and how your building works. They turn static concepts into experiences that tell a story.</p><h2>Why Use It?</h2><p>Some ideas just need motion to make sense. When you need to show:</p><ul><li>How people move through a space</li><li>Changes over time (like daylight or seasons)</li><li>Construction sequences</li><li>How different spaces connect</li><li>The full experience of your design</li></ul><p>Animation helps people understand complex ideas quickly and emotionally.</p><h2>How It Works</h2><p>We create animations using a multi-stage process:</p><ol><li><strong>3D Modeling</strong> First, we build detailed 3D models of your design using software like 3ds Max</li><li><strong>Camera Planning</strong> We map out the journey through your space, planning what viewers will see</li><li><strong>Scene Setup</strong> We add materials, lighting, people, and environmental elements</li><li><strong>Animation Creation</strong> We program movement for cameras, people, vehicles, and other elements</li><li><strong>Rendering</strong> Each frame is rendered at high resolution with realistic lighting</li><li><strong>Post-Production</strong> We add music, narration, effects, and color grading to complete the experience</li></ol><h2>What Makes It Special</h2><h5>Clear Communication</h5><p>Animations show exactly how your design works in real life. This helps clients understand your ideas better than static images ever could.</p><h5>Emotional Connection</h5><p>Movement creates an emotional experience. When viewers see people using your spaces, they connect with your design on a deeper level.</p><h5>Problem Solving</h5><p>Seeing how things move often reveals design issues that aren't obvious in still images. This saves money by catching problems early.</p><h2>When to Use It</h2><p>3D animations work great for:</p><ul><li>Marketing campaigns</li><li>Client presentations</li><li>Public consultations</li><li>Explaining complex designs</li><li>Construction planning</li><li>Competition entries</li></ul> \n \n <h3>Input Requirements</h3><ul><li>Architectural plans and elevations</li><li>Material specifications</li><li>Site context information</li><li>Reference images or mood boards</li><li>Timeline requirements</li></ul><h3>Output Options</h3><p>We deliver animations in various formats:</p><ul><li>MP4 files for presentations</li><li>Web-optimized versions</li><li>Social media cuts</li><li>1080p or 4K resolution options</li></ul><h2>Common Questions</h2> \n How long does it take to create an animation? \n <p>Typical animations take 2-4 weeks, depending on complexity and length.</p>\n How long should my animation be? \n <p>Most architectural animations run 1-3 minutes. Longer isn&#8217;t always better &#8211; viewer attention spans are limited.</p>\n Can you add narration? \n <p> Yes, we offer professional voiceover services in multiple languages, both human and AI.</p>\n Will it look realistic? \n <p>Our animations achieve a high level of realism, but we can also create stylized looks if that better serves your purpose.</p>\n <h2>The Process</h2><ol><li><strong>Project Brief</strong> We discuss your goals, timeline, and audience</li><li><strong>Storyboarding</strong> We plan the key moments and camera movements</li><li><strong>Previsualization</strong> We create rough versions to check timing and flow</li><li><strong>Production</strong> We render the full animation with detailed models and lighting</li><li><strong>Finishing</strong> We add sound, color correction, and final polish</li></ol><h2>Case Examples</h2><h3>Residential Development Tour</h3><p>For a housing developer, we created a 2-minute animation showing both the neighborhood context and interior spaces. This helped pre-sell 65% of units before construction began.</p><h3>Construction Sequence</h3><p>For a complex infrastructure project, we animated the construction process to help contractors understand the build sequence and identify potential challenges.</p><p>Ready to see your project in motion? Let's talk about bringing your design to life.</p>"
+---
