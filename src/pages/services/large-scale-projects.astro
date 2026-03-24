@@ -104,7 +104,7 @@ import PageHero from '../../components/ui/PageHero.astro';
     align-items: center;
     gap: 0.5rem;
     font-family: var(--font-body);
-    font-size: 0.72rem;
+    font-size: var(--fs-xs);
     color: var(--color-text-faint);
     margin-bottom: 2rem;
   }
@@ -116,14 +116,14 @@ import PageHero from '../../components/ui/PageHero.astro';
 
   .service-tagline-large {
     font-family: var(--font-display);
-    font-size: 1.2rem;
+    font-size: var(--fs-h6);
     font-style: italic;
     color: var(--color-accent);
     margin-bottom: 1.5rem;
   }
 
   .service-lead {
-    font-size: 0.98rem;
+    font-size: var(--fs-small);
     color: var(--color-text-muted);
     max-width: 65ch;
     line-height: 1.75;
@@ -143,7 +143,7 @@ import PageHero from '../../components/ui/PageHero.astro';
 
   .service-section-h2 {
     font-family: var(--font-body);
-    font-size: 0.65rem;
+    font-size: var(--fs-xs);
     font-weight: 500;
     letter-spacing: 0.15em;
     text-transform: uppercase;
@@ -170,11 +170,11 @@ import PageHero from '../../components/ui/PageHero.astro';
   .notable-item:last-child { border-bottom: none; }
   .notable-item:hover { background: var(--color-surface); }
 
-  .notable-name { font-size: 0.88rem; color: var(--color-text-muted); }
+  .notable-name { font-size: var(--fs-small); color: var(--color-text-muted); }
 
   .notable-year {
     font-family: var(--font-mono);
-    font-size: 0.7rem;
+    font-size: var(--fs-xs);
     color: var(--color-text-faint);
     white-space: nowrap;
   }
@@ -188,7 +188,7 @@ import PageHero from '../../components/ui/PageHero.astro';
   }
 
   .results-list li {
-    font-size: 0.88rem;
+    font-size: var(--fs-small);
     color: var(--color-text-muted);
     padding-left: 1.25rem;
     position: relative;
@@ -200,11 +200,11 @@ import PageHero from '../../components/ui/PageHero.astro';
     position: absolute;
     left: 0;
     color: var(--color-accent);
-    font-size: 0.7rem;
+    font-size: var(--fs-xs);
   }
 
   .body-text {
-    font-size: 0.9rem;
+    font-size: var(--fs-small);
     color: var(--color-text-muted);
     max-width: 65ch;
     line-height: 1.75;
@@ -223,7 +223,7 @@ import PageHero from '../../components/ui/PageHero.astro';
 
   .sidebar-label {
     font-family: var(--font-body);
-    font-size: 0.62rem;
+    font-size: var(--fs-xs);
     font-weight: 500;
     letter-spacing: 0.15em;
     text-transform: uppercase;
@@ -232,14 +232,14 @@ import PageHero from '../../components/ui/PageHero.astro';
 
   .sidebar-price {
     font-family: var(--font-display);
-    font-size: 1.5rem;
+    font-size: var(--fs-h5);
     font-weight: 300;
     color: var(--color-text);
     margin: 0;
   }
 
   .sidebar-note {
-    font-size: 0.75rem;
+    font-size: var(--fs-xs);
     color: var(--color-text-faint);
     line-height: 1.5;
     margin: 0;

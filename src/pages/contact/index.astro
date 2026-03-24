@@ -238,7 +238,7 @@ import PageHero from '../../components/ui/PageHero.astro';
   }
 
   .contact-intro {
-    font-size: 0.95rem;
+    font-size: var(--fs-small);
     color: var(--color-text-muted);
     max-width: 52ch;
   }
@@ -260,7 +260,7 @@ import PageHero from '../../components/ui/PageHero.astro';
 
   .info-label {
     font-family: var(--font-body);
-    font-size: 0.65rem;
+    font-size: var(--fs-xs);
     font-weight: 500;
     letter-spacing: 0.15em;
     text-transform: uppercase;
@@ -281,11 +281,11 @@ import PageHero from '../../components/ui/PageHero.astro';
 
   .info-item:hover { color: var(--color-accent); }
 
-  .info-icon { font-size: 1rem; margin-top: 0.1rem; flex-shrink: 0; }
+  .info-icon { font-size: var(--fs-body); margin-top: 0.1rem; flex-shrink: 0; }
 
   .info-item-label {
     display: block;
-    font-size: 0.65rem;
+    font-size: var(--fs-xs);
     color: var(--color-text-faint);
     font-family: var(--font-body);
     letter-spacing: 0.08em;
@@ -295,7 +295,7 @@ import PageHero from '../../components/ui/PageHero.astro';
 
   .info-item-value {
     display: block;
-    font-size: 0.9rem;
+    font-size: var(--fs-small);
     color: var(--color-text-muted);
     font-family: var(--font-body);
     font-weight: 400;
@@ -303,7 +303,7 @@ import PageHero from '../../components/ui/PageHero.astro';
 
   .studio-address {
     font-style: normal;
-    font-size: 0.85rem;
+    font-size: var(--fs-small);
     color: var(--color-text-muted);
     line-height: 1.8;
   }
@@ -317,7 +317,7 @@ import PageHero from '../../components/ui/PageHero.astro';
   }
 
   .prep-list li {
-    font-size: 0.82rem;
+    font-size: var(--fs-xs);
     color: var(--color-text-muted);
     padding-left: 1rem;
     position: relative;
@@ -328,11 +328,11 @@ import PageHero from '../../components/ui/PageHero.astro';
     position: absolute;
     left: 0;
     color: var(--color-text-faint);
-    font-size: 0.7rem;
+    font-size: var(--fs-xs);
   }
 
   .prep-note {
-    font-size: 0.75rem;
+    font-size: var(--fs-xs);
     color: var(--color-text-faint);
     margin-top: 0.75rem;
   }
@@ -340,7 +340,7 @@ import PageHero from '../../components/ui/PageHero.astro';
   /* Form */
   .form-title {
     font-family: var(--font-display);
-    font-size: 1.5rem;
+    font-size: var(--fs-h5);
     font-weight: 300;
     color: var(--color-text);
     margin-bottom: 2rem;
@@ -366,7 +366,7 @@ import PageHero from '../../components/ui/PageHero.astro';
 
   .form-label {
     font-family: var(--font-body);
-    font-size: 0.72rem;
+    font-size: var(--fs-xs);
     font-weight: 500;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -381,7 +381,7 @@ import PageHero from '../../components/ui/PageHero.astro';
     border-radius: var(--radius-sm);
     padding: 0.75rem 1rem;
     font-family: var(--font-body);
-    font-size: 0.875rem;
+    font-size: var(--fs-small);
     font-weight: 300;
     color: var(--color-text);
     outline: none;
@@ -414,7 +414,7 @@ import PageHero from '../../components/ui/PageHero.astro';
   }
 
   .form-status {
-    font-size: 0.82rem;
+    font-size: var(--fs-xs);
     color: var(--color-text-muted);
     min-height: 1.5rem;
   }

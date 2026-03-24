@@ -19,9 +19,9 @@ export default {
         faint:    '#7a7a7a',
       },
       fontSize: {
-        'display-xl': ['3.2rem',  { lineHeight: '1.0',  letterSpacing: '-0.02em' }],
-        'display-lg': ['2.5rem',  { lineHeight: '1.05', letterSpacing: '-0.02em' }],
-        'display-md': ['1.75rem', { lineHeight: '1.1',  letterSpacing: '-0.01em' }],
+        'display-xl': ['2.986rem', { lineHeight: '1.0',  letterSpacing: '-0.02em' }],
+        'display-lg': ['2.488rem', { lineHeight: '1.05', letterSpacing: '-0.02em' }],
+        'display-md': ['2.074rem', { lineHeight: '1.1',  letterSpacing: '-0.01em' }],
       },
       spacing: {
         'section': '6rem',

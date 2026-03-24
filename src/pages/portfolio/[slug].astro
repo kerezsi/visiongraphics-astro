@@ -342,7 +342,7 @@ const hasBlocks = data.blocks && data.blocks.length > 0;
 
   .back-link {
     font-family: var(--font-body);
-    font-size: 0.75rem;
+    font-size: var(--fs-xs);
     color: var(--color-text-muted);
     text-decoration: none;
     transition: color 200ms ease;
@@ -354,7 +354,7 @@ const hasBlocks = data.blocks && data.blocks.length > 0;
 
   .project-cat-tag {
     font-family: var(--font-body);
-    font-size: 0.65rem;
+    font-size: var(--fs-xs);
     font-weight: 500;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -372,7 +372,7 @@ const hasBlocks = data.blocks && data.blocks.length > 0;
 
   .project-title {
     font-family: var(--font-display);
-    font-size: 2rem;
+    font-size: var(--fs-h3);
     font-weight: 300;
     color: var(--color-text);
     letter-spacing: -0.02em;
@@ -385,7 +385,7 @@ const hasBlocks = data.blocks && data.blocks.length > 0;
     gap: 1.5rem;
     align-items: center;
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: var(--fs-xs);
     color: var(--color-text-muted);
   }
 
@@ -418,7 +418,7 @@ const hasBlocks = data.blocks && data.blocks.length > 0;
 
   .meta-label {
     font-family: var(--font-body);
-    font-size: 0.6rem;
+    font-size: var(--fs-xs);
     font-weight: 500;
     letter-spacing: 0.15em;
     text-transform: uppercase;
@@ -427,7 +427,7 @@ const hasBlocks = data.blocks && data.blocks.length > 0;
 
   .meta-value {
     font-family: var(--font-body);
-    font-size: 0.9rem;
+    font-size: var(--fs-small);
     color: var(--color-text-muted);
   }
 
@@ -435,7 +435,7 @@ const hasBlocks = data.blocks && data.blocks.length > 0;
      Description & prose
      ===================== */
   .project-description {
-    font-size: 1rem;
+    font-size: var(--fs-body);
     color: var(--color-text);
     line-height: 1.7;
     margin-bottom: 2rem;
@@ -443,7 +443,7 @@ const hasBlocks = data.blocks && data.blocks.length > 0;
   }
 
   .project-content.prose {
-    font-size: 0.9rem;
+    font-size: var(--fs-small);
     color: var(--color-text-muted);
     line-height: 1.8;
     max-width: 68ch;
@@ -457,7 +457,7 @@ const hasBlocks = data.blocks && data.blocks.length > 0;
   .project-tags-block { margin-bottom: 2rem; }
 
   .block-label {
-    font-size: 0.6rem;
+    font-size: var(--fs-xs);
     font-weight: 500;
     letter-spacing: 0.15em;
     text-transform: uppercase;
@@ -473,7 +473,7 @@ const hasBlocks = data.blocks && data.blocks.length > 0;
 
   .tech-tag {
     font-family: var(--font-body);
-    font-size: 0.75rem;
+    font-size: var(--fs-xs);
     padding: 0.3rem 0.8rem;
     border: 1px solid var(--color-border);
     border-radius: 2px;
@@ -488,7 +488,7 @@ const hasBlocks = data.blocks && data.blocks.length > 0;
 
   .tag {
     font-family: var(--font-body);
-    font-size: 0.75rem;
+    font-size: var(--fs-xs);
     padding: 0.3rem 0.8rem;
     background: var(--color-surface-2);
     border-radius: 2px;
@@ -513,7 +513,7 @@ const hasBlocks = data.blocks && data.blocks.length > 0;
   }
 
   .project-block-prose {
-    font-size: 0.95rem;
+    font-size: var(--fs-small);
     color: var(--color-text-muted);
     line-height: 1.85;
     max-width: 68ch;
@@ -521,7 +521,7 @@ const hasBlocks = data.blocks && data.blocks.length > 0;
 
   .project-block-prose :global(h2) {
     font-family: var(--font-display);
-    font-size: 1.5rem;
+    font-size: var(--fs-h5);
     font-weight: 400;
     color: var(--color-text);
     margin-bottom: 0.75rem;
@@ -530,7 +530,7 @@ const hasBlocks = data.blocks && data.blocks.length > 0;
 
   .project-block-prose :global(h3) {
     font-family: var(--font-display);
-    font-size: 1.2rem;
+    font-size: var(--fs-h6);
     font-weight: 400;
     color: var(--color-text);
     margin-bottom: 0.5rem;
@@ -575,7 +575,7 @@ const hasBlocks = data.blocks && data.blocks.length > 0;
 
   .project-section-title {
     font-family: var(--font-body);
-    font-size: 0.6rem;
+    font-size: var(--fs-xs);
     font-weight: 500;
     letter-spacing: 0.15em;
     text-transform: uppercase;
@@ -584,7 +584,7 @@ const hasBlocks = data.blocks && data.blocks.length > 0;
   }
 
   .story-text p {
-    font-size: 0.95rem;
+    font-size: var(--fs-small);
     line-height: 1.85;
     color: var(--color-text-muted);
     margin-bottom: 1rem;
@@ -612,7 +612,7 @@ const hasBlocks = data.blocks && data.blocks.length > 0;
   }
 
   .project-cta p {
-    font-size: 0.9rem;
+    font-size: var(--fs-small);
     color: var(--color-text-muted);
     margin-bottom: 1rem;
     max-width: none;
@@ -642,14 +642,14 @@ const hasBlocks = data.blocks && data.blocks.length > 0;
 
   .nav-dir {
     font-family: var(--font-mono);
-    font-size: 0.7rem;
+    font-size: var(--fs-xs);
     color: var(--color-text-faint);
     letter-spacing: 0.1em;
   }
 
   .nav-title {
     font-family: var(--font-display);
-    font-size: 1.1rem;
+    font-size: var(--fs-body);
     color: var(--color-text-muted);
     transition: color 200ms;
   }
@@ -658,7 +658,7 @@ const hasBlocks = data.blocks && data.blocks.length > 0;
 
   .project-nav-link--all {
     font-family: var(--font-body);
-    font-size: 0.7rem;
+    font-size: var(--fs-xs);
     font-weight: 500;
     letter-spacing: 0.1em;
     text-transform: uppercase;

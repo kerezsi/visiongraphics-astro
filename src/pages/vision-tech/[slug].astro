@@ -273,7 +273,7 @@ if (specificMatches.length >= 6) {
 
   .vt-back {
     display: inline-block;
-    font-size: 0.75rem;
+    font-size: var(--fs-xs);
     letter-spacing: 0.08em;
     color: var(--color-text-muted);
     text-decoration: none;
@@ -305,7 +305,7 @@ if (specificMatches.length >= 6) {
   }
 
   .vt-attr-label {
-    font-size: 0.65rem;
+    font-size: var(--fs-xs);
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--color-text-faint);
@@ -313,7 +313,7 @@ if (specificMatches.length >= 6) {
   }
 
   .vt-attr-val {
-    font-size: 0.85rem;
+    font-size: var(--fs-small);
     color: var(--color-text);
     font-weight: 500;
   }
@@ -329,7 +329,7 @@ if (specificMatches.length >= 6) {
   }
 
   .vt-desc-body {
-    font-size: 1rem;
+    font-size: var(--fs-body);
     line-height: 1.75;
     color: var(--color-text-muted);
     margin-top: 1.25rem;
@@ -348,7 +348,7 @@ if (specificMatches.length >= 6) {
 
   .vt-sidebar-title {
     font-family: var(--font-body);
-    font-size: 0.68rem;
+    font-size: var(--fs-xs);
     font-weight: 500;
     letter-spacing: 0.14em;
     text-transform: uppercase;
@@ -374,13 +374,13 @@ if (specificMatches.length >= 6) {
   .vt-meta-item:last-child { border-bottom: none; }
 
   .vt-meta-item dt {
-    font-size: 0.72rem;
+    font-size: var(--fs-xs);
     color: var(--color-text-faint);
     font-weight: 400;
   }
 
   .vt-meta-item dd {
-    font-size: 0.78rem;
+    font-size: var(--fs-xs);
     color: var(--color-text);
     font-weight: 500;
     text-align: right;
@@ -407,7 +407,7 @@ if (specificMatches.length >= 6) {
      which don't receive the Astro scoped data-astro-cid-* attribute */
   .vt-body-content :global(h2) {
     font-family: var(--font-display);
-    font-size: 1.35rem;
+    font-size: var(--fs-h5);
     font-weight: 600;
     color: var(--color-text);
     margin: 2rem 0 0.6rem;
@@ -416,14 +416,14 @@ if (specificMatches.length >= 6) {
 
   .vt-body-content :global(h3) {
     font-family: var(--font-display);
-    font-size: 1.05rem;
+    font-size: var(--fs-body);
     font-weight: 600;
     color: var(--color-text);
     margin: 1.5rem 0 0.5rem;
   }
 
   .vt-body-content :global(p) {
-    font-size: 0.93rem;
+    font-size: var(--fs-small);
     line-height: 1.75;
     color: var(--color-text-muted);
     margin: 0.6rem 0;
@@ -438,7 +438,7 @@ if (specificMatches.length >= 6) {
   }
 
   .vt-body-content :global(li) {
-    font-size: 0.93rem;
+    font-size: var(--fs-small);
     line-height: 1.65;
     color: var(--color-text-muted);
   }
@@ -527,7 +527,7 @@ if (specificMatches.length >= 6) {
   }
 
   .vt-related-cat {
-    font-size: 0.64rem;
+    font-size: var(--fs-xs);
     font-weight: 600;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -535,14 +535,14 @@ if (specificMatches.length >= 6) {
   }
 
   .vt-related-year {
-    font-size: 0.75rem;
+    font-size: var(--fs-xs);
     color: var(--color-text-faint);
     font-family: var(--font-mono);
   }
 
   .vt-related-title {
     font-family: var(--font-display);
-    font-size: 1rem;
+    font-size: var(--fs-body);
     font-weight: 700;
     color: var(--color-text);
     line-height: 1.2;
@@ -550,7 +550,7 @@ if (specificMatches.length >= 6) {
   }
 
   .vt-related-client {
-    font-size: 0.78rem;
+    font-size: var(--fs-xs);
     color: var(--color-text-muted);
   }
 

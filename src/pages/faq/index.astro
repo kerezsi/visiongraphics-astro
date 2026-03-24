@@ -224,7 +224,7 @@ import PageHero from '../../components/ui/PageHero.astro';
   }
 
   .faq-intro {
-    font-size: 0.9rem;
+    font-size: var(--fs-small);
     color: var(--color-text-muted);
     max-width: 52ch;
     line-height: 1.7;
@@ -247,7 +247,7 @@ import PageHero from '../../components/ui/PageHero.astro';
   /* Section */
   .faq-section-title {
     font-family: var(--font-body);
-    font-size: 0.65rem;
+    font-size: var(--fs-xs);
     font-weight: 500;
     letter-spacing: 0.18em;
     text-transform: uppercase;
@@ -270,7 +270,7 @@ import PageHero from '../../components/ui/PageHero.astro';
 
   .faq-q {
     font-family: var(--font-body);
-    font-size: 0.92rem;
+    font-size: var(--fs-small);
     font-weight: 500;
     color: var(--color-text);
     cursor: pointer;
@@ -287,7 +287,7 @@ import PageHero from '../../components/ui/PageHero.astro';
   .faq-q::after {
     content: '+';
     font-family: var(--font-mono);
-    font-size: 1.2rem;
+    font-size: var(--fs-h6);
     color: var(--color-text-faint);
     flex-shrink: 0;
     transition: transform 200ms ease, color 200ms ease;
@@ -299,7 +299,7 @@ import PageHero from '../../components/ui/PageHero.astro';
   }
 
   .faq-a {
-    font-size: 0.87rem;
+    font-size: var(--fs-small);
     color: var(--color-text-muted);
     line-height: 1.75;
     margin-top: 0.85rem;
@@ -318,7 +318,7 @@ import PageHero from '../../components/ui/PageHero.astro';
   }
 
   .faq-cta-text {
-    font-size: 0.95rem;
+    font-size: var(--fs-small);
     color: var(--color-text-muted);
     margin: 0;
     max-width: none;

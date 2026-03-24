@@ -207,19 +207,19 @@ const purpose_vals    = [...new Set(techniques.flatMap(t => t.data.purpose))].so
 
 <style>
   .vt-hero { padding-block: clamp(3rem,6vw,5rem) clamp(2rem,4vw,3rem); border-bottom: 1px solid var(--color-border); }
-  .vt-hero-sub { max-width: 60ch; margin-top: 1rem; font-size: 1rem; color: var(--color-text-muted); }
+  .vt-hero-sub { max-width: 60ch; margin-top: 1rem; font-size: var(--fs-body); color: var(--color-text-muted); }
 
   .vt-filter-section { padding-block: 1.5rem; background: var(--color-surface); border-bottom: 1px solid var(--color-border); }
   .vt-filters { display: flex; flex-direction: column; gap: 0.6rem; }
   .vt-filter-group { display: flex; align-items: flex-start; gap: 1rem; }
-  .vt-filter-label { font-size: 0.67rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-text-faint); white-space: nowrap; padding-top: 0.35rem; min-width: 9rem; }
+  .vt-filter-label { font-size: var(--fs-xs); font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-text-faint); white-space: nowrap; padding-top: 0.35rem; min-width: 9rem; }
   .vt-pills { display: flex; flex-wrap: wrap; gap: 0.35rem; }
-  .vt-pill { font-family: var(--font-body); font-size: 0.71rem; font-weight: 500; padding: 0.25rem 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: transparent; color: var(--color-text-muted); cursor: pointer; transition: all 180ms ease; white-space: nowrap; }
+  .vt-pill { font-family: var(--font-body); font-size: var(--fs-xs); font-weight: 500; padding: 0.25rem 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: transparent; color: var(--color-text-muted); cursor: pointer; transition: all 180ms ease; white-space: nowrap; }
   .vt-pill:hover { border-color: var(--color-text-muted); color: var(--color-text); }
   .vt-pill.active { border-color: var(--color-accent); color: var(--color-accent); background: rgba(218,19,19,0.08); }
   .vt-filter-meta { display: flex; align-items: center; gap: 1.5rem; padding-top: 0.5rem; border-top: 1px solid var(--color-border); }
-  #vt-count { font-size: 0.74rem; color: var(--color-text-faint); }
-  .vt-reset { font-size: 0.72rem; color: var(--color-accent); background: none; border: none; cursor: pointer; padding: 0; font-family: var(--font-body); }
+  #vt-count { font-size: var(--fs-xs); color: var(--color-text-faint); }
+  .vt-reset { font-size: var(--fs-xs); color: var(--color-accent); background: none; border: none; cursor: pointer; padding: 0; font-family: var(--font-body); }
 
   .vt-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
   /* Tech items — red border */
@@ -231,12 +231,12 @@ const purpose_vals    = [...new Set(techniques.flatMap(t => t.data.purpose))].so
   .vt-card:hover .vt-card-img img { transform: scale(1.04); }
   .vt-card-body { padding: 1rem 1.1rem 1.2rem; display: flex; flex-direction: column; gap: 0.45rem; flex: 1; }
   .vt-card-meta { display: flex; align-items: center; justify-content: space-between; }
-  .vt-badge { font-size: 0.64rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-accent); }
-  .vt-cost { font-size: 0.75rem; color: var(--color-text-faint); font-family: var(--font-mono); }
-  .vt-card-title { font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: var(--color-text); line-height: 1.2; margin: 0; }
-  .vt-card-desc { font-size: 0.78rem; color: var(--color-text-muted); line-height: 1.5; max-width: none; }
+  .vt-badge { font-size: var(--fs-xs); font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-accent); }
+  .vt-cost { font-size: var(--fs-xs); color: var(--color-text-faint); font-family: var(--font-mono); }
+  .vt-card-title { font-family: var(--font-display); font-size: var(--fs-body); font-weight: 700; color: var(--color-text); line-height: 1.2; margin: 0; }
+  .vt-card-desc { font-size: var(--fs-xs); color: var(--color-text-muted); line-height: 1.5; max-width: none; }
   .vt-card-tags { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: auto; padding-top: 0.25rem; }
-  .vt-tag-small { font-size: 0.6rem; letter-spacing: 0.08em; padding: 0.12rem 0.4rem; border: 1px solid var(--color-border); border-radius: 2px; color: var(--color-text-faint); text-transform: uppercase; }
+  .vt-tag-small { font-size: var(--fs-xs); letter-spacing: 0.08em; padding: 0.12rem 0.4rem; border: 1px solid var(--color-border); border-radius: 2px; color: var(--color-text-faint); text-transform: uppercase; }
 
   .vt-empty { text-align: center; padding: 4rem 0; color: var(--color-text-muted); }
   .vt-empty p { margin-bottom: 1.5rem; }
@@ -245,12 +245,12 @@ const purpose_vals    = [...new Set(techniques.flatMap(t => t.data.purpose))].so
   .vt-tools-section h2 { margin: 0.5rem 0 2rem; }
   .vt-tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); gap: 1px; background: var(--color-border); border: 1px solid var(--color-border); }
   .vt-tool { background: var(--color-surface); padding: 0.9rem 1.1rem; display: flex; flex-direction: column; gap: 0.15rem; }
-  .vt-tool-name { font-family: var(--font-display); font-size: 0.88rem; font-weight: 700; color: var(--color-text); }
-  .vt-tool-note { font-size: 0.7rem; color: var(--color-text-faint); }
+  .vt-tool-name { font-family: var(--font-display); font-size: var(--fs-small); font-weight: 700; color: var(--color-text); }
+  .vt-tool-note { font-size: var(--fs-xs); color: var(--color-text-faint); }
 
   .vt-cta { border-top: 1px solid var(--color-border); }
   .vt-cta-inner { display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
-  .vt-cta-text { font-family: var(--font-display); font-size: 1.15rem; font-weight: 600; color: var(--color-text); max-width: none; }
+  .vt-cta-text { font-family: var(--font-display); font-size: var(--fs-body); font-weight: 600; color: var(--color-text); max-width: none; }
 
   @media (max-width: 768px) {
     .vt-filter-group { flex-direction: column; gap: 0.4rem; }
