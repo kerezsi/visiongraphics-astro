@@ -127,7 +127,7 @@ a {
 /* ─── Layout ─────────────────────────────────────────────────── */
 .container {
   width: 100%;
-  max-width: 1320px;
+  max-width: 2000px;
   margin-inline: auto;
   padding-inline: clamp(1.5rem, 5vw, 4rem);
 }
