@@ -10,17 +10,22 @@ echo  Bucket: visiongraphics-images
 echo ============================================================
 echo.
 
-echo [1/4] Uploading portfolio images...
+echo [1/5] Uploading banner images...
+rclone copy "%PROJECT%\banners" %BUCKET%/banners %FLAGS%
+if errorlevel 1 (echo    WARNING: some banner files failed) else (echo    OK)
+
+echo.
+echo [2/5] Uploading portfolio images...
 rclone copy "%PROJECT%\portfolio" %BUCKET%/portfolio %FLAGS%
 if errorlevel 1 (echo    WARNING: some portfolio files failed) else (echo    OK)
 
 echo.
-echo [2/4] Uploading vision-tech images...
+echo [3/5] Uploading vision-tech images...
 rclone copy "%PROJECT%\vision-tech" %BUCKET%/vision-tech %FLAGS%
 if errorlevel 1 (echo    WARNING: some vision-tech files failed) else (echo    OK)
 
 echo.
-echo [3/4] Uploading hero images...
+echo [4/5] Uploading hero images...
 for %%F in (hero-bg.jpg hero-bg-2.jpg hero-bg-3.jpg hero-about.jpg) do (
     if exist "%PROJECT%\%%F" (
         rclone copy "%PROJECT%\%%F" %BUCKET% %FLAGS%
@@ -31,7 +36,7 @@ for %%F in (hero-bg.jpg hero-bg-2.jpg hero-bg-3.jpg hero-about.jpg) do (
 )
 
 echo.
-echo [4/4] Uploading laszlo.jpg...
+echo [5/5] Uploading laszlo.jpg...
 if exist "%PROJECT%\laszlo.jpg" (
     rclone copy "%PROJECT%\laszlo.jpg" %BUCKET% %FLAGS%
     echo    laszlo.jpg uploaded

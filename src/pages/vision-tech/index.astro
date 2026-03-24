@@ -2,6 +2,7 @@
 // src/pages/vision-tech/index.astro
 import { getCollection } from 'astro:content';
 import Page from '../../layouts/Page.astro';
+import PageHero from '../../components/ui/PageHero.astro';
 
 const allTech = await getCollection('vision-tech');
 const techniques = allTech.sort((a, b) => a.data.title.localeCompare(b.data.title));
@@ -20,16 +21,11 @@ const purpose_vals    = [...new Set(techniques.flatMap(t => t.data.purpose))].so
   fullBleed
 >
 
-  <section class="vt-hero">
-    <div class="container">
-      <p class="section-label">Technologies</p>
-      <h1 class="display-lg">Tech Gets It Done</h1>
-      <p class="vt-hero-sub">
-        Every visualization sits somewhere on a matrix of cost, complexity, and realism.
-        Filter to find which technique fits your project and budget.
-      </p>
-    </div>
-  </section>
+  <PageHero
+    image="/_img/banners/banner-tech.jpg"
+    label="See Your Ideas"
+    title="Tech Gets It Done"
+  />
 
   <section class="vt-filter-section">
     <div class="container">

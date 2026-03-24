@@ -2,6 +2,7 @@
 // src/pages/about/index.astro
 
 import Page from '../../layouts/Page.astro';
+import PageHero from '../../components/ui/PageHero.astro';
 import timeline from '../../data/about-timeline.json';
 ---
 
@@ -12,27 +13,11 @@ import timeline from '../../data/about-timeline.json';
 >
   <div class="about-page">
 
-    <!-- ══════════════════════════════════════════════════════ -->
-    <!-- HERO                                                   -->
-    <!-- ══════════════════════════════════════════════════════ -->
-    <section class="about-hero section">
-      <div class="page-hero-bg" aria-hidden="true"></div>
-      <div class="page-hero-overlay" aria-hidden="true"></div>
-      <div class="container page-hero-content">
-        <p class="section-label">About</p>
-        <h1 class="display-xl about-h1">
-          30 Years of Making<br />
-          <em>Complex Ideas Visible</em>
-        </h1>
-        <p class="about-hero-sub">
-          Vision Graphics Kft. was founded in Budapest in 1996.
-          We've worked on airport terminals, urban masterplans, VR experiences,
-          and retail chains across four continents.
-        </p>
-      </div>
-    </section>
-
-    <hr class="page-rule" />
+    <PageHero
+      image="/_img/banners/banner-general.jpg"
+      label="30 Years"
+      title="Making Complex Ideas Visible"
+    />
 
     <!-- ══════════════════════════════════════════════════════ -->
     <!-- LÁSZLÓ SECTION                                         -->

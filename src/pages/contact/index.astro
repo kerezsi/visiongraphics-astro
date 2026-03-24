@@ -4,12 +4,19 @@
 // Form uses Formspree (replace YOUR_FORM_ID with actual Formspree endpoint)
 
 import Page from '../../layouts/Page.astro';
+import PageHero from '../../components/ui/PageHero.astro';
 ---
 
 <Page
   title="Contact"
   description="Start a conversation about your visualization project. 30-minute consultation, no charge. Vision Graphics Kft., Budapest."
 >
+
+  <PageHero
+    image="/_img/banners/banner-services.jpg"
+    label="Let's Talk"
+    title="About Your Project"
+  />
   <div class="contact-page">
 
     <div class="contact-header">
