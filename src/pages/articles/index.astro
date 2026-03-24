@@ -2,6 +2,7 @@
 // src/pages/articles/index.astro
 
 import Page from '../../layouts/Page.astro';
+import PageHero from '../../components/ui/PageHero.astro';
 import { getCollection } from 'astro:content';
 
 const allArticles = await getCollection('articles', ({ data }) => data.published);
