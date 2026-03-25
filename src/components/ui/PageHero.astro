@@ -43,9 +43,9 @@ const { image, label, title, variant = 'page', imageAlt = '' } = Astro.props;
     border-bottom: 1px solid var(--color-border);
   }
 
-  /* ── Variant heights (matching dev.visiongraphics.eu) ──── */
-  .page-hero--page    { height: clamp(320px, 42vw, 560px); }
-  .page-hero--section { height: clamp(260px, 33vw, 420px); }
+  /* ── Variant heights (½ page, ¾ section of original dev heights) ──── */
+  .page-hero--page    { height: clamp(160px, 21vw, 280px); }
+  .page-hero--section { height: clamp(195px, 25vw, 315px); }
 
   /* ── Background image ───────────────────────────────────── */
   .page-hero__bg {
@@ -86,8 +86,8 @@ const { image, label, title, variant = 'page', imageAlt = '' } = Astro.props;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 0.5rem;
-    padding-block: 2.5rem;
+    gap: var(--space-2);
+    padding-block: var(--space-10);
     max-width: 60%;
   }
 
@@ -118,8 +118,8 @@ const { image, label, title, variant = 'page', imageAlt = '' } = Astro.props;
 
   /* ── Mobile ─────────────────────────────────────────────── */
   @media (max-width: 640px) {
-    .page-hero--page    { height: clamp(260px, 55vw, 340px); }
-    .page-hero--section { height: clamp(200px, 45vw, 280px); }
+    .page-hero--page    { height: clamp(130px, 27.5vw, 170px); }
+    .page-hero--section { height: clamp(150px, 34vw, 210px); }
 
     .page-hero__content {
       max-width: 90%;

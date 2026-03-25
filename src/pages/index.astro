@@ -359,13 +359,13 @@ const featuredProjects = allProjects
   .hero-inner {
     position: relative;
     z-index: 2;
-    padding-block: 8rem 5rem;
+    padding-block: var(--space-20) var(--space-12);
   }
 
   .hero-content { max-width: 700px; }
 
   .hero-label {
-    margin-bottom: 1.5rem;
+    margin-bottom: var(--space-6);
     opacity: 0;
     animation: fadeUp 0.8s ease 0.2s forwards;
   }
@@ -377,7 +377,7 @@ const featuredProjects = allProjects
     line-height: 0.95;
     letter-spacing: -0.03em;
     color: var(--color-text);
-    margin-bottom: 2rem;
+    margin-bottom: var(--space-8);
     opacity: 0;
     animation: fadeUp 0.8s ease 0.35s forwards;
   }
@@ -393,14 +393,14 @@ const featuredProjects = allProjects
     color: var(--color-text-muted);
     max-width: 48ch;
     line-height: 1.7;
-    margin-bottom: 2.5rem;
+    margin-bottom: var(--space-10);
     opacity: 0;
     animation: fadeUp 0.8s ease 0.5s forwards;
   }
 
   .hero-ctas {
     display: flex;
-    gap: 1rem;
+    gap: var(--space-4);
     flex-wrap: wrap;
     opacity: 0;
     animation: fadeUp 0.8s ease 0.65s forwards;
@@ -427,12 +427,12 @@ const featuredProjects = allProjects
   }
 
   /* ── Logos ────────────────────────────────────────────────── */
-  .logos-label { margin-bottom: 1.25rem; }
+  .logos-label { margin-bottom: var(--space-5); }
 
   .logos-row {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem 2rem;
+    gap: var(--space-2) var(--space-8);
     align-items: center;
   }
 
@@ -463,10 +463,10 @@ const featuredProjects = allProjects
 
   .stat {
     background: var(--color-surface);
-    padding: 2rem;
+    padding: var(--space-8);
     display: flex;
     flex-direction: column;
-    gap: 0.35rem;
+    gap: var(--space-1);
   }
 
   .stat-number {
@@ -493,7 +493,7 @@ const featuredProjects = allProjects
   }
 
   /* ── Pain ─────────────────────────────────────────────────── */
-  .pain-h2 { margin: 1rem 0 3rem; }
+  .pain-h2 { margin: var(--space-4) 0 var(--space-12); }
 
   .pain-grid {
     display: grid;
@@ -505,10 +505,10 @@ const featuredProjects = allProjects
 
   .pain-card {
     background: var(--color-surface);
-    padding: 2rem;
+    padding: var(--space-8);
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: var(--space-2);
     transition: background 200ms ease;
   }
 
@@ -518,12 +518,12 @@ const featuredProjects = allProjects
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
+    width: var(--size-icon);
+    height: var(--size-icon);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-sm);
     color: var(--color-accent);
-    margin-bottom: 0.75rem;
+    margin-bottom: var(--space-3);
     flex-shrink: 0;
   }
 
@@ -548,7 +548,7 @@ const featuredProjects = allProjects
   .solution-inner {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 5rem;
+    gap: var(--space-20);
     align-items: start;
   }
 
@@ -556,13 +556,13 @@ const featuredProjects = allProjects
   .laszlo-portrait {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    margin: 1.5rem 0 1.25rem;
+    gap: var(--space-4);
+    margin: var(--space-6) 0 var(--space-5);
   }
 
   .laszlo-img {
-    width: 72px;
-    height: 72px;
+    width: var(--size-avatar);
+    height: var(--size-avatar);
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid var(--color-border);
@@ -572,7 +572,7 @@ const featuredProjects = allProjects
   .laszlo-caption {
     display: flex;
     flex-direction: column;
-    gap: 0.15rem;
+    gap: var(--space-1);
   }
 
   .laszlo-name {
@@ -589,15 +589,15 @@ const featuredProjects = allProjects
   }
 
   .solution-body {
-    margin: 0 0 1.5rem;
+    margin: 0 0 var(--space-6);
     font-size: var(--fs-small);
     max-width: 52ch;
   }
 
   .solution-callout {
     border-left: 2px solid var(--color-accent);
-    padding-left: 1.25rem;
-    margin: 1.5rem 0 2rem;
+    padding-left: var(--space-5);
+    margin: var(--space-6) 0 var(--space-8);
     font-family: var(--font-display);
     font-size: var(--fs-body);
     font-weight: 300;
@@ -614,13 +614,13 @@ const featuredProjects = allProjects
   }
 
   .diff-card {
-    padding: 1.75rem 2rem;
+    padding: var(--space-7) var(--space-8);
     border-bottom: 1px solid var(--color-border);
     display: grid;
     grid-template-columns: auto 1fr;
     grid-template-rows: auto auto;
-    column-gap: 1.25rem;
-    row-gap: 0.35rem;
+    column-gap: var(--space-5);
+    row-gap: var(--space-1);
   }
 
   .diff-card:last-child { border-bottom: none; }
@@ -658,7 +658,7 @@ const featuredProjects = allProjects
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    margin-bottom: 2rem;
+    margin-bottom: var(--space-8);
   }
 
   .featured-grid {
@@ -686,7 +686,7 @@ const featuredProjects = allProjects
     background: var(--color-surface-2);
   }
 
-  .featured-card--large .featured-card-image { aspect-ratio: unset; height: 100%; min-height: 350px; }
+  .featured-card--large .featured-card-image { aspect-ratio: unset; height: 100%; min-height: 21.875rem; }
 
   .featured-card-image img {
     width: 100%;
@@ -698,10 +698,10 @@ const featuredProjects = allProjects
   .featured-card:hover .featured-card-image img { transform: scale(1.04); }
 
   .featured-card-body {
-    padding: 1rem 1.25rem;
+    padding: var(--space-4) var(--space-5);
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: var(--space-1);
   }
 
   .featured-card-year {
@@ -727,7 +727,7 @@ const featuredProjects = allProjects
 
   /* ── Process ──────────────────────────────────────────────── */
   .process-steps {
-    margin-top: 2.5rem;
+    margin-top: var(--space-10);
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1px;
@@ -737,16 +737,16 @@ const featuredProjects = allProjects
 
   .process-step {
     background: var(--color-surface);
-    padding: 2.5rem 2rem;
+    padding: var(--space-10) var(--space-8);
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
+    gap: var(--space-5);
   }
 
   .process-step-header {
     display: flex;
     align-items: flex-start;
-    gap: 1rem;
+    gap: var(--space-4);
   }
 
   .process-n {
@@ -764,7 +764,7 @@ const featuredProjects = allProjects
     font-size: var(--fs-body);
     font-weight: 500;
     color: var(--color-text);
-    margin-bottom: 0.2rem;
+    margin-bottom: var(--space-1);
   }
 
   .process-time {
@@ -777,14 +777,14 @@ const featuredProjects = allProjects
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: var(--space-2);
     padding: 0;
   }
 
   .process-list li {
     font-size: var(--fs-xs);
     color: var(--color-text-muted);
-    padding-left: 1rem;
+    padding-left: var(--space-4);
     position: relative;
     line-height: 1.5;
   }
@@ -801,18 +801,18 @@ const featuredProjects = allProjects
   .faq-preview-inner {
     display: grid;
     grid-template-columns: 1fr 2fr;
-    gap: 5rem;
+    gap: var(--space-20);
     align-items: start;
   }
 
-  .faq-preview-header { display: flex; flex-direction: column; gap: 1rem; }
+  .faq-preview-header { display: flex; flex-direction: column; gap: var(--space-4); }
   .faq-preview-header h2 { margin: 0; }
 
   .faq-preview-list { display: flex; flex-direction: column; }
 
   .faq-item {
     border-top: 1px solid var(--color-border);
-    padding-block: 1.25rem;
+    padding-block: var(--space-5);
   }
 
   .faq-item:last-child { border-bottom: 1px solid var(--color-border); }
@@ -827,7 +827,7 @@ const featuredProjects = allProjects
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 1rem;
+    gap: var(--space-4);
   }
 
   .faq-q::-webkit-details-marker { display: none; }
@@ -850,7 +850,7 @@ const featuredProjects = allProjects
     font-size: var(--fs-small);
     color: var(--color-text-muted);
     line-height: 1.7;
-    margin-top: 0.75rem;
+    margin-top: var(--space-3);
     max-width: none;
   }
 
@@ -858,15 +858,15 @@ const featuredProjects = allProjects
   .cta-banner {
     background: var(--color-surface);
     border-top: 1px solid var(--color-border);
-    padding-block: 4rem;
-    margin-top: 6rem;
+    padding-block: var(--space-16);
+    margin-top: var(--space-24);
   }
 
   .cta-banner-inner {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 2rem;
+    gap: var(--space-8);
     flex-wrap: wrap;
   }
 
@@ -875,7 +875,7 @@ const featuredProjects = allProjects
     font-size: var(--fs-h5);
     font-weight: 300;
     color: var(--color-text);
-    margin-bottom: 0.5rem;
+    margin-bottom: var(--space-2);
   }
 
   .cta-sub {
@@ -892,7 +892,7 @@ const featuredProjects = allProjects
 
   /* ── Responsive ───────────────────────────────────────────── */
   @media (max-width: 1024px) {
-    .solution-inner { grid-template-columns: 1fr; gap: 3rem; }
+    .solution-inner { grid-template-columns: 1fr; gap: var(--space-12); }
     .featured-grid  { grid-template-columns: repeat(2, 1fr); }
     .featured-card--large { grid-column: span 2; grid-row: span 1; }
   }
@@ -901,7 +901,7 @@ const featuredProjects = allProjects
     .stats-grid   { grid-template-columns: repeat(2, 1fr); }
     .pain-grid    { grid-template-columns: 1fr; }
     .process-steps{ grid-template-columns: 1fr; }
-    .faq-preview-inner { grid-template-columns: 1fr; gap: 2rem; }
+    .faq-preview-inner { grid-template-columns: 1fr; gap: var(--space-8); }
     .featured-grid{ grid-template-columns: 1fr; }
     .featured-card--large { grid-column: span 1; }
     .cta-banner-inner { flex-direction: column; text-align: center; }

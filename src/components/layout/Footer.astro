@@ -84,22 +84,22 @@ const links = [
 <style>
   .site-footer {
     border-top: 1px solid var(--color-border);
-    padding-block: 4rem 2rem;
-    margin-top: 6rem;
+    padding-block: var(--space-16) var(--space-8);
+    margin-top: var(--space-24);
   }
 
   .footer-grid {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr;
-    gap: 3rem;
-    padding-bottom: 3rem;
+    gap: var(--space-12);
+    padding-bottom: var(--space-12);
     border-bottom: 1px solid var(--color-border);
   }
 
   /* Logo */
   .footer-logo {
     display: inline-block;
-    margin-bottom: 1rem;
+    margin-bottom: var(--space-4);
     text-decoration: none;
     opacity: 0.85;
     transition: opacity 200ms ease;
@@ -108,7 +108,7 @@ const links = [
   .footer-logo:hover { opacity: 1; }
 
   .footer-logo-img {
-    height: 30px;
+    height: var(--size-logo-sm);
     width: auto;
     display: block;
   }
@@ -116,7 +116,7 @@ const links = [
   .footer-bio {
     font-size: var(--fs-small);
     color: var(--color-text-muted);
-    margin-bottom: 1.25rem;
+    margin-bottom: var(--space-5);
     max-width: 28ch;
     line-height: 1.6;
   }
@@ -126,13 +126,13 @@ const links = [
     font-size: var(--fs-xs);
     color: var(--color-text-muted);
     line-height: 1.7;
-    margin-bottom: 0.75rem;
+    margin-bottom: var(--space-3);
   }
 
   .footer-contact {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: var(--space-1);
   }
 
   .footer-contact a {
@@ -154,13 +154,13 @@ const links = [
     letter-spacing: 0.15em;
     text-transform: uppercase;
     color: var(--color-text-faint);
-    margin-bottom: 1rem;
+    margin-bottom: var(--space-4);
   }
 
   .footer-col nav {
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
+    gap: var(--space-2);
   }
 
   .footer-link {
@@ -180,7 +180,7 @@ const links = [
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-top: 1.5rem;
+    padding-top: var(--space-6);
     font-size: var(--fs-xs);
     color: var(--color-text-faint);
     font-family: var(--font-body);
@@ -190,7 +190,7 @@ const links = [
   @media (max-width: 768px) {
     .footer-grid {
       grid-template-columns: 1fr;
-      gap: 2rem;
+      gap: var(--space-8);
     }
 
     .footer-bottom {

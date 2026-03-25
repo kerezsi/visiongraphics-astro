@@ -106,7 +106,7 @@ function isActive(href: string): boolean {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 4.5rem;
+    height: var(--size-header);
   }
 
   /* Logo */
@@ -118,7 +118,7 @@ function isActive(href: string): boolean {
   }
 
   .logo-img {
-    height: 36px;
+    height: var(--size-logo);
     width: auto;
     display: block;
   }
@@ -136,7 +136,7 @@ function isActive(href: string): boolean {
     font-weight: 500;
     color: var(--color-text-muted);
     text-decoration: none;
-    padding: 0.4rem 0.7rem;
+    padding: var(--space-2) var(--space-3);
     letter-spacing: 0.08em;
     text-transform: uppercase;
     transition: color 200ms ease;
@@ -155,7 +155,7 @@ function isActive(href: string): boolean {
     display: none;
     background: none;
     border: 1px solid var(--color-border);
-    padding: 0.4rem 0.6rem;
+    padding: var(--space-2) var(--space-3);
     border-radius: var(--radius-sm);
     cursor: pointer;
     color: var(--color-text-muted);
@@ -199,10 +199,10 @@ function isActive(href: string): boolean {
 
   .mobile-nav {
     border-top: 1px solid var(--color-border);
-    padding: 1rem;
+    padding: var(--space-4);
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: var(--space-1);
     background: var(--color-bg);
   }
 
@@ -211,7 +211,7 @@ function isActive(href: string): boolean {
     font-size: var(--fs-small);
     font-weight: 300;
     color: var(--color-text-muted);
-    padding: 0.6rem 0.75rem;
+    padding: var(--space-3);
     border-radius: var(--radius-sm);
     transition: color 150ms ease, background 150ms ease;
   }

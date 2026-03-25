@@ -40,16 +40,16 @@ const HeadingTag = headingLevel;
 <style>
   .section-banner {
     position: relative;
-    height: clamp(180px, 22vw, 300px);
+    height: clamp(90px, calc(16.5vw - 45px), 180px);
     overflow: hidden;
     display: flex;
     align-items: flex-end;
     width: 100%;
   }
 
-  /* Page-header size — matches PageHero height */
+  /* Page-header size — ½ of original dev height */
   .section-banner--page {
-    height: clamp(320px, 45vw, 560px);
+    height: clamp(135px, 16.5vw, 225px);
   }
 
   /* Background image */
@@ -92,8 +92,8 @@ const HeadingTag = headingLevel;
   .section-banner__content {
     position: relative;
     z-index: 2;
-    padding-bottom: clamp(1.5rem, 3vw, 2.25rem);
-    padding-top: 1.5rem;
+    padding-bottom: var(--space-6);
+    padding-top: var(--space-6);
     width: 100%;
   }
 
@@ -104,7 +104,7 @@ const HeadingTag = headingLevel;
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--color-accent);
-    margin: 0 0 0.6rem;
+    margin: 0 0 var(--space-2);
     line-height: 1;
   }
 

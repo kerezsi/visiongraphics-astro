@@ -116,36 +116,85 @@ Dark neutral — matched to dev.visiongraphics.eu (no blue tint).
 --color-text-faint:  #7a7a7a;   /* disabled, placeholders */
 ```
 
+### Layout Constraints
+
+- Max content width: **2400px** (`.container` / `max-w-container`)
+- Min supported viewport: **500px**
+- All sizing is fluid between 500px and 2400px — **one clamp on `html` drives everything**:
+  `html { font-size: clamp(1rem, 0.737rem + 0.842vw, 2rem) }` → 1rem = 16px at 500px, 32px at 2400px
+- Never use static breakpoint overrides for font sizes or spacing
+- **PageHero heights:** `page` variant = `clamp(160px, 21vw, 280px)` · `section` variant = `clamp(195px, 25vw, 315px)`
+- **SectionBanner heights:** `section` (default) = `clamp(135px, 16.5vw, 225px)` · `page` = `clamp(160px, 22.5vw, 280px)`
+
 ### Typography
 
+Single font family site-wide — **Work Sans** for everything (display, body, UI).
+
 ```css
-/* Display / Headings */
-font-family: 'Cormorant Garamond', Georgia, serif;
-/* — editorial, architectural, distinctive. Used for H1, H2, large callouts */
-
-/* Body / UI */
-font-family: 'DM Sans', system-ui, sans-serif;
-/* — clean, readable, modern. Used for body, nav, labels, buttons */
-
-/* Mono (code, file formats, technical details) */
-font-family: 'DM Mono', monospace;
+/* All text */
+font-family: 'Work Sans', system-ui, sans-serif;
 ```
 
 Load via Google Fonts in `Base.astro`:
 ```
-Cormorant+Garamond:wght@300;400;500;600
-DM+Sans:wght@300;400;500;600
-DM+Mono:wght@400
+Work+Sans:ital,wght@0,100..900;1,100..900
 ```
 
-### Type Scale (Tailwind custom + base)
+### Fluid Type Scale
 
-- H1 hero: `text-6xl lg:text-8xl font-display font-light tracking-tight`
-- H2 section: `text-4xl lg:text-5xl font-display font-light`
-- H3 sub: `text-2xl font-display`
-- Body: `text-base font-body font-light leading-relaxed`
-- Label/tag: `text-xs font-body font-medium tracking-widest uppercase`
-- Caption: `text-sm text-muted`
+Scale ratio: **1.2**. Variables are **static rem** values — they are fluid because the `html` font-size
+itself is a clamp (see Layout Constraints above). `2.986rem` = 47.8px at 500px, 95.6px at 2400px.
+
+**Do not hardcode font-size values in page or component files — always use the CSS variable.**
+
+```css
+/* src/styles/global.css :root */
+--fs-h1:    2.986rem;   /* 47.8px → 95.6px */
+--fs-h2:    2.488rem;   /* 39.8px → 79.6px */
+--fs-h3:    2.074rem;   /* 33.2px → 66.4px */
+--fs-h4:    1.728rem;   /* 27.6px → 55.3px */
+--fs-h5:    1.44rem;    /* 23.0px → 46.1px */
+--fs-h6:    1.2rem;     /* 19.2px → 38.4px */
+--fs-body:  1rem;       /* 16.0px → 32.0px */
+--fs-small: 0.833rem;   /* 13.3px → 26.7px */
+--fs-xs:    0.694rem;   /* 11.1px → 22.2px */
+```
+
+Applied globally in `global.css`:
+```css
+h1 { font-size: var(--fs-h1); }  /* ... through h6 */
+body, p { font-size: var(--fs-body); }
+small { font-size: var(--fs-small); }
+```
+
+### Fluid Spacing Scale
+
+Same principle — static rem values, fluid via `html` font-size clamp.
+**Do not hardcode `rem`/`px` spacing values in components — use `var(--space-*)` or `var(--size-*)`.**
+
+```css
+/* src/styles/global.css :root — spacing */
+--space-1:  0.25rem;   /*  4px →   8px */
+--space-2:  0.5rem;    /*  8px →  16px */
+--space-3:  0.75rem;   /* 12px →  24px */
+--space-4:  1rem;      /* 16px →  32px */
+--space-5:  1.25rem;   /* 20px →  40px */
+--space-6:  1.5rem;    /* 24px →  48px */
+--space-7:  1.75rem;   /* 28px →  56px */
+--space-8:  2rem;      /* 32px →  64px */
+--space-10: 2.5rem;    /* 40px →  80px */
+--space-12: 3rem;      /* 48px →  96px */
+--space-16: 4rem;      /* 64px → 128px */
+--space-20: 5rem;      /* 80px → 160px */
+--space-24: 6rem;      /* 96px → 192px */
+
+/* UI element sizes */
+--size-icon:    2.5rem;    /* 40px →  80px — pain icons, etc. */
+--size-avatar:  4.5rem;    /* 72px → 144px — portrait photo */
+--size-logo:    2.25rem;   /* 36px →  72px — header logo */
+--size-logo-sm: 1.875rem;  /* 30px →  60px — footer logo */
+--size-header:  4.5rem;    /* 72px → 144px — header bar height */
+```
 
 ### Tailwind Config Additions
 
@@ -154,9 +203,12 @@ DM+Mono:wght@400
 theme: {
   extend: {
     fontFamily: {
-      display: ['"Cormorant Garamond"', 'Georgia', 'serif'],
-      body:    ['"DM Sans"', 'system-ui', 'sans-serif'],
-      mono:    ['"DM Mono"', 'monospace'],
+      display: ['"Work Sans"', 'system-ui', 'sans-serif'],
+      body:    ['"Work Sans"', 'system-ui', 'sans-serif'],
+      sans:    ['"Work Sans"', 'system-ui', 'sans-serif'],
+    },
+    maxWidth: {
+      container: '2400px',
     },
     colors: {
       bg:       '#1a1a1a',
@@ -776,7 +828,8 @@ Start with these high-profile projects from the timeline:
 7. **No personal project links** (FakeHistory.eu) on main site.
 8. **No FTP deployment** — everything through GitHub → Cloudflare Pages.
 9. **Do not hardcode content** that belongs in content collections.
-10. **Do not use Inter, Roboto, or Arial** — use Cormorant Garamond + DM Sans.
+10. **Do not use Inter, Roboto, Arial, Cormorant Garamond, or DM Sans** — use Work Sans exclusively.
+10b. **No hardcoded font-size or spacing values in page/component files** — use `var(--fs-*)` for type and `var(--space-*)` / `var(--size-*)` for spacing. All fluidity is driven by the single `html` font-size clamp in `global.css`.
 11. **Images via `astro:assets` Image component** — never raw `<img>` tags for portfolio.
 12. **Vimeo: facade pattern only** — never auto-embed iframe on page load.
 13. **360 tours: click-to-load** — never auto-load Pano2VR iframe.

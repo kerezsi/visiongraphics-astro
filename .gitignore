@@ -27,6 +27,9 @@ Thumbs.db
 # Pagefind (generated at build time)
 public/pagefind/
 
+# Storybook build output
+storybook-static/
+
 # Images — stored in Cloudflare R2, not Git
 # Upload with: upload-images.bat
 public/portfolio/

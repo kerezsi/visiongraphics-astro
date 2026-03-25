@@ -1,6 +1,7 @@
 ---
 import Page from '../../layouts/Page.astro';
 import PageHero from '../../components/ui/PageHero.astro';
+import ImageCompare from '../../components/ui/ImageCompare';
 ---
 
 <Page
@@ -31,6 +32,30 @@ import PageHero from '../../components/ui/PageHero.astro';
       properties sold, and stakeholders aligned. 30 years of doing this —
       for budgets ranging from a single apartment block to an airport terminal.
     </p>
+
+    <!-- Before / After comparison — swap src values once real image pairs are available -->
+    <div class="service-compare-block">
+      <p class="section-label">Photo Integration</p>
+      <h3 class="service-compare-heading">Site Photo vs. CGI Render</h3>
+      <p class="service-compare-sub">
+        Drag the handle to compare an existing site photograph with the finished CGI render placed on the same scene.
+      </p>
+      <ImageCompare
+        client:load
+        before={{
+          src: '/_img/banners/banner-arch-viz.jpg',
+          alt: 'Existing site — before visualization',
+          label: 'Before',
+        }}
+        after={{
+          src: '/_img/banners/banner-arch-viz.jpg',
+          alt: 'Architectural CGI render',
+          label: 'After',
+        }}
+        initialPosition={50}
+        aspectRatio="16 / 7"
+      />
+    </div>
 
     <hr class="service-rule" />
 
@@ -165,7 +190,26 @@ import PageHero from '../../components/ui/PageHero.astro';
     margin: 0 0 2rem;
   }
 
-  .service-rule { border-color: var(--color-border); margin-bottom: 2.5rem; }
+  .service-rule { border-color: var(--color-border); margin-bottom: var(--space-10); }
+
+  /* Before / After compare block */
+  .service-compare-block {
+    margin-bottom: var(--space-10);
+  }
+
+  .service-compare-heading {
+    font-size: var(--fs-h5);
+    font-weight: 600;
+    color: var(--color-text);
+    margin: var(--space-2) 0 var(--space-3);
+  }
+
+  .service-compare-sub {
+    font-size: var(--fs-small);
+    color: var(--color-text-muted);
+    max-width: 60ch;
+    margin-bottom: var(--space-6);
+  }
 
   .service-body-grid {
     display: grid;

@@ -165,69 +165,236 @@ const sections = [
     ],
   },
 ];
-import PageHero from '../../components/ui/PageHero.astro';
+import SectionBanner from '../../components/ui/SectionBanner.astro';
 ---
 
 <Page
   title="FAQ"
   description="Answers to common questions about working with Vision Graphics Kft. — timelines, pricing, deliverables, software, and how we work."
+  fullBleed
 >
-
-  <PageHero
-    image="/_img/banners/banner-faq.jpg"
-    label="Have Questions?"
-    title="We've Got Answers"
-  />
   <div class="faq-page">
 
-    <!-- Intro -->
-    <div class="faq-header">
-      <p class="faq-intro">
-        Can't find what you're looking for?
-        Call <a href="tel:+36309454179">+36 30 945 4179</a> or
-        email <a href="mailto:info@visiongraphics.eu">info@visiongraphics.eu</a> — we answer same day.
-      </p>
-    </div>
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <!-- PAGE HEADER                                               -->
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <SectionBanner
+      image="/_img/banners/banner-faq.jpg"
+      label="Have Questions?"
+      title="We've Got Answers"
+      headingLevel="h1"
+      size="page"
+    />
 
-    <!-- Sections -->
-    <div class="faq-sections">
-      {sections.map(section => (
-        <section class="faq-section">
-          <h2 class="faq-section-title">{section.title}</h2>
-          <div class="faq-list">
-            {section.items.map(item => (
-              <details class="faq-item">
-                <summary class="faq-q">{item.q}</summary>
-                <p class="faq-a">{item.a}</p>
-              </details>
-            ))}
-          </div>
-        </section>
-      ))}
-    </div>
+    <!-- Quick navigation -->
+    <nav class="faq-quicknav container" aria-label="Jump to section">
+      <a href="#getting-started">Getting Started</a>
+      <a href="#working-together">Working Together</a>
+      <a href="#technical">Technical Details</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#after">After Delivery</a>
+    </nav>
 
-    <!-- CTA -->
-    <div class="faq-cta">
-      <p class="faq-cta-text">Still have a question?</p>
-      <a href="/contact/" class="btn btn-primary">Talk to Us</a>
-    </div>
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <!-- GROUP 1 — Getting Started & Timelines                     -->
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <section class="faq-group section" id="getting-started">
+      <div class="container">
+        <div class="faq-header">
+          <p class="faq-intro">
+            Can't find what you're looking for?
+            Call <a href="tel:+36309454179">+36 30 945 4179</a> or
+            email <a href="mailto:info@visiongraphics.eu">info@visiongraphics.eu</a> — we answer same day.
+          </p>
+        </div>
+        <div class="faq-sections">
+          {sections.filter(s => ['Getting Started', 'Timelines'].includes(s.title)).map(section => (
+            <div class="faq-section">
+              <h2 class="faq-section-title">{section.title}</h2>
+              <div class="faq-list">
+                {section.items.map(item => (
+                  <details class="faq-item">
+                    <summary class="faq-q">{item.q}</summary>
+                    <p class="faq-a">{item.a}</p>
+                  </details>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <!-- GROUP 2 — Working Together & Deliverables                 -->
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <SectionBanner
+      image="/_img/banners/banner-workflow.jpg"
+      label="Process"
+      title="Working Together"
+    />
+    <section class="faq-group section" id="working-together">
+      <div class="container">
+        <div class="faq-sections">
+          {sections.filter(s => ['Working Together', 'Deliverables & Files'].includes(s.title)).map(section => (
+            <div class="faq-section">
+              <h2 class="faq-section-title">{section.title}</h2>
+              <div class="faq-list">
+                {section.items.map(item => (
+                  <details class="faq-item">
+                    <summary class="faq-q">{item.q}</summary>
+                    <p class="faq-a">{item.a}</p>
+                  </details>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <!-- GROUP 3 — Technical Details                               -->
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <SectionBanner
+      image="/_img/banners/banner-tech.jpg"
+      label="Tools & Infrastructure"
+      title="Technical Details"
+    />
+    <section class="faq-group section" id="technical">
+      <div class="container">
+        <div class="faq-sections">
+          {sections.filter(s => ['Technical Details'].includes(s.title)).map(section => (
+            <div class="faq-section">
+              <h2 class="faq-section-title">{section.title}</h2>
+              <div class="faq-list">
+                {section.items.map(item => (
+                  <details class="faq-item">
+                    <summary class="faq-q">{item.q}</summary>
+                    <p class="faq-a">{item.a}</p>
+                  </details>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <!-- GROUP 4 — Pricing & Confidentiality                       -->
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <SectionBanner
+      image="/_img/banners/banner-general.jpg"
+      label="Investment"
+      title="Pricing & Confidentiality"
+    />
+    <section class="faq-group section" id="pricing">
+      <div class="container">
+        <div class="faq-sections">
+          {sections.filter(s => ['Pricing', 'Confidentiality'].includes(s.title)).map(section => (
+            <div class="faq-section">
+              <h2 class="faq-section-title">{section.title}</h2>
+              <div class="faq-list">
+                {section.items.map(item => (
+                  <details class="faq-item">
+                    <summary class="faq-q">{item.q}</summary>
+                    <p class="faq-a">{item.a}</p>
+                  </details>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <!-- GROUP 5 — After Delivery                                  -->
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <SectionBanner
+      image="/_img/banners/banner-arch-viz.jpg"
+      label="After the Project"
+      title="After Delivery"
+    />
+    <section class="faq-group section" id="after">
+      <div class="container">
+        <div class="faq-sections">
+          {sections.filter(s => ['After Delivery'].includes(s.title)).map(section => (
+            <div class="faq-section">
+              <h2 class="faq-section-title">{section.title}</h2>
+              <div class="faq-list">
+                {section.items.map(item => (
+                  <details class="faq-item">
+                    <summary class="faq-q">{item.q}</summary>
+                    <p class="faq-a">{item.a}</p>
+                  </details>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <!-- CTA — full bleed, matching About page                     -->
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <section class="faq-cta">
+      <div class="container faq-cta-inner">
+        <div>
+          <h2 class="cta-heading">Still have a question?</h2>
+          <p class="cta-sub">
+            Call <a href="tel:+36309454179">+36 30 945 4179</a> or
+            email <a href="mailto:info@visiongraphics.eu">info@visiongraphics.eu</a> — we answer same day.
+          </p>
+        </div>
+        <a href="/contact/" class="btn btn-primary">Talk to Us</a>
+      </div>
+    </section>
 
   </div>
 </Page>
 
 <style>
-  .faq-page { max-width: 860px; }
+  .faq-page { width: 100%; }
+
+  /* ── Quick-nav ───────────────────────────────────────────────── */
+  .faq-quicknav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-8);
+    padding-block: var(--space-6);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .faq-quicknav a {
+    font-family: var(--font-body);
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: color 150ms ease;
+  }
+
+  .faq-quicknav a:hover { color: var(--color-accent); }
+
+  /* ── Content groups (matching .section on About page) ────────── */
+  .faq-group {
+    padding-block: clamp(3rem, 5vw, 5rem);
+  }
 
   .faq-header {
-    margin-bottom: 2.5rem;
-    padding-block: clamp(1.5rem, 3vw, 2rem);
+    margin-bottom: var(--space-10);
   }
 
   .faq-intro {
     font-size: var(--fs-small);
     color: var(--color-text-muted);
     max-width: 52ch;
-    line-height: 1.7;
+    line-height: 1.75;
     margin: 0;
   }
 
@@ -237,22 +404,22 @@ import PageHero from '../../components/ui/PageHero.astro';
     text-underline-offset: 2px;
   }
 
+  /* ── FAQ sections list ───────────────────────────────────────── */
   .faq-sections {
     display: flex;
     flex-direction: column;
-    gap: 3rem;
-    margin-bottom: 3rem;
+    gap: var(--space-12);
+    max-width: 860px;
   }
 
-  /* Section */
   .faq-section-title {
     font-family: var(--font-body);
     font-size: var(--fs-xs);
-    font-weight: 500;
+    font-weight: 600;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--color-text-faint);
-    margin-bottom: 0.75rem;
+    color: var(--color-accent);
+    margin: 0 0 var(--space-3);
   }
 
   .faq-list {
@@ -260,10 +427,10 @@ import PageHero from '../../components/ui/PageHero.astro';
     flex-direction: column;
   }
 
-  /* Item */
+  /* ── Accordion items ─────────────────────────────────────────── */
   .faq-item {
     border-top: 1px solid var(--color-border);
-    padding-block: 1.25rem;
+    padding-block: var(--space-5);
   }
 
   .faq-item:last-child { border-bottom: 1px solid var(--color-border); }
@@ -278,7 +445,7 @@ import PageHero from '../../components/ui/PageHero.astro';
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 1rem;
+    gap: var(--space-4);
     line-height: 1.4;
   }
 
@@ -302,29 +469,53 @@ import PageHero from '../../components/ui/PageHero.astro';
     font-size: var(--fs-small);
     color: var(--color-text-muted);
     line-height: 1.75;
-    margin-top: 0.85rem;
-    max-width: none;
+    margin-top: var(--space-3);
+    max-width: 72ch;
   }
 
-  /* CTA */
+  /* ── CTA — full bleed, matching About page ───────────────────── */
   .faq-cta {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    padding: 2rem;
     background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-sm);
+    border-top: 1px solid var(--color-border);
+    padding-block: var(--space-20);
   }
 
-  .faq-cta-text {
+  .faq-cta-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-8);
+    flex-wrap: wrap;
+  }
+
+  .cta-heading {
+    font-family: var(--font-display);
+    font-size: var(--fs-h3);
+    font-weight: 300;
+    color: var(--color-text);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: var(--space-2);
+  }
+
+  .cta-sub {
     font-size: var(--fs-small);
     color: var(--color-text-muted);
     margin: 0;
-    max-width: none;
   }
 
-  @media (max-width: 560px) {
-    .faq-cta { flex-direction: column; align-items: flex-start; }
+  .cta-sub a {
+    color: var(--color-text-muted);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 150ms ease;
+  }
+
+  .cta-sub a:hover { color: var(--color-accent); }
+
+  /* ── Responsive ──────────────────────────────────────────────── */
+  @media (max-width: 600px) {
+    .faq-cta-inner { flex-direction: column; align-items: flex-start; }
+    .faq-cta { padding-block: var(--space-12); }
   }
 </style>
