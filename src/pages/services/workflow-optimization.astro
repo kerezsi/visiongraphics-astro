@@ -1,6 +1,6 @@
 ---
 import Page from '../../layouts/Page.astro';
-import PageHero from '../../components/ui/PageHero.astro';
+import SectionBanner from '../../components/ui/SectionBanner.astro';
 ---
 
 <Page
@@ -8,11 +8,12 @@ import PageHero from '../../components/ui/PageHero.astro';
   description="Visualization pipeline audits, batch automation, MAXScript utilities, AI-assisted QC. Vision Graphics Kft. — Budapest."
 >
 
-  <PageHero
+  <SectionBanner
     image="/_img/banners/banner-workflow.jpg"
     label="Your Pipeline Can Be Faster"
     title="Workflow Optimization"
-    variant="section"
+    size="page"
+    headingLevel="h1"
   />
   <div class="service-page">
 
@@ -26,66 +27,23 @@ import PageHero from '../../components/ui/PageHero.astro';
     <h2 class="display-lg service-h1">Workflow Optimization</h2>
     <p class="service-tagline-large">Your pipeline is probably slower than it needs to be.</p>
 
-    <p class="service-lead">
-      We audit visualization workflows and build fixes: automated batch processes,
-      tool integrations, MAXScript utilities, AI-assisted QC. We've been
-      optimizing our own pipeline for 30 years — we know where the time goes.
-    </p>
-
-    <hr class="service-rule" />
-
     <div class="service-body-grid">
       <div class="service-main">
 
-        <h2 class="service-section-h2">What we fix</h2>
-        <div class="deliverable-grid">
-          {[
-            {
-              title: 'Pipeline Audit',
-              desc: 'We map your current workflow, identify bottlenecks, and produce a prioritized list of improvements with estimated time savings.',
-            },
-            {
-              title: 'Batch Automation',
-              desc: 'Automate repetitive tasks: render submission, file naming, format conversion, delivery packaging. Hours of manual work reduced to minutes.',
-            },
-            {
-              title: 'Tool Integration',
-              desc: 'Connect your tools — 3ds Max, V-Ray, project management, file storage — so data flows without manual copy-paste steps.',
-            },
-            {
-              title: 'AI-Assisted QC',
-              desc: 'Automated quality checks on large render batches. Catch render errors, missing elements, and colour drift before delivery.',
-            },
-            {
-              title: 'Team Process Design',
-              desc: 'For studios with multiple artists: review and file handoff protocols that prevent version confusion and lost work.',
-            },
-            {
-              title: 'Custom Scripts',
-              desc: 'MAXScript and Python tools built for your specific production problems. Tools you\'ll actually use, not generic plugins.',
-            },
-          ].map(d => (
-            <div class="deliverable-card">
-              <h3 class="deliverable-title">{d.title}</h3>
-              <p class="deliverable-desc">{d.desc}</p>
-            </div>
-          ))}
-        </div>
-
-        <h2 class="service-section-h2">Who this is for</h2>
-        <ul class="results-list">
-          <li>Visualization studios spending too much time on admin and file management</li>
-          <li>Architects and developers who run visualization in-house</li>
-          <li>Marketing teams managing large image libraries</li>
-          <li>Studios scaling up who need reproducible processes</li>
-        </ul>
-
-        <h2 class="service-section-h2">How it works</h2>
-        <p class="body-text">
-          We start with a 1-hour discovery call, then either a remote audit of your current workflow
-          or a site visit. Within one week we deliver a written report with specific recommendations
-          and time-saving estimates. You can implement yourself or engage us to build the fixes.
+        <p class="service-lead">
+          Time is money. And you're probably wasting both without realizing it. Most businesses
+          think they need more people or better tools. But usually, they just need their current
+          tools and people to work better together. We help you spot and fix the daily
+          time-wasters that add up.
         </p>
+
+        <h2 class="service-section-h2">What's really slowing you down?</h2>
+        <ul class="results-list">
+          <li>Where do tasks get stuck?</li>
+          <li>Which steps take too long?</li>
+          <li>What frustrates your team?</li>
+          <li>Where do mistakes keep happening?</li>
+        </ul>
 
       </div>
 
@@ -104,29 +62,124 @@ import PageHero from '../../components/ui/PageHero.astro';
     </div>
 
   </div>
+
+  <SectionBanner
+    image="/_img/banners/banner-general.jpg"
+    label="Quick Wins"
+    title="Start Saving Time Today"
+    headingLevel="h2"
+  />
+  <div class="service-section container">
+    <p class="section-body">
+      We don't do fancy presentations about what might work. We fix what's actually broken.
+      No buzzwords. No AI just because it's trendy. We focus on practical fixes that save
+      time every day.
+    </p>
+    <ul class="results-list">
+      <li>Connect tools that should talk to each other</li>
+      <li>Cut out duplicate work and unnecessary steps</li>
+      <li>Fix broken processes that everyone has learned to work around</li>
+      <li>Speed up file handling and delivery packaging</li>
+      <li>Automate repetitive tasks that waste hours per week</li>
+    </ul>
+  </div>
+
+  <SectionBanner
+    image="/_img/banners/banner-tech.jpg"
+    label="Long-Term Gains"
+    title="Build It Right"
+    headingLevel="h2"
+  />
+  <div class="service-section container">
+    <p class="section-body">
+      Short-term fixes help, but the real value is building workflows that hold up as you
+      grow. We build on tools you already have, making changes your team will actually use.
+    </p>
+    <ul class="results-list">
+      <li>Build workflows that make sense and scale</li>
+      <li>Set up systems for file management, versioning, and delivery</li>
+      <li>Train your team properly so changes stick</li>
+      <li>Document everything clearly so nothing lives only in one person's head</li>
+      <li>For studios: review and file handoff protocols that prevent version confusion</li>
+    </ul>
+  </div>
+
+  <SectionBanner
+    image="/_img/banners/banner-services.jpg"
+    label="Our Approach"
+    title="Watch. Fix. Make It Stick."
+    headingLevel="h2"
+  />
+  <div class="service-section container">
+    <div class="process-grid">
+      {[
+        {
+          step: '01',
+          title: 'Watch and Learn',
+          desc: 'We start with a 1-hour discovery call, then either a remote audit or a site visit. We see how your team actually works, spot the real bottlenecks, and find what\'s causing frustration.',
+        },
+        {
+          step: '02',
+          title: 'Fix What Matters',
+          desc: 'Within one week we deliver a written report with specific recommendations and time-saving estimates. We start with the biggest time-wasters and test solutions before rolling them out.',
+        },
+        {
+          step: '03',
+          title: 'Make It Stick',
+          desc: 'We train your team properly and document everything clearly. You can implement yourself or engage us to build the fixes. Either way, you get results you can measure.',
+        },
+      ].map(p => (
+        <div class="process-card">
+          <span class="process-step">{p.step}</span>
+          <h3 class="process-title">{p.title}</h3>
+          <p class="process-desc">{p.desc}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+
 </Page>
 
 <style>
-  .service-page { max-width: 1060px; }
-  .service-breadcrumb { display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-body); font-size: var(--fs-xs); color: var(--color-text-faint); margin-bottom: 2rem; }
+  .service-page {
+    max-width: 1060px;
+    padding-top: clamp(2rem, 4vw, 3rem);
+  }
+
+  .service-breadcrumb {
+    display: flex; align-items: center; gap: 0.5rem;
+    font-family: var(--font-body); font-size: var(--fs-xs);
+    color: var(--color-text-faint); margin-bottom: 2rem;
+  }
   .service-breadcrumb a { color: var(--color-text-muted); text-decoration: none; transition: color 200ms; }
   .service-breadcrumb a:hover { color: var(--color-accent); }
+
   .service-h1 { margin: 0.5rem 0 0.75rem; }
   .service-tagline-large { font-family: var(--font-display); font-size: var(--fs-h6); font-style: italic; color: var(--color-accent); margin-bottom: 1.5rem; }
-  .service-lead { font-size: var(--fs-small); color: var(--color-text-muted); max-width: 65ch; line-height: 1.75; margin: 0 0 2rem; }
-  .service-rule { border-color: var(--color-border); margin-bottom: 2.5rem; }
+  .service-lead { font-size: var(--fs-small); color: var(--color-text-muted); max-width: 65ch; line-height: 1.75; margin: 0 0 1.5rem; }
+
   .service-body-grid { display: grid; grid-template-columns: 1fr 240px; gap: 4rem; align-items: start; }
-  .service-main { display: flex; flex-direction: column; gap: 2.5rem; }
-  .service-section-h2 { font-family: var(--font-body); font-size: var(--fs-xs); font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--color-text-faint); margin-bottom: 1rem; }
-  .deliverable-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--color-border); border: 1px solid var(--color-border); }
-  .deliverable-card { background: var(--color-surface); padding: 1.5rem; transition: background 200ms; }
-  .deliverable-card:hover { background: var(--color-surface-2); }
-  .deliverable-title { font-family: var(--font-body); font-size: var(--fs-small); font-weight: 500; color: var(--color-text); margin-bottom: 0.4rem; }
-  .deliverable-desc { font-size: var(--fs-xs); color: var(--color-text-muted); line-height: 1.6; margin: 0; max-width: none; }
+  .service-main { display: flex; flex-direction: column; gap: 1.5rem; }
+
+  .service-section-h2 { font-family: var(--font-body); font-size: var(--fs-xs); font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--color-text-faint); margin-bottom: 0.5rem; }
+
+  /* Sub-sections */
+  .service-section { padding-block: clamp(2rem, 4vw, 3rem); }
+
+  .section-body { font-size: var(--fs-small); color: var(--color-text-muted); max-width: 65ch; line-height: 1.75; margin: 0 0 1.5rem; }
+
   .results-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.6rem; }
   .results-list li { font-size: var(--fs-small); color: var(--color-text-muted); padding-left: 1.25rem; position: relative; line-height: 1.5; }
   .results-list li::before { content: '→'; position: absolute; left: 0; color: var(--color-accent); font-size: var(--fs-xs); }
-  .body-text { font-size: var(--fs-small); color: var(--color-text-muted); max-width: 65ch; line-height: 1.75; margin: 0; }
+
+  .process-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--color-border); border: 1px solid var(--color-border); }
+  .process-card { background: var(--color-surface); padding: 1.5rem; transition: background 200ms; }
+  .process-card:hover { background: var(--color-surface-2); }
+  .process-step { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-accent); display: block; margin-bottom: 0.75rem; }
+  .process-title { font-family: var(--font-body); font-size: var(--fs-small); font-weight: 500; color: var(--color-text); margin-bottom: 0.5rem; }
+  .process-desc { font-size: var(--fs-xs); color: var(--color-text-muted); line-height: 1.6; margin: 0; }
+
+  /* Sidebar */
   .service-sidebar { display: flex; flex-direction: column; gap: 2rem; position: sticky; top: 5rem; }
   .sidebar-block { display: flex; flex-direction: column; gap: 0.6rem; }
   .sidebar-label { font-family: var(--font-body); font-size: var(--fs-xs); font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--color-text-faint); }
@@ -134,5 +187,10 @@ import PageHero from '../../components/ui/PageHero.astro';
   .sidebar-note { font-size: var(--fs-xs); color: var(--color-text-faint); line-height: 1.5; margin: 0; max-width: none; }
   .sidebar-cta { display: flex; flex-direction: column; gap: 0.75rem; }
   .sidebar-btn { width: 100%; justify-content: center; }
-  @media (max-width: 900px) { .service-body-grid { grid-template-columns: 1fr; } .service-sidebar { position: static; } .deliverable-grid { grid-template-columns: 1fr; } }
+
+  @media (max-width: 900px) {
+    .service-body-grid { grid-template-columns: 1fr; }
+    .service-sidebar { position: static; }
+    .process-grid { grid-template-columns: 1fr; }
+  }
 </style>

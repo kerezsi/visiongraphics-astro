@@ -1,18 +1,19 @@
 ---
 import Page from '../../layouts/Page.astro';
-import PageHero from '../../components/ui/PageHero.astro';
+import SectionBanner from '../../components/ui/SectionBanner.astro';
 ---
 
 <Page
   title="Custom Rendering"
-  description="Scene optimization, V-Ray problem-solving, render farm access. 15+ years with V-Ray. We handle MAX files that crash everywhere else."
+  description="Render farm access for 3ds Max, V-Ray Standalone, and Blender. We work with your scene, not just your files. Vision Graphics Kft., Budapest."
 >
 
-  <PageHero
+  <SectionBanner
     image="/_img/banners/banner-rendering.jpg"
     label="When Your Files Won't Render"
     title="Custom Rendering"
-    variant="section"
+    size="page"
+    headingLevel="h1"
   />
   <div class="service-page">
 
@@ -26,63 +27,22 @@ import PageHero from '../../components/ui/PageHero.astro';
     <h2 class="display-lg service-h1">Custom Rendering</h2>
     <p class="service-tagline-large">When your files won't render, we fix that.</p>
 
-    <p class="service-lead">
-      Scene optimization, V-Ray problem-solving, render farm access.
-      15+ years with V-Ray. We handle MAX files that crash everywhere else —
-      and we deliver within deadline even when the scene is a mess.
-    </p>
-
-    <hr class="service-rule" />
-
     <div class="service-body-grid">
       <div class="service-main">
 
-        <h2 class="service-section-h2">What we handle</h2>
-        <div class="deliverable-grid">
-          {[
-            {
-              title: 'V-Ray Problem Solving',
-              desc: 'Artifacts, GI flickering, incorrect exposure, material issues, render crashes. We diagnose and fix V-Ray scenes that aren\'t rendering correctly.',
-            },
-            {
-              title: 'Scene Optimization',
-              desc: 'Reduce render times without reducing quality. Polygon reduction, proxy workflows, lighting optimization, render element configuration.',
-            },
-            {
-              title: 'Render Farm Access',
-              desc: 'Submit your scenes to our render farm for fast turnaround on deadline. We manage the queue and handle scene issues that arise.',
-            },
-            {
-              title: 'Large File Rescue',
-              desc: 'We specialize in complex, large-scale 3ds Max files that exhaust RAM or crash on other machines. Heavy scene management is a core skill.',
-            },
-            {
-              title: 'Legacy Scene Conversion',
-              desc: 'Update older MAX scenes to current rendering standards. Re-light, re-material, update to modern V-Ray while preserving the geometry.',
-            },
-            {
-              title: 'Output Pipeline',
-              desc: 'Set up render output pipelines: passes, render elements, compositing-ready outputs. Deliver in formats your post-production team needs.',
-            },
-          ].map(d => (
-            <div class="deliverable-card">
-              <h3 class="deliverable-title">{d.title}</h3>
-              <p class="deliverable-desc">{d.desc}</p>
-            </div>
-          ))}
-        </div>
+        <p class="service-lead">
+          Got a project that won't render? Don't have the hardware for an animation?
+          We have a small render farm with 10–20 dedicated nodes. But here's what makes
+          us different: we actually work with you, not just your files. 15+ years with V-Ray.
+          We handle MAX files that crash everywhere else.
+        </p>
 
-        <h2 class="service-section-h2">Experience</h2>
-        <p class="body-text">
-          15+ years with V-Ray across dozens of versions. We've seen every
-          rendering problem that production can produce — missing UVs, viewport
-          vs. render discrepancies, light cache artifacts, proxy geometry failures —
-          and we know the fastest path to fixing each one.
-        </p>
-        <p class="body-text">
-          We also operate our own render farm, which means we can take on
-          urgent rendering jobs without competing for nodes.
-        </p>
+        <h2 class="service-section-h2">What we support</h2>
+        <ul class="results-list">
+          <li>3ds Max + V-Ray</li>
+          <li>V-Ray Standalone</li>
+          <li>Blender</li>
+        </ul>
 
       </div>
 
@@ -91,7 +51,8 @@ import PageHero from '../../components/ui/PageHero.astro';
           <h3 class="sidebar-label">Render farm</h3>
           <ul class="sidebar-list">
             <li>Own hardware, no shared queue</li>
-            <li>V-Ray standalone</li>
+            <li>10–20 dedicated nodes</li>
+            <li>V-Ray Standalone</li>
             <li>Rush priority available</li>
           </ul>
         </div>
@@ -109,26 +70,106 @@ import PageHero from '../../components/ui/PageHero.astro';
     </div>
 
   </div>
+
+  <SectionBanner
+    image="/_img/banners/banner-general.jpg"
+    label="Who We Help"
+    title="Built for Studios Like Yours"
+    headingLevel="h2"
+  />
+  <div class="service-section container">
+    <p class="section-body">
+      We built this service for architects, small visualization studios, and freelancers who
+      create great work but hit hardware or time limits. Most render farms just process
+      whatever you send them. We take the time to understand your project first.
+    </p>
+    <ul class="results-list">
+      <li>Create great still renders but need help with animations</li>
+      <li>Don't have the hardware for big or deadline-critical projects</li>
+      <li>Want someone to talk to when things get stuck</li>
+      <li>Have complex scenes that exhaust RAM on other machines</li>
+      <li>Need to get a scene rendering without having to fix it yourself first</li>
+    </ul>
+  </div>
+
+  <SectionBanner
+    image="/_img/banners/banner-workflow.jpg"
+    label="How We Work"
+    title="More Than a Render Farm"
+    headingLevel="h2"
+  />
+  <div class="service-section container">
+    <p class="section-body">
+      First we discuss your goals and timeframe, then we look at your scene. Most render farms
+      just process whatever you send them. We take time to prepare scenes properly — which
+      means faster renders and lower costs for you.
+    </p>
+    <ul class="results-list">
+      <li>Clean up heavy files before they hit the farm</li>
+      <li>Fix geometry problems that cause render errors</li>
+      <li>Sort out texture and asset issues</li>
+      <li>Check render settings for efficiency</li>
+      <li>Diagnose V-Ray artifacts, GI flickering, and exposure issues</li>
+      <li>Set up render output pipelines with correct passes and elements</li>
+    </ul>
+  </div>
+
+  <SectionBanner
+    image="/_img/banners/banner-arch-viz.jpg"
+    label="Why Work With Us"
+    title="Real People, Real Results"
+    headingLevel="h2"
+  />
+  <div class="service-section container">
+    <p class="section-body">
+      We're not one of those huge, automated render farms. We've seen every rendering problem
+      that production can produce — missing UVs, viewport vs. render discrepancies, light cache
+      artifacts, proxy geometry failures — and we know the fastest path to fixing each one.
+    </p>
+    <ul class="results-list">
+      <li>You talk to real people who know 3D</li>
+      <li>We help fix problems, not just render frames</li>
+      <li>Consistent results delivered on time</li>
+      <li>Own render farm — no competing for nodes on urgent jobs</li>
+      <li>Legacy scene conversion: update older MAX scenes to current V-Ray standards</li>
+    </ul>
+  </div>
+
 </Page>
 
 <style>
-  .service-page { max-width: 1060px; }
-  .service-breadcrumb { display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-body); font-size: var(--fs-xs); color: var(--color-text-faint); margin-bottom: 2rem; }
+  .service-page {
+    max-width: 1060px;
+    padding-top: clamp(2rem, 4vw, 3rem);
+  }
+
+  .service-breadcrumb {
+    display: flex; align-items: center; gap: 0.5rem;
+    font-family: var(--font-body); font-size: var(--fs-xs);
+    color: var(--color-text-faint); margin-bottom: 2rem;
+  }
   .service-breadcrumb a { color: var(--color-text-muted); text-decoration: none; transition: color 200ms; }
   .service-breadcrumb a:hover { color: var(--color-accent); }
+
   .service-h1 { margin: 0.5rem 0 0.75rem; }
   .service-tagline-large { font-family: var(--font-display); font-size: var(--fs-h6); font-style: italic; color: var(--color-accent); margin-bottom: 1.5rem; }
-  .service-lead { font-size: var(--fs-small); color: var(--color-text-muted); max-width: 65ch; line-height: 1.75; margin: 0 0 2rem; }
-  .service-rule { border-color: var(--color-border); margin-bottom: 2.5rem; }
+  .service-lead { font-size: var(--fs-small); color: var(--color-text-muted); max-width: 65ch; line-height: 1.75; margin: 0 0 1.5rem; }
+
   .service-body-grid { display: grid; grid-template-columns: 1fr 240px; gap: 4rem; align-items: start; }
-  .service-main { display: flex; flex-direction: column; gap: 2.5rem; }
-  .service-section-h2 { font-family: var(--font-body); font-size: var(--fs-xs); font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--color-text-faint); margin-bottom: 1rem; }
-  .deliverable-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--color-border); border: 1px solid var(--color-border); }
-  .deliverable-card { background: var(--color-surface); padding: 1.5rem; transition: background 200ms; }
-  .deliverable-card:hover { background: var(--color-surface-2); }
-  .deliverable-title { font-family: var(--font-body); font-size: var(--fs-small); font-weight: 500; color: var(--color-text); margin-bottom: 0.4rem; }
-  .deliverable-desc { font-size: var(--fs-xs); color: var(--color-text-muted); line-height: 1.6; margin: 0; max-width: none; }
-  .body-text { font-size: var(--fs-small); color: var(--color-text-muted); max-width: 65ch; line-height: 1.75; margin: 0; }
+  .service-main { display: flex; flex-direction: column; gap: 1.5rem; }
+
+  .service-section-h2 { font-family: var(--font-body); font-size: var(--fs-xs); font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--color-text-faint); margin-bottom: 0.5rem; }
+
+  /* Sub-sections */
+  .service-section { padding-block: clamp(2rem, 4vw, 3rem); }
+
+  .section-body { font-size: var(--fs-small); color: var(--color-text-muted); max-width: 65ch; line-height: 1.75; margin: 0 0 1.5rem; }
+
+  .results-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.6rem; }
+  .results-list li { font-size: var(--fs-small); color: var(--color-text-muted); padding-left: 1.25rem; position: relative; line-height: 1.5; }
+  .results-list li::before { content: '→'; position: absolute; left: 0; color: var(--color-accent); font-size: var(--fs-xs); }
+
+  /* Sidebar */
   .service-sidebar { display: flex; flex-direction: column; gap: 2rem; position: sticky; top: 5rem; }
   .sidebar-block { display: flex; flex-direction: column; gap: 0.6rem; }
   .sidebar-label { font-family: var(--font-body); font-size: var(--fs-xs); font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--color-text-faint); }
@@ -139,5 +180,9 @@ import PageHero from '../../components/ui/PageHero.astro';
   .sidebar-note { font-size: var(--fs-xs); color: var(--color-text-faint); line-height: 1.5; margin: 0; max-width: none; }
   .sidebar-cta { display: flex; flex-direction: column; gap: 0.75rem; }
   .sidebar-btn { width: 100%; justify-content: center; }
-  @media (max-width: 900px) { .service-body-grid { grid-template-columns: 1fr; } .service-sidebar { position: static; } .deliverable-grid { grid-template-columns: 1fr; } }
+
+  @media (max-width: 900px) {
+    .service-body-grid { grid-template-columns: 1fr; }
+    .service-sidebar { position: static; }
+  }
 </style>
