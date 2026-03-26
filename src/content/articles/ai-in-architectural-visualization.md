@@ -12,37 +12,56 @@ published: true
 
 There's no shortage of articles claiming AI will replace architectural visualization. Having integrated these tools into an actual production workflow, I can offer a more practical perspective.
 
+![163126-the-subject-of-the-photorealistic-image-is-The-experts-silhouette-emerges-from-2048x512](/images/ai-in-architectural-visualization/163126-the-subject-of-the-photorealistic-image-is-the-experts-silhouette-emerges-from-2048x512.jpg)
+
 AI hasn't replaced the work. It's changed how some parts of it get done — and in specific areas, meaningfully improved speed and output quality. In others, it's a gimmick. Here's where the line is.
+
+AI hasn't replaced the work. It's changed how some parts of it get done — and in specific areas, meaningfully improved speed and output quality. In others, it's a gimmick. Here's where the line is.
+
+AI hasn't replaced the work. It's changed how some parts of it get done — and in specific areas, meaningfully improved speed and output quality. In others, it's a gimmick. Here's where the line is.
+
+## Label: Section Title
 
 ## Where AI Genuinely Helps
 
-**Rendering speed.** AI-powered denoising (NVIDIA OptiX, V-Ray's denoiser) cleans up noisy ray-traced renders and reduces the sampling needed for a clean result. What used to require long render times to eliminate noise now resolves in a fraction of the time. This is in active use on every project.
+Rendering speed. AI-powered denoising (NVIDIA OptiX, V-Ray's denoiser) cleans up noisy ray-traced renders and reduces the sampling needed for a clean result. What used to require long render times to eliminate noise now resolves in a fraction of the time. This is in active use on every project.
 
-**Image upscaling.** Rendering at lower resolution and upscaling with AI tools produces acceptable results for web delivery and reduces farm time. For print-quality finals, we still render at full resolution — but for previews and some marketing contexts, AI upscaling is useful.
+Image upscaling. Rendering at lower resolution and upscaling with AI tools produces acceptable results for web delivery and reduces farm time. For print-quality finals, we still render at full resolution — but for previews and some marketing contexts, AI upscaling is useful.
 
-**Concept exploration.** Text-to-image and image-to-image tools (Stable Diffusion, Flux, ComfyUI pipelines) are genuinely useful in early design stages — generating quick mood explorations, material variations, or alternative compositions from a base render. They're concept tools, not delivery tools.
+Concept exploration. Text-to-image and image-to-image tools (Stable Diffusion, Flux, ComfyUI pipelines) are genuinely useful in early design stages — generating quick mood explorations, material variations, or alternative compositions from a base render. They're concept tools, not delivery tools.
 
-**Script development.** AI assistants have significantly accelerated MAXScript and Python development — code completion, error diagnosis, generating boilerplate. For custom automation tools, this is a real time saving.
+Script development. AI assistants have significantly accelerated MAXScript and Python development — code completion, error diagnosis, generating boilerplate. For custom automation tools, this is a real time saving.
 
-**Batch processing.** AI-assisted workflows for organizing, processing, and QC-checking large image sets (common on large-scale projects) reduce manual review time.
+Batch processing. AI-assisted workflows for organizing, processing, and QC-checking large image sets (common on large-scale projects) reduce manual review time.
 
 ## Where It Falls Short
 
-**Final photorealistic renders.** Current generative tools cannot produce images that meet the accuracy standards required for architectural visualization — correct geometry, precise lighting, real material behavior. They produce plausible-looking images that are wrong in ways clients will notice.
+Final photorealistic renders. Current generative tools cannot produce images that meet the accuracy standards required for architectural visualization — correct geometry, precise lighting, real material behavior. They produce plausible-looking images that are wrong in ways clients will notice.
 
-**3D model generation.** Text-to-3D tools are not at a stage where they produce usable architectural geometry. The model still has to be built from plans, and that work requires knowledge of what you're building.
+3D model generation. Text-to-3D tools are not at a stage where they produce usable architectural geometry. The model still has to be built from plans, and that work requires knowledge of what you're building.
 
-**Detail and precision.** AI image tools tend toward soft, averaged-looking results. Architectural visualization requires hard, accurate edges, correct proportions, and material behavior that matches what will actually be built. These are in tension.
+![163126-the-subject-of-the-photorealistic-image-is-The-experts-silhouette-emerges-from-2048x512](/images/ai-in-architectural-visualization/163126-the-subject-of-the-photorealistic-image-is-the-experts-silhouette-emerges-from-2048x512.jpg)
 
-**Client-facing judgment.** Knowing whether a visualization communicates clearly, whether the camera angle tells the right story, whether the lighting matches the design intent — these decisions still require human judgment and project context.
+![163126-the-subject-of-the-photorealistic-image-is-The-experts-silhouette-emerges-from-2048x512](/images/ai-in-architectural-visualization/163126-the-subject-of-the-photorealistic-image-is-the-experts-silhouette-emerges-from-2048x512.jpg)
+
+Detail and precision. AI image tools tend toward soft, averaged-looking results. Architectural visualization requires hard, accurate edges, correct proportions, and material behavior that matches what will actually be built. These are in tension.
+
+Client-facing judgment. Knowing whether a visualization communicates clearly, whether the camera angle tells the right story, whether the lighting matches the design intent — these decisions still require human judgment and project context.
+
+![232506-futurist-architecture-Luxury-cultural-centre-based-in-a-renovated-building-busy](/images/ai-in-architectural-visualization/232506-futurist-architecture-luxury-cultural-centre-based-in-a-renovated-building-busy.jpg)
+![Camera_LEGI_3266_B_verzioa-240x150](/images/ai-in-architectural-visualization/camera-legi-3266-b-verzioa-240x150.jpg)
+![Footer-CTA-400x315](/images/ai-in-architectural-visualization/footer-cta-400x315.jpg)
+
+![Before: Before](/images/ai-in-architectural-visualization/225825-street-view-of-old-industrial-building-abandoned-in-europe-from-1910s-no-veget.jpg)
+![After: After](/images/ai-in-architectural-visualization/230338-cinematic-film-still-luxury-cultural-centre-based-in-a-renovated-building-cafe.jpg)
 
 ## What We Actually Use in Production
 
-- **V-Ray AI denoiser** — every render
-- **ComfyUI pipelines** — concept batch generation, material exploration
-- **AI upscaling** — web delivery, previews
-- **AI coding assistants** — MAXScript and automation development
-- **Real-time engines (Unreal Engine 5)** — VR and interactive deliverables, with AI-enhanced global illumination and denoising
+- V-Ray AI denoiser — every render
+- ComfyUI pipelines — concept batch generation, material exploration
+- AI upscaling — web delivery, previews
+- AI coding assistants — MAXScript and automation development
+- Real-time engines (Unreal Engine 5) — VR and interactive deliverables, with AI-enhanced global illumination and denoising
 
 ## The Honest Position
 

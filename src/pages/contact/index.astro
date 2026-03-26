@@ -1,34 +1,27 @@
 ---
 // src/pages/contact/index.astro
-// New page — did not exist on the WordPress prototype
-// Form uses Formspree (replace YOUR_FORM_ID with actual Formspree endpoint)
 
 import Page from '../../layouts/Page.astro';
-import PageHero from '../../components/ui/PageHero.astro';
+import SectionBanner from '../../components/ui/SectionBanner.astro';
 ---
 
 <Page
   title="Contact"
   description="Start a conversation about your visualization project. 30-minute consultation, no charge. Vision Graphics Kft., Budapest."
->
-
-  <PageHero
-    image="/_img/banners/banner-services.jpg"
-    label="Let's Talk"
-    title="About Your Project"
-  />
+  fullBleed
+  >
   <div class="contact-page">
 
-    <div class="contact-header">
-      <p class="section-label">Get in Touch</p>
-      <h2 class="display-lg">Let's Talk About<br /><em>Your Project</em></h2>
-      <p class="contact-intro">
-        30-minute consultation, no charge. Tell us what you're building
-        and we'll tell you what's realistic.
-      </p>
-    </div>
+    <SectionBanner
+      image="/_img/banners/banner-services.jpg"
+      label="Let's Talk"
+      title="About Your Project"
+      size="page"
+      headingLevel="h1"
+    />
 
-    <div class="contact-layout">
+    <section class="contact-section section">
+    <div class="container contact-layout">
 
       <!-- Contact info -->
       <div class="contact-info">
@@ -182,6 +175,7 @@ import PageHero from '../../components/ui/PageHero.astro';
       </div>
 
     </div>
+    </section>
   </div>
 </Page>
 
@@ -224,24 +218,9 @@ import PageHero from '../../components/ui/PageHero.astro';
 </script>
 
 <style>
-  .contact-page { max-width: 1100px; margin-inline: auto; }
+  .contact-page { width: 100%; }
 
-  .contact-header { margin-bottom: 3.5rem; }
-
-  .contact-header h1 {
-    margin: 0.75rem 0 1.25rem;
-  }
-
-  .contact-header h1 em {
-    font-style: italic;
-    color: var(--color-accent);
-  }
-
-  .contact-intro {
-    font-size: var(--fs-small);
-    color: var(--color-text-muted);
-    max-width: 52ch;
-  }
+  .contact-section { padding-block: clamp(3rem, 5vw, 5rem); }
 
   /* Layout */
   .contact-layout {
@@ -423,7 +402,7 @@ import PageHero from '../../components/ui/PageHero.astro';
   .form-status--err { color: var(--color-accent-2); }
 
   /* Responsive */
-  @media (max-width: 900px) {
+  @media (max-width: 1100px) {
     .contact-layout { grid-template-columns: 1fr; gap: 3rem; }
   }
 

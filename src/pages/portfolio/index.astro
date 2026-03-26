@@ -2,7 +2,7 @@
 // src/pages/portfolio/index.astro
 
 import Page from '../../layouts/Page.astro';
-import PageHero from '../../components/ui/PageHero.astro';
+import SectionBanner from '../../components/ui/SectionBanner.astro';
 import PortfolioFilter from '../../components/portfolio/PortfolioFilter';
 import { getCollection } from 'astro:content';
 import type { ProjectMeta } from '../../components/portfolio/PortfolioFilter';
@@ -37,10 +37,12 @@ const maxYear = Math.max(...years);
   fullBleed
 >
 
-  <PageHero
+  <SectionBanner
     image="/_img/banners/banner-arch-viz.jpg"
     label="Selected Work"
     title="500+ Projects"
+    size="page"
+    headingLevel="h1"
   />
   <div class="portfolio-page">
     <div class="portfolio-header container">

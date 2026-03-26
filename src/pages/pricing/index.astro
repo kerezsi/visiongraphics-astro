@@ -2,7 +2,7 @@
 // src/pages/pricing/index.astro
 
 import Page from '../../layouts/Page.astro';
-import PageHero from '../../components/ui/PageHero.astro';
+import SectionBanner from '../../components/ui/SectionBanner.astro';
 
 const packages = [
   {
@@ -55,14 +55,20 @@ const packages = [
 <Page
   title="Pricing"
   description="Transparent pricing for architectural visualization. Essential from €5,000, Professional from €15,000, Enterprise custom. Vision Graphics Kft., Budapest."
+  fullBleed
 >
-
-  <PageHero
-    image="/_img/banners/banner-general.jpg"
-    label="Transparent Pricing"
-    title="No Surprises."
-  />
   <div class="pricing-page">
+
+    <SectionBanner
+      image="/_img/banners/banner-general.jpg"
+      label="Transparent Pricing"
+      title="No Surprises."
+      size="page"
+      headingLevel="h1"
+    />
+
+    <section class="pricing-section section">
+    <div class="container">
 
     <!-- Header -->
     <div class="pricing-header">
@@ -282,23 +288,17 @@ const packages = [
       <a href="/contact/" class="btn btn-primary">Get in Touch</a>
     </div>
 
+    </div>
+    </section>
   </div>
 </Page>
 
 <style>
-  .pricing-page { max-width: 1000px; }
+  .pricing-page { width: 100%; }
+  .pricing-section { padding-block: clamp(3rem, 5vw, 5rem); }
 
   /* Header */
   .pricing-header { margin-bottom: 3rem; }
-
-  .pricing-h1 {
-    margin: 0.75rem 0 1.25rem;
-  }
-
-  .pricing-h1 em {
-    font-style: italic;
-    color: var(--color-accent);
-  }
 
   .pricing-intro {
     font-size: var(--fs-small);

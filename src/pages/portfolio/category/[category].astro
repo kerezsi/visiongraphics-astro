@@ -3,7 +3,7 @@
 // Pre-built category pages for SEO
 
 import Page from '../../../layouts/Page.astro';
-import PageHero from '../../../components/ui/PageHero.astro';
+import SectionBanner from '../../../components/ui/SectionBanner.astro';
 import { getCollection } from 'astro:content';
 
 const CATEGORY_LABELS: Record<string, string> = {
@@ -47,11 +47,12 @@ const label = CATEGORY_LABELS[category] ?? category;
   description={`${label} projects by Vision Graphics Kft. ${projects.length} projects. Budapest-based, working globally since 1996.`}
   fullBleed
 >
-  <PageHero
+  <SectionBanner
     image="/_img/banners/banner-arch-viz.jpg"
     label="Portfolio"
     title={label}
-    variant="section"
+    size="page"
+    headingLevel="h1"
   />
   <div class="category-page">
 

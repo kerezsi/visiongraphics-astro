@@ -36,8 +36,10 @@ const nextArticle = sorted[currentIndex - 1] ?? null;
   title={data.title}
   description={data.excerpt}
   image={data.coverImage}
+  fullBleed
 >
   <div class="article-page">
+  <div class="container article-inner">
 
     <!-- Breadcrumb -->
     <div class="article-breadcrumb">
@@ -111,10 +113,12 @@ const nextArticle = sorted[currentIndex - 1] ?? null;
     </nav>
 
   </div>
+  </div>
 </Page>
 
 <style>
-  .article-page { max-width: 900px; }
+  .article-page { width: 100%; }
+  .article-inner { padding-block: clamp(3rem, 5vw, 5rem); }
 
   .article-breadcrumb {
     display: flex;

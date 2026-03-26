@@ -1,6 +1,6 @@
 ---
 import Page from '../../layouts/Page.astro';
-import PageHero from '../../components/ui/PageHero.astro';
+import SectionBanner from '../../components/ui/SectionBanner.astro';
 ---
 
 <Page
@@ -8,11 +8,12 @@ import PageHero from '../../components/ui/PageHero.astro';
   description="Airport terminals, urban masterplans, infrastructure corridors. Vision Graphics Kft. — Budapest-based, working globally since 1996."
 >
 
-  <PageHero
+  <SectionBanner
     image="/_img/banners/banner-large-scale.jpg"
     label="Large-Scale Projects"
     title="Visualize Complex Developments"
-    variant="section"
+    size="page"
+    headingLevel="h1"
   />
   <div class="service-page">
 
@@ -26,16 +27,15 @@ import PageHero from '../../components/ui/PageHero.astro';
     <h2 class="display-lg service-h1">Large-Scale Projects</h2>
     <p class="service-tagline-large">Big projects need a studio that's done it before.</p>
 
-    <p class="service-lead">
-      Airport terminals, urban masterplans, infrastructure corridors, exhibition pavilions.
-      We know how to communicate complex multi-phase projects to multiple stakeholder audiences —
-      from planning committees to international investors.
-    </p>
-
-    <hr class="service-rule" />
-
     <div class="service-body-grid">
       <div class="service-main">
+
+        <p class="service-lead">
+          Big projects need clear visuals. Over three decades, we've helped clients turn complex
+          plans into visuals that make sense to everyone — from city planners to the public.
+          Their complexity demands visualization that combines technical precision with narrative
+          clarity to drive understanding and action.
+        </p>
 
         <h2 class="service-section-h2">Notable past work</h2>
         <div class="notable-grid">
@@ -56,27 +56,6 @@ import PageHero from '../../components/ui/PageHero.astro';
           ))}
         </div>
 
-        <h2 class="service-section-h2">What we handle</h2>
-        <ul class="results-list">
-          <li>Multi-phase visualization — show each stage clearly</li>
-          <li>Multiple stakeholder outputs from one 3D model</li>
-          <li>Planning authority submissions — clear, compliant, persuasive</li>
-          <li>Investor and board-level presentations</li>
-          <li>Public communication materials (microsite, VR, film)</li>
-          <li>4K animations for international marketing campaigns</li>
-        </ul>
-
-        <h2 class="service-section-h2">Why scale is different</h2>
-        <p class="body-text">
-          Large projects have more stakeholders, more phases, and more ways to misalign.
-          We've been on both sides of those problems — and we know which visual approaches
-          actually clarify complex projects rather than just looking impressive.
-        </p>
-        <p class="body-text">
-          We also bring in the right specialists — BIM experts, drone pilots, photogrammetry
-          specialists, character animators — while keeping László as your single contact throughout.
-        </p>
-
       </div>
 
       <aside class="service-sidebar">
@@ -94,158 +73,125 @@ import PageHero from '../../components/ui/PageHero.astro';
     </div>
 
   </div>
+
+  <SectionBanner
+    image="/_img/banners/banner-arch-viz.jpg"
+    label="Urban Development"
+    title="Cities in Motion"
+    headingLevel="h2"
+  />
+  <div class="service-section container">
+    <p class="section-body">Cities are always changing. We help you show people what's coming and why it matters. When a city's changing, people have questions — good visuals give them answers before they even ask, speeding up approvals and getting everyone on board faster.</p>
+    <ul class="results-list">
+      <li>Clear views of how new buildings fit into neighbourhoods</li>
+      <li>Virtual tours so people can explore future spaces</li>
+      <li>Time-lapse views showing how the project will roll out</li>
+      <li>Environmental impact visuals that make technical data easy to grasp</li>
+      <li>Real-world simulations of traffic and people moving through spaces</li>
+    </ul>
+  </div>
+
+  <SectionBanner
+    image="/_img/banners/banner-general.jpg"
+    label="Infrastructure"
+    title="Complex Made Clear"
+    headingLevel="h2"
+  />
+  <div class="service-section container">
+    <p class="section-body">Roads, bridges, and railways keep cities moving. Explaining these projects can be tricky. We break down complex infrastructure into clear visuals that help planners make better decisions and show the public why changes are worth it.</p>
+    <ul class="results-list">
+      <li>How construction will happen, step by step</li>
+      <li>Where new projects connect with existing ones</li>
+      <li>How traffic will keep flowing during construction</li>
+      <li>What the environmental impact will be</li>
+      <li>How the finished project will benefit everyone</li>
+    </ul>
+  </div>
+
+  <SectionBanner
+    image="/_img/banners/banner-large-scale.jpg"
+    label="Airport Projects"
+    title="Airports Never Stop"
+    headingLevel="h2"
+  />
+  <div class="service-section container">
+    <p class="section-body">Airports are like small cities that never stop. They need to grow and change without disrupting operations. We help spot problems early — when they're still cheap to fix — and show how to keep the airport running smoothly while building for the future.</p>
+    <ul class="results-list">
+      <li>Phased construction visualization — show how to build without disrupting flights</li>
+      <li>Passenger flow simulations that test new layouts</li>
+      <li>Interior design visuals for choosing the best options</li>
+      <li>Interactive comparisons of different design choices</li>
+      <li>Clear wayfinding and signage visualization</li>
+      <li>Security and operations planning</li>
+      <li>Future expansion scenarios</li>
+    </ul>
+  </div>
+
+  <SectionBanner
+    image="/_img/banners/banner-workflow.jpg"
+    label="Industrial"
+    title="Factories That Work"
+    headingLevel="h2"
+  />
+  <div class="service-section container">
+    <p class="section-body">Factories and production spaces need to work efficiently. We help plan these spaces and show people how to use them. Our animated training materials help workers understand new setups quickly — they can see exactly how processes should work, making training more effective and reducing mistakes.</p>
+    <ul class="results-list">
+      <li>Factory layout planning that optimises space</li>
+      <li>Machine placement visuals that show how everything fits</li>
+      <li>Animated process workflows for packaging and manufacturing</li>
+      <li>Safety and emergency route planning</li>
+      <li>Interactive training materials for workers</li>
+      <li>Future expansion options</li>
+    </ul>
+  </div>
+
 </Page>
 
 <style>
-  .service-page { max-width: 1060px; }
-
-  .service-breadcrumb {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-family: var(--font-body);
-    font-size: var(--fs-xs);
-    color: var(--color-text-faint);
-    margin-bottom: 2rem;
+  .service-page {
+    max-width: 1060px;
+    padding-top: clamp(2rem, 4vw, 3rem);
   }
 
+  .service-breadcrumb {
+    display: flex; align-items: center; gap: 0.5rem;
+    font-family: var(--font-body); font-size: var(--fs-xs);
+    color: var(--color-text-faint); margin-bottom: 2rem;
+  }
   .service-breadcrumb a { color: var(--color-text-muted); text-decoration: none; transition: color 200ms; }
   .service-breadcrumb a:hover { color: var(--color-accent); }
 
   .service-h1 { margin: 0.5rem 0 0.75rem; }
+  .service-tagline-large { font-family: var(--font-display); font-size: var(--fs-h6); font-style: italic; color: var(--color-accent); margin-bottom: 1.5rem; }
+  .service-lead { font-size: var(--fs-small); color: var(--color-text-muted); max-width: 65ch; line-height: 1.75; margin: 0 0 1.5rem; }
 
-  .service-tagline-large {
-    font-family: var(--font-display);
-    font-size: var(--fs-h6);
-    font-style: italic;
-    color: var(--color-accent);
-    margin-bottom: 1.5rem;
-  }
+  .service-body-grid { display: grid; grid-template-columns: 1fr 240px; gap: 4rem; align-items: start; }
+  .service-main { display: flex; flex-direction: column; gap: 1.5rem; }
 
-  .service-lead {
-    font-size: var(--fs-small);
-    color: var(--color-text-muted);
-    max-width: 65ch;
-    line-height: 1.75;
-    margin: 0 0 2rem;
-  }
+  .service-section-h2 { font-family: var(--font-body); font-size: var(--fs-xs); font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--color-text-faint); margin-bottom: 0.5rem; }
 
-  .service-rule { border-color: var(--color-border); margin-bottom: 2.5rem; }
-
-  .service-body-grid {
-    display: grid;
-    grid-template-columns: 1fr 240px;
-    gap: 4rem;
-    align-items: start;
-  }
-
-  .service-main { display: flex; flex-direction: column; gap: 2.5rem; }
-
-  .service-section-h2 {
-    font-family: var(--font-body);
-    font-size: var(--fs-xs);
-    font-weight: 500;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--color-text-faint);
-    margin-bottom: 1rem;
-  }
-
-  .notable-grid {
-    display: flex;
-    flex-direction: column;
-    border: 1px solid var(--color-border);
-  }
-
-  .notable-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.85rem 1rem;
-    border-bottom: 1px solid var(--color-border);
-    gap: 1rem;
-    transition: background 200ms;
-  }
-
+  .notable-grid { display: flex; flex-direction: column; border: 1px solid var(--color-border); }
+  .notable-item { display: flex; justify-content: space-between; align-items: center; padding: 0.85rem 1rem; border-bottom: 1px solid var(--color-border); gap: 1rem; transition: background 200ms; }
   .notable-item:last-child { border-bottom: none; }
   .notable-item:hover { background: var(--color-surface); }
-
   .notable-name { font-size: var(--fs-small); color: var(--color-text-muted); }
+  .notable-year { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-text-faint); white-space: nowrap; }
 
-  .notable-year {
-    font-family: var(--font-mono);
-    font-size: var(--fs-xs);
-    color: var(--color-text-faint);
-    white-space: nowrap;
-  }
+  /* Sub-sections */
+  .service-section { padding-block: clamp(2rem, 4vw, 3rem); }
 
-  .results-list {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-  }
+  .section-body { font-size: var(--fs-small); color: var(--color-text-muted); max-width: 65ch; line-height: 1.75; margin: 0 0 1.5rem; }
 
-  .results-list li {
-    font-size: var(--fs-small);
-    color: var(--color-text-muted);
-    padding-left: 1.25rem;
-    position: relative;
-    line-height: 1.5;
-  }
+  .results-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.6rem; }
+  .results-list li { font-size: var(--fs-small); color: var(--color-text-muted); padding-left: 1.25rem; position: relative; line-height: 1.5; }
+  .results-list li::before { content: '→'; position: absolute; left: 0; color: var(--color-accent); font-size: var(--fs-xs); }
 
-  .results-list li::before {
-    content: '→';
-    position: absolute;
-    left: 0;
-    color: var(--color-accent);
-    font-size: var(--fs-xs);
-  }
-
-  .body-text {
-    font-size: var(--fs-small);
-    color: var(--color-text-muted);
-    max-width: 65ch;
-    line-height: 1.75;
-    margin: 0;
-  }
-
-  .service-sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    position: sticky;
-    top: 5rem;
-  }
-
+  /* Sidebar */
+  .service-sidebar { display: flex; flex-direction: column; gap: 2rem; position: sticky; top: 5rem; }
   .sidebar-block { display: flex; flex-direction: column; gap: 0.6rem; }
-
-  .sidebar-label {
-    font-family: var(--font-body);
-    font-size: var(--fs-xs);
-    font-weight: 500;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--color-text-faint);
-  }
-
-  .sidebar-price {
-    font-family: var(--font-display);
-    font-size: var(--fs-h5);
-    font-weight: 300;
-    color: var(--color-text);
-    margin: 0;
-  }
-
-  .sidebar-note {
-    font-size: var(--fs-xs);
-    color: var(--color-text-faint);
-    line-height: 1.5;
-    margin: 0;
-    max-width: none;
-  }
-
+  .sidebar-label { font-family: var(--font-body); font-size: var(--fs-xs); font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--color-text-faint); }
+  .sidebar-price { font-family: var(--font-display); font-size: var(--fs-h5); font-weight: 300; color: var(--color-text); margin: 0; }
+  .sidebar-note { font-size: var(--fs-xs); color: var(--color-text-faint); line-height: 1.5; margin: 0; max-width: none; }
   .sidebar-cta { display: flex; flex-direction: column; gap: 0.75rem; }
   .sidebar-btn { width: 100%; justify-content: center; }
 

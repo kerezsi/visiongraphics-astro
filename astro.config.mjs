@@ -2,6 +2,7 @@ import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import tailwind from '@astrojs/tailwind';
 import { tokenEditor } from './src/integrations/token-editor/index.ts';
+import { editorWatcher } from './src/integrations/editor-watcher/index.ts';
 
 export default defineConfig({
   site: 'https://visiongraphics.eu',
@@ -18,6 +19,7 @@ export default defineConfig({
   },
   integrations: [
     tokenEditor(),
+    editorWatcher(),
     react(),
     tailwind({
       applyBaseStyles: false, // we apply our own base in global.css

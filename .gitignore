@@ -40,3 +40,7 @@ public/hero-bg-2.jpg
 public/hero-bg-3.jpg
 public/hero-about.jpg
 public/laszlo.jpg
+
+# Editor-uploaded images — local only, served via Express static, not committed
+public/images/
+public/_img/

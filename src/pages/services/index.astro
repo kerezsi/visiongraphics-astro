@@ -2,7 +2,7 @@
 // src/pages/services/index.astro
 
 import Page from '../../layouts/Page.astro';
-import PageHero from '../../components/ui/PageHero.astro';
+import SectionBanner from '../../components/ui/SectionBanner.astro';
 
 const services = [
   {
@@ -80,10 +80,12 @@ const services = [
   fullBleed
 >
 
-  <PageHero
+  <SectionBanner
     image="/_img/banners/banner-services.jpg"
     label="Visuals & Solutions"
     title="Show It, Scale It, Build It."
+    size="page"
+    headingLevel="h1"
   />
   <div class="services-page">
 

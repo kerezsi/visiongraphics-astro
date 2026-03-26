@@ -9,7 +9,10 @@
     "astro": "astro",
     "check": "astro check",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build -o storybook-static"
+    "build-storybook": "storybook build -o storybook-static",
+    "editor": "concurrently --kill-others-on-fail -n server,client -c blue,green \"npm run editor:server\" \"npm run editor:client\"",
+    "editor:server": "tsx tools/editor/server/index.ts",
+    "editor:client": "vite --config tools/editor/vite.config.ts"
   },
   "dependencies": {
     "@astrojs/react": "^5.0.1",
@@ -21,16 +24,36 @@
     "sharp": "^0.33.0"
   },
   "devDependencies": {
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^8.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
     "@storybook/addon-a11y": "^8.6.18",
     "@storybook/addon-essentials": "^8.6.18",
     "@storybook/react": "^8.6.18",
     "@storybook/react-vite": "^8.6.18",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.3",
+    "@types/multer": "^1.4.12",
     "@types/node": "^25.5.0",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
+    "@types/ws": "^8.18.1",
+    "@vitejs/plugin-react": "^4.4.1",
     "@xmldom/xmldom": "^0.8.11",
+    "concurrently": "^9.1.2",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "gray-matter": "^4.0.3",
+    "multer": "^1.4.5-lts.1",
     "pagefind": "^1.0.0",
+    "remark-parse": "^11.0.0",
+    "remark-stringify": "^11.0.0",
     "storybook": "^8.6.18",
-    "typescript": "^5.0.0"
+    "tsx": "^4.19.4",
+    "typescript": "^5.0.0",
+    "unified": "^11.0.5",
+    "vite": "^6.3.5",
+    "ws": "^8.18.2",
+    "zustand": "^5.0.5"
   }
 }
