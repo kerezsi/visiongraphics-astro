@@ -66,6 +66,53 @@ const youtubeEmbedComponent = component({
   preview: (props) => null,
 });
 
+const deliverableGridComponent = component({
+  label: 'Deliverable Grid',
+  schema: {
+    columns: fields.select({
+      label: 'Columns',
+      options: [{ label: '2', value: '2' }, { label: '3', value: '3' }],
+      defaultValue: '3',
+    }),
+    items: fields.array(
+      fields.object({
+        title: fields.text({ label: 'Title' }),
+        desc:  fields.text({ label: 'Description', multiline: true }),
+      }),
+      { label: 'Items', itemLabel: (p) => p.fields.title.value || 'Item' }
+    ),
+  },
+  preview: (props) => null,
+});
+
+const timelineTableComponent = component({
+  label: 'Timeline / Phase Table',
+  schema: {
+    rows: fields.array(
+      fields.object({
+        scope:        fields.text({ label: 'Phase / Scope' }),
+        deliverables: fields.text({ label: 'Deliverables', multiline: true }),
+      }),
+      { label: 'Rows', itemLabel: (p) => p.fields.scope.value || 'Row' }
+    ),
+  },
+  preview: (props) => null,
+});
+
+const notableGridComponent = component({
+  label: 'Notable Projects Grid',
+  schema: {
+    items: fields.array(
+      fields.object({
+        name: fields.text({ label: 'Project Name' }),
+        year: fields.text({ label: 'Year' }),
+      }),
+      { label: 'Items', itemLabel: (p) => p.fields.name.value || 'Project' }
+    ),
+  },
+  preview: (props) => null,
+});
+
 // ---------------------------------------------------------------------------
 // Keystatic config
 // ---------------------------------------------------------------------------
@@ -121,8 +168,12 @@ export default config({
         content: fields.mdx({
           label: 'Body Content',
           components: {
-            SectionBanner: sectionBannerComponent,
-            ImageGallery: imageGalleryComponent,
+            SectionBanner:   sectionBannerComponent,
+            ImageGallery:    imageGalleryComponent,
+            ImageCompare:    imageCompareComponent,
+            DeliverableGrid: deliverableGridComponent,
+            TimelineTable:   timelineTableComponent,
+            NotableGrid:     notableGridComponent,
           },
         }),
       },
@@ -174,6 +225,10 @@ export default config({
         city: fields.relationship({ label: 'City', collection: 'cities' }),
         country: fields.relationship({ label: 'Country', collection: 'countries' }),
         clientType: fields.relationship({ label: 'Client Type', collection: 'clientTypes' }),
+        techniques: fields.array(
+          fields.text({ label: 'Technique Slug' }),
+          { label: 'Vision-Tech Techniques Used', itemLabel: (p) => p.value }
+        ),
         featured: fields.checkbox({ label: 'Featured', defaultValue: false }),
         published: fields.checkbox({ label: 'Published', defaultValue: true }),
         // MDX body: additional text, gallery images, 360 tours, films, video
@@ -181,8 +236,9 @@ export default config({
           label: 'Additional Content (images, tours, films)',
           components: {
             ImageGallery: imageGalleryComponent,
-            Tour360: tour360Component,
-            FilmEmbed: filmEmbedComponent,
+            ImageCompare: imageCompareComponent,
+            Tour360:      tour360Component,
+            FilmEmbed:    filmEmbedComponent,
             YoutubeEmbed: youtubeEmbedComponent,
           },
         }),
@@ -274,6 +330,9 @@ export default config({
           label: 'Body Content',
           components: {
             ImageGallery: imageGalleryComponent,
+            Tour360:      tour360Component,
+            FilmEmbed:    filmEmbedComponent,
+            YoutubeEmbed: youtubeEmbedComponent,
           },
         }),
       },

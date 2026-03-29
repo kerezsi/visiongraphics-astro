@@ -3,11 +3,14 @@
 import { getCollection } from 'astro:content';
 import Page from '../../layouts/Page.astro';
 import SectionBanner from '../../components/ui/SectionBanner.astro';
-import BlockRenderer from '../../components/blocks/BlockRenderer.astro';
 import MdxSectionBanner from '../../components/mdx/SectionBanner.astro';
 import DeliverableGrid from '../../components/mdx/DeliverableGrid.astro';
 import TimelineTable from '../../components/mdx/TimelineTable.astro';
 import NotableGrid from '../../components/mdx/NotableGrid.astro';
+import ImageGallery from '../../components/mdx/ImageGallery.astro';
+import ImageCompare from '../../components/mdx/ImageCompare.astro';
+import ArticleGalleryMounter from '../../components/media/ArticleGalleryMounter.tsx';
+import ArticleImageCompareMounter from '../../components/media/ArticleImageCompareMounter.tsx';
 
 export async function getStaticPaths() {
   const allServices = await getCollection('services', ({ data }) => data.published);
@@ -21,9 +24,6 @@ if (!entry) return Astro.redirect('/services/');
 const { data } = entry;
 const { Content } = await entry.render();
 
-// Legacy blocks path (files not yet converted to MDX)
-const blocks = data.blocks ?? [];
-const hasBlocks = blocks.length > 0;
 ---
 
 <Page title={`${data.title} — Services`} description={data.description} fullBleed>
@@ -41,23 +41,20 @@ const hasBlocks = blocks.length > 0;
       <span>{data.title}</span>
     </div>
 
-    {hasBlocks ? (
-      /* Legacy: render blocks from frontmatter */
-      <div class="service-content">
-        {blocks.map((block: any) => <BlockRenderer block={block} />)}
+    <div class="service-body-grid container">
+      <div class="service-main">
+        <Content components={{
+          SectionBanner: MdxSectionBanner,
+          DeliverableGrid,
+          TimelineTable,
+          NotableGrid,
+          ImageGallery,
+          ImageCompare,
+        }} />
+        <ArticleGalleryMounter client:load />
+        <ArticleImageCompareMounter client:load />
       </div>
-    ) : (
-      /* New: MDX body + fixed sidebar layout */
-      <div class="service-body-grid container">
-        <div class="service-main">
-          <Content components={{
-            SectionBanner: MdxSectionBanner,
-            DeliverableGrid,
-            TimelineTable,
-            NotableGrid,
-          }} />
-        </div>
-        <aside class="service-sidebar">
+      <aside class="service-sidebar">
           {data.startRequirements && (
             <div class="sidebar-block">
               <p class="sidebar-block-label">What you need to start</p>
@@ -82,7 +79,6 @@ const hasBlocks = blocks.length > 0;
           </div>
         </aside>
       </div>
-    )}
 
     <div class="service-cta container">
       <a href="/portfolio/" class="btn btn-secondary">See Our Work</a>

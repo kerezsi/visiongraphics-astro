@@ -12,7 +12,8 @@
       "WebFetch(domain:dev.visiongraphics.eu)",
       "Bash(Get-ChildItem \"D:\\\\sites\\\\visiongraphics-astro\\\\src\\\\content\\\\vision-tech\\\\*.mdx\")",
       "Bash(while read:*)",
-      "Bash(do sed:*)"
+      "Bash(do sed:*)",
+      "Bash(head -5 /d/sites/visiongraphics-astro/src/content/projects/*.mdx)"
     ]
   }
 }

@@ -20,7 +20,7 @@ Target: rebuild in Astro, deploy to Cloudflare Pages.
 | Styling | Tailwind CSS v3 |
 | Interactivity | React islands (`client:load`) |
 | Content | Astro Content Collections + Keystatic CMS |
-| Content format | MDX (articles, services, vision-tech) + YAML metadata (projects) |
+| Content format | MDX (all collections) + YAML metadata (reference collections) |
 | Search | Pagefind (post-build, static) |
 | Hosting | Cloudflare Pages (staging: visiongraphics-astro.pages.dev) |
 | Image Storage | Cloudflare R2 bucket: `visiongraphics-images` |
@@ -51,9 +51,9 @@ Content is managed via **Keystatic CMS** at `http://localhost:4321/keystatic` in
 | Collection | Path | Format | Notes |
 |---|---|---|---|
 | Articles | `src/content/articles/*.mdx` | MDX | Blog posts with components |
-| Services | `src/content/services/*.mdx` | MDX | Service pages with components |
-| Projects | `src/content/projects/*.md` | MD + YAML blocks | Pending MDX migration |
-| Vision-Tech | `src/content/vision-tech/*.md` | MD | Pending MDX migration |
+| Services | `src/content/services/*.mdx` | MDX | Service pages with sidebar |
+| Projects | `src/content/projects/*.mdx` | MDX | Portfolio projects |
+| Vision-Tech | `src/content/vision-tech/*.mdx` | MDX | Technology detail pages |
 | Clients | `src/content/clients/*.yaml` | YAML | Reference collection |
 | Designers | `src/content/designers/*.yaml` | YAML | Reference collection |
 | Cities | `src/content/cities/*.yaml` | YAML | Reference collection |
@@ -183,10 +183,11 @@ src/components/
   layout/    Header.astro, Footer.astro, Nav.astro, MobileNav.tsx
   ui/        Button.astro, Tag.astro, SectionLabel.astro, SectionBanner.astro
   portfolio/ PortfolioGrid.astro, PortfolioFilter.tsx, ProjectCard.astro, ProjectGallery.astro
-  media/     Tour360.astro, FilmEmbed.astro, ImageLightbox.tsx
+  media/     Tour360.astro, FilmEmbed.astro, ImageLightbox.tsx,
+             ArticleGalleryMounter.tsx, ArticleImageCompareMounter.tsx
   mdx/       SectionBanner.astro, ImageGallery.astro, ImageCompare.astro,
              DeliverableGrid.astro, TimelineTable.astro, NotableGrid.astro
-  blocks/    BlockRenderer.astro  (legacy — used by projects/vision-tech not yet in MDX)
+  blocks/    BlockRenderer.astro  (legacy — kept for reference, no longer used)
 ```
 
 `src/components/ui/SectionBanner.astro` = page-level hero/section divider (used in templates).
@@ -198,16 +199,18 @@ src/components/
 
 See `src/content/config.ts` for full Zod schemas.
 
-### Projects
-Frontmatter fields: title, year, client (reference), designer (reference), city (reference),
-country (reference), clientType (reference), categories (array), features (array),
-coverImage, images (array), published, featured.
-MDX body (after migration): additional text, ImageGallery, Tour360, FilmEmbed, YoutubeEmbed.
+### Projects (MDX)
+Frontmatter fields: title, displayTitle, year, description, story, tasks,
+client (reference), designer (reference), city (reference), country (reference),
+clientType (reference), categories (array of references), features (array),
+techniques (array of vision-tech slugs), tags (array), coverImage, published, featured.
+MDX body: ImageGallery, ImageCompare, Tour360, FilmEmbed, YoutubeEmbed, prose.
+Gallery/compare require `ArticleGalleryMounter` + `ArticleImageCompareMounter` client islands.
 
 ### Services (MDX)
 Frontmatter: title, description, tagline, bannerImage, order, published,
 startRequirements, pricing, sidebarLabel, sidebarContent.
-MDX body: SectionBanner, DeliverableGrid, TimelineTable, prose.
+MDX body: SectionBanner, DeliverableGrid, TimelineTable, NotableGrid, ImageGallery, ImageCompare.
 
 ### Articles (MDX)
 Frontmatter: title, date, excerpt, tags, coverImage, published.
