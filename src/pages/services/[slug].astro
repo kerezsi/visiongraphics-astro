@@ -1,0 +1,184 @@
+---
+// src/pages/services/[slug].astro
+import { getCollection } from 'astro:content';
+import Page from '../../layouts/Page.astro';
+import SectionBanner from '../../components/ui/SectionBanner.astro';
+import BlockRenderer from '../../components/blocks/BlockRenderer.astro';
+import MdxSectionBanner from '../../components/mdx/SectionBanner.astro';
+import DeliverableGrid from '../../components/mdx/DeliverableGrid.astro';
+import TimelineTable from '../../components/mdx/TimelineTable.astro';
+import NotableGrid from '../../components/mdx/NotableGrid.astro';
+
+export async function getStaticPaths() {
+  const allServices = await getCollection('services', ({ data }) => data.published);
+  return allServices.map(entry => ({ params: { slug: entry.slug } }));
+}
+
+const { slug } = Astro.params;
+const allServices = await getCollection('services', ({ data }) => data.published);
+const entry = allServices.find(s => s.slug === slug);
+if (!entry) return Astro.redirect('/services/');
+const { data } = entry;
+const { Content } = await entry.render();
+
+// Legacy blocks path (files not yet converted to MDX)
+const blocks = data.blocks ?? [];
+const hasBlocks = blocks.length > 0;
+---
+
+<Page title={`${data.title} — Services`} description={data.description} fullBleed>
+  <SectionBanner
+    image={data.bannerImage ?? '/_img/banners/banner-arch-viz.jpg'}
+    label="Service"
+    title={data.title}
+    size="page"
+    headingLevel="h1"
+  />
+  <div class="service-page">
+    <div class="service-breadcrumb container">
+      <a href="/services/">Services</a>
+      <span>→</span>
+      <span>{data.title}</span>
+    </div>
+
+    {hasBlocks ? (
+      /* Legacy: render blocks from frontmatter */
+      <div class="service-content">
+        {blocks.map((block: any) => <BlockRenderer block={block} />)}
+      </div>
+    ) : (
+      /* New: MDX body + fixed sidebar layout */
+      <div class="service-body-grid container">
+        <div class="service-main">
+          <Content components={{
+            SectionBanner: MdxSectionBanner,
+            DeliverableGrid,
+            TimelineTable,
+            NotableGrid,
+          }} />
+        </div>
+        <aside class="service-sidebar">
+          {data.startRequirements && (
+            <div class="sidebar-block">
+              <p class="sidebar-block-label">What you need to start</p>
+              <p class="sidebar-block-content">{data.startRequirements}</p>
+            </div>
+          )}
+          {data.sidebarLabel && data.sidebarContent && (
+            <div class="sidebar-block">
+              <p class="sidebar-block-label">{data.sidebarLabel}</p>
+              <p class="sidebar-block-content">{data.sidebarContent}</p>
+            </div>
+          )}
+          {data.pricing && (
+            <div class="sidebar-block">
+              <p class="sidebar-block-label">Pricing</p>
+              <p class="sidebar-block-content">{data.pricing}</p>
+            </div>
+          )}
+          <div class="sidebar-ctas">
+            <a href="/contact/" class="btn btn-primary">Get a Quote</a>
+            <a href="/portfolio/" class="btn btn-ghost">See Our Work</a>
+          </div>
+        </aside>
+      </div>
+    )}
+
+    <div class="service-cta container">
+      <a href="/portfolio/" class="btn btn-secondary">See Our Work</a>
+      <a href="/contact/" class="btn btn-primary">Start a Project</a>
+    </div>
+  </div>
+</Page>
+
+<style>
+  .service-page { padding-block: var(--space-16); }
+  .service-breadcrumb {
+    display: flex; align-items: center; gap: 0.5rem;
+    font-size: var(--fs-xs); color: var(--color-text-faint); margin-bottom: 2rem;
+  }
+  .service-breadcrumb a { color: var(--color-text-muted); text-decoration: none; transition: color 200ms; }
+  .service-breadcrumb a:hover { color: var(--color-accent); }
+  .service-content { margin-bottom: 3rem; }
+  .service-cta { display: flex; gap: 0.75rem; margin-top: 3rem; }
+
+  /* MDX layout */
+  .service-body-grid {
+    display: grid;
+    grid-template-columns: 1fr 240px;
+    gap: 3rem;
+    align-items: start;
+    margin-bottom: 3rem;
+  }
+  @media (max-width: 900px) {
+    .service-body-grid { grid-template-columns: 1fr; }
+  }
+  .service-main {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .service-main :global(p) {
+    font-size: var(--fs-small);
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    margin: 0;
+  }
+  .service-main :global(h2) {
+    font-size: var(--fs-h4);
+    font-weight: 700;
+    color: var(--color-text);
+    margin: 0.5rem 0 0;
+  }
+  .service-main :global(ul) {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .service-main :global(ul li) {
+    font-size: var(--fs-small);
+    color: var(--color-text-muted);
+    padding-left: 1.25rem;
+    position: relative;
+  }
+  .service-main :global(ul li::before) {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--color-accent);
+    font-size: 0.75em;
+  }
+
+  /* SectionBanner inside MDX body: stays within content column (no full-bleed due to sidebar) */
+  .service-main :global(.article-section-banner) {
+    margin-inline: 0;
+  }
+
+  /* Sidebar */
+  .service-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    position: sticky;
+    top: 6rem;
+  }
+  .sidebar-block {
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 1rem;
+  }
+  .sidebar-block-label {
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-faint);
+    margin: 0 0 0.5rem;
+  }
+  .sidebar-block-content { font-size: var(--fs-small); color: var(--color-text-muted); margin: 0; line-height: 1.5; }
+  .sidebar-ctas { display: flex; flex-direction: column; gap: 0.5rem; }
+</style>

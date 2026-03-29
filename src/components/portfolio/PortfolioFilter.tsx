@@ -5,14 +5,21 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 
 // ─── Types ────────────────────────────────────────────────────────
+export interface CategoryRef {
+  id:    string;
+  title: string;
+}
+
 export interface ProjectMeta {
   slug:        string;
   title:       string;
   year:        number;
   client?:     string;
-  location?:   string;
+  designer?:   string;
+  city?:       string;
+  country?:    string;
   description?: string;
-  categories:  string[];
+  categories:  CategoryRef[];
   features:    string[];
   tags:        string[];
   coverImage:  string;
@@ -26,23 +33,6 @@ interface Props {
   minYear:  number;
   maxYear:  number;
 }
-
-// ─── Category labels (display names) ─────────────────────────────
-const CATEGORY_LABELS: Record<string, string> = {
-  'architectural-visualization': 'Architectural',
-  'residential':                 'Residential',
-  'commercial':                  'Commercial',
-  'office':                      'Office',
-  'airport':                     'Airport',
-  'infrastructure':              'Infrastructure',
-  'urban':                       'Urban',
-  'hospitality':                 'Hospitality',
-  'industrial':                  'Industrial',
-  'product-visualization':       'Product',
-  'vr-experience':               'VR',
-  'animation':                   'Animation',
-  'exhibition':                  'Exhibition',
-};
 
 type SortOption = 'newest' | 'oldest' | 'az';
 
@@ -59,10 +49,11 @@ function setParams(params: URLSearchParams) {
 // ─── Main Component ───────────────────────────────────────────────
 export default function PortfolioFilter({ projects, minYear, maxYear }: Props) {
   // ── Derive available filter options from data ──
-  const allCategories = useMemo(() =>
-    [...new Set(projects.flatMap(p => p.categories))].sort(),
-    [projects]
-  );
+  const allCategories = useMemo(() => {
+    const seen = new Map<string, CategoryRef>();
+    projects.flatMap(p => p.categories).forEach(c => { if (!seen.has(c.id)) seen.set(c.id, c); });
+    return [...seen.values()].sort((a, b) => a.title.localeCompare(b.title));
+  }, [projects]);
   const allFeatures = useMemo(() =>
     [...new Set(projects.flatMap(p => p.features))].sort(),
     [projects]
@@ -115,14 +106,14 @@ export default function PortfolioFilter({ projects, minYear, maxYear }: Props) {
   // ── Filter + sort ──
   const filtered = useMemo(() => {
     let result = projects.filter(p => {
-      if (selectedCategories.length && !selectedCategories.some(c => p.categories.includes(c))) return false;
+      if (selectedCategories.length && !selectedCategories.some(c => p.categories.some(pc => pc.id === c))) return false;
       if (selectedFeatures.length   && !selectedFeatures.some(f => p.features.includes(f)))     return false;
       if (p.year < yearRange[0] || p.year > yearRange[1])                                        return false;
       if (only360  && !p.has360)                                                                  return false;
       if (onlyFilm && !p.hasFilm)                                                                 return false;
       if (searchDebounced) {
         const q = searchDebounced.toLowerCase();
-        const searchable = [p.title, p.client, p.location, ...p.tags].join(' ').toLowerCase();
+        const searchable = [p.title, p.client, p.city, p.country, ...p.tags].filter(Boolean).join(' ').toLowerCase();
         if (!searchable.includes(q)) return false;
       }
       return true;
@@ -205,12 +196,12 @@ export default function PortfolioFilter({ projects, minYear, maxYear }: Props) {
           <div className="pf-pills">
             {allCategories.map(cat => (
               <button
-                key={cat}
-                className={`pf-pill ${isActive(selectedCategories, cat) ? 'active' : ''}`}
-                onClick={() => toggle(selectedCategories, cat, setSelectedCategories)}
-                aria-pressed={isActive(selectedCategories, cat)}
+                key={cat.id}
+                className={`pf-pill ${isActive(selectedCategories, cat.id) ? 'active' : ''}`}
+                onClick={() => toggle(selectedCategories, cat.id, setSelectedCategories)}
+                aria-pressed={isActive(selectedCategories, cat.id)}
               >
-                {CATEGORY_LABELS[cat] ?? cat}
+                {cat.title}
               </button>
             ))}
           </div>
@@ -312,13 +303,15 @@ export default function PortfolioFilter({ projects, minYear, maxYear }: Props) {
               <div className="pf-card-body">
                 <div className="pf-card-meta">
                   <span className="pf-cat-tag">
-                    {CATEGORY_LABELS[project.categories[0]] ?? project.categories[0]}
+                    {project.categories[0]?.title ?? ''}
                   </span>
                   <span className="pf-card-year">{project.year}</span>
                 </div>
                 <h3 className="pf-card-title">{project.title}</h3>
-                {(project.client || project.location) && (
-                  <p className="pf-card-sub">{project.client || project.location}</p>
+                {(project.client || project.city || project.country) && (
+                  <p className="pf-card-sub">
+                    {project.client || [project.city, project.country].filter(Boolean).join(', ')}
+                  </p>
                 )}
               </div>
             </a>

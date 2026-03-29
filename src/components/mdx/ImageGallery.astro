@@ -1,0 +1,12 @@
+---
+interface ImageItem {
+  src: string;
+  alt?: string;
+}
+interface Props {
+  images: ImageItem[];
+}
+const { images } = Astro.props;
+const dataImages = JSON.stringify(images).replace(/'/g, '&#39;');
+---
+<div class="article-gallery-mount" data-images={dataImages}></div>

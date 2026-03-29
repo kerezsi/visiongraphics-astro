@@ -3,16 +3,21 @@
 
 import Page from '../../layouts/Page.astro';
 import { getCollection } from 'astro:content';
+import ArticleImageCompareMounter from '../../components/media/ArticleImageCompareMounter.tsx';
+import ArticleGalleryMounter from '../../components/media/ArticleGalleryMounter.tsx';
+import SectionBanner from '../../components/mdx/SectionBanner.astro';
+import ImageGallery from '../../components/mdx/ImageGallery.astro';
+import ImageCompare from '../../components/mdx/ImageCompare.astro';
 
 export async function getStaticPaths() {
   const articles = await getCollection('articles', ({ data }) => data.published);
-  return articles.map(article => ({
-    params: { slug: article.slug },
-    props: { article },
-  }));
+  return articles.map(article => ({ params: { slug: article.slug } }));
 }
 
-const { article } = Astro.props;
+const { slug } = Astro.params;
+const allArticles = await getCollection('articles', ({ data }) => data.published);
+const article = allArticles.find(a => a.slug === slug);
+if (!article) return Astro.redirect('/articles/');
 const { data } = article;
 const { Content } = await article.render();
 
@@ -23,8 +28,7 @@ function formatDate(date: Date): string {
 }
 
 // Adjacent articles for navigation
-const allArticles = await getCollection('articles', ({ data }) => data.published);
-const sorted = allArticles.sort((a, b) =>
+const sorted = [...allArticles].sort((a, b) =>
   new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
 );
 const currentIndex = sorted.findIndex(a => a.slug === article.slug);
@@ -75,7 +79,9 @@ const nextArticle = sorted[currentIndex - 1] ?? null;
     <!-- Content -->
     <div class="article-layout">
       <div class="article-content prose">
-        <Content />
+        <Content components={{ SectionBanner, ImageGallery, ImageCompare }} />
+        <ArticleImageCompareMounter client:load />
+        <ArticleGalleryMounter client:load />
       </div>
 
       <aside class="article-sidebar">
@@ -191,6 +197,49 @@ const nextArticle = sorted[currentIndex - 1] ?? null;
     grid-template-columns: 1fr 220px;
     gap: 4rem;
     align-items: start;
+  }
+
+  /* Section banner blocks inside article prose */
+  .article-content.prose :global(.article-section-banner) {
+    position: relative;
+    height: clamp(80px, 14vw, 180px);
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+    border-radius: var(--radius-sm);
+    margin: 2rem 0;
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .article-content.prose :global(.article-section-banner__overlay) {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.2) 100%);
+  }
+
+  .article-content.prose :global(.article-section-banner__content) {
+    position: relative;
+    padding: 0.75rem 1rem;
+    z-index: 1;
+  }
+
+  .article-content.prose :global(.article-section-banner__label) {
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin: 0 0 0.25rem;
+  }
+
+  .article-content.prose :global(.article-section-banner__title) {
+    font-size: var(--fs-h5);
+    font-weight: 300;
+    color: #fff;
+    margin: 0;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
   }
 
   /* Prose content */

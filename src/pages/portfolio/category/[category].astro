@@ -4,42 +4,34 @@
 
 import Page from '../../../layouts/Page.astro';
 import SectionBanner from '../../../components/ui/SectionBanner.astro';
-import { getCollection } from 'astro:content';
-
-const CATEGORY_LABELS: Record<string, string> = {
-  'architectural-visualization': 'Architectural Visualization',
-  'residential':      'Residential',
-  'commercial':       'Commercial',
-  'office':           'Office',
-  'airport':          'Airport',
-  'infrastructure':   'Infrastructure',
-  'urban':            'Urban',
-  'hospitality':      'Hospitality',
-  'industrial':       'Industrial',
-  'product-visualization': 'Product Visualization',
-  'vr-experience':    'VR Experience',
-  'animation':        'Animation',
-  'exhibition':       'Exhibition',
-};
+import { getCollection, getEntry } from 'astro:content';
 
 export async function getStaticPaths() {
   const allProjects = await getCollection('projects', ({ data }) => data.published);
-  const categories = [...new Set(allProjects.flatMap(p => p.data.categories))];
-
-  return categories.map(category => {
-    const projects = allProjects
-      .filter(p => p.data.categories.includes(category))
-      .sort((a, b) => b.data.year - a.data.year);
-
-    return {
-      params: { category },
-      props: { category, projects },
-    };
-  });
+  const categoryIds = [...new Set(allProjects.flatMap(p => p.data.categories.map(c => c.id)))];
+  return categoryIds.map(categoryId => ({ params: { category: categoryId } }));
 }
 
-const { category, projects } = Astro.props;
-const label = CATEGORY_LABELS[category] ?? category;
+const { category } = Astro.params;
+const allProjects = await getCollection('projects', ({ data }) => data.published);
+const allCategories = await getCollection('categories');
+const catMap = new Map(allCategories.map(c => [c.id, c.data.title]));
+const label = catMap.get(category) ?? category;
+const projects = allProjects
+  .filter(p => p.data.categories.some(c => c.id === category))
+  .sort((a, b) => b.data.year - a.data.year);
+if (!projects.length) return Astro.redirect('/portfolio/');
+
+// Resolve client names and locations for all projects
+const projectMeta = await Promise.all(
+  projects.map(async p => {
+    const client  = p.data.client  ? (await getEntry('clients',   p.data.client.id))?.data.title  : undefined;
+    const city    = p.data.city    ? (await getEntry('cities',    p.data.city.id))?.data.title    : undefined;
+    const country = p.data.country ? (await getEntry('countries', p.data.country.id))?.data.title : undefined;
+    const location = [city, country].filter(Boolean).join(', ') || undefined;
+    return { client, location };
+  })
+);
 ---
 
 <Page
@@ -87,8 +79,8 @@ const label = CATEGORY_LABELS[category] ?? category;
               <span class="cat-card-year">{project.data.year}</span>
             </div>
             <h2 class="cat-card-title">{project.data.title}</h2>
-            {(project.data.client || project.data.location) && (
-              <span class="cat-card-sub">{project.data.client || project.data.location}</span>
+            {(projectMeta[i].client || projectMeta[i].location) && (
+              <span class="cat-card-sub">{projectMeta[i].client || projectMeta[i].location}</span>
             )}
           </div>
         </a>

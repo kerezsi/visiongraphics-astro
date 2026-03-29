@@ -6,7 +6,7 @@ import Base from '../layouts/Base.astro';
 import Header from '../components/layout/Header.astro';
 import Footer from '../components/layout/Footer.astro';
 import Icon from '../components/ui/Icon.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
 
 // Featured projects for homepage preview
 const allProjects = await getCollection('projects', ({ data }) =>
@@ -15,6 +15,15 @@ const allProjects = await getCollection('projects', ({ data }) =>
 const featuredProjects = allProjects
   .sort((a, b) => b.data.year - a.data.year)
   .slice(0, 6);
+
+// Resolve city + country for featured projects
+const featuredLocations = await Promise.all(
+  featuredProjects.map(async p => {
+    const city    = p.data.city    ? (await getEntry('cities',    p.data.city.id))?.data.title    : undefined;
+    const country = p.data.country ? (await getEntry('countries', p.data.country.id))?.data.title : undefined;
+    return [city, country].filter(Boolean).join(', ') || undefined;
+  })
+);
 ---
 
 <Base
@@ -207,7 +216,9 @@ const featuredProjects = allProjects
             <a href="/portfolio/" class="btn btn-secondary">Full Portfolio</a>
           </div>
           <div class="featured-grid">
-            {featuredProjects.map((project, i) => (
+            {featuredProjects.map((project, i) => {
+              const locationStr = featuredLocations[i];
+              return (
               <a
                 href={`/portfolio/${project.slug}/`}
                 class:list={['featured-card', { 'featured-card--large': i === 0 }]}
@@ -222,12 +233,13 @@ const featuredProjects = allProjects
                 <div class="featured-card-body">
                   <span class="featured-card-year">{project.data.year}</span>
                   <h3 class="featured-card-title">{project.data.title}</h3>
-                  {project.data.location && (
-                    <span class="featured-card-location">{project.data.location}</span>
+                  {locationStr && (
+                    <span class="featured-card-location">{locationStr}</span>
                   )}
                 </div>
               </a>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>

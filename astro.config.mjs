@@ -1,37 +1,31 @@
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import tailwind from '@astrojs/tailwind';
-import { tokenEditor } from './src/integrations/token-editor/index.ts';
-import { editorWatcher } from './src/integrations/editor-watcher/index.ts';
+import mdx from '@astrojs/mdx';
+import keystatic from '@keystatic/astro';
+import node from '@astrojs/node';
+
+const isProd = process.env.NODE_ENV === 'production';
 
 export default defineConfig({
   site: 'https://visiongraphics.eu',
-  vite: {
-    server: {
-      watch: {
-        // Ignore large dirs — prevents FSWatcher crashes on Windows with many files
-        // NOTE: do NOT ignore public/** — Vite needs it to serve static files correctly
-        ignored: ['**/node_modules/**', '**/src/content/projects/**', '**/public/portfolio/**'],
-        usePolling: false,
-        stabilityThreshold: 500,
-      },
-    },
-  },
   integrations: [
-    tokenEditor(),
-    editorWatcher(),
     react(),
     tailwind({
-      applyBaseStyles: false, // we apply our own base in global.css
+      applyBaseStyles: false,
     }),
+    mdx(),
+    ...(!isProd ? [keystatic()] : []),
   ],
+  // Dev: server mode — all routes SSR (Keystatic needs this for write API).
+  //   Content pages look up by Astro.params.slug, getStaticPaths provides URL list only.
+  // Prod: static output for Cloudflare Pages.
+  output: isProd ? 'static' : 'server',
+  adapter: !isProd ? node({ mode: 'standalone' }) : undefined,
   image: {
-    // Cloudflare Pages supports sharp
     service: { entrypoint: 'astro/assets/services/sharp' },
   },
-  output: 'static',
   build: {
-    // Clean asset filenames for better caching
     assets: '_assets',
   },
 });

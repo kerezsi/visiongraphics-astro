@@ -4,26 +4,41 @@
 import Page from '../../layouts/Page.astro';
 import SectionBanner from '../../components/ui/SectionBanner.astro';
 import PortfolioFilter from '../../components/portfolio/PortfolioFilter';
-import { getCollection } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
 import type { ProjectMeta } from '../../components/portfolio/PortfolioFilter';
 
 const allProjects = await getCollection('projects', ({ data }) => data.published);
+const allCategories = await getCollection('categories');
+const catMap = new Map(allCategories.map(c => [c.id, c.data.title]));
+
+// Resolve a reference field to its display title
+async function resolveTitle(ref: { id: string; collection: string } | undefined): Promise<string | undefined> {
+  if (!ref) return undefined;
+  const entry = await getEntry(ref.collection as any, ref.id);
+  return entry?.data.title;
+}
 
 // Serialize to plain objects for the React island
-const projectData: ProjectMeta[] = allProjects.map(p => ({
-  slug:        p.slug,
-  title:       p.data.title,
-  year:        p.data.year,
-  client:      p.data.client,
-  location:    p.data.location,
-  description: p.data.description,
-  categories:  p.data.categories,
-  features:    p.data.features,
-  tags:        p.data.tags,
-  coverImage:  p.data.coverImage,
-  featured:    p.data.featured,
-  has360:      (p.data.tour360?.length ?? 0) > 0,
-  hasFilm:     (p.data.films?.length ?? 0) > 0,
+const projectData: ProjectMeta[] = await Promise.all(allProjects.map(async p => {
+  const cityTitle    = await resolveTitle(p.data.city);
+  const countryTitle = await resolveTitle(p.data.country);
+  return {
+    slug:        p.slug,
+    title:       p.data.title,
+    year:        p.data.year,
+    client:      await resolveTitle(p.data.client),
+    designer:    await resolveTitle(p.data.designer),
+    city:        cityTitle,
+    country:     countryTitle,
+    description: p.data.description,
+    categories:  p.data.categories.map(ref => ({ id: ref.id, title: catMap.get(ref.id) ?? ref.id })),
+    features:    p.data.features,
+    tags:        p.data.tags,
+    coverImage:  p.data.coverImage,
+    featured:    p.data.featured,
+    has360:      (p.data.tour360?.length ?? 0) > 0,
+    hasFilm:     (p.data.films?.length ?? 0) > 0,
+  };
 }));
 
 const years = projectData.map(p => p.year);

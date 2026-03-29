@@ -1,0 +1,353 @@
+---
+// src/components/blocks/BlockRenderer.astro
+// Renders a single block object by type.
+// Used by services/[slug].astro and portfolio/[slug].astro
+
+import SectionBanner from '../ui/SectionBanner.astro';
+
+interface Props {
+  block: Record<string, any>;
+  containerClass?: string;
+}
+
+const { block, containerClass } = Astro.props;
+const b = block as Record<string, any>;
+---
+
+{b.type === 'SectionBanner' && (
+  <SectionBanner
+    image={b.image ?? ''}
+    label={b.label ?? ''}
+    title={b.title ?? ''}
+    size={b.size ?? 'section'}
+    headingLevel={b.headingLevel ?? 'h2'}
+    align={b.align}
+  />
+)}
+
+{b.type === 'service-body-grid' && (
+  <div class:list={['service-body-grid', 'container', containerClass]}>
+    <div class="service-main">
+      {(b.main ?? []).map((child: any) => <Astro.self block={child} />)}
+    </div>
+    <aside class="service-sidebar">
+      {(b.sidebar ?? []).map((child: any) => <Astro.self block={child} />)}
+    </aside>
+  </div>
+)}
+
+{b.type === 'section-container' && (
+  <div class:list={['service-section', 'container', containerClass]}>
+    {(b.children ?? []).map((child: any) => <Astro.self block={child} />)}
+  </div>
+)}
+
+{b.type === 'two-col' && (
+  <div class:list={['two-col', containerClass]}>
+    <div class="two-col-left">
+      {(b.left ?? []).map((child: any) => <Astro.self block={child} />)}
+    </div>
+    <div class="two-col-right">
+      {(b.right ?? []).map((child: any) => <Astro.self block={child} />)}
+    </div>
+  </div>
+)}
+
+{b.type === 'heading' && b.level === 'h2' && (
+  <h2 class:list={['service-section-h2', b.className]}>{b.text}</h2>
+)}
+{b.type === 'heading' && b.level === 'h3' && (
+  <h3 class:list={[b.className]}>{b.text}</h3>
+)}
+
+{b.type === 'body-lead' && (
+  <p class="body-lead">{b.text}</p>
+)}
+
+{b.type === 'body-text' && (
+  <p class="body-text">{b.text}</p>
+)}
+
+{b.type === 'section-label' && (
+  <p class="section-label">{b.text}</p>
+)}
+
+{b.type === 'rich-text' && (
+  <div class="rich-text" set:html={b.html} />
+)}
+
+{b.type === 'results-list' && (
+  <ul class="results-list">
+    {(b.items ?? []).map((item: string) => <li>{item}</li>)}
+  </ul>
+)}
+
+{b.type === 'deliverable-grid' && (
+  <div class:list={['deliverable-grid', b.columns === 3 ? 'grid-3' : 'grid-2']}>
+    {(b.items ?? []).map((item: {title: string; desc: string}) => (
+      <div class="deliverable-card">
+        <h4 class="deliverable-title">{item.title}</h4>
+        <p class="deliverable-desc">{item.desc}</p>
+      </div>
+    ))}
+  </div>
+)}
+
+{b.type === 'timeline-table' && (
+  <div class="timeline-table">
+    {(b.rows ?? []).map((row: {scope: string; deliverables: string}) => (
+      <div class="timeline-row">
+        <span class="timeline-scope">{row.scope}</span>
+        <span class="timeline-deliverables">{row.deliverables}</span>
+      </div>
+    ))}
+  </div>
+)}
+
+{b.type === 'notable-grid' && (
+  <div class="notable-grid">
+    {(b.items ?? []).map((item: {name: string; year: string}) => (
+      <div class="notable-item">
+        <span class="notable-name">{item.name}</span>
+        <span class="notable-year">{item.year}</span>
+      </div>
+    ))}
+  </div>
+)}
+
+{b.type === 'single-image' && (
+  <figure class="single-image">
+    <img src={b.src} alt={b.alt ?? ''} loading="lazy" decoding="async" />
+    {b.caption && <figcaption>{b.caption}</figcaption>}
+  </figure>
+)}
+
+{b.type === 'image-gallery' && (
+  <div class="block-gallery">
+    {b.title && <h3 class="gallery-title">{b.title}</h3>}
+    <div class="gallery-grid">
+      {(b.images ?? []).map((img: {src: string; alt: string}) => (
+        <img src={img.src} alt={img.alt ?? ''} loading="lazy" decoding="async" />
+      ))}
+    </div>
+  </div>
+)}
+
+{b.type === 'film-embed' && (
+  <div class="film-block">
+    {b.title && <p class="film-title">{b.title}</p>}
+    <div class="film-ratio">
+      <iframe
+        src={`https://player.vimeo.com/video/${b.vimeoId}`}
+        frameborder="0"
+        allow="autoplay; fullscreen"
+        allowfullscreen
+        loading="lazy"
+      />
+    </div>
+  </div>
+)}
+
+{b.type === 'tour-360' && (
+  <div class="tour-block">
+    <a href={b.url} target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+      ↗ {b.title || 'Launch 360° Tour'}
+    </a>
+  </div>
+)}
+
+{b.type === 'youtube-embed' && (
+  <div class="film-block">
+    {b.title && <p class="film-title">{b.title}</p>}
+    <div class="film-ratio">
+      <iframe
+        src={b.url?.replace('watch?v=', 'embed/')}
+        frameborder="0"
+        allow="autoplay; fullscreen"
+        allowfullscreen
+        loading="lazy"
+      />
+    </div>
+  </div>
+)}
+
+{b.type === 'button-group' && (
+  <div class="button-group">
+    {(b.buttons ?? []).map((btn: {label: string; href: string; variant: string}) => (
+      <a href={btn.href} class:list={['btn', btn.variant]}>{btn.label}</a>
+    ))}
+  </div>
+)}
+
+{b.type === 'sidebar-block' && (
+  <div class="sidebar-block">
+    <p class="sidebar-block-label">{b.label}</p>
+    <p class="sidebar-block-content">{b.content}</p>
+  </div>
+)}
+
+{b.type === 'diff-block' && (
+  <div class="diff-block">
+    <strong>{b.label}</strong>
+    <p>{b.text}</p>
+  </div>
+)}
+
+{b.type === 'cta-section' && (
+  <div class="cta-section container">
+    <h2>{b.heading}</h2>
+    <p>{b.subtext}</p>
+    <a href={b.buttonHref} class="btn btn-primary">{b.buttonLabel}</a>
+  </div>
+)}
+
+<style>
+  /* ── Layout ──────────────────────────────────────────────── */
+  .service-body-grid {
+    display: grid;
+    grid-template-columns: 1fr 240px;
+    gap: 3rem;
+    align-items: start;
+    margin-bottom: 3rem;
+  }
+  @media (max-width: 900px) {
+    .service-body-grid { grid-template-columns: 1fr; }
+  }
+  .service-main { display: flex; flex-direction: column; gap: 1.5rem; }
+  .service-sidebar { display: flex; flex-direction: column; gap: 1rem; position: sticky; top: 6rem; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+  @media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
+
+  .service-section { padding-block: 2rem; }
+
+  /* ── Typography ──────────────────────────────────────────── */
+  .service-section-h2 {
+    font-size: var(--fs-h4);
+    font-weight: 700;
+    color: var(--color-text);
+    margin: 0 0 1rem;
+  }
+  .body-lead {
+    font-size: var(--fs-small);
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    margin: 0;
+  }
+  .body-text {
+    font-size: var(--fs-small);
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    margin: 0;
+  }
+  .rich-text { font-size: var(--fs-small); color: var(--color-text-muted); line-height: 1.7; }
+
+  /* ── Lists ───────────────────────────────────────────────── */
+  .results-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .results-list li {
+    font-size: var(--fs-small);
+    color: var(--color-text-muted);
+    padding-left: 1.25rem;
+    position: relative;
+  }
+  .results-list li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--color-accent);
+    font-size: 0.75em;
+  }
+
+  /* ── Deliverable grid ────────────────────────────────────── */
+  .deliverable-grid { display: grid; gap: 1rem; }
+  .deliverable-grid.grid-2 { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+  .deliverable-grid.grid-3 { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+  .deliverable-card {
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 1rem;
+  }
+  .deliverable-title {
+    font-size: var(--fs-small);
+    font-weight: 700;
+    color: var(--color-text);
+    margin: 0 0 0.5rem;
+  }
+  .deliverable-desc { font-size: var(--fs-xs); color: var(--color-text-muted); margin: 0; }
+
+  /* ── Timeline ────────────────────────────────────────────── */
+  .timeline-table { display: flex; flex-direction: column; gap: 0.5rem; }
+  .timeline-row {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 1rem;
+    font-size: var(--fs-small);
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .timeline-scope { color: var(--color-text-muted); font-weight: 600; }
+  .timeline-deliverables { color: var(--color-text-muted); }
+
+  /* ── Notable grid ────────────────────────────────────────── */
+  .notable-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem 1.5rem; }
+  .notable-item { display: flex; justify-content: space-between; align-items: baseline; padding: 0.25rem 0; border-bottom: 1px solid var(--color-border); }
+  .notable-name { font-size: var(--fs-small); color: var(--color-text-muted); }
+  .notable-year { font-size: var(--fs-xs); color: var(--color-text-faint); font-family: var(--font-mono, monospace); }
+
+  /* ── Media ───────────────────────────────────────────────── */
+  .single-image img { width: 100%; border-radius: var(--radius-sm); display: block; }
+  .single-image figcaption { font-size: var(--fs-xs); color: var(--color-text-faint); margin-top: 0.5rem; }
+
+  .block-gallery {}
+  .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.5rem; }
+  .gallery-grid img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: var(--radius-sm); }
+  .gallery-title { font-size: var(--fs-small); color: var(--color-text-muted); margin-bottom: 0.75rem; }
+
+  .film-ratio { position: relative; padding-top: 56.25%; }
+  .film-ratio iframe { position: absolute; inset: 0; width: 100%; height: 100%; border-radius: var(--radius-sm); }
+  .film-title { font-size: var(--fs-xs); color: var(--color-text-faint); margin-bottom: 0.5rem; }
+
+  .tour-block { padding: 1rem 0; }
+
+  .button-group { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+
+  /* ── Sidebar blocks ──────────────────────────────────────── */
+  .sidebar-block {
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 1rem;
+  }
+  .sidebar-block-label {
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-faint);
+    margin: 0 0 0.5rem;
+  }
+  .sidebar-block-content { font-size: var(--fs-small); color: var(--color-text-muted); margin: 0; line-height: 1.5; }
+
+  /* ── Diff / callout ──────────────────────────────────────── */
+  .diff-block {
+    border-left: 3px solid var(--color-accent);
+    padding: 0.75rem 1rem;
+    background: var(--color-surface-2);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  }
+  .diff-block strong { font-size: var(--fs-small); color: var(--color-accent); display: block; margin-bottom: 0.25rem; }
+  .diff-block p { font-size: var(--fs-small); color: var(--color-text-muted); margin: 0; }
+
+  /* ── CTA section ─────────────────────────────────────────── */
+  .cta-section { padding-block: 3rem; text-align: center; }
+  .cta-section h2 { margin-bottom: 1rem; }
+  .cta-section p { color: var(--color-text-muted); margin-bottom: 1.5rem; }
+</style>

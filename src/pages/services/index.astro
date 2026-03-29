@@ -1,77 +1,12 @@
 ---
 // src/pages/services/index.astro
 
+import { getCollection } from 'astro:content';
 import Page from '../../layouts/Page.astro';
 import SectionBanner from '../../components/ui/SectionBanner.astro';
 
-const services = [
-  {
-    n: '01',
-    title: 'Architectural Visualization',
-    tagline: 'Turn plans into decisions.',
-    body: 'We convert technical drawings into clear 3D views that get projects approved and properties sold. Stills, animations, 360° tours, VR walkthroughs — whatever the audience needs.',
-    results: [
-      'Pre-sell properties before construction begins',
-      'Catch design conflicts before they reach the site',
-      'Get planning approval with visuals that explain, not just impress',
-    ],
-    href: '/services/architectural-visualization/',
-  },
-  {
-    n: '02',
-    title: 'Product Visualization',
-    tagline: 'Market before you manufacture.',
-    body: 'Product shots, configurators, exploded views, launch materials. We\'ve worked on everything from retail display design to industrial equipment.',
-    results: [],
-    href: '/services/product-visualization/',
-  },
-  {
-    n: '03',
-    title: 'Large-Scale Projects',
-    tagline: 'Big projects need a studio that\'s done it before.',
-    body: 'Airport terminals, urban masterplans, infrastructure corridors, exhibition pavilions. We know how to communicate complex multi-phase projects to multiple stakeholder audiences.',
-    results: [
-      'Past work: Budapest Airport, Antalya Airport T2, Sochi Airport, Pulkovo Airport',
-      'Road Safety Centre Doha, Mol Campus',
-    ],
-    href: '/services/large-scale-projects/',
-  },
-  {
-    n: '04',
-    title: 'AI-Enhanced Services',
-    tagline: 'Useful AI. Not hype.',
-    body: 'We\'ve integrated AI tools into our actual production workflow — not as a demo, but because it makes real projects faster and better. Batch image processing, AI-assisted render correction, automated file organization, ComfyUI pipelines for rapid concept variations.',
-    results: [
-      'We\'ll tell you where AI helps and where it doesn\'t',
-      'Not every problem needs an AI solution',
-    ],
-    href: '/services/advanced-ai-services/',
-  },
-  {
-    n: '05',
-    title: 'Workflow Optimization',
-    tagline: 'Your pipeline is probably slower than it needs to be.',
-    body: 'We audit visualization workflows and build fixes: automated batch processes, tool integrations, MAXScript utilities, AI-assisted QC. We\'ve been optimizing our own pipeline for 30 years — we know where the time goes.',
-    results: [],
-    href: '/services/workflow-optimization/',
-  },
-  {
-    n: '06',
-    title: '3ds Max Tools & Scripting',
-    tagline: 'Custom tools for MAX users who\'ve hit the ceiling.',
-    body: 'MAXScript and Python tools for batch processing, scene cleanup, render management, and workflow automation. We\'ve been using MAX since version 1 — we know what breaks and why.',
-    results: [],
-    href: '/services/3ds-max-tools/',
-  },
-  {
-    n: '07',
-    title: 'Custom Rendering',
-    tagline: 'When your files won\'t render, we fix that.',
-    body: 'Scene optimization, V-Ray problem-solving, render farm access. 15+ years with V-Ray. We handle MAX files that crash everywhere else.',
-    results: [],
-    href: '/services/custom-rendering/',
-  },
-];
+const allServices = await getCollection('services', ({ data }) => data.published);
+allServices.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
 ---
 
 <Page
@@ -103,23 +38,20 @@ const services = [
     <!-- Services list -->
     <section class="services-list section">
       <div class="container">
-        {services.map(s => (
+        {allServices.map((service, i) => (
           <article class="service-row">
             <div class="service-row-header">
-              <span class="service-n">{s.n}</span>
+              <span class="service-n">{String(i + 1).padStart(2, '0')}</span>
               <div class="service-heading">
-                <h2 class="service-title">{s.title}</h2>
-                <p class="service-tagline">{s.tagline}</p>
+                <h2 class="service-title">{service.data.title}</h2>
+                {service.data.tagline && (
+                  <p class="service-tagline">{service.data.tagline}</p>
+                )}
               </div>
-              <a href={s.href} class="btn btn-secondary service-link">Learn more</a>
+              <a href={`/services/${service.slug}/`} class="btn btn-secondary service-link">Learn more</a>
             </div>
             <div class="service-row-body">
-              <p class="service-body">{s.body}</p>
-              {s.results.length > 0 && (
-                <ul class="service-results">
-                  {s.results.map(r => <li>{r}</li>)}
-                </ul>
-              )}
+              <p class="service-body">{service.data.description}</p>
             </div>
           </article>
         ))}
@@ -238,30 +170,6 @@ const services = [
     line-height: 1.7;
     max-width: 58ch;
     margin: 0;
-  }
-
-  .service-results {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-  }
-
-  .service-results li {
-    font-size: var(--fs-xs);
-    color: var(--color-text-muted);
-    padding-left: 1rem;
-    position: relative;
-    line-height: 1.5;
-  }
-
-  .service-results li::before {
-    content: '→';
-    position: absolute;
-    left: 0;
-    color: var(--color-accent);
-    font-size: var(--fs-xs);
   }
 
   /* Pricing teaser */

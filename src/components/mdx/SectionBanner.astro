@@ -1,0 +1,62 @@
+---
+interface Props {
+  image?: string;
+  label?: string;
+  title: string;
+}
+const { image, label, title } = Astro.props;
+---
+<div
+  class="article-section-banner"
+  style={image ? `background-image:url('${image}')` : undefined}
+>
+  <div class="article-section-banner__overlay" aria-hidden="true"></div>
+  <div class="article-section-banner__content">
+    {label && <p class="article-section-banner__label">{label}</p>}
+    <h2 class="article-section-banner__title">{title}</h2>
+  </div>
+</div>
+
+<style>
+  .article-section-banner {
+    position: relative;
+    height: clamp(80px, 14vw, 200px);
+    background-size: cover;
+    background-position: center;
+    background-color: var(--color-surface-2);
+    overflow: hidden;
+    margin-block: var(--space-8);
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .article-section-banner__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.25) 100%);
+  }
+
+  .article-section-banner__content {
+    position: relative;
+    z-index: 1;
+    padding: 0.75rem 1.25rem;
+  }
+
+  .article-section-banner__label {
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin: 0 0 0.25rem;
+  }
+
+  .article-section-banner__title {
+    font-size: var(--fs-h5);
+    font-weight: 300;
+    color: #fff;
+    margin: 0;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+</style>

@@ -1,0 +1,38 @@
+---
+interface Item {
+  title: string;
+  desc: string;
+}
+interface Props {
+  columns?: 2 | 3;
+  items: Item[];
+}
+const { columns = 3, items } = Astro.props;
+---
+<div class:list={['deliverable-grid', columns === 3 ? 'grid-3' : 'grid-2']}>
+  {items.map(item => (
+    <div class="deliverable-card">
+      <h4 class="deliverable-title">{item.title}</h4>
+      <p class="deliverable-desc">{item.desc}</p>
+    </div>
+  ))}
+</div>
+
+<style>
+  .deliverable-grid { display: grid; gap: 1rem; }
+  .deliverable-grid.grid-2 { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+  .deliverable-grid.grid-3 { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+  .deliverable-card {
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 1rem;
+  }
+  .deliverable-title {
+    font-size: var(--fs-small);
+    font-weight: 700;
+    color: var(--color-text);
+    margin: 0 0 0.5rem;
+  }
+  .deliverable-desc { font-size: var(--fs-xs); color: var(--color-text-muted); margin: 0; }
+</style>

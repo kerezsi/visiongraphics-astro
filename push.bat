@@ -1,6 +1,6 @@
 @echo off
 setlocal
-cd /d "O:\VISIONGRAPHICS_ASTRO\visiongraphics-astro"
+cd /d "D:\sites\visiongraphics-astro"
 
 echo ============================================================
 echo  Vision Graphics — Git push to GitHub

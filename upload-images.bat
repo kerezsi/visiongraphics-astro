@@ -1,6 +1,6 @@
 @echo off
 setlocal
-set PROJECT=O:\VISIONGRAPHICS_ASTRO\visiongraphics-astro\public
+set PROJECT=D:\sites\visiongraphics-astro\public
 set BUCKET=r2:visiongraphics-images
 set FLAGS=--s3-no-check-bucket --progress
 

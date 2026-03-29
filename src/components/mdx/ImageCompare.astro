@@ -1,0 +1,18 @@
+---
+interface Props {
+  before: string;
+  after: string;
+  beforeAlt?: string;
+  afterAlt?: string;
+  label?: string;
+}
+const { before, after, beforeAlt = '', afterAlt = '', label = '' } = Astro.props;
+---
+<div
+  class="image-compare-mount"
+  data-before-src={before}
+  data-before-alt={beforeAlt}
+  data-after-src={after}
+  data-after-alt={afterAlt}
+></div>
+{label && <p class="image-compare-caption">{label}</p>}
