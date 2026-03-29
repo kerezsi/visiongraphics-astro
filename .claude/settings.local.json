@@ -9,7 +9,10 @@
       "Bash(sed -n '588,595p' src/integrations/token-editor/toolbar-app.ts)",
       "Bash(sed -n '660,675p' src/integrations/token-editor/toolbar-app.ts)",
       "Bash(sed -n '775,795p' src/integrations/token-editor/toolbar-app.ts)",
-      "WebFetch(domain:dev.visiongraphics.eu)"
+      "WebFetch(domain:dev.visiongraphics.eu)",
+      "Bash(Get-ChildItem \"D:\\\\sites\\\\visiongraphics-astro\\\\src\\\\content\\\\vision-tech\\\\*.mdx\")",
+      "Bash(while read:*)",
+      "Bash(do sed:*)"
     ]
   }
 }
