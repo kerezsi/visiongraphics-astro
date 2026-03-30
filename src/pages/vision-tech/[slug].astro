@@ -6,6 +6,8 @@ import Tour360 from '../../components/media/Tour360.astro';
 import FilmEmbed from '../../components/media/FilmEmbed.astro';
 import YouTubeEmbed from '../../components/media/YouTubeEmbed.astro';
 import ImageLightbox from '../../components/media/ImageLightbox';
+import MdxImageCompare from '../../components/mdx/ImageCompare.astro';
+import ArticleImageCompareMounter from '../../components/media/ArticleImageCompareMounter';
 
 export async function getStaticPaths() {
   const all = await getCollection('vision-tech');
@@ -116,7 +118,8 @@ const relatedClientNames = await Promise.all(
   <section class="vt-block-section">
     <div class="container">
       <div class="vt-body-content">
-        <Content components={{ Tour360, FilmEmbed, YouTubeEmbed, YoutubeEmbed: YouTubeEmbed }} />
+        <Content components={{ Tour360, FilmEmbed, YouTubeEmbed, YoutubeEmbed: YouTubeEmbed, ImageCompare: MdxImageCompare }} />
+        <ArticleImageCompareMounter client:load />
       </div>
     </div>
   </section>
