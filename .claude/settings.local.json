@@ -92,7 +92,17 @@
       "Bash(echo \"=== $f ===\")",
       "Bash(grep -rn \"eiffel\\\\|hYO10\" src/content/projects/*.mdx)",
       "Bash(curl -s \"https://www.youtube.com/results?search_query=Eiffel+Art+Studios+Budapest+opera+Vision+Graphics\")",
-      "Bash(curl -s \"https://www.youtube.com/watch?v=ohK1njXrYi4\")"
+      "Bash(curl -s \"https://www.youtube.com/watch?v=ohK1njXrYi4\")",
+      "Bash(curl -s https://dev.visiongraphics.eu/portfolio/ing-bank/)",
+      "Bash(curl -s https://dev.visiongraphics.eu/portfolio/hotel-arboretum/)",
+      "Bash(curl -s https://dev.visiongraphics.eu/portfolio/emerald-residence/)",
+      "Bash(curl -s https://dev.visiongraphics.eu/portfolio/hotel-corvin-palace/)",
+      "Bash(curl -s https://dev.visiongraphics.eu/portfolio/hotel-lycium/)",
+      "Bash(curl -s https://dev.visiongraphics.eu/portfolio/aquaticum/)",
+      "Bash(curl -s https://dev.visiongraphics.eu/portfolio/nemetvolgyi-residence/)",
+      "Bash(curl -s https://dev.visiongraphics.eu/portfolio/agora-budapest-phase-ii/)",
+      "Bash(curl -s https://dev.visiongraphics.eu/portfolio/hungarian-cultural-message-board/)",
+      "Bash(for slug:*)"
     ]
   }
 }
