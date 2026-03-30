@@ -8,6 +8,7 @@ import YouTubeEmbed from '../../components/media/YouTubeEmbed.astro';
 import ImageLightbox from '../../components/media/ImageLightbox';
 import ImageGallery from '../../components/mdx/ImageGallery.astro';
 import ImageCompare from '../../components/mdx/ImageCompare.astro';
+import MdxSectionBanner from '../../components/mdx/SectionBanner.astro';
 import ArticleGalleryMounter from '../../components/media/ArticleGalleryMounter.tsx';
 import ArticleImageCompareMounter from '../../components/media/ArticleImageCompareMounter.tsx';
 import { getCollection, getEntry } from 'astro:content';
@@ -128,7 +129,7 @@ const tasksParagraphs = data.tasks
 
     <!-- MDX body content -->
     <div class="project-content">
-      <Content components={{ ImageGallery, ImageCompare, Tour360, FilmEmbed, YouTubeEmbed }} />
+      <Content components={{ ImageGallery, ImageCompare, Tour360, FilmEmbed, YouTubeEmbed, SectionBanner: MdxSectionBanner }} />
       <ArticleGalleryMounter client:load />
       <ArticleImageCompareMounter client:load />
     </div>
