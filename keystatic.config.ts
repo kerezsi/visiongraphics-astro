@@ -77,6 +77,7 @@ const projectDescriptionComponent = component({
 const projectStoryComponent = component({
   label: 'Background / Story',
   schema: {
+    heading: fields.text({ label: 'Section heading', defaultValue: 'The Story:' }),
     content: fields.child({ kind: 'block', placeholder: 'Enter background story...' }),
   },
   preview: (props) => null,

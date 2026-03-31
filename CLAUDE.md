@@ -69,12 +69,15 @@ Content is managed via **Keystatic CMS** at `http://localhost:4321/keystatic` in
 
 ```
 src/components/mdx/
-  SectionBanner.astro    — section divider with label + title + background image
-  ImageGallery.astro     — lightbox image grid
-  ImageCompare.astro     — before/after slider
-  DeliverableGrid.astro  — card grid for services (2 or 3 columns)
-  TimelineTable.astro    — project phase table for services
-  NotableGrid.astro      — two-column list of notable projects
+  SectionBanner.astro       — section divider with label + title + background image
+  ImageGallery.astro        — lightbox image grid
+  ImageCompare.astro        — before/after slider
+  DeliverableGrid.astro     — card grid for services (2 or 3 columns)
+  TimelineTable.astro       — project phase table for services
+  NotableGrid.astro         — two-column list of notable projects
+  ProjectDescription.astro  — description text block (children, no props)
+  ProjectStory.astro        — story/background section (heading prop + children)
+  ProjectTasks.astro        — tasks text block (children, no props)
 ```
 
 Also usable in project MDX (registered in portfolio template):
@@ -93,12 +96,27 @@ Usage in MDX:
 <ImageGallery images={[{ src: "...", alt: "..." }]} />
 <Tour360 url="https://visiongraphics.eu/PANO/SLUG/" title="Description" />
 <YoutubeEmbed url="https://www.youtube.com/watch?v=ID" title="Description" />
+
+{/* Project text blocks — use children, NOT a text prop */}
+<ProjectTasks>
+Tasks paragraph one.
+
+Tasks paragraph two.
+</ProjectTasks>
+
+<ProjectStory heading="The Story:">
+Background paragraph one.
+</ProjectStory>
 ```
+
+**CRITICAL — ProjectStory/ProjectTasks/ProjectDescription use children, not props.**
+Never write `<ProjectStory text={`...`} />` — Keystatic will corrupt it on save.
+Always use the opening/closing tag form with content as children.
 
 MDX components must be passed via the `components` prop in the page template:
 ```astro
 const { Content } = await entry.render();
-<Content components={{ SectionBanner, DeliverableGrid, ... }} />
+<Content components={{ SectionBanner, DeliverableGrid, ProjectStory, ProjectTasks, ... }} />
 ```
 
 **Note on `YoutubeEmbed` casing:** The component file is `YouTubeEmbed.astro` but MDX
@@ -218,7 +236,8 @@ src/components/
   media/     Tour360.astro, FilmEmbed.astro, YouTubeEmbed.astro, ImageLightbox.tsx,
              ArticleGalleryMounter.tsx, ArticleImageCompareMounter.tsx
   mdx/       SectionBanner.astro, ImageGallery.astro, ImageCompare.astro,
-             DeliverableGrid.astro, TimelineTable.astro, NotableGrid.astro
+             DeliverableGrid.astro, TimelineTable.astro, NotableGrid.astro,
+             ProjectDescription.astro, ProjectStory.astro, ProjectTasks.astro
   blocks/    BlockRenderer.astro  (legacy — kept for reference, no longer used)
 ```
 
@@ -232,19 +251,36 @@ src/components/
 See `src/content/config.ts` for full Zod schemas.
 
 ### Projects (MDX)
-Frontmatter fields: title, displayTitle, year, description, story, tasks,
+Frontmatter fields: title, displayTitle, year, description (SEO/cards only),
 client (reference), designer (reference), city (reference), country (reference),
 clientType (reference), categories (array of references), features (array),
-techniques (array of vision-tech slugs), tags (array), coverImage, published, featured.
-MDX body: SectionBanner, ImageGallery, ImageCompare, Tour360, FilmEmbed, YoutubeEmbed, prose.
+techniques (array of vision-tech slugs), tags (array), coverImage,
+has360 (boolean), hasFilm (boolean), published, featured.
+
+**`story` and `tasks` are NO LONGER frontmatter fields.** They live in the MDX body
+as `<ProjectStory>` and `<ProjectTasks>` children components.
+
+**MDX body order (standard):**
+1. `<ProjectTasks>` — what was done
+2. `<ImageGallery>` / `<Tour360>` / `<FilmEmbed>` / `<YoutubeEmbed>` — media
+3. `<ProjectStory heading="The Story:">` — background narrative (at the end)
+
 Gallery/compare require `ArticleGalleryMounter` + `ArticleImageCompareMounter` client islands.
+
+**Portfolio page layout** (`[slug].astro`):
+- **"The Project:"** (red heading) → description text → data line (Field / Date / Location / Client / Architect)
+- **"The Task:"** (red heading) → techniques bar (`|` separated) → MDX body content
+- **"The Story:"** (red heading, editable per project) → story text — rendered by `<ProjectStory>`
+
+**Filter detection:** `has360` and `hasFilm` are manual boolean checkboxes in the editor.
+Tick them when adding a `<Tour360>` or `<FilmEmbed>`/`<YoutubeEmbed>` to a project.
 
 **Valid category values:** `architectural-visualization`, `residential`, `commercial`,
 `office`, `airport`, `infrastructure`, `urban`, `hospitality`, `industrial`,
 `product-visualization`, `vr-experience`, `animation`, `exhibition`
 
-**YAML gotcha:** If `description` or `tasks` contains a colon followed by a space
-(e.g. `Client: Foo`), wrap the entire value in double quotes or use a block scalar (`|`).
+**YAML gotcha:** If `description` contains a colon followed by a space, wrap in double
+quotes or use a block scalar (`|`).
 
 ### Services (MDX)
 Frontmatter: title, description, tagline, bannerImage, order, published,
@@ -266,6 +302,9 @@ Managed via Keystatic. Used as `reference()` in projects schema.
 `src/components/portfolio/PortfolioFilter.tsx` — React island (`client:load`).
 Filters: category multi-select, features multi-select, year range, text search,
 360 toggle, film toggle, sort. All AND logic. State in URL params.
+
+360/film toggles read `has360` / `hasFilm` boolean fields from frontmatter (not derived
+from MDX body). Set these manually in the editor when a project has tours or films.
 
 ---
 
