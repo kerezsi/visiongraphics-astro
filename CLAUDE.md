@@ -69,12 +69,19 @@ Content is managed via **Keystatic CMS** at `http://localhost:4321/keystatic` in
 
 ```
 src/components/mdx/
-  SectionBanner.astro    — full-width banner with label + title
+  SectionBanner.astro    — section divider with label + title + background image
   ImageGallery.astro     — lightbox image grid
   ImageCompare.astro     — before/after slider
   DeliverableGrid.astro  — card grid for services (2 or 3 columns)
   TimelineTable.astro    — project phase table for services
   NotableGrid.astro      — two-column list of notable projects
+```
+
+Also usable in project MDX (registered in portfolio template):
+```
+Tour360      — click-to-load 360° iframe
+YoutubeEmbed — click-to-load YouTube facade
+FilmEmbed    — Vimeo facade
 ```
 
 Usage in MDX:
@@ -84,6 +91,8 @@ Usage in MDX:
 <TimelineTable rows={[{ scope: "...", deliverables: "..." }]} />
 <NotableGrid items={[{ name: "...", year: "..." }]} />
 <ImageGallery images={[{ src: "...", alt: "..." }]} />
+<Tour360 url="https://visiongraphics.eu/PANO/SLUG/" title="Description" />
+<YoutubeEmbed url="https://www.youtube.com/watch?v=ID" title="Description" />
 ```
 
 MDX components must be passed via the `components` prop in the page template:
@@ -91,6 +100,29 @@ MDX components must be passed via the `components` prop in the page template:
 const { Content } = await entry.render();
 <Content components={{ SectionBanner, DeliverableGrid, ... }} />
 ```
+
+**Note on `YoutubeEmbed` casing:** The component file is `YouTubeEmbed.astro` but MDX
+content uses `<YoutubeEmbed>`. Both are registered in templates via alias:
+`{ YouTubeEmbed, YoutubeEmbed: YouTubeEmbed }`.
+
+### Multi-Section Project MDX Pattern
+
+Complex projects (hotels, residential with multiple unit types, multi-building schemes)
+use repeated `SectionBanner + ImageGallery + Tour360` blocks to group content:
+
+```mdx
+{/* Opening gallery — no banner needed */}
+<ImageGallery images={[...exterior images...]} />
+
+{/* Each section: banner → gallery → optional tour */}
+<SectionBanner image="/_img/portfolio/slug/30.jpg" label="Apartment" title="C-401" />
+<ImageGallery images={[...apartment images...]} />
+<Tour360 url="https://visiongraphics.eu/PANO/SLUG_C401/" title="Apartment C-401 — 360°" />
+```
+
+Image numbering: R2 images are sequential (`01.jpg`, `02.jpg`… `09.jpg`, `10.jpg`…
+`99.jpg`, `100.jpg`). Section split points map directly to this sequence.
+Use the dev site to count images per section.
 
 ---
 
@@ -183,7 +215,7 @@ src/components/
   layout/    Header.astro, Footer.astro, Nav.astro, MobileNav.tsx
   ui/        Button.astro, Tag.astro, SectionLabel.astro, SectionBanner.astro
   portfolio/ PortfolioGrid.astro, PortfolioFilter.tsx, ProjectCard.astro, ProjectGallery.astro
-  media/     Tour360.astro, FilmEmbed.astro, ImageLightbox.tsx,
+  media/     Tour360.astro, FilmEmbed.astro, YouTubeEmbed.astro, ImageLightbox.tsx,
              ArticleGalleryMounter.tsx, ArticleImageCompareMounter.tsx
   mdx/       SectionBanner.astro, ImageGallery.astro, ImageCompare.astro,
              DeliverableGrid.astro, TimelineTable.astro, NotableGrid.astro
@@ -204,8 +236,15 @@ Frontmatter fields: title, displayTitle, year, description, story, tasks,
 client (reference), designer (reference), city (reference), country (reference),
 clientType (reference), categories (array of references), features (array),
 techniques (array of vision-tech slugs), tags (array), coverImage, published, featured.
-MDX body: ImageGallery, ImageCompare, Tour360, FilmEmbed, YoutubeEmbed, prose.
+MDX body: SectionBanner, ImageGallery, ImageCompare, Tour360, FilmEmbed, YoutubeEmbed, prose.
 Gallery/compare require `ArticleGalleryMounter` + `ArticleImageCompareMounter` client islands.
+
+**Valid category values:** `architectural-visualization`, `residential`, `commercial`,
+`office`, `airport`, `infrastructure`, `urban`, `hospitality`, `industrial`,
+`product-visualization`, `vr-experience`, `animation`, `exhibition`
+
+**YAML gotcha:** If `description` or `tasks` contains a colon followed by a space
+(e.g. `Client: Foo`), wrap the entire value in double quotes or use a block scalar (`|`).
 
 ### Services (MDX)
 Frontmatter: title, description, tagline, bannerImage, order, published,

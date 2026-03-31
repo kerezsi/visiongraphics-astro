@@ -44,3 +44,6 @@ public/laszlo.jpg
 # Editor-uploaded images — local only, served via Express static, not committed
 public/images/
 public/_img/
+
+# Editor image staging directory — synced to R2 via rclone, not committed
+tools/editor/.staging/

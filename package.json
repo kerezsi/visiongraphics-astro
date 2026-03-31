@@ -7,7 +7,9 @@
     "build": "astro build && npx pagefind --site dist",
     "preview": "astro preview",
     "astro": "astro",
-    "check": "astro check"
+    "check": "astro check",
+    "editor:server": "tsx watch tools/editor/server/index.ts",
+    "editor:client": "vite --config tools/editor/vite.config.ts"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.14",
