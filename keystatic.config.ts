@@ -66,6 +66,30 @@ const youtubeEmbedComponent = component({
   preview: (props) => null,
 });
 
+const projectDescriptionComponent = component({
+  label: 'Project Description',
+  schema: {
+    content: fields.child({ kind: 'block', placeholder: 'Enter description text...' }),
+  },
+  preview: (props) => null,
+});
+
+const projectStoryComponent = component({
+  label: 'Background / Story',
+  schema: {
+    content: fields.child({ kind: 'block', placeholder: 'Enter background story...' }),
+  },
+  preview: (props) => null,
+});
+
+const projectTasksComponent = component({
+  label: 'What We Did',
+  schema: {
+    content: fields.child({ kind: 'block', placeholder: 'Describe what was done...' }),
+  },
+  preview: (props) => null,
+});
+
 const deliverableGridComponent = component({
   label: 'Deliverable Grid',
   schema: {
@@ -189,9 +213,7 @@ export default config({
         title: fields.slug({ name: { label: 'Title' } }),
         displayTitle: fields.text({ label: 'Display Title (optional combined title)' }),
         year: fields.integer({ label: 'Year', validation: { isRequired: true } }),
-        description: fields.text({ label: 'Short Description', multiline: true }),
-        story: fields.text({ label: 'Background Story', multiline: true }),
-        tasks: fields.text({ label: 'What We Did', multiline: true }),
+        description: fields.text({ label: 'Short Description (SEO + cards only)', multiline: true }),
         coverImage: fields.text({ label: 'Cover Image URL' }),
         categories: fields.multiselect({
           label: 'Categories',
@@ -229,17 +251,23 @@ export default config({
           fields.text({ label: 'Technique Slug' }),
           { label: 'Vision-Tech Techniques Used', itemLabel: (p) => p.value }
         ),
+        has360:  fields.checkbox({ label: 'Has 360° Tour', defaultValue: false }),
+        hasFilm: fields.checkbox({ label: 'Has Film / Video', defaultValue: false }),
         featured: fields.checkbox({ label: 'Featured', defaultValue: false }),
         published: fields.checkbox({ label: 'Published', defaultValue: true }),
-        // MDX body: additional text, gallery images, 360 tours, films, video
+        // MDX body: text blocks, gallery images, 360 tours, films, video
         content: fields.mdx({
-          label: 'Additional Content (images, tours, films)',
+          label: 'Content (text blocks, images, tours, films)',
           components: {
-            ImageGallery: imageGalleryComponent,
-            ImageCompare: imageCompareComponent,
-            Tour360:      tour360Component,
-            FilmEmbed:    filmEmbedComponent,
-            YoutubeEmbed: youtubeEmbedComponent,
+            SectionBanner:       sectionBannerComponent,
+            ProjectDescription:  projectDescriptionComponent,
+            ProjectStory:        projectStoryComponent,
+            ProjectTasks:        projectTasksComponent,
+            ImageGallery:        imageGalleryComponent,
+            ImageCompare:        imageCompareComponent,
+            Tour360:             tour360Component,
+            FilmEmbed:           filmEmbedComponent,
+            YoutubeEmbed:        youtubeEmbedComponent,
           },
         }),
       },

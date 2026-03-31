@@ -36,8 +36,8 @@ const projectData: ProjectMeta[] = await Promise.all(allProjects.map(async p => 
     tags:        p.data.tags,
     coverImage:  p.data.coverImage,
     featured:    p.data.featured,
-    has360:      (p.data.tour360?.length ?? 0) > 0,
-    hasFilm:     !!(p.data.video) || (p.data.films?.length ?? 0) > 0,
+    has360:      p.data.has360 ?? false,
+    hasFilm:     p.data.hasFilm ?? false,
   };
 }));
 

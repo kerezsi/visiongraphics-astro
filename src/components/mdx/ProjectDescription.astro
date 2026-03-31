@@ -1,0 +1,21 @@
+---
+// src/components/mdx/ProjectDescription.astro
+// Renders the project description text in the body flow.
+// Content is passed as MDX children (slot), not as a text prop.
+---
+<div class="mdx-project-description">
+  <slot />
+</div>
+
+<style>
+  .mdx-project-description {
+    margin-bottom: 2rem;
+  }
+  .mdx-project-description :global(p) {
+    font-size: var(--fs-body);
+    color: var(--color-text);
+    line-height: 1.7;
+    margin-bottom: 1rem;
+    max-width: 68ch;
+  }
+</style>

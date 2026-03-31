@@ -9,6 +9,9 @@ import ImageLightbox from '../../components/media/ImageLightbox';
 import ImageGallery from '../../components/mdx/ImageGallery.astro';
 import ImageCompare from '../../components/mdx/ImageCompare.astro';
 import MdxSectionBanner from '../../components/mdx/SectionBanner.astro';
+import ProjectDescription from '../../components/mdx/ProjectDescription.astro';
+import ProjectStory from '../../components/mdx/ProjectStory.astro';
+import ProjectTasks from '../../components/mdx/ProjectTasks.astro';
 import ArticleGalleryMounter from '../../components/media/ArticleGalleryMounter.tsx';
 import ArticleImageCompareMounter from '../../components/media/ArticleImageCompareMounter.tsx';
 import { getCollection, getEntry } from 'astro:content';
@@ -46,14 +49,6 @@ const currentIndex = sorted.findIndex(p => p.slug === project.slug);
 const prevProject = sorted[currentIndex + 1] ?? null;
 const nextProject = sorted[currentIndex - 1] ?? null;
 
-// Story paragraphs — split on any newline, filter empty
-const storyParagraphs = data.story
-  ? data.story.trim().split(/\n{1,}/).filter((s: string) => s.trim())
-  : [];
-
-const tasksParagraphs = data.tasks
-  ? data.tasks.trim().split(/\n{1,}/).filter((s: string) => s.trim())
-  : [];
 
 ---
 
@@ -122,14 +117,9 @@ const tasksParagraphs = data.tasks
       )}
     </div>
 
-    <!-- Description -->
-    {data.description && (
-      <p class="project-description">{data.description}</p>
-    )}
-
     <!-- MDX body content -->
     <div class="project-content">
-      <Content components={{ ImageGallery, ImageCompare, Tour360, FilmEmbed, YouTubeEmbed, YoutubeEmbed: YouTubeEmbed, SectionBanner: MdxSectionBanner }} />
+      <Content components={{ ImageGallery, ImageCompare, Tour360, FilmEmbed, YouTubeEmbed, YoutubeEmbed: YouTubeEmbed, SectionBanner: MdxSectionBanner, ProjectDescription, ProjectStory, ProjectTasks }} />
       <ArticleGalleryMounter client:load />
       <ArticleImageCompareMounter client:load />
     </div>
@@ -158,69 +148,6 @@ const tasksParagraphs = data.tasks
           ))}
         </div>
       </div>
-    )}
-
-    <!-- Background / Story -->
-    {storyParagraphs.length > 0 && (
-      <section class="project-section">
-        <h2 class="project-section-title">Background</h2>
-        <div class="story-text">
-          {storyParagraphs.map((para: string) => (
-            <p>{para.trim()}</p>
-          ))}
-        </div>
-      </section>
-    )}
-
-    <!-- What We Did -->
-    {tasksParagraphs.length > 0 && (
-      <section class="project-section">
-        <h2 class="project-section-title">What We Did</h2>
-        <div class="story-text">
-          {tasksParagraphs.map((para: string) => (
-            <p>{para.trim()}</p>
-          ))}
-        </div>
-      </section>
-    )}
-
-    <!-- 360° Tours (from frontmatter, for legacy data) -->
-    {data.tour360 && data.tour360.length > 0 && (
-      <section class="project-section project-section--media">
-        <h2 class="project-section-title">360° Tours</h2>
-        <div class="tours-grid">
-          {data.tour360.map((tour: { url: string; title: string }) => (
-            <Tour360
-              url={tour.url}
-              title={tour.title}
-              coverImage={data.coverImage}
-            />
-          ))}
-        </div>
-      </section>
-    )}
-
-    <!-- Films (from frontmatter, for legacy data) -->
-    {data.films && data.films.length > 0 && (
-      <section class="project-section project-section--media">
-        <h2 class="project-section-title">Films</h2>
-        <div class="films-grid">
-          {data.films.map((film: { vimeoId: string; title: string }) => (
-            <FilmEmbed
-              vimeoId={film.vimeoId}
-              title={film.title}
-            />
-          ))}
-        </div>
-      </section>
-    )}
-
-    <!-- Video / YouTube (from frontmatter, for legacy data) -->
-    {data.video && (
-      <section class="project-section project-section--media">
-        <h2 class="project-section-title">Video</h2>
-        <YouTubeEmbed url={data.video} title={data.title} />
-      </section>
     )}
 
     <!-- CTA block -->

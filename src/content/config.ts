@@ -102,9 +102,10 @@ const projects = defineCollection({
     clientType:   reference('client-types').optional(),
     city:         reference('cities').optional(),
     country:      reference('countries').optional(),
-    description:  z.string().optional(), // short, for cards + meta
-    story:        z.string().optional(), // background narrative (multi-paragraph)
-    tasks:        z.string().optional(), // what VG specifically did
+    description:  z.string().optional(), // short, for cards + meta (SEO only)
+    // Legacy fields — kept optional for pre-migration files; migration script moves them to MDX body
+    story:        z.string().optional(),
+    tasks:        z.string().optional(),
 
     categories: z.array(reference('categories')).min(1),
 
@@ -144,6 +145,10 @@ const projects = defineCollection({
     techniques: z.array(z.string()).optional(),
     // Ordered content blocks (text + media, interleaved)
     blocks: z.array(contentBlock).optional(),
+
+    // Filter detection flags (manually set in editor, or populated by migration script)
+    has360:  z.boolean().default(false),
+    hasFilm: z.boolean().default(false),
 
     featured:  z.boolean().default(false),
     published: z.boolean().default(true),
