@@ -11,7 +11,7 @@ export type BlockData =
   | { id: string; type: 'deliverable-grid'; props: { items: Array<{ title: string; desc: string }>; columns?: 2 | 3 } }
   | { id: string; type: 'timeline-table';   props: { rows: Array<{ scope: string; deliverables: string }> } }
   | { id: string; type: 'notable-grid';     props: { items: Array<{ name: string; year: string }> } }
-  | { id: string; type: 'tour-360';         props: { url: string; title: string } }
+  | { id: string; type: 'tour-360';         props: { url: string; title: string; coverImage?: string } }
   | { id: string; type: 'youtube-embed';    props: { url: string; title?: string } }
   | { id: string; type: 'film-embed';       props: { vimeoId: string; title: string } }
   | { id: string; type: 'heading';          props: { text: string; level: 'h2' | 'h3' } }

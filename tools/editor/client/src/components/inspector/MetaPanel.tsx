@@ -6,6 +6,7 @@ import { ImagePickerField } from './fields/ImagePickerField.tsx';
 import { ArrayField } from './fields/ArrayField.tsx';
 import { ReferenceField } from './fields/ReferenceField.tsx';
 import { MultiReferenceField } from './fields/MultiReferenceField.tsx';
+import * as api from '../../lib/api-client.ts';
 
 const sectionStyle: React.CSSProperties = {
   borderBottom: '1px solid var(--color-border)',
@@ -102,15 +103,44 @@ function MultiSelectField({ label, value, options, onChange }: {
 // Project meta form
 // ─────────────────────────────────────────────────────────────────
 
+// Synced with src/content/categories/*.md
 const CATEGORIES = [
-  'architectural-visualization', 'residential', 'commercial', 'office',
-  'airport', 'infrastructure', 'urban', 'hospitality', 'industrial',
-  'product-visualization', 'vr-experience', 'animation', 'exhibition',
+  'agriculture',
+  'airport',
+  'animation',
+  'architectural-visualization',
+  'civic',
+  'commercial',
+  'education',
+  'exhibition',
+  'healthcare',
+  'hospitality',
+  'industrial',
+  'infrastructure',
+  'office',
+  'product-visualization',
+  'renovation',
+  'residential',
+  'sports',
+  'transportation',
+  'urban',
+  'vr-experience',
 ];
 
 function ProjectMetaForm() {
   const meta = useDocumentStore((s) => s.meta) as Record<string, unknown>;
   const setMeta = useDocumentStore((s) => s.setMeta);
+
+  // Vision-tech options loaded from the collection (slug → human title)
+  const [vtOptions, setVtOptions] = React.useState<Array<{ slug: string; title: string }>>([]);
+  React.useEffect(() => {
+    api.listContent('vision-tech').then((items) => {
+      const opts = (items as Array<{ slug: string; title: string }>)
+        .map((i) => ({ slug: i.slug, title: i.title ?? i.slug }))
+        .sort((a, b) => a.title.localeCompare(b.title));
+      setVtOptions(opts);
+    }).catch(() => {/* ignore */});
+  }, []);
 
   function set(key: string, value: unknown) {
     setMeta({ [key]: value });
@@ -120,6 +150,14 @@ function ProjectMetaForm() {
   const features    = (meta.features    as string[]) ?? [];
   const tags        = (meta.tags        as string[]) ?? [];
   const techniques  = (meta.techniques  as string[]) ?? [];
+
+  function toggleTechnique(slug: string) {
+    if (techniques.includes(slug)) {
+      set('techniques', techniques.filter((s) => s !== slug));
+    } else {
+      set('techniques', [...techniques, slug]);
+    }
+  }
 
   return (
     <>
@@ -154,10 +192,37 @@ function ProjectMetaForm() {
           renderItem={(item, onChange) => <TextField label="" value={item as string} onChange={onChange} />}
           defaultItem=""
         />
-        <ArrayField label="Techniques (vision-tech slugs)" items={techniques} onChange={(items) => set('techniques', items)}
-          renderItem={(item, onChange) => <TextField label="" value={item as string} onChange={onChange} />}
-          defaultItem=""
-        />
+      </Section>
+
+      <Section label="Techniques">
+        {vtOptions.length === 0 ? (
+          <div style={{ fontSize: 10, color: 'var(--color-text-faint)' }}>Loading…</div>
+        ) : (
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+            {vtOptions.map((opt) => {
+              const active = techniques.includes(opt.slug);
+              return (
+                <button
+                  key={opt.slug}
+                  onClick={() => toggleTechnique(opt.slug)}
+                  title={opt.slug}
+                  style={{
+                    background: active ? 'var(--color-accent)' : 'var(--color-surface-2)',
+                    border: '1px solid ' + (active ? 'var(--color-accent)' : 'var(--color-border)'),
+                    color: active ? '#fff' : 'var(--color-text-muted)',
+                    borderRadius: 'var(--radius-sm)',
+                    padding: '2px 7px',
+                    fontSize: 10,
+                    cursor: 'pointer',
+                    textAlign: 'left',
+                  }}
+                >
+                  {opt.title}
+                </button>
+              );
+            })}
+          </div>
+        )}
       </Section>
 
       <Section label="Flags">
@@ -254,11 +319,8 @@ const VT_MODEL3D     = ['Output from 3D Model', 'Creation of 3D Model', 'Enhance
 const VT_COMPLEXITY  = ['1 - Basic', '2 - Intermediate', '3 - Advanced', '4 - Expert', '5 - Cutting-Edge'];
 const VT_REALITY     = ['Pure Reality', 'Conceptual Reality', 'Hybrid Reality-Vision', 'Pure Vision'];
 const VT_PURPOSE     = ['Communication', 'Decision Support', 'Documentation', 'Design Development', 'Technical Analysis'];
-const VT_CATEGORIES  = [
-  'architectural-visualization', 'residential', 'commercial', 'office',
-  'airport', 'infrastructure', 'urban', 'hospitality', 'industrial',
-  'product-visualization', 'vr-experience', 'animation', 'exhibition',
-];
+// Synced with src/content/categories/*.md — same as CATEGORIES above
+const VT_CATEGORIES = CATEGORIES;
 
 function VisionTechMetaForm() {
   const meta = useDocumentStore((s) => s.meta) as Record<string, unknown>;

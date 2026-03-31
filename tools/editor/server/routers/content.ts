@@ -29,7 +29,8 @@ async function listMdxFiles(dirPath: string): Promise<Array<{ slug: string; file
 }
 
 // ---------------------------------------------------------------------------
-// Helper — list YAML files in a reference collection directory
+// Helper — list reference collection entries (.md or .yaml files)
+// Keystatic creates .yaml but older/manual entries may be .md — read both.
 // ---------------------------------------------------------------------------
 async function listYamlFiles(dirPath: string): Promise<Array<{ slug: string; title: string }>> {
   let safeDir: string;
@@ -39,12 +40,25 @@ async function listYamlFiles(dirPath: string): Promise<Array<{ slug: string; tit
     const entries = await fs.readdir(safeDir, { withFileTypes: true });
     const results: Array<{ slug: string; title: string }> = [];
     for (const e of entries) {
-      if (!e.isFile() || !e.name.endsWith('.yaml')) continue;
-      const slug = e.name.replace(/\.yaml$/, '');
+      if (!e.isFile()) continue;
+      const isYaml = e.name.endsWith('.yaml');
+      const isMd   = e.name.endsWith('.md');
+      if (!isYaml && !isMd) continue;
+
+      const slug = e.name.replace(/\.(yaml|md)$/, '');
       try {
         const raw = await readFile(`${dirPath}/${e.name}`);
-        const data = yaml.load(raw) as any;
-        results.push({ slug, title: data?.title ?? slug });
+        // .yaml files: plain YAML; .md files: gray-matter frontmatter
+        let title: string;
+        if (isYaml) {
+          const data = yaml.load(raw) as any;
+          title = data?.title ?? slug;
+        } else {
+          // Use gray-matter to parse the YAML frontmatter in .md files
+          const { data } = matter(raw);
+          title = (data?.title as string) ?? slug;
+        }
+        results.push({ slug, title });
       } catch {
         results.push({ slug, title: slug });
       }

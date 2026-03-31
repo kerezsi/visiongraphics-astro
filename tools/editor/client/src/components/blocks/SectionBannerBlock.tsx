@@ -3,6 +3,7 @@ import type { BlockData, SectionBannerProps } from '../../types/blocks.ts';
 import { useDocumentStore } from '../../store/document.ts';
 import { useUIStore } from '../../store/ui.ts';
 import * as api from '../../lib/api-client.ts';
+import { getDraggedImageSrc } from './ImageGalleryBlock.tsx';
 
 export default function SectionBannerBlock({ block }: { block: BlockData & { type: 'SectionBanner'; props: SectionBannerProps } }) {
   const { image, label, title } = block.props;
@@ -29,6 +30,13 @@ export default function SectionBannerBlock({ block }: { block: BlockData & { typ
 
   async function handleDrop(e: React.DragEvent) {
     e.preventDefault();
+    // Accept an image URL dragged from a gallery block
+    const galleryUrl = getDraggedImageSrc(e);
+    if (galleryUrl) {
+      updateBlock(block.id, { image: galleryUrl });
+      return;
+    }
+    // Fall back to file upload
     const file = e.dataTransfer.files[0];
     if (!file || !file.type.startsWith('image/')) return;
     await uploadImage(file);

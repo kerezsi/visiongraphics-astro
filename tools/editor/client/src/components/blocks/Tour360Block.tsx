@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import type { BlockData, Tour360Props } from '../../types/blocks.ts';
 import { useDocumentStore } from '../../store/document.ts';
 import * as api from '../../lib/api-client.ts';
+import { getDraggedImageSrc } from './ImageGalleryBlock.tsx';
 
 export default function Tour360Block({ block }: { block: BlockData & { type: 'tour-360'; props: Tour360Props } }) {
   const { url, title, coverImage } = block.props;
@@ -12,6 +13,13 @@ export default function Tour360Block({ block }: { block: BlockData & { type: 'to
 
   async function handleDrop(e: React.DragEvent) {
     e.preventDefault();
+    // Accept an image URL dragged from a gallery block
+    const galleryUrl = getDraggedImageSrc(e);
+    if (galleryUrl) {
+      updateBlock(block.id, { coverImage: galleryUrl });
+      return;
+    }
+    // Fall back to file upload
     const file = e.dataTransfer.files[0];
     if (!file || !file.type.startsWith('image/')) return;
     try {

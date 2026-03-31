@@ -85,6 +85,7 @@ export interface FilmEmbedProps {
 export interface Tour360Props {
   url: string;
   title: string;
+  coverImage?: string;
 }
 
 export interface YouTubeEmbedProps {
