@@ -1,1 +1,1 @@
-{"version":"0.0.1","configurations":[{"name":"visiongraphics-dev","runtimeExecutable":"npm","runtimeArgs":["run","dev"],"port":4321,"autoPort":true}]}
+{"version":"0.0.1","configurations":[{"name":"visiongraphics-dev","runtimeExecutable":"npm","runtimeArgs":["run","dev"],"port":4321,"autoPort":true},{"name":"editor-client","runtimeExecutable":"npm","runtimeArgs":["run","editor:client"],"port":4323}]}

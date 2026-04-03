@@ -4,6 +4,7 @@
 import Page from '../../layouts/Page.astro';
 import SectionBanner from '../../components/ui/SectionBanner.astro';
 import { getCollection } from 'astro:content';
+import { thumbUrl } from '../../lib/image-url';
 
 const allArticles = await getCollection('articles', ({ data }) => data.published);
 const articles = allArticles.sort((a, b) =>
@@ -50,9 +51,10 @@ function formatDate(date: Date): string {
             {article.data.coverImage && (
               <div class="article-image">
                 <img
-                  src={article.data.coverImage}
+                  src={thumbUrl(article.data.coverImage)}
                   alt={article.data.title}
                   loading={i === 0 ? 'eager' : 'lazy'}
+                  onerror={`this.onerror=null;this.src='${article.data.coverImage}'`}
                 />
               </div>
             )}

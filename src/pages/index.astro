@@ -6,22 +6,27 @@ import Base from '../layouts/Base.astro';
 import Header from '../components/layout/Header.astro';
 import Footer from '../components/layout/Footer.astro';
 import Icon from '../components/ui/Icon.astro';
+import HomeCarousel from '../components/HomeCarousel';
 import { getCollection, getEntry } from 'astro:content';
 
-// Featured projects for homepage preview
+// Featured projects for homepage carousel
 const allProjects = await getCollection('projects', ({ data }) =>
   data.published && data.featured
 );
-const featuredProjects = allProjects
-  .sort((a, b) => b.data.year - a.data.year)
-  .slice(0, 6);
+const featuredProjects = allProjects.sort((a, b) => b.data.year - a.data.year);
 
 // Resolve city + country for featured projects
-const featuredLocations = await Promise.all(
+const carouselSlides = await Promise.all(
   featuredProjects.map(async p => {
     const city    = p.data.city    ? (await getEntry('cities',    p.data.city.id))?.data.title    : undefined;
     const country = p.data.country ? (await getEntry('countries', p.data.country.id))?.data.title : undefined;
-    return [city, country].filter(Boolean).join(', ') || undefined;
+    return {
+      slug:       p.slug,
+      title:      p.data.title,
+      year:       p.data.year,
+      coverImage: p.data.coverImage,
+      location:   [city, country].filter(Boolean).join(', ') || undefined,
+    };
   })
 );
 ---
@@ -205,43 +210,16 @@ const featuredLocations = await Promise.all(
     <!-- ═══════════════════════════════════════════════════════════ -->
     <!-- FEATURED WORK                                               -->
     <!-- ═══════════════════════════════════════════════════════════ -->
-    {featuredProjects.length > 0 && (
-      <section class="section featured-section">
-        <div class="container">
-          <div class="featured-header">
-            <div>
-              <p class="section-label">Selected Work</p>
-              <h2 class="display-md">30 Years of Projects</h2>
-            </div>
-            <a href="/portfolio/" class="btn btn-secondary">Full Portfolio</a>
+    {carouselSlides.length > 0 && (
+      <section class="featured-section">
+        <div class="featured-carousel-header container">
+          <div>
+            <p class="section-label">Selected Work</p>
+            <h2 class="display-md">30 Years of Projects</h2>
           </div>
-          <div class="featured-grid">
-            {featuredProjects.map((project, i) => {
-              const locationStr = featuredLocations[i];
-              return (
-              <a
-                href={`/portfolio/${project.slug}/`}
-                class:list={['featured-card', { 'featured-card--large': i === 0 }]}
-              >
-                <div class="featured-card-image">
-                  <img
-                    src={project.data.coverImage}
-                    alt={project.data.title}
-                    loading={i === 0 ? 'eager' : 'lazy'}
-                  />
-                </div>
-                <div class="featured-card-body">
-                  <span class="featured-card-year">{project.data.year}</span>
-                  <h3 class="featured-card-title">{project.data.title}</h3>
-                  {locationStr && (
-                    <span class="featured-card-location">{locationStr}</span>
-                  )}
-                </div>
-              </a>
-              );
-            })}
-          </div>
+          <a href="/portfolio/" class="btn btn-secondary">Full Portfolio</a>
         </div>
+        <HomeCarousel slides={carouselSlides} client:load />
       </section>
     )}
 
@@ -424,7 +402,7 @@ const featuredLocations = await Promise.all(
     z-index: 0;
     background:
       url('/hero-bg.jpg') center/cover no-repeat,
-      linear-gradient(135deg, #0a0a18 0%, #0d0d20 50%, #0a0a12 100%);
+      linear-gradient(135deg, var(--color-surface-2) 0%, var(--color-surface) 50%, var(--color-surface-2) 100%);
   }
 
   .hero-bg-overlay {
@@ -432,9 +410,9 @@ const featuredLocations = await Promise.all(
     inset: 0;
     background: linear-gradient(
       105deg,
-      rgba(10, 10, 18, 0.92) 0%,
-      rgba(10, 10, 18, 0.70) 50%,
-      rgba(10, 10, 18, 0.40) 100%
+      rgba(0, 0, 0, 0.92) 0%,
+      rgba(0, 0, 0, 0.70) 50%,
+      rgba(0, 0, 0, 0.40) 100%
     );
   }
 
@@ -665,76 +643,16 @@ const featuredLocations = await Promise.all(
     max-width: none;
   }
 
-  /* ── Featured Work ────────────────────────────────────────── */
-  .featured-header {
+  /* ── Featured Work / Carousel ────────────────────────────── */
+  .featured-section {
+    /* no extra padding — carousel fills full width */
+  }
+
+  .featured-carousel-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    margin-bottom: var(--space-8);
-  }
-
-  .featured-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: auto auto;
-    gap: 1px;
-    background: var(--color-border);
-  }
-
-  .featured-card {
-    display: block;
-    text-decoration: none;
-    background: var(--color-bg);
-    overflow: hidden;
-    transition: background 200ms ease;
-  }
-
-  .featured-card:hover { background: var(--color-surface); }
-  .featured-card--large { grid-column: span 2; grid-row: span 2; }
-
-  .featured-card-image {
-    aspect-ratio: 4/3;
-    overflow: hidden;
-    background: var(--color-surface-2);
-  }
-
-  .featured-card--large .featured-card-image { aspect-ratio: unset; height: 100%; min-height: 21.875rem; }
-
-  .featured-card-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 500ms ease;
-  }
-
-  .featured-card:hover .featured-card-image img { transform: scale(1.04); }
-
-  .featured-card-body {
-    padding: var(--space-4) var(--space-5);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-1);
-  }
-
-  .featured-card-year {
-    font-family: var(--font-mono);
-    font-size: var(--fs-xs);
-    color: var(--color-text-faint);
-  }
-
-  .featured-card-title {
-    font-family: var(--font-display);
-    font-size: var(--fs-body);
-    font-weight: 400;
-    color: var(--color-text);
-    line-height: 1.2;
-    letter-spacing: -0.01em;
-  }
-
-  .featured-card-location {
-    font-family: var(--font-body);
-    font-size: var(--fs-xs);
-    color: var(--color-text-faint);
+    padding-block: var(--space-8) var(--space-6);
   }
 
   /* ── Process ──────────────────────────────────────────────── */
@@ -905,8 +823,6 @@ const featuredLocations = await Promise.all(
   /* ── Responsive ───────────────────────────────────────────── */
   @media (max-width: 1024px) {
     .solution-inner { grid-template-columns: 1fr; gap: var(--space-12); }
-    .featured-grid  { grid-template-columns: repeat(2, 1fr); }
-    .featured-card--large { grid-column: span 2; grid-row: span 1; }
   }
 
   @media (max-width: 768px) {
@@ -914,8 +830,6 @@ const featuredLocations = await Promise.all(
     .pain-grid    { grid-template-columns: 1fr; }
     .process-steps{ grid-template-columns: 1fr; }
     .faq-preview-inner { grid-template-columns: 1fr; gap: var(--space-8); }
-    .featured-grid{ grid-template-columns: 1fr; }
-    .featured-card--large { grid-column: span 1; }
     .cta-banner-inner { flex-direction: column; text-align: center; }
   }
 </style>

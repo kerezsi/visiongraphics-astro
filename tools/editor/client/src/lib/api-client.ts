@@ -66,6 +66,33 @@ export async function createCollectionEntry(
   return json<{ slug: string; title: string; path: string }>(res);
 }
 
+export async function renameCollectionEntry(
+  collection: string,
+  slug: string,
+  title: string
+): Promise<void> {
+  const res = await fetch(
+    `${BASE}/content/collections/${encodeURIComponent(collection)}/${encodeURIComponent(slug)}`,
+    {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title }),
+    }
+  );
+  await json<{ slug: string; title: string }>(res);
+}
+
+export async function deleteCollectionEntry(
+  collection: string,
+  slug: string
+): Promise<void> {
+  const res = await fetch(
+    `${BASE}/content/collections/${encodeURIComponent(collection)}/${encodeURIComponent(slug)}`,
+    { method: 'DELETE' }
+  );
+  await json<{ deleted: boolean }>(res);
+}
+
 // ---- Images ----
 
 export async function uploadImage(
@@ -205,6 +232,60 @@ export async function importMarkdown(
     body: JSON.stringify({ markdown, pageType, slug }),
   });
   return json<{ blocks: BlockData[]; frontmatter: PageMeta }>(res);
+}
+
+// ---- Commands ----
+
+export async function generateThumbs(slug?: string): Promise<{ ok: boolean; stdout: string; stderr: string }> {
+  const res = await fetch(`${BASE}/commands/generate-thumbs`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ slug }),
+  });
+  return json<{ ok: boolean; stdout: string; stderr: string }>(res);
+}
+
+export async function gitPush(message?: string): Promise<{ ok: boolean; stdout: string; stderr: string }> {
+  const res = await fetch(`${BASE}/commands/git-push`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message }),
+  });
+  return json<{ ok: boolean; stdout: string; stderr: string }>(res);
+}
+
+// ---- Content management ----
+
+export async function patchFrontmatter(
+  filePath: string,
+  fields: Record<string, unknown>
+): Promise<void> {
+  const res = await fetch(`${BASE}/content/frontmatter`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ path: filePath, fields }),
+  });
+  await json<{ ok: boolean }>(res);
+}
+
+export interface NavItem {
+  label: string;
+  href: string;
+  enabled: boolean;
+}
+
+export async function getNavConfig(): Promise<NavItem[]> {
+  const res = await fetch(`${BASE}/content/nav-config`);
+  return json<NavItem[]>(res);
+}
+
+export async function putNavConfig(items: NavItem[]): Promise<void> {
+  const res = await fetch(`${BASE}/content/nav-config`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(items),
+  });
+  await json<{ ok: boolean }>(res);
 }
 
 // ---- Codegen ----

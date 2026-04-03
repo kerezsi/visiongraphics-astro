@@ -3,6 +3,7 @@
 // Receives all project data as props at build time (no API calls)
 
 import { useState, useEffect, useMemo, useCallback } from 'react';
+import { thumbUrl } from '../../lib/image-url';
 
 // ─── Types ────────────────────────────────────────────────────────
 export interface CategoryRef {
@@ -68,6 +69,7 @@ export default function PortfolioFilter({ projects, minYear, maxYear }: Props) {
   const [onlyFilm,           setOnlyFilm]           = useState(false);
   const [sort,               setSort]               = useState<SortOption>('newest');
   const [searchDebounced,    setSearchDebounced]    = useState('');
+  const [filtersOpen,        setFiltersOpen]        = useState(false);
 
   // ── Debounce search ──
   useEffect(() => {
@@ -152,34 +154,40 @@ export default function PortfolioFilter({ projects, minYear, maxYear }: Props) {
 
   // ── Render ──
   return (
-    <div className="pf-root">
+    <div className="w-full">
 
       {/* ── Controls ── */}
-      <div className="pf-controls">
+      <div className="bg-surface border border-line rounded-token-sm px-6 py-4 mb-10 flex flex-col gap-4">
 
-        {/* Search */}
-        <div className="pf-search-row">
-          <div className="pf-search-wrap">
-            <svg className="pf-search-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        {/* Search + sort + filter toggle */}
+        <div className="pf-search-row flex gap-3 items-center">
+          <div className="relative flex-1">
+            <svg
+              className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-faint pointer-events-none"
+              viewBox="0 0 20 20" fill="none" aria-hidden="true"
+            >
               <circle cx="8.5" cy="8.5" r="5.5" stroke="currentColor" strokeWidth="1.5"/>
               <path d="M14 14l3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
             </svg>
             <input
               type="search"
-              className="pf-search"
+              className="pf-search w-full bg-surface-2 border border-line rounded-token-sm py-[0.6rem] pr-8 pl-9 font-body text-[0.85rem] text-content transition-[border-color] duration-200"
               placeholder="Search by project, client, location…"
               value={searchText}
               onChange={e => setSearchText(e.target.value)}
               aria-label="Search projects"
             />
             {searchText && (
-              <button className="pf-search-clear" onClick={() => setSearchText('')} aria-label="Clear search">×</button>
+              <button
+                className="absolute right-2 top-1/2 -translate-y-1/2 bg-transparent border-none text-faint text-[1.1rem] cursor-pointer px-1 leading-none"
+                onClick={() => setSearchText('')}
+                aria-label="Clear search"
+              >×</button>
             )}
           </div>
 
-          {/* Sort */}
           <select
-            className="pf-sort"
+            className="pf-sort bg-surface-2 border border-line rounded-token-sm py-[0.6rem] px-4 font-body text-[0.8rem] text-muted cursor-pointer whitespace-nowrap transition-[border-color] duration-200"
             value={sort}
             onChange={e => setSort(e.target.value as SortOption)}
             aria-label="Sort projects"
@@ -188,128 +196,203 @@ export default function PortfolioFilter({ projects, minYear, maxYear }: Props) {
             <option value="oldest">Oldest first</option>
             <option value="az">A – Z</option>
           </select>
+
+          <button
+            className={`pf-filter-toggle flex items-center gap-[0.4rem] font-body text-[0.8rem] font-medium whitespace-nowrap flex-shrink-0 bg-surface-2 border rounded-token-sm py-[0.6rem] px-[0.9rem] cursor-pointer transition-[border-color,color] duration-200 hover:border-muted hover:text-content ${filtersOpen ? 'open border-accent text-content' : 'border-line text-muted'}`}
+            onClick={() => setFiltersOpen(v => !v)}
+            aria-expanded={filtersOpen}
+          >
+            Filters
+            {(hasActiveFilters && !filtersOpen) ? (
+              <span className="w-[6px] h-[6px] rounded-full bg-accent flex-shrink-0" />
+            ) : null}
+            <svg
+              className="pf-toggle-chevron w-[0.6rem] h-[0.4rem] transition-transform duration-200"
+              viewBox="0 0 12 8" fill="none" aria-hidden="true"
+            >
+              <path d="M1 1l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+            </svg>
+          </button>
         </div>
 
-        {/* Category pills */}
-        <div className="pf-filter-group">
-          <span className="pf-filter-label">Category</span>
-          <div className="pf-pills">
-            {allCategories.map(cat => (
-              <button
-                key={cat.id}
-                className={`pf-pill ${isActive(selectedCategories, cat.id) ? 'active' : ''}`}
-                onClick={() => toggle(selectedCategories, cat.id, setSelectedCategories)}
-                aria-pressed={isActive(selectedCategories, cat.id)}
-              >
-                {cat.title}
-              </button>
-            ))}
-          </div>
-        </div>
+        {/* Collapsible filter groups */}
+        {filtersOpen && (
+          <div className="flex flex-col gap-5">
+            {/* Category pills */}
+            <div className="flex flex-col gap-[0.6rem]">
+              <span className="font-body text-[0.65rem] font-medium tracking-[0.15em] uppercase text-faint">
+                Category
+              </span>
+              <div className="flex flex-wrap gap-[0.4rem]">
+                {allCategories.map(cat => (
+                  <button
+                    key={cat.id}
+                    className={`pf-pill font-body text-[0.72rem] font-normal border rounded-token-sm py-[0.3rem] px-[0.65rem] cursor-pointer transition-all duration-200 tracking-[0.03em] ${
+                      isActive(selectedCategories, cat.id)
+                        ? 'border-accent text-accent'
+                        : 'border-line text-muted hover:border-muted hover:text-content bg-transparent'
+                    }`}
+                    style={isActive(selectedCategories, cat.id) ? { background: 'rgba(218,19,19,0.08)' } : undefined}
+                    onClick={() => toggle(selectedCategories, cat.id, setSelectedCategories)}
+                    aria-pressed={isActive(selectedCategories, cat.id)}
+                  >
+                    {cat.title}
+                  </button>
+                ))}
+              </div>
+            </div>
 
-        {/* Feature pills */}
-        <div className="pf-filter-group">
-          <span className="pf-filter-label">Output type</span>
-          <div className="pf-pills">
-            {allFeatures.map(feat => (
-              <button
-                key={feat}
-                className={`pf-pill ${isActive(selectedFeatures, feat) ? 'active' : ''}`}
-                onClick={() => toggle(selectedFeatures, feat, setSelectedFeatures)}
-                aria-pressed={isActive(selectedFeatures, feat)}
-              >
-                {feat}
-              </button>
-            ))}
-          </div>
-        </div>
+            {/* Feature pills */}
+            <div className="flex flex-col gap-[0.6rem]">
+              <span className="font-body text-[0.65rem] font-medium tracking-[0.15em] uppercase text-faint">
+                Output type
+              </span>
+              <div className="flex flex-wrap gap-[0.4rem]">
+                {allFeatures.map(feat => (
+                  <button
+                    key={feat}
+                    className={`pf-pill font-body text-[0.72rem] font-normal border rounded-token-sm py-[0.3rem] px-[0.65rem] cursor-pointer transition-all duration-200 tracking-[0.03em] ${
+                      isActive(selectedFeatures, feat)
+                        ? 'border-accent text-accent'
+                        : 'border-line text-muted hover:border-muted hover:text-content bg-transparent'
+                    }`}
+                    style={isActive(selectedFeatures, feat) ? { background: 'rgba(218,19,19,0.08)' } : undefined}
+                    onClick={() => toggle(selectedFeatures, feat, setSelectedFeatures)}
+                    aria-pressed={isActive(selectedFeatures, feat)}
+                  >
+                    {feat}
+                  </button>
+                ))}
+              </div>
+            </div>
 
-        {/* Year range + toggles row */}
-        <div className="pf-bottom-row">
-          <div className="pf-year-range">
-            <span className="pf-filter-label">Year</span>
-            <div className="pf-year-inputs">
-              <input
-                type="number"
-                className="pf-year-input"
-                min={minYear} max={yearRange[1]}
-                value={yearRange[0]}
-                onChange={e => setYearRange([parseInt(e.target.value), yearRange[1]])}
-                aria-label="From year"
-              />
-              <span className="pf-year-sep">–</span>
-              <input
-                type="number"
-                className="pf-year-input"
-                min={yearRange[0]} max={maxYear}
-                value={yearRange[1]}
-                onChange={e => setYearRange([yearRange[0], parseInt(e.target.value)])}
-                aria-label="To year"
-              />
+            {/* Year range + toggles row */}
+            <div className="pf-bottom-row flex items-center gap-6 flex-wrap border-t border-line pt-5">
+              <div className="flex items-center gap-3">
+                <span className="font-body text-[0.65rem] font-medium tracking-[0.15em] uppercase text-faint">
+                  Year
+                </span>
+                <div className="flex items-center gap-[0.4rem]">
+                  <input
+                    type="number"
+                    className="pf-year-input w-20 bg-surface-2 border border-line rounded-token-sm py-[0.4rem] px-2 font-mono text-[0.8rem] text-content text-center"
+                    min={minYear} max={yearRange[1]}
+                    value={yearRange[0]}
+                    onChange={e => setYearRange([parseInt(e.target.value), yearRange[1]])}
+                    aria-label="From year"
+                  />
+                  <span className="text-faint text-[0.8rem]">–</span>
+                  <input
+                    type="number"
+                    className="pf-year-input w-20 bg-surface-2 border border-line rounded-token-sm py-[0.4rem] px-2 font-mono text-[0.8rem] text-content text-center"
+                    min={yearRange[0]} max={maxYear}
+                    value={yearRange[1]}
+                    onChange={e => setYearRange([yearRange[0], parseInt(e.target.value)])}
+                    aria-label="To year"
+                  />
+                </div>
+              </div>
+
+              <div className="flex gap-2">
+                <button
+                  className={`font-body text-[0.72rem] font-medium border rounded-token-sm py-[0.35rem] px-3 cursor-pointer transition-all duration-200 tracking-[0.05em] ${
+                    only360
+                      ? 'border-accent text-accent'
+                      : 'border-line text-muted bg-transparent hover:border-muted'
+                  }`}
+                  style={only360 ? { background: 'rgba(218,19,19,0.08)' } : undefined}
+                  onClick={() => setOnly360(!only360)}
+                  aria-pressed={only360}
+                >
+                  360° Tour
+                </button>
+                <button
+                  className={`font-body text-[0.72rem] font-medium border rounded-token-sm py-[0.35rem] px-3 cursor-pointer transition-all duration-200 tracking-[0.05em] ${
+                    onlyFilm
+                      ? 'border-accent text-accent'
+                      : 'border-line text-muted bg-transparent hover:border-muted'
+                  }`}
+                  style={onlyFilm ? { background: 'rgba(218,19,19,0.08)' } : undefined}
+                  onClick={() => setOnlyFilm(!onlyFilm)}
+                  aria-pressed={onlyFilm}
+                >
+                  Film
+                </button>
+              </div>
+
+              {hasActiveFilters && (
+                <div className="pf-meta flex items-center gap-4 ml-auto">
+                  <button
+                    className="font-body text-[0.72rem] text-accent bg-transparent border-none cursor-pointer p-0 underline underline-offset-2 hover:text-content"
+                    onClick={resetAll}
+                  >
+                    Reset filters
+                  </button>
+                </div>
+              )}
             </div>
           </div>
+        )}
 
-          <div className="pf-toggles">
-            <button
-              className={`pf-toggle ${only360 ? 'active' : ''}`}
-              onClick={() => setOnly360(!only360)}
-              aria-pressed={only360}
-            >
-              360° Tour
-            </button>
-            <button
-              className={`pf-toggle ${onlyFilm ? 'active' : ''}`}
-              onClick={() => setOnlyFilm(!onlyFilm)}
-              aria-pressed={onlyFilm}
-            >
-              Film
-            </button>
-          </div>
-
-          {/* Results count + reset */}
-          <div className="pf-meta">
-            <span className="pf-count">
-              {filtered.length === projects.length
-                ? `${projects.length} projects`
-                : `${filtered.length} of ${projects.length}`}
-            </span>
-            {hasActiveFilters && (
-              <button className="pf-reset" onClick={resetAll}>
-                Reset filters
-              </button>
-            )}
-          </div>
+        {/* Results count — always visible */}
+        <div className="border-t border-line pt-3">
+          <span className="font-mono text-[0.75rem] text-faint">
+            {filtered.length === projects.length
+              ? `${projects.length} projects`
+              : `${filtered.length} of ${projects.length}`}
+          </span>
         </div>
 
       </div>
 
       {/* ── Grid ── */}
       {filtered.length > 0 ? (
-        <div className="pf-grid">
+        <div className="pf-grid grid gap-6" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))' }}>
           {filtered.map(project => (
-            <a key={project.slug} href={`/portfolio/${project.slug}/`} className="pf-card">
-              <div className="pf-card-image">
+            <a
+              key={project.slug}
+              href={`/portfolio/${project.slug}/`}
+              className="pf-card group flex flex-col bg-surface border rounded-token-sm overflow-hidden no-underline transition-[border-color,transform] duration-[250ms] ease-in-out hover:-translate-y-0.5"
+              style={{ borderColor: 'rgba(255,255,255,0.12)' }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.35)'; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.12)'; }}
+            >
+              <div className="relative aspect-video overflow-hidden bg-surface-2">
                 <img
-                  src={project.coverImage}
+                  src={thumbUrl(project.coverImage)}
                   alt={project.title}
                   loading="lazy"
                   decoding="async"
+                  className="pf-card-img w-full h-full object-cover transition-transform duration-[400ms] ease-in-out"
+                  onError={(e) => { (e.target as HTMLImageElement).src = project.coverImage; }}
                 />
-                <div className="pf-card-badges">
-                  {project.has360  && <span className="pf-badge">360°</span>}
-                  {project.hasFilm && <span className="pf-badge">Film</span>}
+                <div className="absolute top-3 right-3 flex gap-[0.35rem]">
+                  {project.has360  && (
+                    <span className="font-body text-[0.62rem] font-medium tracking-[0.08em] text-white bg-accent py-[0.2rem] px-[0.45rem] rounded-[1px]">
+                      360°
+                    </span>
+                  )}
+                  {project.hasFilm && (
+                    <span className="font-body text-[0.62rem] font-medium tracking-[0.08em] text-white bg-accent py-[0.2rem] px-[0.45rem] rounded-[1px]">
+                      Film
+                    </span>
+                  )}
                 </div>
               </div>
-              <div className="pf-card-body">
-                <div className="pf-card-meta">
-                  <span className="pf-cat-tag">
+              <div className="px-[1.1rem] pt-4 pb-5 flex flex-col gap-[0.45rem] flex-1">
+                <div className="flex items-center justify-between">
+                  <span className="font-body text-[0.64rem] font-semibold tracking-[0.1em] uppercase text-muted">
                     {project.categories[0]?.title ?? ''}
                   </span>
-                  <span className="pf-card-year">{project.year}</span>
+                  <span className="font-mono text-[0.75rem] text-faint">
+                    {project.year}
+                  </span>
                 </div>
-                <h3 className="pf-card-title">{project.title}</h3>
+                <h3 className="font-display text-body font-bold text-content leading-[1.2] m-0">
+                  {project.title}
+                </h3>
                 {(project.client || project.city || project.country) && (
-                  <p className="pf-card-sub">
+                  <p className="text-[0.78rem] text-muted leading-[1.5] max-w-none m-0">
                     {project.client || [project.city, project.country].filter(Boolean).join(', ')}
                   </p>
                 )}
@@ -318,9 +401,14 @@ export default function PortfolioFilter({ projects, minYear, maxYear }: Props) {
           ))}
         </div>
       ) : (
-        <div className="pf-empty">
-          <p>No projects match those filters.</p>
-          <button className="pf-reset-large" onClick={resetAll}>
+        <div className="py-20 px-8 text-center border border-line">
+          <p className="text-[0.9rem] text-muted m-0 mx-auto mb-6">
+            No projects match those filters.
+          </p>
+          <button
+            className="font-body text-[0.85rem] font-medium text-accent bg-transparent border border-accent rounded-token-sm py-[0.65rem] px-6 cursor-pointer transition-all duration-200 hover:bg-accent hover:text-page"
+            onClick={resetAll}
+          >
             Reset all filters
           </button>
         </div>
@@ -328,341 +416,4 @@ export default function PortfolioFilter({ projects, minYear, maxYear }: Props) {
 
     </div>
   );
-}
-
-// ─── Styles (injected as a style tag — Astro will extract) ────────
-const styles = `
-.pf-root { width: 100%; }
-
-/* Controls */
-.pf-controls {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  padding: 1.5rem;
-  margin-bottom: 2.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-}
-
-.pf-search-row {
-  display: flex;
-  gap: 0.75rem;
-  align-items: center;
-}
-
-.pf-search-wrap {
-  position: relative;
-  flex: 1;
-}
-
-.pf-search-icon {
-  position: absolute;
-  left: 0.75rem;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 1rem;
-  height: 1rem;
-  color: var(--color-text-faint);
-  pointer-events: none;
-}
-
-.pf-search {
-  width: 100%;
-  background: var(--color-surface-2);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  padding: 0.6rem 2rem 0.6rem 2.25rem;
-  font-family: var(--font-body);
-  font-size: 0.85rem;
-  color: var(--color-text);
-  outline: none;
-  transition: border-color 200ms ease;
-}
-
-.pf-search::placeholder { color: var(--color-text-faint); }
-.pf-search:focus { border-color: var(--color-accent); }
-.pf-search::-webkit-search-cancel-button { display: none; }
-
-.pf-search-clear {
-  position: absolute;
-  right: 0.5rem;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  color: var(--color-text-faint);
-  font-size: 1.1rem;
-  cursor: pointer;
-  padding: 0.25rem;
-  line-height: 1;
-}
-
-.pf-sort {
-  background: var(--color-surface-2);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  padding: 0.6rem 1rem;
-  font-family: var(--font-body);
-  font-size: 0.8rem;
-  color: var(--color-text-muted);
-  cursor: pointer;
-  outline: none;
-  white-space: nowrap;
-  transition: border-color 200ms ease;
-}
-
-.pf-sort:focus { border-color: var(--color-accent); }
-
-/* Filter groups */
-.pf-filter-group { display: flex; flex-direction: column; gap: 0.6rem; }
-
-.pf-filter-label {
-  font-family: var(--font-body);
-  font-size: 0.65rem;
-  font-weight: 500;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--color-text-faint);
-}
-
-.pf-pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-}
-
-.pf-pill {
-  font-family: var(--font-body);
-  font-size: 0.72rem;
-  font-weight: 400;
-  color: var(--color-text-muted);
-  background: transparent;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  padding: 0.3rem 0.65rem;
-  cursor: pointer;
-  transition: all 200ms ease;
-  letter-spacing: 0.03em;
-}
-
-.pf-pill:hover { border-color: var(--color-text-muted); color: var(--color-text); }
-.pf-pill.active { border-color: var(--color-accent); color: var(--color-accent); background: rgba(200,169,110,0.08); }
-
-/* Bottom row */
-.pf-bottom-row {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-  border-top: 1px solid var(--color-border);
-  padding-top: 1.25rem;
-}
-
-.pf-year-range { display: flex; align-items: center; gap: 0.75rem; }
-.pf-year-inputs { display: flex; align-items: center; gap: 0.4rem; }
-
-.pf-year-input {
-  width: 5rem;
-  background: var(--color-surface-2);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  padding: 0.4rem 0.5rem;
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  color: var(--color-text);
-  text-align: center;
-  outline: none;
-}
-
-.pf-year-input:focus { border-color: var(--color-accent); }
-.pf-year-sep { color: var(--color-text-faint); font-size: 0.8rem; }
-
-.pf-toggles { display: flex; gap: 0.5rem; }
-
-.pf-toggle {
-  font-family: var(--font-body);
-  font-size: 0.72rem;
-  font-weight: 500;
-  color: var(--color-text-muted);
-  background: transparent;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  padding: 0.35rem 0.75rem;
-  cursor: pointer;
-  transition: all 200ms ease;
-  letter-spacing: 0.05em;
-}
-
-.pf-toggle:hover { border-color: var(--color-text-muted); }
-.pf-toggle.active { border-color: var(--color-accent-2); color: var(--color-accent-2); background: rgba(232,93,58,0.08); }
-
-.pf-meta { display: flex; align-items: center; gap: 1rem; margin-left: auto; }
-
-.pf-count {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  color: var(--color-text-faint);
-}
-
-.pf-reset {
-  font-family: var(--font-body);
-  font-size: 0.72rem;
-  color: var(--color-accent);
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-
-.pf-reset:hover { color: var(--color-text); }
-
-/* Grid — matches vt-grid */
-.pf-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1.5rem;
-}
-
-/* Portfolio card — white border */
-.pf-card {
-  display: flex;
-  flex-direction: column;
-  background: var(--color-surface);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: var(--radius-sm);
-  overflow: hidden;
-  text-decoration: none;
-  transition: border-color 250ms ease, transform 250ms ease;
-}
-
-.pf-card:hover { border-color: rgba(255, 255, 255, 0.35); transform: translateY(-2px); }
-
-.pf-card-image {
-  position: relative;
-  aspect-ratio: 16/9;
-  overflow: hidden;
-  background: var(--color-surface-2);
-}
-
-.pf-card-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 400ms ease;
-}
-
-.pf-card:hover .pf-card-image img { transform: scale(1.04); }
-
-.pf-card-badges {
-  position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
-  display: flex;
-  gap: 0.35rem;
-}
-
-.pf-badge {
-  font-family: var(--font-body);
-  font-size: 0.62rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  color: #fff;
-  background: var(--color-accent);
-  padding: 0.2rem 0.45rem;
-  border-radius: 1px;
-}
-
-.pf-card-body { padding: 1rem 1.1rem 1.2rem; display: flex; flex-direction: column; gap: 0.45rem; flex: 1; }
-
-.pf-card-meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.pf-cat-tag {
-  font-family: var(--font-body);
-  font-size: 0.64rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--color-text-muted);
-}
-
-.pf-card-year {
-  font-size: 0.75rem;
-  color: var(--color-text-faint);
-  font-family: var(--font-mono);
-}
-
-.pf-card-title {
-  font-family: var(--font-display);
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--color-text);
-  line-height: 1.2;
-  margin: 0;
-}
-
-.pf-card-sub {
-  font-size: 0.78rem;
-  color: var(--color-text-muted);
-  line-height: 1.5;
-  max-width: none;
-  margin: 0;
-}
-
-/* Empty state */
-.pf-empty {
-  padding: 5rem 2rem;
-  text-align: center;
-  border: 1px solid var(--color-border);
-}
-
-.pf-empty p {
-  font-size: 0.9rem;
-  color: var(--color-text-muted);
-  margin: 0 auto 1.5rem;
-}
-
-.pf-reset-large {
-  font-family: var(--font-body);
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--color-accent);
-  background: transparent;
-  border: 1px solid var(--color-accent);
-  border-radius: var(--radius-sm);
-  padding: 0.65rem 1.5rem;
-  cursor: pointer;
-  transition: all 200ms ease;
-}
-
-.pf-reset-large:hover {
-  background: var(--color-accent);
-  color: var(--color-bg);
-}
-
-/* Responsive */
-@media (max-width: 640px) {
-  .pf-search-row { flex-direction: column; align-items: stretch; }
-  .pf-bottom-row { flex-direction: column; align-items: flex-start; }
-  .pf-meta { margin-left: 0; }
-  .pf-grid { grid-template-columns: 1fr; gap: 1rem; }
-}
-`;
-
-// Inject styles
-if (typeof document !== 'undefined') {
-  const el = document.getElementById('pf-styles');
-  if (!el) {
-    const s = document.createElement('style');
-    s.id = 'pf-styles';
-    s.textContent = styles;
-    document.head.appendChild(s);
-  }
 }

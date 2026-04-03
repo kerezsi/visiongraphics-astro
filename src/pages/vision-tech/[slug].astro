@@ -2,6 +2,7 @@
 // src/pages/vision-tech/[slug].astro
 import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
 import Page from '../../layouts/Page.astro';
+import { thumbUrl } from '../../lib/image-url';
 import Tour360 from '../../components/media/Tour360.astro';
 import FilmEmbed from '../../components/media/FilmEmbed.astro';
 import YouTubeEmbed from '../../components/media/YouTubeEmbed.astro';
@@ -152,7 +153,12 @@ const relatedClientNames = await Promise.all(
             {related.map(p => (
               <a href={`/portfolio/${p.slug}/`} class="vt-related-card">
                 <div class="vt-card-img">
-                  <img src={p.data.coverImage} alt={p.data.title} loading="lazy" />
+                  <img
+                    src={thumbUrl(p.data.coverImage)}
+                    alt={p.data.title}
+                    loading="lazy"
+                    onerror={`this.onerror=null;this.src='${p.data.coverImage}'`}
+                  />
                 </div>
                 <div class="vt-card-body">
                   <span class="vt-card-title">{p.data.title}</span>
@@ -225,7 +231,7 @@ const relatedClientNames = await Promise.all(
 
   .vt-detail-hero-overlay {
     position: absolute; inset: 0;
-    background: linear-gradient(to top, rgba(26,26,26,0.95) 0%, rgba(26,26,26,0.4) 60%, transparent 100%);
+    background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 60%, transparent 100%);
     display: flex; align-items: flex-end;
     padding-bottom: 3rem;
   }

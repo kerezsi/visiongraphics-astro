@@ -4,7 +4,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import matter from 'gray-matter';
 import yaml from 'js-yaml';
-import { validatePath, readFile, writeFile } from '../lib/fs-utils.js';
+import { validatePath, readFile, writeFile, PROJECT_ROOT } from '../lib/fs-utils.js';
 
 const router = express.Router();
 
@@ -83,9 +83,10 @@ router.get('/articles', async (_req: Request, res: Response) => {
         title: data.title ?? slug,
         date: data.date ?? null,
         published: data.published ?? true,
+        tags: data.tags ?? [],
       };
     } catch {
-      return { slug, path: file, title: slug, date: null, published: true };
+      return { slug, path: file, title: slug, date: null, published: true, tags: [] };
     }
   }));
   articles.sort((a, b) => {
@@ -111,9 +112,10 @@ router.get('/projects', async (_req: Request, res: Response) => {
         title: data.title ?? slug,
         year: data.year ?? null,
         published: data.published ?? true,
+        featured: data.featured ?? false,
       };
     } catch {
-      return { slug, path: file, title: slug, year: null, published: true };
+      return { slug, path: file, title: slug, year: null, published: true, featured: false };
     }
   }));
   projects.sort((a, b) => {
@@ -162,9 +164,10 @@ router.get('/vision-tech', async (_req: Request, res: Response) => {
         title: data.title ?? slug,
         technique: data.technique ?? null,
         cost: data.cost ?? null,
+        published: data.published ?? true,
       };
     } catch {
-      return { slug, path: file, title: slug, technique: null, cost: null };
+      return { slug, path: file, title: slug, technique: null, cost: null, published: true };
     }
   }));
   items.sort((a, b) => a.title.localeCompare(b.title));
@@ -184,6 +187,66 @@ router.get('/collections/:name', async (req: Request, res: Response) => {
   }
   const items = await listYamlFiles(`src/content/${name}`);
   res.json(items);
+});
+
+// ---------------------------------------------------------------------------
+// PATCH /collections/:name/:slug — rename a reference collection entry (update title)
+// Body: { title }
+// ---------------------------------------------------------------------------
+router.patch('/collections/:name/:slug', async (req: Request, res: Response) => {
+  const { name, slug } = req.params;
+  const ALLOWED = ['clients', 'designers', 'cities', 'countries', 'client-types', 'categories'];
+  if (!ALLOWED.includes(name)) {
+    res.status(400).json({ error: `Unknown collection: ${name}` });
+    return;
+  }
+  const { title } = req.body as { title: string };
+  if (!title) {
+    res.status(400).json({ error: 'Missing title' });
+    return;
+  }
+  const filePath = `src/content/${name}/${slug}.yaml`;
+  let safePath: string;
+  try { safePath = validatePath(filePath); } catch {
+    res.status(400).json({ error: 'Invalid path' });
+    return;
+  }
+  try {
+    await fs.access(safePath);
+  } catch {
+    res.status(404).json({ error: `Entry "${slug}" not found` });
+    return;
+  }
+  await fs.writeFile(safePath, `title: ${JSON.stringify(title)}\n`, 'utf-8');
+  res.json({ slug, title });
+});
+
+// ---------------------------------------------------------------------------
+// DELETE /collections/:name/:slug — delete a reference collection entry
+// ---------------------------------------------------------------------------
+router.delete('/collections/:name/:slug', async (req: Request, res: Response) => {
+  const { name, slug } = req.params;
+  const ALLOWED = ['clients', 'designers', 'cities', 'countries', 'client-types', 'categories'];
+  if (!ALLOWED.includes(name)) {
+    res.status(400).json({ error: `Unknown collection: ${name}` });
+    return;
+  }
+  const filePath = `src/content/${name}/${slug}.yaml`;
+  let safePath: string;
+  try { safePath = validatePath(filePath); } catch {
+    res.status(400).json({ error: 'Invalid path' });
+    return;
+  }
+  try {
+    await fs.unlink(safePath);
+    res.json({ deleted: true });
+  } catch (err: any) {
+    if (err.code === 'ENOENT') {
+      res.status(404).json({ error: `Entry "${slug}" not found` });
+    } else {
+      res.status(500).json({ error: err.message });
+    }
+  }
 });
 
 // ---------------------------------------------------------------------------
@@ -223,6 +286,64 @@ router.post('/collections/:name', async (req: Request, res: Response) => {
   await fs.mkdir(path.dirname(safePath), { recursive: true });
   await fs.writeFile(safePath, content, 'utf-8');
   res.json({ slug, title, path: filePath });
+});
+
+// ---------------------------------------------------------------------------
+// PATCH /frontmatter — update specific frontmatter fields in an MDX/MD file
+// Body: { path: string, fields: Record<string, unknown> }
+// ---------------------------------------------------------------------------
+router.patch('/frontmatter', async (req: Request, res: Response) => {
+  const { path: filePath, fields } = req.body as { path: string; fields: Record<string, unknown> };
+  if (!filePath || !fields || typeof fields !== 'object') {
+    res.status(400).json({ error: 'Missing path or fields' });
+    return;
+  }
+  try { validatePath(filePath); } catch {
+    res.status(400).json({ error: 'Invalid path' });
+    return;
+  }
+  try {
+    const raw = await readFile(filePath);
+    const parsed = matter(raw);
+    const newData = { ...parsed.data, ...fields };
+    const updated = matter.stringify(parsed.content, newData);
+    await writeFile(filePath, updated);
+    res.json({ ok: true, path: filePath });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ---------------------------------------------------------------------------
+// GET /nav-config — read src/data/nav-config.json
+// ---------------------------------------------------------------------------
+router.get('/nav-config', async (_req: Request, res: Response) => {
+  try {
+    const filePath = path.join(PROJECT_ROOT, 'src', 'data', 'nav-config.json');
+    const raw = await fs.readFile(filePath, 'utf-8');
+    res.json(JSON.parse(raw));
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ---------------------------------------------------------------------------
+// PUT /nav-config — write src/data/nav-config.json
+// Body: NavItem[]
+// ---------------------------------------------------------------------------
+router.put('/nav-config', async (req: Request, res: Response) => {
+  const items = req.body;
+  if (!Array.isArray(items)) {
+    res.status(400).json({ error: 'Body must be an array' });
+    return;
+  }
+  try {
+    const filePath = path.join(PROJECT_ROOT, 'src', 'data', 'nav-config.json');
+    await fs.writeFile(filePath, JSON.stringify(items, null, 2) + '\n', 'utf-8');
+    res.json({ ok: true });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // ---------------------------------------------------------------------------

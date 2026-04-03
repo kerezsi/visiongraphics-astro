@@ -5,6 +5,7 @@
 import Page from '../../../layouts/Page.astro';
 import SectionBanner from '../../../components/ui/SectionBanner.astro';
 import { getCollection, getEntry } from 'astro:content';
+import { thumbUrl } from '../../../lib/image-url';
 
 export async function getStaticPaths() {
   const allProjects = await getCollection('projects', ({ data }) => data.published);
@@ -67,10 +68,11 @@ const projectMeta = await Promise.all(
         <a href={`/portfolio/${project.slug}/`} class="cat-card">
           <div class="cat-card-image">
             <img
-              src={project.data.coverImage}
+              src={thumbUrl(project.data.coverImage)}
               alt={project.data.title}
               loading={i < 4 ? 'eager' : 'lazy'}
               decoding="async"
+              onerror={`this.onerror=null;this.src='${project.data.coverImage}'`}
             />
           </div>
           <div class="cat-card-body">

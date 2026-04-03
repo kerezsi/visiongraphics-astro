@@ -4,9 +4,17 @@
 import { getCollection } from 'astro:content';
 import Page from '../../layouts/Page.astro';
 import SectionBanner from '../../components/ui/SectionBanner.astro';
+import ServicesTabs from '../../components/services/ServicesTabs';
 
 const allServices = await getCollection('services', ({ data }) => data.published);
 allServices.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+
+const serviceItems = allServices.map(s => ({
+  slug:        s.slug,
+  title:       s.data.title,
+  tagline:     s.data.tagline ?? undefined,
+  description: s.data.description ?? '',
+}));
 ---
 
 <Page
@@ -22,6 +30,7 @@ allServices.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
     size="page"
     headingLevel="h1"
   />
+
   <div class="services-page">
 
     <div class="services-intro section-sm">
@@ -33,28 +42,9 @@ allServices.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
       </div>
     </div>
 
-    <hr class="page-rule" />
-
-    <!-- Services list -->
-    <section class="services-list section">
+    <section class="services-tabs-section section-sm">
       <div class="container">
-        {allServices.map((service, i) => (
-          <article class="service-row">
-            <div class="service-row-header">
-              <span class="service-n">{String(i + 1).padStart(2, '0')}</span>
-              <div class="service-heading">
-                <h2 class="service-title">{service.data.title}</h2>
-                {service.data.tagline && (
-                  <p class="service-tagline">{service.data.tagline}</p>
-                )}
-              </div>
-              <a href={`/services/${service.slug}/`} class="btn btn-secondary service-link">Learn more</a>
-            </div>
-            <div class="service-row-body">
-              <p class="service-body">{service.data.description}</p>
-            </div>
-          </article>
-        ))}
+        <ServicesTabs services={serviceItems} client:load />
       </div>
     </section>
 
@@ -99,77 +89,14 @@ allServices.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
     margin: 0;
   }
 
+  .services-tabs-section {
+    padding-block: clamp(1rem, 2vw, 2rem) clamp(2rem, 4vw, 3.5rem);
+  }
+
   .page-rule {
     border-color: var(--color-border);
     margin-inline: auto;
     max-width: 1320px;
-  }
-
-  /* Service rows */
-  .services-list {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .service-row {
-    padding-block: 2.5rem;
-    border-top: 1px solid var(--color-border);
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-  }
-
-  .service-row:last-child { border-bottom: 1px solid var(--color-border); }
-
-  .service-row-header {
-    display: flex;
-    align-items: baseline;
-    gap: 1.25rem;
-  }
-
-  .service-n {
-    font-family: var(--font-mono);
-    font-size: var(--fs-xs);
-    color: var(--color-text-faint);
-    flex-shrink: 0;
-    padding-top: 0.2rem;
-  }
-
-  .service-heading { flex: 1; }
-
-  .service-title {
-    font-family: var(--font-display);
-    font-size: var(--fs-h5);
-    font-weight: 300;
-    color: var(--color-text);
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-    margin-bottom: 0.3rem;
-  }
-
-  .service-tagline {
-    font-family: var(--font-body);
-    font-size: var(--fs-xs);
-    color: var(--color-accent);
-    font-style: italic;
-    margin: 0;
-  }
-
-  .service-link { flex-shrink: 0; }
-
-  .service-row-body {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-    padding-left: calc(1.25rem + 2rem); /* align with heading */
-  }
-
-  .service-body {
-    font-size: var(--fs-small);
-    color: var(--color-text-muted);
-    line-height: 1.7;
-    max-width: 58ch;
-    margin: 0;
   }
 
   /* Pricing teaser */
@@ -180,17 +107,17 @@ allServices.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
     align-items: center;
   }
 
-  .pricing-heading { margin: 0.75rem 0 1rem; }
+  .pricing-heading { margin: var(--space-3) 0 var(--space-4); }
 
   .pricing-body {
     font-size: var(--fs-small);
     color: var(--color-text-muted);
     max-width: 52ch;
     line-height: 1.7;
-    margin-bottom: 1.5rem;
+    margin-bottom: var(--space-6);
   }
 
-  .pricing-ctas { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+  .pricing-ctas { display: flex; gap: var(--space-3); flex-wrap: wrap; }
 
   .pricing-note {
     border: 1px solid var(--color-border);
@@ -213,11 +140,5 @@ allServices.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
   /* Responsive */
   @media (max-width: 1024px) {
     .pricing-teaser { grid-template-columns: 1fr; gap: 2rem; }
-  }
-
-  @media (max-width: 768px) {
-    .service-row-header { flex-wrap: wrap; }
-    .service-link { width: 100%; }
-    .service-row-body { grid-template-columns: 1fr; padding-left: 0; }
   }
 </style>

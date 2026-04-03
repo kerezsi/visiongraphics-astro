@@ -1,0 +1,42 @@
+[
+  {
+    "label": "Portfolio",
+    "href": "/portfolio/",
+    "enabled": true
+  },
+  {
+    "label": "Services",
+    "href": "/services/",
+    "enabled": true
+  },
+  {
+    "label": "Technologies",
+    "href": "/vision-tech/",
+    "enabled": true
+  },
+  {
+    "label": "FAQ",
+    "href": "/faq/",
+    "enabled": false
+  },
+  {
+    "label": "Pricing",
+    "href": "/pricing/",
+    "enabled": false
+  },
+  {
+    "label": "Blog",
+    "href": "/articles/",
+    "enabled": false
+  },
+  {
+    "label": "About",
+    "href": "/about/",
+    "enabled": true
+  },
+  {
+    "label": "Contact",
+    "href": "/contact/",
+    "enabled": true
+  }
+]

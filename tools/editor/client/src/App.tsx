@@ -5,6 +5,11 @@ import { Canvas } from './components/panels/Canvas.tsx';
 import { RightPanel } from './components/panels/RightPanel.tsx';
 import { ImportDialog } from './components/dialogs/ImportDialog.tsx';
 import { PreviewDialog } from './components/dialogs/PreviewDialog.tsx';
+import { PagesOverview } from './components/overviews/PagesOverview.tsx';
+import { ProjectsOverview } from './components/overviews/ProjectsOverview.tsx';
+import { ArticlesOverview } from './components/overviews/ArticlesOverview.tsx';
+import { CollectionsOverview } from './components/overviews/CollectionsOverview.tsx';
+import { VisionTechOverview } from './components/overviews/VisionTechOverview.tsx';
 import { useAIStore } from './store/ai.ts';
 import { useUIStore } from './store/ui.ts';
 
@@ -97,6 +102,7 @@ export default function App() {
   const setError = useUIStore((s) => s.setError);
   const isImportDialogOpen = useUIStore((s) => s.isImportDialogOpen);
   const isPreviewOpen = useUIStore((s) => s.isPreviewOpen);
+  const view = useUIStore((s) => s.view);
 
   useEffect(() => {
     checkServices();
@@ -106,11 +112,23 @@ export default function App() {
     <ErrorBoundary>
       <div style={styles.root}>
         <Toolbar />
-        <div style={styles.body}>
-          <LeftPanel />
-          <Canvas />
-          <RightPanel />
-        </div>
+        {view === 'editor' ? (
+          <div style={styles.body}>
+            <LeftPanel />
+            <Canvas />
+            <RightPanel />
+          </div>
+        ) : view === 'pages' ? (
+          <PagesOverview />
+        ) : view === 'projects' ? (
+          <ProjectsOverview />
+        ) : view === 'articles' ? (
+          <ArticlesOverview />
+        ) : view === 'vtech' ? (
+          <VisionTechOverview />
+        ) : (
+          <CollectionsOverview />
+        )}
 
         {isImportDialogOpen && <ImportDialog />}
         {isPreviewOpen && <PreviewDialog />}

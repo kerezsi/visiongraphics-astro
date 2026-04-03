@@ -151,8 +151,9 @@ function blockToMdx(block: BlockData): string | null {
 
     case 'tour-360': {
       const parts: string[] = [];
-      if (p.url)   parts.push(`url="${p.url}"`);
-      if (p.title) parts.push(`title="${p.title}"`);
+      if (p.url)        parts.push(`url="${p.url}"`);
+      if (p.title)      parts.push(`title="${p.title}"`);
+      if (p.coverImage) parts.push(`coverImage="${p.coverImage}"`);
       return `<Tour360 ${parts.join(' ')} />`;
     }
 

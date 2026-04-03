@@ -1,7 +1,9 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useDocumentStore } from '../../store/document.ts';
 import { useUIStore } from '../../store/ui.ts';
+import type { EditorView } from '../../store/ui.ts';
 import type { PageType } from '../../types/blocks.ts';
+import { generateThumbs, gitPush } from '../../lib/api-client.ts';
 
 const toolbarStyle: React.CSSProperties = {
   height: 44,
@@ -110,6 +112,15 @@ function ToolbarBtn({
   );
 }
 
+const VIEW_TABS: { key: EditorView; label: string }[] = [
+  { key: 'editor',      label: 'Editor' },
+  { key: 'pages',       label: 'Pages' },
+  { key: 'projects',    label: 'Projects' },
+  { key: 'articles',    label: 'Articles' },
+  { key: 'vtech',       label: 'Vision-Tech' },
+  { key: 'collections', label: 'Collections' },
+];
+
 export function Toolbar() {
   const pageType = useDocumentStore((s) => s.pageType);
   const slug = useDocumentStore((s) => s.slug);
@@ -125,10 +136,16 @@ export function Toolbar() {
   const setSaving = useUIStore((s) => s.setSaving);
   const setLastSavedPath = useUIStore((s) => s.setLastSavedPath);
   const setError = useUIStore((s) => s.setError);
+  const view = useUIStore((s) => s.view);
+  const setView = useUIStore((s) => s.setView);
 
   const [savedFlash, setSavedFlash] = useState(false);
   const [isSyncing, setIsSyncing] = useState(false);
   const [syncStatus, setSyncStatus] = useState<string | null>(null);
+  const [isThumbing, setIsThumbing] = useState(false);
+  const [thumbStatus, setThumbStatus] = useState<string | null>(null);
+  const [isPushing, setIsPushing] = useState(false);
+  const [pushStatus, setPushStatus] = useState<string | null>(null);
   const flashTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const title = (meta as Record<string, unknown>).title as string | undefined;
@@ -184,57 +201,142 @@ export function Toolbar() {
     }
   }
 
+  async function handleGenerateThumbs() {
+    setIsThumbing(true);
+    setThumbStatus(null);
+    try {
+      await generateThumbs(slug || undefined);
+      setThumbStatus('Thumbs done');
+      if (flashTimer.current) clearTimeout(flashTimer.current);
+      flashTimer.current = setTimeout(() => setThumbStatus(null), 5000);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Thumbs failed');
+    } finally {
+      setIsThumbing(false);
+    }
+  }
+
+  async function handleGitPush() {
+    setIsPushing(true);
+    setPushStatus(null);
+    const msg = slug ? `editor: update ${slug}` : 'editor: update content';
+    try {
+      await gitPush(msg);
+      setPushStatus('Pushed');
+      if (flashTimer.current) clearTimeout(flashTimer.current);
+      flashTimer.current = setTimeout(() => setPushStatus(null), 5000);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Git push failed');
+    } finally {
+      setIsPushing(false);
+    }
+  }
+
   return (
     <div style={toolbarStyle}>
       <span style={logo}>VG EDITOR</span>
 
       <div style={divider} />
 
-      <div style={centerGroup}>
-        <select
-          style={pageTypeSelect}
-          value={pageType}
-          onChange={(e) => setPageType(e.target.value as PageType)}
-        >
-          <option value="article">Article</option>
-          <option value="project">Project</option>
-          <option value="service">Service</option>
-          <option value="vision-tech">Vision-Tech</option>
-          <option value="page">Page</option>
-        </select>
-
-        <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-          <input
-            style={{ ...slugInput, paddingRight: isDirty ? 20 : 8 }}
-            value={slug}
-            onChange={(e) => setSlug(e.target.value)}
-            placeholder="slug"
-          />
-          {isDirty && (
-            <span title="Unsaved changes" style={{ position: 'absolute', right: 6, width: 6, height: 6, borderRadius: '50%', background: '#f59e0b', flexShrink: 0 }} />
-          )}
-        </div>
-
-        {title && <span style={titleDisplay}>{title}</span>}
+      {/* View tabs */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 2, flexShrink: 0 }}>
+        {VIEW_TABS.map((tab) => (
+          <button
+            key={tab.key}
+            onClick={() => setView(tab.key)}
+            style={{
+              background: view === tab.key ? 'var(--color-accent)' : 'none',
+              color: view === tab.key ? '#fff' : 'var(--color-text-muted)',
+              border: view === tab.key ? 'none' : '1px solid var(--color-border)',
+              borderRadius: 'var(--radius-sm)',
+              padding: '3px 9px',
+              fontSize: 11,
+              fontWeight: view === tab.key ? 600 : 400,
+              cursor: 'pointer',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {tab.label}
+          </button>
+        ))}
       </div>
 
-      <div style={rightGroup}>
-        {(savedFlash && lastSavedPath) && (
-          <span style={{ color: 'var(--color-text-faint)', fontSize: 11, maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-            Saved: {lastSavedPath}
-          </span>
-        )}
-        {syncStatus && (
-          <span style={{ color: '#22c55e', fontSize: 11 }}>{syncStatus}</span>
-        )}
+      <div style={divider} />
 
-        <ToolbarBtn onClick={handleSyncToR2} disabled={isSyncing}>
-          {isSyncing ? 'Syncing…' : '↑ R2'}
-        </ToolbarBtn>
-        <ToolbarBtn onClick={togglePreview}>Preview MDX</ToolbarBtn>
-        <ToolbarBtn accent onClick={handleSave} disabled={isSaving}>
-          {isSaving ? 'Saving…' : 'Save'}
-        </ToolbarBtn>
+      {view === 'editor' && (
+        <div style={centerGroup}>
+          <select
+            style={pageTypeSelect}
+            value={pageType}
+            onChange={(e) => setPageType(e.target.value as PageType)}
+          >
+            <option value="article">Article</option>
+            <option value="project">Project</option>
+            <option value="service">Service</option>
+            <option value="vision-tech">Vision-Tech</option>
+            <option value="page">Page</option>
+          </select>
+
+          <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+            <input
+              style={{ ...slugInput, paddingRight: isDirty ? 20 : 8 }}
+              value={slug}
+              onChange={(e) => setSlug(e.target.value)}
+              placeholder="slug"
+            />
+            {isDirty && (
+              <span title="Unsaved changes" style={{ position: 'absolute', right: 6, width: 6, height: 6, borderRadius: '50%', background: '#f59e0b', flexShrink: 0 }} />
+            )}
+          </div>
+
+          {title && <span style={titleDisplay}>{title}</span>}
+        </div>
+      )}
+
+      {view !== 'editor' && <div style={{ flex: 1 }} />}
+
+      <div style={rightGroup}>
+        {view === 'editor' && (
+          <>
+            {(savedFlash && lastSavedPath) && (
+              <span style={{ color: 'var(--color-text-faint)', fontSize: 11, maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                Saved: {lastSavedPath}
+              </span>
+            )}
+            {syncStatus && (
+              <span style={{ color: '#22c55e', fontSize: 11 }}>{syncStatus}</span>
+            )}
+            {thumbStatus && (
+              <span style={{ color: '#22c55e', fontSize: 11 }}>{thumbStatus}</span>
+            )}
+            {pushStatus && (
+              <span style={{ color: '#22c55e', fontSize: 11 }}>{pushStatus}</span>
+            )}
+            <ToolbarBtn onClick={handleSyncToR2} disabled={isSyncing}>
+              {isSyncing ? 'Syncing…' : '↑ R2'}
+            </ToolbarBtn>
+            <ToolbarBtn onClick={handleGenerateThumbs} disabled={isThumbing}>
+              {isThumbing ? 'Thumbing…' : '⟳ Thumbs'}
+            </ToolbarBtn>
+            <ToolbarBtn onClick={handleGitPush} disabled={isPushing}>
+              {isPushing ? 'Pushing…' : '↑ Git'}
+            </ToolbarBtn>
+            <ToolbarBtn onClick={togglePreview}>Preview MDX</ToolbarBtn>
+            <ToolbarBtn accent onClick={handleSave} disabled={isSaving}>
+              {isSaving ? 'Saving…' : 'Save'}
+            </ToolbarBtn>
+          </>
+        )}
+        {view !== 'editor' && (
+          <>
+            {pushStatus && (
+              <span style={{ color: '#22c55e', fontSize: 11 }}>{pushStatus}</span>
+            )}
+            <ToolbarBtn onClick={handleGitPush} disabled={isPushing}>
+              {isPushing ? 'Pushing…' : '↑ Git'}
+            </ToolbarBtn>
+          </>
+        )}
       </div>
     </div>
   );

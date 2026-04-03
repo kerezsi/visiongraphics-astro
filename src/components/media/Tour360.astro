@@ -91,8 +91,8 @@ const { url, title, coverImage } = Astro.props;
   }
 
   .tour-icon-bg {
-    width: 5rem;
-    height: 5rem;
+    width: var(--space-20);
+    height: var(--space-20);
     color: var(--color-text-muted);
   }
 
@@ -108,7 +108,7 @@ const { url, title, coverImage } = Astro.props;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 0.75rem;
+    gap: var(--space-3);
   }
 
   .tour-launch-btn {
@@ -117,9 +117,9 @@ const { url, title, coverImage } = Astro.props;
     align-items: center;
     gap: 0.6rem;
     background: none;
-    border: 1px solid rgba(200, 169, 110, 0.4);
+    border: 1px solid rgba(200, 169, 110, 0.4); /* gold — decorative, no token */
     border-radius: var(--radius-sm);
-    padding: 1rem 2rem;
+    padding: var(--space-4) var(--space-8);
     cursor: pointer;
     color: var(--color-text);
     transition: all 250ms ease;
@@ -128,12 +128,12 @@ const { url, title, coverImage } = Astro.props;
   .tour-wrap:hover .tour-launch-btn {
     border-color: var(--color-accent);
     color: var(--color-accent);
-    background: rgba(200, 169, 110, 0.06);
+    background: rgba(200, 169, 110, 0.06); /* gold tint — decorative, no token */
   }
 
   .tour-icon {
-    width: 2rem;
-    height: 2rem;
+    width: var(--space-8);
+    height: var(--space-8);
   }
 
   .tour-btn-label {
@@ -147,7 +147,7 @@ const { url, title, coverImage } = Astro.props;
   .tour-name {
     font-family: var(--font-body);
     font-size: var(--fs-xs);
-    color: rgba(240, 237, 232, 0.6);
+    color: rgba(240, 237, 232, 0.6); /* near-white at 60% — no token for opacity variants */
     letter-spacing: 0.05em;
   }
 

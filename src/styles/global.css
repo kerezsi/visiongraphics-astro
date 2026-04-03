@@ -1,5 +1,7 @@
 /* Fonts are loaded in Base.astro via Google Fonts link tag */
 
+@import './components.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -290,6 +292,13 @@ hr {
 img {
   display: block;
   max-width: 100%;
+}
+
+/* ─── MDX content block spacing (lobotomized owl) ───────────────── */
+/* Adds fluid vertical gap between all direct children of MDX content wrappers */
+.project-content > * + *,
+.vt-body-content > * + * {
+  margin-top: clamp(2rem, 5vw, 4rem);
 }
 
 /* ─── Gallery / ImageLightbox (React island — global CSS) ───────── */

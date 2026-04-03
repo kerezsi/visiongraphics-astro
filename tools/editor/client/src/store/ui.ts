@@ -1,5 +1,7 @@
 import { create } from 'zustand';
 
+export type EditorView = 'editor' | 'pages' | 'projects' | 'articles' | 'collections' | 'vtech';
+
 interface UIStore {
   selectedBlockId: string | null;
   leftPanelTab: 'files' | 'palette' | 'ai';
@@ -8,6 +10,7 @@ interface UIStore {
   isSaving: boolean;
   lastSavedPath: string | null;
   errorMessage: string | null;
+  view: EditorView;
 
   selectBlock: (id: string | null) => void;
   setTab: (tab: UIStore['leftPanelTab']) => void;
@@ -17,6 +20,7 @@ interface UIStore {
   setSaving: (saving: boolean) => void;
   setLastSavedPath: (path: string | null) => void;
   setError: (msg: string | null) => void;
+  setView: (view: EditorView) => void;
 }
 
 export const useUIStore = create<UIStore>((set) => ({
@@ -27,6 +31,7 @@ export const useUIStore = create<UIStore>((set) => ({
   isSaving: false,
   lastSavedPath: null,
   errorMessage: null,
+  view: 'editor',
 
   selectBlock: (id) => set({ selectedBlockId: id }),
   setTab: (tab) => set({ leftPanelTab: tab }),
@@ -36,4 +41,5 @@ export const useUIStore = create<UIStore>((set) => ({
   setSaving: (saving) => set({ isSaving: saving }),
   setLastSavedPath: (path) => set({ lastSavedPath: path }),
   setError: (msg) => set({ errorMessage: msg }),
+  setView: (view) => set({ view }),
 }));

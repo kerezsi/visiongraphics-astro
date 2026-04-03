@@ -41,8 +41,9 @@ const imageCompareComponent = component({
 const tour360Component = component({
   label: '360° Tour',
   schema: {
-    url: fields.text({ label: 'Tour URL' }),
-    title: fields.text({ label: 'Title' }),
+    url:        fields.text({ label: 'Tour URL' }),
+    title:      fields.text({ label: 'Title' }),
+    coverImage: fields.text({ label: 'Cover Image URL (optional)' }),
   },
   preview: (props) => null,
 });

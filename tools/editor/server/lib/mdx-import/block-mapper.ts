@@ -289,8 +289,9 @@ function componentToBlock(name: string, props: Record<string, unknown>): BlockDa
         id: randomUUID(),
         type: 'tour-360',
         props: {
-          url:   (props.url   as string) ?? '',
-          title: (props.title as string) ?? '',
+          url:        (props.url        as string) ?? '',
+          title:      (props.title      as string) ?? '',
+          coverImage: (props.coverImage as string) ?? '',
         },
       };
 

@@ -133,7 +133,8 @@
       "Bash(curl -s https://dev.visiongraphics.eu/vision-tech/aerial-integration/)",
       "Bash(curl -s https://dev.visiongraphics.eu/vision-tech/photo-integration/)",
       "WebFetch(domain:pub-681025dcca3b4bad99aa4a4d65ecc023.r2.dev)",
-      "WebFetch(domain:visiongraphics-astro.pages.dev)"
+      "WebFetch(domain:visiongraphics-astro.pages.dev)",
+      "mcp__Claude_Preview__preview_start"
     ]
   }
 }

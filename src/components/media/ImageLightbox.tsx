@@ -3,6 +3,7 @@
 // Global CSS lives in src/styles/global.css under /* Gallery / ImageLightbox */
 
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { thumbUrl } from '../../lib/image-url';
 
 interface ImageItem {
   src: string;
@@ -86,8 +87,9 @@ export default function ImageLightbox({ images, title }: Props) {
         >
           <img
             className="gallery-main-img"
-            src={images[activeIndex].src}
+            src={thumbUrl(images[activeIndex].src)}
             alt={images[activeIndex].alt}
+            onError={(e) => { (e.target as HTMLImageElement).src = images[activeIndex].src; }}
           />
           {images.length > 1 && (
             <>
@@ -118,7 +120,13 @@ export default function ImageLightbox({ images, title }: Props) {
                 aria-current={i === activeIndex}
                 role="listitem"
               >
-                <img src={img.src} alt="" loading="lazy" decoding="async" />
+                <img
+                  src={thumbUrl(img.src)}
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                  onError={(e) => { (e.target as HTMLImageElement).src = img.src; }}
+                />
               </button>
             ))}
           </div>

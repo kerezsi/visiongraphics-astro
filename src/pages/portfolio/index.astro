@@ -2,7 +2,6 @@
 // src/pages/portfolio/index.astro
 
 import Page from '../../layouts/Page.astro';
-import SectionBanner from '../../components/ui/SectionBanner.astro';
 import PortfolioFilter from '../../components/portfolio/PortfolioFilter';
 import { getCollection, getEntry } from 'astro:content';
 import type { ProjectMeta } from '../../components/portfolio/PortfolioFilter';
@@ -52,13 +51,6 @@ const maxYear = Math.max(...years);
   fullBleed
 >
 
-  <SectionBanner
-    image="/_img/banners/banner-arch-viz.jpg"
-    label="Selected Work"
-    title="500+ Projects"
-    size="page"
-    headingLevel="h1"
-  />
   <div class="portfolio-page">
     <div class="portfolio-header container">
       <p class="section-label">Our Work</p>
@@ -85,11 +77,11 @@ const maxYear = Math.max(...years);
   }
 
   .portfolio-header {
-    margin-bottom: 3rem;
+    margin-bottom: var(--space-12);
   }
 
   .portfolio-header h1 {
-    margin: 0.75rem 0 1rem;
+    margin: var(--space-3) 0 var(--space-4);
   }
 
   .portfolio-sub {

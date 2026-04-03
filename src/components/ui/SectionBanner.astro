@@ -92,32 +92,21 @@ const HeadingTag = headingLevel;
   .section-banner__content {
     position: relative;
     z-index: 2;
-    padding-bottom: var(--space-6);
-    padding-top: var(--space-6);
+    padding-block: var(--space-6);
     width: 100%;
   }
 
   .section-banner__label {
-    font-family: var(--font-body);
-    font-size: var(--fs-xs);
-    font-weight: 600;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--color-accent);
+    @apply font-body text-tiny font-semibold uppercase tracking-wide-18 text-accent leading-none;
     margin: 0 0 var(--space-2);
-    line-height: 1;
   }
 
   .section-banner__title {
-    font-family: var(--font-display);
-    font-size: var(--fs-h4);
-    font-weight: 300;
-    color: var(--color-text);
+    @apply font-display text-h4 font-light text-content leading-none;
     letter-spacing: -0.03em;
-    line-height: 1;
     margin: 0;
   }
 
   .section-banner--center .section-banner__content { text-align: center; }
-  .section-banner--center .section-banner__label { justify-content: center; display: flex; }
+  .section-banner--center .section-banner__label { @apply flex justify-center; }
 </style>

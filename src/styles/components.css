@@ -1,0 +1,156 @@
+/* ─── Component-level styles ────────────────────────────────────────────────
+   Styles that cannot be expressed as Tailwind utility classes:
+   • Pseudo-elements (::before / ::after)
+   • @keyframes animations
+   • Complex responsive overrides
+   • Compound selectors involving child-state (:hover .child, .parent.active .child)
+   ─────────────────────────────────────────────────────────────────────────── */
+
+/* ── ServicesTabs ────────────────────────────────────────────────────────── */
+
+/* Red indicator bar — left edge on active tab (vertical layout) */
+.st-tab::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--color-accent);
+  opacity: 0;
+  transition: opacity 180ms;
+}
+
+.st-tab.active::before { opacity: 1; }
+
+/* Child text color changes driven by parent state */
+.st-tab.active .st-tab-title,
+.st-tab:hover  .st-tab-title { color: var(--color-text); }
+
+/* Panel fade-in animation */
+@keyframes stFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.st-panel { animation: stFadeIn 250ms ease; }
+
+/* Link hover gap + color change */
+.st-link:hover {
+  gap: 0.9rem;
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Mobile layout overrides */
+@media (max-width: 768px) {
+  .st-root    { grid-template-columns: 1fr; }
+  .st-sidebar {
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+    border-right: none;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .st-tab {
+    flex-direction: column;
+    gap: 0.2rem;
+    padding: 0.75rem 1rem;
+    border-bottom: none;
+    border-right: 1px solid var(--color-border);
+    min-width: 120px;
+  }
+  /* Bottom indicator bar for horizontal (mobile) layout */
+  .st-tab::before {
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: auto;
+    height: 3px;
+  }
+}
+
+/* ── PortfolioFilter ─────────────────────────────────────────────────────── */
+
+/* Hide browser's native clear button on search inputs */
+.pf-search::-webkit-search-cancel-button { display: none; }
+
+/* Placeholder colour */
+.pf-search::placeholder { color: var(--color-text-faint); }
+
+/* Focus rings on bare inputs/selects (cannot be applied from JSX with Tailwind) */
+.pf-search:focus     { border-color: var(--color-accent); outline: none; }
+.pf-sort:focus       { border-color: var(--color-accent); outline: none; }
+.pf-year-input:focus { border-color: var(--color-accent); outline: none; }
+
+/* Chevron rotation when toggle carries .open class */
+.pf-filter-toggle.open .pf-toggle-chevron { transform: rotate(180deg); }
+
+/* Zoom image on card hover — grandchild selector, not reachable via group-hover */
+.pf-card:hover .pf-card-img { transform: scale(1.04); }
+
+/* Responsive — collapse search row + grid on narrow viewports */
+@media (max-width: 640px) {
+  .pf-search-row { flex-direction: column; align-items: stretch; }
+  .pf-bottom-row { flex-direction: column; align-items: flex-start; }
+  .pf-meta       { margin-left: 0; }
+  .pf-grid       { grid-template-columns: 1fr; gap: 1rem; }
+}
+
+/* ── HomeCarousel ────────────────────────────────────────────────────────── */
+
+/* Slide fade — absolute-positioned children toggled at runtime; can't do with Tailwind alone */
+.hc-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 700ms ease;
+}
+.hc-slide.active { opacity: 1; }
+
+.hc-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Dot state — runtime-toggled active class + scale transform */
+.hc-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: background 200ms, transform 200ms;
+}
+.hc-dot.active {
+  background: #fff;
+  transform: scale(1.3);
+}
+.hc-dot:hover { background: rgba(255, 255, 255, 0.6); }
+
+/* Arrow sizing — clamp() values not expressible as Tailwind utilities */
+.hc-arrow {
+  width:  clamp(2.5rem, 4vw, 3.5rem);
+  height: clamp(2.5rem, 4vw, 3.5rem);
+}
+.hc-arrow--prev { left:  clamp(0.75rem, 2vw, 2rem); }
+.hc-arrow--next { right: clamp(0.75rem, 2vw, 2rem); }
+
+/* Dots container — right offset uses clamp() */
+.hc-dots { right: clamp(1.5rem, 5vw, 4rem); }
+
+/* Info block padding — clamp() in both axes */
+.hc-info {
+  padding: clamp(1.5rem, 3vw, 3rem) clamp(1.5rem, 5vw, 4rem);
+  padding-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+
+/* Title font-size — clamp between two CSS custom-property values */
+.hc-title {
+  font-size: clamp(var(--fs-h4), 3vw, var(--fs-h2));
+}

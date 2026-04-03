@@ -237,30 +237,21 @@ const specialists = [
 
         <p class="body-text timeline-intro">
           30 years. 10 eras. A record of how the studio grew, adapted, and kept delivering.
-          Click any era to expand the details.
         </p>
 
-        <div class="timeline" id="about-timeline">
+        <div class="tl-timeline" id="about-timeline">
+          <div class="tl-line" id="tl-line"></div>
           {timeline.map((era, i) => (
-            <details class="era" data-index={i} open={i === timeline.length - 1}>
-              <summary class="era-summary-row">
-                <div class="era-left">
-                  <span class="era-years">{era.years}</span>
-                </div>
-                <div class="era-center">
-                  <span class="era-title">{era.title}</span>
-                </div>
-                <span class="era-toggle" aria-hidden="true"></span>
-              </summary>
-              <div class="era-body">
-                <div class="era-body-inner">
-                  <p class="era-text">{era.summary}</p>
-                  <ul class="era-projects">
-                    {era.projects.map(p => <li>{p}</li>)}
-                  </ul>
-                </div>
+            <div class="tl-item" data-index={i} style={`transition-delay: ${i * 80}ms`}>
+              <span class="tl-years">{era.years}</span>
+              <div class="tl-content">
+                <h3 class="tl-title">{era.title}</h3>
+                <p class="tl-text">{era.summary}</p>
+                <ul class="tl-projects">
+                  {era.projects.map(p => <li>{p}</li>)}
+                </ul>
               </div>
-            </details>
+            </div>
           ))}
         </div>
 
@@ -284,26 +275,41 @@ const specialists = [
 </Page>
 
 <script>
-  // Interactive accordion timeline — smooth expand/collapse
-  document.querySelectorAll<HTMLDetailsElement>('.era').forEach(details => {
-    const body = details.querySelector<HTMLElement>('.era-body');
-    if (!body) return;
+  // Scroll-animated vertical timeline
+  const section = document.querySelector<HTMLElement>('.timeline-section');
+  const line    = document.getElementById('tl-line');
+  const items   = document.querySelectorAll<HTMLElement>('.tl-item');
 
-    // Set initial height for animation
-    if (details.open) {
-      body.style.maxHeight = body.scrollHeight + 'px';
-    } else {
-      body.style.maxHeight = '0';
-    }
+  // Reveal line when section enters viewport
+  if (section && line) {
+    const lineObserver = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        line.classList.add('revealed');
+        lineObserver.disconnect();
+      }
+    }, { threshold: 0.05 });
+    lineObserver.observe(section);
+  }
 
-    details.addEventListener('toggle', () => {
-      if (details.open) {
-        body.style.maxHeight = body.scrollHeight + 'px';
-      } else {
-        body.style.maxHeight = '0';
+  // Pop-in each item and advance the red portion of the line
+  const total = items.length;
+  let visibleCount = 0;
+
+  const itemObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        visibleCount++;
+        if (line) {
+          const pct = Math.round((visibleCount / total) * 100);
+          line.style.setProperty('--tl-red', `${pct}%`);
+        }
+        itemObserver.unobserve(entry.target);
       }
     });
-  });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  items.forEach(item => itemObserver.observe(item));
 </script>
 
 <style>
@@ -639,7 +645,7 @@ const specialists = [
     margin: 0;
   }
 
-  /* ── Section 4: Interactive Timeline ─────────────────────── */
+  /* ── Section 4: Scroll-animated Timeline ────────────────── */
   .timeline-section { padding-block: clamp(3rem, 5vw, 5rem); }
 
   .timeline-intro {
@@ -649,125 +655,93 @@ const specialists = [
     font-size: var(--fs-small);
   }
 
-  .timeline { display: flex; flex-direction: column; }
-
-  /* Era — details/summary accordion */
-  .era {
-    border-top: 1px solid var(--color-border);
-    list-style: none;
+  /* Timeline container */
+  .tl-timeline {
+    position: relative;
+    padding-left: 9rem;
   }
 
-  .era:last-child { border-bottom: 1px solid var(--color-border); }
+  /* Vertical line */
+  .tl-line {
+    position: absolute;
+    left: 7rem;
+    top: 0.5rem;
+    bottom: 0.5rem;
+    width: 1px;
+    background: linear-gradient(
+      to bottom,
+      var(--color-accent) 0%,
+      var(--color-accent) var(--tl-red, 0%),
+      var(--color-border) var(--tl-red, 0%),
+      var(--color-border) 100%
+    );
+    transform-origin: top;
+    transform: scaleY(0);
+    transition: transform 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .tl-line.revealed { transform: scaleY(1); }
 
-  .era-summary-row {
+  /* Each era row */
+  .tl-item {
+    position: relative;
     display: grid;
-    grid-template-columns: 160px 1fr auto;
-    gap: 2rem;
-    align-items: center;
-    padding: 1.5rem 0;
-    cursor: pointer;
-    list-style: none;
-    user-select: none;
-    transition: background 200ms;
+    grid-template-columns: 1fr;
+    padding-bottom: 2.5rem;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .tl-item.visible { opacity: 1; transform: translateY(0); }
+
+  /* Dot on the line */
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: calc(-9rem + 7rem - 5px); /* line offset - half dot */
+    top: 0.35rem;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    border: 2px solid var(--color-border);
+    background: var(--color-bg);
+    z-index: 1;
+    transition: border-color 400ms, background 400ms, box-shadow 400ms;
+    transition-delay: inherit;
+  }
+  .tl-item.visible::before {
+    border-color: var(--color-accent);
+    background: var(--color-accent);
+    box-shadow: 0 0 10px color-mix(in srgb, var(--color-accent) 35%, transparent);
   }
 
-  /* Remove default browser marker */
-  .era-summary-row::-webkit-details-marker { display: none; }
-  .era-summary-row::marker { display: none; }
-
-  .era-summary-row:hover { background: rgba(255,255,255,0.02); }
-
-  .era-years {
+  .tl-years {
     font-family: var(--font-mono);
     font-size: var(--fs-xs);
-    font-weight: 400;
     color: var(--color-accent);
     letter-spacing: 0.06em;
-    white-space: nowrap;
+    margin-bottom: 0.5rem;
+    display: block;
   }
 
-  .era-title {
+  .tl-title {
     font-family: var(--font-display);
     font-size: var(--fs-h5);
     font-weight: 300;
     color: var(--color-text);
     letter-spacing: -0.02em;
     line-height: 1.1;
+    margin-bottom: 0.75rem;
   }
 
-  /* +/× toggle icon */
-  .era-toggle {
-    width: 28px;
-    height: 28px;
-    border: 1px solid var(--color-border);
-    border-radius: 1px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    position: relative;
-    transition: border-color 200ms, background 200ms;
-  }
-
-  .era-toggle::before,
-  .era-toggle::after {
-    content: '';
-    position: absolute;
-    background: var(--color-text-faint);
-    border-radius: 1px;
-    transition: transform 250ms ease, opacity 200ms ease, background 200ms;
-  }
-
-  /* Horizontal bar */
-  .era-toggle::before {
-    width: 12px;
-    height: 1px;
-  }
-
-  /* Vertical bar */
-  .era-toggle::after {
-    width: 1px;
-    height: 12px;
-  }
-
-  /* Open state — rotate to × */
-  .era[open] .era-toggle {
-    border-color: var(--color-accent);
-    background: rgba(218, 19, 19, 0.08);
-  }
-
-  .era[open] .era-toggle::before,
-  .era[open] .era-toggle::after { background: var(--color-accent); }
-
-  .era[open] .era-toggle::before { transform: rotate(45deg); }
-  .era[open] .era-toggle::after  { transform: rotate(45deg); }
-
-  .era[open] .era-title { color: var(--color-text); }
-
-  /* Animated body */
-  .era-body {
-    overflow: hidden;
-    max-height: 0;
-    transition: max-height 350ms cubic-bezier(0.4, 0, 0.2, 1);
-    padding-left: calc(160px + 2rem);  /* align with title column */
-  }
-
-  .era-body-inner {
-    padding-bottom: 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .era-text {
+  .tl-text {
     font-size: var(--fs-small);
     color: var(--color-text-muted);
     line-height: 1.75;
     max-width: 65ch;
-    margin: 0;
+    margin-bottom: 1rem;
   }
 
-  .era-projects {
+  .tl-projects {
     list-style: none;
     padding: 0;
     display: flex;
@@ -776,10 +750,9 @@ const specialists = [
     margin: 0;
   }
 
-  .era-projects li {
+  .tl-projects li {
     font-family: var(--font-body);
     font-size: var(--fs-xs);
-    font-weight: 400;
     color: var(--color-text-faint);
     letter-spacing: 0.04em;
     padding: 0.2rem 0.55rem;
@@ -788,7 +761,7 @@ const specialists = [
     transition: color 200ms ease, border-color 200ms ease;
   }
 
-  .era-projects li:hover {
+  .tl-projects li:hover {
     color: var(--color-text-muted);
     border-color: rgba(255, 255, 255, 0.22);
   }
@@ -837,8 +810,9 @@ const specialists = [
 
   @media (max-width: 860px) {
     .specialists-grid   { grid-template-columns: repeat(2, 1fr); }
-    .era-summary-row    { grid-template-columns: 120px 1fr auto; gap: 1rem; }
-    .era-body           { padding-left: 0; }
+    .tl-timeline        { padding-left: 5rem; }
+    .tl-line            { left: 3.5rem; }
+    .tl-item::before    { left: calc(-5rem + 3.5rem - 5px); }
   }
 
   @media (max-width: 600px) {
@@ -847,8 +821,9 @@ const specialists = [
     .founder-stats      { grid-template-columns: repeat(2, 1fr); width: 100%; }
     .specialists-grid   { grid-template-columns: 1fr; }
     .benefits-grid      { grid-template-columns: 1fr; gap: 1.5rem; }
-    .era-summary-row    { grid-template-columns: 1fr auto; gap: 0.75rem; }
-    .era-years          { display: none; }
+    .tl-timeline        { padding-left: 0; }
+    .tl-line            { display: none; }
+    .tl-item::before    { display: none; }
     .about-cta-inner    { flex-direction: column; align-items: flex-start; }
     .about-cta          { padding-block: 3.5rem; }
   }

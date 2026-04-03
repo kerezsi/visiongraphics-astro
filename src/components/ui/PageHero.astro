@@ -36,11 +36,7 @@ const { image, label, title, variant = 'page', imageAlt = '' } = Astro.props;
 <style>
   /* ── Shared base ─────────────────────────────────────────── */
   .page-hero {
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-    background: var(--color-surface);
-    border-bottom: 1px solid var(--color-border);
+    @apply relative w-full overflow-hidden bg-surface border-b border-line;
   }
 
   /* ── Variant heights (½ page, ¾ section of original dev heights) ──── */
@@ -83,27 +79,20 @@ const { image, label, title, variant = 'page', imageAlt = '' } = Astro.props;
     position: relative;
     z-index: 1;
     height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    @apply flex flex-col justify-center;
     gap: var(--space-2);
     padding-block: var(--space-10);
     max-width: 60%;
   }
 
   .page-hero__label {
-    font-family: var(--font-body);
-    font-weight: 700;
-    color: var(--color-accent);
-    letter-spacing: 0.02em;
+    @apply font-body font-bold text-accent tracking-wide-4;
     margin: 0;
     line-height: 1.2;
   }
 
   .page-hero__title {
-    font-family: var(--font-body);
-    font-weight: 700;
-    color: var(--color-text);
+    @apply font-body font-bold text-content;
     line-height: 1.02;
     letter-spacing: -0.025em;
     margin: 0;

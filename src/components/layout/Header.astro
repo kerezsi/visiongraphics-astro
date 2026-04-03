@@ -1,16 +1,9 @@
 ---
 // src/components/layout/Header.astro
 
-const navItems = [
-  { label: 'Portfolio',    href: '/portfolio/' },
-  { label: 'Services',     href: '/services/' },
-  { label: 'Technologies', href: '/vision-tech/' },
-  { label: 'FAQ',          href: '/faq/' },
-  { label: 'Pricing',      href: '/pricing/' },
-  { label: 'Blog',         href: '/articles/' },
-  { label: 'About',        href: '/about/' },
-  { label: 'Contact',      href: '/contact/' },
-];
+import navConfigRaw from '../../data/nav-config.json';
+const navItems = (navConfigRaw as Array<{ label: string; href: string; enabled: boolean }>)
+  .filter((item) => item.enabled);
 
 const path = Astro.url.pathname;
 
@@ -67,6 +60,7 @@ function isActive(href: string): boolean {
   </nav>
 </header>
 
+
 <script>
   const btn = document.getElementById('mobile-menu-btn');
   const nav = document.getElementById('mobile-nav');
@@ -99,71 +93,51 @@ function isActive(href: string): boolean {
   }
 
   .site-header.scrolled {
-    border-bottom-color: var(--color-border);
+    @apply border-b border-line;
   }
 
   .header-inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    @apply flex items-center justify-between;
     height: var(--size-header);
   }
 
   /* Logo */
   .logo {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    flex-shrink: 0;
+    @apply flex items-center no-underline flex-shrink-0;
   }
 
   .logo-img {
+    @apply block w-auto;
     height: var(--size-logo);
-    width: auto;
-    display: block;
   }
 
   /* Desktop Nav */
   .desktop-nav {
-    display: flex;
-    align-items: center;
-    gap: 0;
+    @apply flex items-center;
   }
 
   .nav-link {
-    font-family: var(--font-body);
-    font-size: var(--fs-xs);
-    font-weight: 500;
-    color: var(--color-text-muted);
-    text-decoration: none;
+    @apply font-body text-tiny font-medium text-muted no-underline uppercase tracking-wide-8 transition-colors duration-200;
     padding: var(--space-2) var(--space-3);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    transition: color 200ms ease;
   }
 
   .nav-link:hover {
-    color: var(--color-text);
+    @apply text-content;
   }
 
   .nav-link.active {
-    color: var(--color-accent);
+    @apply text-accent;
   }
 
   /* Mobile button */
   .mobile-menu-btn {
-    display: none;
-    background: none;
-    border: 1px solid var(--color-border);
+    @apply hidden bg-transparent border border-line cursor-pointer text-muted transition-colors duration-200;
     padding: var(--space-2) var(--space-3);
     border-radius: var(--radius-sm);
-    cursor: pointer;
-    color: var(--color-text-muted);
-    transition: border-color 200ms ease;
   }
 
   .mobile-menu-btn:hover {
-    border-color: var(--color-text-muted);
+    @apply border-muted;
   }
 
   .hamburger,
@@ -198,19 +172,13 @@ function isActive(href: string): boolean {
   .mobile-nav[hidden] { display: none; }
 
   .mobile-nav {
-    border-top: 1px solid var(--color-border);
+    @apply border-t border-line bg-page flex flex-col;
     padding: var(--space-4);
-    display: flex;
-    flex-direction: column;
     gap: var(--space-1);
-    background: var(--color-bg);
   }
 
   .mobile-nav-link {
-    font-family: var(--font-body);
-    font-size: var(--fs-small);
-    font-weight: 300;
-    color: var(--color-text-muted);
+    @apply font-body text-small font-light text-muted;
     padding: var(--space-3);
     border-radius: var(--radius-sm);
     transition: color 150ms ease, background 150ms ease;
@@ -218,7 +186,7 @@ function isActive(href: string): boolean {
 
   .mobile-nav-link:hover,
   .mobile-nav-link.active {
-    color: var(--color-accent);
+    @apply text-accent;
     background: rgba(218, 19, 19, 0.08);
   }
 

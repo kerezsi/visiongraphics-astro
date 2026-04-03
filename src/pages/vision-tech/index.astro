@@ -31,7 +31,19 @@ const purpose_vals    = [...new Set(techniques.flatMap(t => t.data.purpose))].so
 
   <section class="vt-filter-section">
     <div class="container">
-      <div class="vt-filters">
+      <div class="vt-filters-bar">
+        <button id="vt-filter-toggle" class="vt-filter-toggle" aria-expanded="false">
+          Filters
+          <span id="vt-filter-dot" class="vt-filter-dot" hidden></span>
+          <svg class="vt-toggle-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true">
+            <path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <span id="vt-count" class="vt-count-inline">Showing all {techniques.length} techniques</span>
+        <button class="vt-reset" id="vt-reset" hidden>Reset filters</button>
+      </div>
+
+      <div class="vt-filters" id="vt-filters-body" hidden>
 
         <div class="vt-filter-group">
           <span class="vt-filter-label">Technique</span>
@@ -73,11 +85,6 @@ const purpose_vals    = [...new Set(techniques.flatMap(t => t.data.purpose))].so
           <div class="vt-pills" data-filter="purpose">
             {purpose_vals.map(v => <button class="vt-pill" data-val={v}>{v}</button>)}
           </div>
-        </div>
-
-        <div class="vt-filter-meta">
-          <span id="vt-count">Showing all {techniques.length} techniques</span>
-          <button class="vt-reset" id="vt-reset" hidden>Reset filters</button>
         </div>
 
       </div>
@@ -155,12 +162,23 @@ const purpose_vals    = [...new Set(techniques.flatMap(t => t.data.purpose))].so
 </Page>
 
 <script>
-  const grid    = document.getElementById('vt-grid')!;
-  const empty   = document.getElementById('vt-empty')!;
-  const countEl = document.getElementById('vt-count')!;
-  const resetBtns = [document.getElementById('vt-reset'), document.getElementById('vt-reset-2')];
+  const grid       = document.getElementById('vt-grid')!;
+  const empty      = document.getElementById('vt-empty')!;
+  const countEl    = document.getElementById('vt-count')!;
+  const dotEl      = document.getElementById('vt-filter-dot')!;
+  const toggleBtn  = document.getElementById('vt-filter-toggle')!;
+  const filtersBody = document.getElementById('vt-filters-body')!;
+  const resetBtns  = [document.getElementById('vt-reset'), document.getElementById('vt-reset-2')];
   const total = grid.querySelectorAll('.vt-card').length;
   const active: Record<string,string> = {};
+
+  // Toggle open/close
+  toggleBtn.addEventListener('click', () => {
+    const isOpen = !filtersBody.hidden;
+    filtersBody.hidden = isOpen;
+    toggleBtn.setAttribute('aria-expanded', String(!isOpen));
+    toggleBtn.classList.toggle('open', !isOpen);
+  });
 
   function applyFilters() {
     const cards = grid.querySelectorAll<HTMLElement>('.vt-card');
@@ -177,6 +195,7 @@ const purpose_vals    = [...new Set(techniques.flatMap(t => t.data.purpose))].so
     countEl.textContent = hasFilter
       ? `Showing ${visible} of ${total} techniques`
       : `Showing all ${total} techniques`;
+    dotEl.hidden = !hasFilter;
     empty.hidden = visible > 0;
     resetBtns.forEach(b => { if (b) b.hidden = !hasFilter; });
   }
@@ -211,15 +230,24 @@ const purpose_vals    = [...new Set(techniques.flatMap(t => t.data.purpose))].so
   .vt-hero { padding-block: clamp(3rem,6vw,5rem) clamp(2rem,4vw,3rem); border-bottom: 1px solid var(--color-border); }
   .vt-hero-sub { max-width: 60ch; margin-top: 1rem; font-size: var(--fs-body); color: var(--color-text-muted); }
 
-  .vt-filter-section { padding-block: 1.5rem; background: var(--color-surface); border-bottom: 1px solid var(--color-border); }
-  .vt-filters { display: flex; flex-direction: column; gap: 0.6rem; }
+  .vt-filter-section { padding-block: 0.75rem; background: var(--color-surface); border-bottom: 1px solid var(--color-border); }
+  .vt-filters-bar { display: flex; align-items: center; gap: 1rem; }
+  .vt-filter-toggle { display: flex; align-items: center; gap: 0.4rem; font-family: var(--font-body); font-size: var(--fs-xs); font-weight: 500; color: var(--color-text-muted); background: transparent; border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 0.4rem 0.75rem; cursor: pointer; transition: all 180ms ease; white-space: nowrap; }
+  .vt-filter-toggle:hover { border-color: var(--color-text-muted); color: var(--color-text); }
+  .vt-filter-toggle.open { border-color: var(--color-accent); color: var(--color-text); }
+  .vt-toggle-chevron { width: 0.6rem; height: 0.4rem; transition: transform 200ms; }
+  .vt-filter-toggle.open .vt-toggle-chevron { transform: rotate(180deg); }
+  .vt-filter-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--color-accent); flex-shrink: 0; }
+  .vt-filter-dot[hidden] { display: none; }
+  .vt-count-inline { font-size: var(--fs-xs); color: var(--color-text-faint); margin-left: auto; }
+  .vt-filters { display: flex; flex-direction: column; gap: 0.6rem; padding-top: 0.75rem; }
+  .vt-filters[hidden] { display: none; }
   .vt-filter-group { display: flex; align-items: flex-start; gap: 1rem; }
   .vt-filter-label { font-size: var(--fs-xs); font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-text-faint); white-space: nowrap; padding-top: 0.35rem; min-width: 9rem; }
   .vt-pills { display: flex; flex-wrap: wrap; gap: 0.35rem; }
   .vt-pill { font-family: var(--font-body); font-size: var(--fs-xs); font-weight: 500; padding: 0.25rem 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: transparent; color: var(--color-text-muted); cursor: pointer; transition: all 180ms ease; white-space: nowrap; }
   .vt-pill:hover { border-color: var(--color-text-muted); color: var(--color-text); }
-  .vt-pill.active { border-color: var(--color-accent); color: var(--color-accent); background: rgba(218,19,19,0.08); }
-  .vt-filter-meta { display: flex; align-items: center; gap: 1.5rem; padding-top: 0.5rem; border-top: 1px solid var(--color-border); }
+  .vt-pill.active { border-color: var(--color-accent); color: var(--color-accent); background: color-mix(in srgb, var(--color-accent) 8%, transparent); }
   #vt-count { font-size: var(--fs-xs); color: var(--color-text-faint); }
   .vt-reset { font-size: var(--fs-xs); color: var(--color-accent); background: none; border: none; cursor: pointer; padding: 0; font-family: var(--font-body); }
 

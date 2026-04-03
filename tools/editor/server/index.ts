@@ -15,6 +15,7 @@ import ollamaRouter from './routers/ollama.js';
 import comfyuiRouter from './routers/comfyui.js';
 import importRouter from './routers/import-md.js';
 import codegenRouter from './routers/codegen.js';
+import commandsRouter from './routers/commands.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PORT = process.env.EDITOR_SERVER_PORT ? parseInt(process.env.EDITOR_SERVER_PORT) : 4322;
@@ -107,6 +108,7 @@ app.use('/api/ollama', ollamaRouter);
 app.use('/api/comfyui', comfyuiRouter);
 app.use('/api/import', importRouter);
 app.use('/api/codegen', codegenRouter);
+app.use('/api/commands', commandsRouter);
 
 // ---------------------------------------------------------------------------
 // Catch-all: serve index.html for SPA routing (when Vite is not running)
