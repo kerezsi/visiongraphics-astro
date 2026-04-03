@@ -3,7 +3,8 @@
  * Inserts a `thumbs/` subfolder and changes extension to .webp:
  *   /_img/portfolio/slug/01.jpg → /_img/portfolio/slug/thumbs/01.webp
  */
-export function thumbUrl(src: string): string {
+export function thumbUrl(src: string | undefined | null): string {
+  if (!src) return '';
   const lastSlash = src.lastIndexOf('/');
   if (lastSlash === -1) return src;
   const dir = src.slice(0, lastSlash);

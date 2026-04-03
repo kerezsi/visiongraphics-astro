@@ -23,7 +23,7 @@ const { data } = entry;
 const { Content } = await entry.render();
 
 // Related portfolio projects
-const allProjects = await getCollection('projects', p => p.data.published);
+const allProjects = await getCollection('projects', p => p.data.published && !!p.data.coverImage);
 
 // 1. Specific match: relatedCategories (subcategory) + relatedFeatures
 const specificMatches = allProjects.filter(p => {
