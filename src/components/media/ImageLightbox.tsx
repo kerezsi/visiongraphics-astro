@@ -87,7 +87,7 @@ export default function ImageLightbox({ images, title }: Props) {
         >
           <img
             className="gallery-main-img"
-            src={thumbUrl(images[activeIndex].src)}
+            src={thumbUrl(images[activeIndex].src, 'large')}
             alt={images[activeIndex].alt}
             onError={(e) => { (e.target as HTMLImageElement).src = images[activeIndex].src; }}
           />

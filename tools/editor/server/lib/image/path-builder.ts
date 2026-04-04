@@ -1,28 +1,29 @@
 export type PageType = 'article' | 'service' | 'project' | 'vision-tech';
 
-// R2 sub-path prefix per collection type.
-// Images are served through /_img/ → R2 redirects on the Astro site.
-const R2_PREFIX: Record<PageType, string> = {
-  project:      '_img/portfolio',
-  article:      '_img/articles',
-  service:      '_img/services',
-  'vision-tech': '_img/vision-tech',
+// R2 bucket sub-path per collection type (no leading _img/ — that prefix is
+// only used in the Astro site's public URLs and /_redirects rules).
+const R2_COLLECTION: Record<PageType, string> = {
+  project:       'portfolio',
+  article:       'articles',
+  service:       'services',
+  'vision-tech': 'vision-tech',
 };
 
 /**
  * Returns the LOCAL staging directory for a given page's images.
- * e.g. "tools/editor/.staging/koki_foodcourt"
+ * Mirrors the R2 collection structure.
+ * e.g. "tools/editor/.staging/portfolio/koki_foodcourt"
  */
-export function buildStagingDir(slug: string): string {
-  return `tools/editor/.staging/${slug}`;
+export function buildStagingDir(pageType: PageType, slug: string): string {
+  return `tools/editor/.staging/${R2_COLLECTION[pageType]}/${slug}`;
 }
 
 /**
  * Returns the R2 remote path prefix for rclone.
- * e.g. "_img/portfolio/koki_foodcourt"
+ * e.g. "portfolio/koki_foodcourt"
  */
 export function buildR2RemotePath(pageType: PageType, slug: string): string {
-  return `${R2_PREFIX[pageType]}/${slug}`;
+  return `${R2_COLLECTION[pageType]}/${slug}`;
 }
 
 /**
@@ -30,14 +31,14 @@ export function buildR2RemotePath(pageType: PageType, slug: string): string {
  * e.g. "/_img/portfolio/koki_foodcourt/photo.jpg"
  */
 export function buildImageUrl(pageType: PageType, slug: string, filename: string): string {
-  return `/${R2_PREFIX[pageType]}/${slug}/${filename}`;
+  return `/_img/${R2_COLLECTION[pageType]}/${slug}/${filename}`;
 }
 
 /**
  * Returns the staging directory path where images are stored locally.
  */
 export function buildImageDir(pageType: PageType, slug: string): string {
-  return buildStagingDir(slug);
+  return buildStagingDir(pageType, slug);
 }
 
 export function sanitizeFilename(original: string): string {

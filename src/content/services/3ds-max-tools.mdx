@@ -1,6 +1,6 @@
 ---
 title: "3ds Max Tools & Scripting"
-description: "MAXScript and Python tools for batch processing, scene cleanup, render management. 3ds Max since version 1. Vision Graphics Kft., Budapest."
+description: "30 years with 3ds Max — since version 1. Custom MAXScript and Python tools built for your specific workflow: batch render submission, scene cleanup, asset management, material processing, and connections to external systems. Not generic plugins."
 tagline: "Custom tools for MAX users who've hit the ceiling."
 bannerImage: "/_img/banners/banner-3dsmax.jpg"
 order: 6
@@ -10,40 +10,49 @@ sidebarContent: "3ds Max since version 1 · MAXScript: 25+ years · Python: 10+ 
 pricing: "By scope. Simple scripts from €500. Complex automation tools quoted on scope. Maintenance retainers available."
 ---
 
-After 30 years of wrestling with 3ds Max — yes, since version 1 — we know exactly what breaks and how to fix it. More importantly, we know how to stop those problems from coming back. MAXScript and Python tools built for your specific production problems, not generic plugins that almost do what you need.
+We've been using 3ds Max since version 1 — longer than most of its current users have been in the industry. That history means we know exactly what breaks, why it breaks, and how to stop it from breaking again. MAXScript and Python tools built for your specific production problems, not generic plugins that almost do what you need.
 
-## What's slowing you down?
+## Who we work with
 
-Ever notice how much time you spend fixing the same issues over and over? Old files that won't open, materials that look wrong, scenes that crash just when you need them most. We fix that — not just for one file, but for all of them.
+- Visualization studios hitting the same manual steps on every project
+- Architects with 3ds Max pipelines that haven't kept pace with project size
+- Studios with legacy scene libraries causing crashes or compatibility problems
+- Anyone maintaining a large 3D asset collection without a proper management system
 
-<SectionBanner image="/_img/banners/banner-general.jpg" label="MAX Headaches" title="We Handle What Breaks" />
+<SectionBanner image="/_img/banners/banner-general.jpg" label="Scene Repair" title="Files That Won't Cooperate" />
 
-We specialize in complex, large-scale 3ds Max files that exhaust RAM or crash on other machines. Because we use these tools ourselves in production, they get maintained when 3ds Max updates break things.
+Complex MAX files accumulate problems over time — corrupt objects, broken material references, geometry that renders differently than it looks in viewport, scenes that crash only on deadline. We specialize in diagnosing and resolving these issues in files other people give up on.
 
-- Trace and fix mysterious crashes that waste your time
-- Clean up messy geometry causing render problems
-- Sort out material libraries that no longer make sense
-- Remove corrupt objects that slow everything down
-- Make old files work with your current MAX version
-- Recover scenes that crash on delivery deadline
+- Trace and fix crashes in complex, RAM-intensive scenes
+- Resolve viewport vs. render discrepancies (materials, geometry, shadows)
+- Clean up geometry causing render errors or instability
+- Relink and consolidate missing or broken external assets
+- Convert legacy scenes to current MAX and V-Ray standards
 
-<SectionBanner image="/_img/banners/banner-tech.jpg" label="Custom Scripts" title="Automate the Repetitive" />
+**Example:** A studio came to us with a 4GB airport terminal file that crashed consistently during final render. The scene had accumulated three years of changes from multiple artists. We identified a chain of corrupt proxy objects causing memory overflow, cleaned the scene without losing any geometry or materials, and delivered a stable file in 48 hours.
 
-Why do the same task 100 times when you could do it once? We build MAXScripts and Python tools that automate your repetitive work — built for how you actually work, not for generic use.
+<SectionBanner image="/_img/banners/banner-tech.jpg" label="Scripting" title="Automate the Repetitive" />
 
 <DeliverableGrid columns={2} items={[
-  { title: "Batch Processing", desc: "Process hundreds of files without clicking a thing. Render submission, camera switching, output naming, V-Ray preset switching — automated." },
-  { title: "Scene Cleanup", desc: "Fix common geometry issues automatically. Remove duplicates, fix missing materials, purge unused assets, standardize naming conventions across a folder of files." },
-  { title: "Asset Management", desc: "Track, relink, and consolidate external assets across complex scenes. Prevent the \"missing texture\" problem in production. Batch replace and export materials." },
-  { title: "Custom UI Panels", desc: "Rollout panels and toolbars that put your most-used operations one click away. Built for how you actually work." },
-  { title: "Material Processing", desc: "Batch replace, update, or export materials. Useful when working with large BIM imports or standardizing across a project series." },
-  { title: "Python Integration", desc: "Connect 3ds Max to external systems via Python — file servers, databases, project management tools, and AI services." },
+  { title: "Batch Processing", desc: "Process hundreds of files without clicking a thing — render submission, camera switching, output naming, V-Ray preset switching, all automated via MAXScript or Python." },
+  { title: "Scene Cleanup Scripts", desc: "Fix common geometry problems automatically: remove duplicates, purge unused assets, standardize naming conventions across an entire folder of files." },
+  { title: "Asset Management Tools", desc: "Track, relink, and consolidate external assets across complex scenes. Prevent the missing-texture problem before it hits production. Batch replace and export materials." },
+  { title: "Custom UI Panels", desc: "Rollout panels and toolbars putting your most-used operations one click away — built for how your team actually works, not for a generic MAX user." },
+  { title: "Material Processing", desc: "Batch replace, update, or export materials across a project series. Particularly useful for large BIM imports where standardization matters." },
+  { title: "Python Integration", desc: "Connect 3ds Max to external systems — file servers, project management tools, render farm APIs, and AI services — via Python scripts that run from within MAX." },
 ]} />
 
-<SectionBanner image="/_img/banners/banner-workflow.jpg" label="How We Work" title="Listen. Analyse. Solve." />
+<SectionBanner image="/_img/banners/banner-workflow.jpg" label="Process" title="How Scripting Work Goes" />
 
-<DeliverableGrid columns={3} items={[
-  { title: "01 — First, We Listen", desc: "We start by understanding your workflow. What takes too long? What breaks most often? Where do you waste time? No guessing — we learn your specific situation." },
-  { title: "02 — Then, We Analyse", desc: "We dig into your files, find the real problems (not just the symptoms), and figure out what's causing them. We know the difference between a symptom and a root cause." },
-  { title: "03 — Finally, We Solve", desc: "We build solutions that fix your current problems and stop them from coming back — working with your team's skills and fitting your actual workflow. Either teach you or handle it for you." },
-]} />
+<ProcessFlow
+  title="From problem to working tool"
+  steps={[
+    { label: "Listen", sub: "Understand your workflow" },
+    { label: "Analyse", sub: "Find root causes" },
+    { label: "Prototype", sub: "Test solution in your scene" },
+    { label: "Refine", sub: "Edge cases + error handling" },
+    { label: "Deliver", sub: "Script + documentation" },
+  ]}
+/>
+
+Scripts are built against your actual files and workflow, tested in your environment, and documented so your team can use and maintain them. We can teach you to extend them, or we can handle maintenance on a retainer. Pricing is by scope — simple scene-cleanup scripts start at €500, complex multi-tool automation systems are quoted on the brief.

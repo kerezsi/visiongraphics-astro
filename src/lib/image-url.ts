@@ -1,14 +1,18 @@
 /**
- * Derives the thumbnail URL for any R2-hosted image.
- * Inserts a `thumbs/` subfolder and changes extension to .webp:
- *   /_img/portfolio/slug/01.jpg → /_img/portfolio/slug/thumbs/01.webp
+ * Derives a thumbnail URL from any R2-hosted image src.
+ *
+ * Thumbnails live in public/thumbs/ and are served as static files.
+ *   /_img/portfolio/slug/01.jpg  →  /thumbs/card/portfolio/slug/01.webp
+ *   /_img/services/slug/01.jpg   →  /thumbs/large/services/slug/01.webp
+ *
+ * Sizes:
+ *   card  — 600px  (portfolio grid, service carousel, article cards, gallery strip)
+ *   large — 1600px (gallery main viewer, 360 cover images)
  */
-export function thumbUrl(src: string | undefined | null): string {
+export function thumbUrl(src: string | undefined | null, size: 'card' | 'large' = 'card'): string {
   if (!src) return '';
-  const lastSlash = src.lastIndexOf('/');
-  if (lastSlash === -1) return src;
-  const dir = src.slice(0, lastSlash);
-  const filename = src.slice(lastSlash + 1);
-  const basename = filename.replace(/\.[^.]+$/, '');
-  return `${dir}/thumbs/${basename}.webp`;
+  // Strip /_img/ prefix, swap extension to .webp
+  const stripped = src.startsWith('/_img/') ? src.slice('/_img/'.length) : src;
+  const withoutExt = stripped.replace(/\.[^./]+$/, '');
+  return `/thumbs/${size}/${withoutExt}.webp`;
 }

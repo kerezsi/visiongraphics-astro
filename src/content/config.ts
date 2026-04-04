@@ -143,6 +143,8 @@ const projects = defineCollection({
 
     // Connected vision-tech technique slugs
     techniques: z.array(z.string()).optional(),
+    // Connected service slugs (links project → service pages)
+    services: z.array(z.string()).optional().default([]),
     // Ordered content blocks (text + media, interleaved)
     blocks: z.array(contentBlock).optional(),
 
@@ -182,6 +184,10 @@ const services = defineCollection({
     pricing:           z.string().optional(), // sidebar pricing info
     sidebarLabel:      z.string().optional(), // sidebar alternative label
     sidebarContent:    z.string().optional(), // sidebar alternative content
+    // Linked vision-tech technique slugs — shown as chip row above related projects
+    techniques:        z.array(z.string()).optional().default([]),
+    // Connected service slugs (Keystatic writes this field; accepted here to avoid schema errors)
+    services:          z.array(z.string()).optional().default([]),
     // Legacy blocks kept for compatibility during migration
     blocks:            z.array(z.any()).optional(),
   }),

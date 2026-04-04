@@ -1,6 +1,5 @@
 ---
 // src/pages/index.astro
-// Homepage — corrected content, no fake testimonials, proper order
 
 import Base from '../layouts/Base.astro';
 import Header from '../components/layout/Header.astro';
@@ -11,11 +10,10 @@ import { getCollection, getEntry } from 'astro:content';
 
 // Featured projects for homepage carousel
 const allProjects = await getCollection('projects', ({ data }) =>
-  data.published && data.featured
+  data.published && data.featured && !!data.coverImage
 );
 const featuredProjects = allProjects.sort((a, b) => b.data.year - a.data.year);
 
-// Resolve city + country for featured projects
 const carouselSlides = await Promise.all(
   featuredProjects.map(async p => {
     const city    = p.data.city    ? (await getEntry('cities',    p.data.city.id))?.data.title    : undefined;
@@ -29,6 +27,12 @@ const carouselSlides = await Promise.all(
     };
   })
 );
+
+// Services teaser — first 4 by order
+const allServices = await getCollection('services', ({ data }) => data.published);
+const teaserServices = allServices
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 4);
 ---
 
 <Base
@@ -63,11 +67,26 @@ const carouselSlides = await Promise.all(
         </div>
       </div>
 
-      <!-- Background: large architectural image (add your best render here) -->
       <div class="hero-bg" aria-hidden="true">
         <div class="hero-bg-overlay"></div>
       </div>
     </section>
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- FEATURED WORK — carousel immediately below the fold        -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    {carouselSlides.length > 0 && (
+      <section class="featured-section">
+        <div class="featured-carousel-header container">
+          <div>
+            <p class="section-label">Selected Work</p>
+            <h2 class="display-md">30 Years of Projects</h2>
+          </div>
+          <a href="/portfolio/" class="btn btn-secondary">Full Portfolio</a>
+        </div>
+        <HomeCarousel slides={carouselSlides} client:load />
+      </section>
+    )}
 
     <!-- ═══════════════════════════════════════════════════════════ -->
     <!-- CLIENT LOGOS                                                -->
@@ -84,9 +103,6 @@ const carouselSlides = await Promise.all(
             <span class="logo-name-text">{name}</span>
           ))}
         </div>
-        <p class="logos-note">
-          Replace with actual logo files when available.
-        </p>
       </div>
     </section>
 
@@ -114,56 +130,21 @@ const carouselSlides = await Promise.all(
     <hr class="container-rule" />
 
     <!-- ═══════════════════════════════════════════════════════════ -->
-    <!-- PAIN POINTS                                                 -->
-    <!-- ═══════════════════════════════════════════════════════════ -->
-    <section class="section pain-section">
-      <div class="container">
-        <p class="section-label">The Problem</p>
-        <h2 class="display-md pain-h2">
-          Getting Good 3D Visuals<br />Is Harder Than It Should Be
-        </h2>
-        <div class="pain-grid">
-          {[
-            { icon: 'clock',         title: 'Late deliveries',      body: 'You miss your pitch window while revisions pile up.' },
-            { icon: 'layers',        title: 'Generic output',       body: 'Renders that could belong to any project, any studio.' },
-            { icon: 'user-x',        title: 'Disappearing acts',    body: 'Freelancers who go quiet at the worst possible moment.' },
-            { icon: 'repeat',        title: 'Endless back-and-forth', body: 'Revisions that stretch weeks into months.' },
-            { icon: 'trending-down', title: 'Can\'t scale up',      body: 'Teams that can\'t handle it when the project grows.' },
-            { icon: 'help-circle',   title: 'Visuals that confuse', body: 'Stakeholders leave the meeting more uncertain than before.' },
-          ].map(p => (
-            <div class="pain-card">
-              <span class="pain-icon"><Icon name={p.icon} size={22} /></span>
-              <h3 class="pain-title">{p.title}</h3>
-              <p class="pain-body">{p.body}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-
-    <!-- ═══════════════════════════════════════════════════════════ -->
-    <!-- SOLUTION                                                    -->
+    <!-- THE STUDIO                                                  -->
     <!-- ═══════════════════════════════════════════════════════════ -->
     <section class="section solution-section">
       <div class="container solution-inner">
         <div class="solution-text">
-          <p class="section-label">The Solution</p>
+          <p class="section-label">The Studio</p>
           <h2 class="display-md">Vision Graphics</h2>
 
-          <!-- László portrait -->
           <div class="laszlo-portrait">
             <img
               src="/laszlo.jpg"
-              alt="László Kerezsi — Founder, Vision Graphics"
+              alt="The studio mascot keeping watch. László is somewhere in the background — that's intentional."
               class="laszlo-img"
-              width="200"
-              height="200"
               loading="lazy"
             />
-            <div class="laszlo-caption">
-              <strong class="laszlo-name">László Kerezsi</strong>
-              <span class="laszlo-role">Founder &amp; Visualization Director</span>
-            </div>
           </div>
 
           <p class="solution-body">
@@ -208,23 +189,32 @@ const carouselSlides = await Promise.all(
     </section>
 
     <!-- ═══════════════════════════════════════════════════════════ -->
-    <!-- FEATURED WORK                                               -->
+    <!-- SERVICES TEASER                                             -->
     <!-- ═══════════════════════════════════════════════════════════ -->
-    {carouselSlides.length > 0 && (
-      <section class="featured-section">
-        <div class="featured-carousel-header container">
+    <section class="section services-teaser-section">
+      <div class="container">
+        <div class="services-teaser-header">
           <div>
-            <p class="section-label">Selected Work</p>
-            <h2 class="display-md">30 Years of Projects</h2>
+            <p class="section-label">What We Do</p>
+            <h2 class="display-md">Services</h2>
           </div>
-          <a href="/portfolio/" class="btn btn-secondary">Full Portfolio</a>
+          <a href="/services/" class="btn btn-secondary">All Services</a>
         </div>
-        <HomeCarousel slides={carouselSlides} client:load />
-      </section>
-    )}
+        <div class="services-teaser-grid">
+          {teaserServices.map((svc, i) => (
+            <a href={`/services/${svc.slug}/`} class="svc-card">
+              <span class="svc-n">0{i + 1}</span>
+              <h3 class="svc-title">{svc.data.title}</h3>
+              <p class="svc-tagline">{svc.data.tagline}</p>
+              <span class="svc-arrow" aria-hidden="true">→</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
 
     <!-- ═══════════════════════════════════════════════════════════ -->
-    <!-- HOW IT WORKS  (corrected order)                             -->
+    <!-- HOW IT WORKS                                                -->
     <!-- ═══════════════════════════════════════════════════════════ -->
     <section class="section process-section">
       <div class="container">
@@ -275,44 +265,6 @@ const carouselSlides = await Promise.all(
                 {s.items.map(item => <li>{item}</li>)}
               </ul>
             </div>
-          ))}
-        </div>
-      </div>
-    </section>
-
-    <!-- ═══════════════════════════════════════════════════════════ -->
-    <!-- FAQ PREVIEW                                                 -->
-    <!-- ═══════════════════════════════════════════════════════════ -->
-    <section class="section faq-preview-section">
-      <div class="container faq-preview-inner">
-        <div class="faq-preview-header">
-          <p class="section-label">Quick Answers</p>
-          <h2 class="display-md">Common Questions</h2>
-          <a href="/faq/" class="btn btn-ghost">All FAQs</a>
-        </div>
-        <div class="faq-preview-list">
-          {[
-            {
-              q: 'How long does a typical project take?',
-              a: 'Most architectural renders: 1–2 weeks. Multi-image sets: 2–3 weeks. Animations: 3–6 weeks. We give a detailed timeline in our first conversation.',
-            },
-            {
-              q: 'What do you need from me to start?',
-              a: 'Plans (CAD, PDF, sketch — any level of detail), references you like, and your deadline. We\'ll guide you through the rest.',
-            },
-            {
-              q: 'Can you handle large-scale projects?',
-              a: 'Yes. Our specialist network lets us scale to airport terminals and urban masterplans — while László stays as your single point of contact.',
-            },
-            {
-              q: 'What makes you different from other studios?',
-              a: '30 years of project pattern recognition. Direct founder access. AI-enhanced workflows that cut iteration time. And we\'ve worked on airports on four continents.',
-            },
-          ].map(faq => (
-            <details class="faq-item">
-              <summary class="faq-q">{faq.q}</summary>
-              <p class="faq-a">{faq.a}</p>
-            </details>
           ))}
         </div>
       </div>
@@ -416,6 +368,14 @@ const carouselSlides = await Promise.all(
     );
   }
 
+  /* ── Featured / Carousel ──────────────────────────────────── */
+  .featured-carousel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-block: var(--space-8) var(--space-6);
+  }
+
   /* ── Logos ────────────────────────────────────────────────── */
   .logos-label { margin-bottom: var(--space-5); }
 
@@ -437,10 +397,6 @@ const carouselSlides = await Promise.all(
   }
 
   .logo-name-text:hover { color: var(--color-text-muted); }
-
-  .logos-note {
-    display: none; /* remove once real logos are in */
-  }
 
   /* ── Stats ────────────────────────────────────────────────── */
   .stats-grid {
@@ -482,57 +438,7 @@ const carouselSlides = await Promise.all(
     padding-inline: clamp(1.5rem, 5vw, 4rem);
   }
 
-  /* ── Pain ─────────────────────────────────────────────────── */
-  .pain-h2 { margin: var(--space-4) 0 var(--space-12); }
-
-  .pain-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: var(--color-border);
-    border: 1px solid var(--color-border);
-  }
-
-  .pain-card {
-    background: var(--color-surface);
-    padding: var(--space-8);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-    transition: background 200ms ease;
-  }
-
-  .pain-card:hover { background: var(--color-surface-2); }
-
-  .pain-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: var(--size-icon);
-    height: var(--size-icon);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-sm);
-    color: var(--color-accent);
-    margin-bottom: var(--space-3);
-    flex-shrink: 0;
-  }
-
-  .pain-title {
-    font-family: var(--font-body);
-    font-size: var(--fs-small);
-    font-weight: 500;
-    color: var(--color-text);
-  }
-
-  .pain-body {
-    font-size: var(--fs-xs);
-    color: var(--color-text-muted);
-    line-height: 1.6;
-    max-width: none;
-    margin: 0;
-  }
-
-  /* ── Solution ─────────────────────────────────────────────── */
+  /* ── Studio / Solution ────────────────────────────────────── */
   .solution-section { background: var(--color-surface); border-block: 1px solid var(--color-border); }
 
   .solution-inner {
@@ -542,40 +448,20 @@ const carouselSlides = await Promise.all(
     align-items: start;
   }
 
-  /* László portrait */
+  /* László — editorial rectangle, no circle */
   .laszlo-portrait {
-    display: flex;
-    align-items: center;
-    gap: var(--space-4);
     margin: var(--space-6) 0 var(--space-5);
   }
 
   .laszlo-img {
-    width: var(--size-avatar);
-    height: var(--size-avatar);
-    border-radius: 50%;
+    display: block;
+    width: 100%;
+    max-width: 360px;
+    aspect-ratio: 4 / 3;
     object-fit: cover;
-    border: 2px solid var(--color-border);
-    flex-shrink: 0;
-  }
-
-  .laszlo-caption {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-1);
-  }
-
-  .laszlo-name {
-    font-family: var(--font-display);
-    font-size: var(--fs-small);
-    font-weight: 700;
-    color: var(--color-text);
-  }
-
-  .laszlo-role {
-    font-size: var(--fs-xs);
-    color: var(--color-text-muted);
-    letter-spacing: 0.04em;
+    object-position: center;
+    border: 1px solid var(--color-border);
+    border-left: 3px solid var(--color-accent);
   }
 
   .solution-body {
@@ -643,16 +529,74 @@ const carouselSlides = await Promise.all(
     max-width: none;
   }
 
-  /* ── Featured Work / Carousel ────────────────────────────── */
-  .featured-section {
-    /* no extra padding — carousel fills full width */
-  }
+  /* ── Services Teaser ──────────────────────────────────────── */
+  .services-teaser-section { border-top: 1px solid var(--color-border); }
 
-  .featured-carousel-header {
+  .services-teaser-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    padding-block: var(--space-8) var(--space-6);
+    margin-bottom: var(--space-10);
+  }
+
+  .services-teaser-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--color-border);
+    border: 1px solid var(--color-border);
+  }
+
+  .svc-card {
+    background: var(--color-surface);
+    padding: var(--space-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    text-decoration: none;
+    position: relative;
+    transition: background 200ms ease;
+    border-top: 2px solid transparent;
+  }
+
+  .svc-card:hover {
+    background: var(--color-surface-2);
+    border-top-color: var(--color-accent);
+  }
+
+  .svc-n {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    color: var(--color-accent);
+  }
+
+  .svc-title {
+    font-family: var(--font-body);
+    font-size: var(--fs-small);
+    font-weight: 600;
+    color: var(--color-text);
+    line-height: 1.3;
+  }
+
+  .svc-tagline {
+    font-size: var(--fs-xs);
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    flex: 1;
+    margin: 0;
+  }
+
+  .svc-arrow {
+    font-size: var(--fs-small);
+    color: var(--color-text-faint);
+    transition: color 200ms ease, transform 200ms ease;
+    display: inline-block;
+    align-self: flex-start;
+  }
+
+  .svc-card:hover .svc-arrow {
+    color: var(--color-accent);
+    transform: translateX(4px);
   }
 
   /* ── Process ──────────────────────────────────────────────── */
@@ -727,63 +671,6 @@ const carouselSlides = await Promise.all(
     font-size: var(--fs-xs);
   }
 
-  /* ── FAQ Preview ──────────────────────────────────────────── */
-  .faq-preview-inner {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: var(--space-20);
-    align-items: start;
-  }
-
-  .faq-preview-header { display: flex; flex-direction: column; gap: var(--space-4); }
-  .faq-preview-header h2 { margin: 0; }
-
-  .faq-preview-list { display: flex; flex-direction: column; }
-
-  .faq-item {
-    border-top: 1px solid var(--color-border);
-    padding-block: var(--space-5);
-  }
-
-  .faq-item:last-child { border-bottom: 1px solid var(--color-border); }
-
-  .faq-q {
-    font-family: var(--font-body);
-    font-size: var(--fs-small);
-    font-weight: 500;
-    color: var(--color-text);
-    cursor: pointer;
-    list-style: none;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: var(--space-4);
-  }
-
-  .faq-q::-webkit-details-marker { display: none; }
-
-  .faq-q::after {
-    content: '+';
-    font-family: var(--font-mono);
-    font-size: var(--fs-h6);
-    color: var(--color-text-faint);
-    flex-shrink: 0;
-    transition: transform 200ms ease, color 200ms ease;
-  }
-
-  details[open] .faq-q::after {
-    transform: rotate(45deg);
-    color: var(--color-accent);
-  }
-
-  .faq-a {
-    font-size: var(--fs-small);
-    color: var(--color-text-muted);
-    line-height: 1.7;
-    margin-top: var(--space-3);
-    max-width: none;
-  }
-
   /* ── CTA Banner ───────────────────────────────────────────── */
   .cta-banner {
     background: var(--color-surface);
@@ -822,14 +709,17 @@ const carouselSlides = await Promise.all(
 
   /* ── Responsive ───────────────────────────────────────────── */
   @media (max-width: 1024px) {
-    .solution-inner { grid-template-columns: 1fr; gap: var(--space-12); }
+    .solution-inner         { grid-template-columns: 1fr; gap: var(--space-12); }
+    .services-teaser-grid   { grid-template-columns: repeat(2, 1fr); }
   }
 
   @media (max-width: 768px) {
-    .stats-grid   { grid-template-columns: repeat(2, 1fr); }
-    .pain-grid    { grid-template-columns: 1fr; }
-    .process-steps{ grid-template-columns: 1fr; }
-    .faq-preview-inner { grid-template-columns: 1fr; gap: var(--space-8); }
-    .cta-banner-inner { flex-direction: column; text-align: center; }
+    .stats-grid             { grid-template-columns: repeat(2, 1fr); }
+    .services-teaser-grid   { grid-template-columns: 1fr; }
+    .process-steps          { grid-template-columns: 1fr; }
+    .cta-banner-inner       { flex-direction: column; text-align: center; }
+    .services-teaser-header { flex-direction: column; align-items: flex-start; gap: var(--space-4); }
+    .featured-carousel-header { flex-direction: column; align-items: flex-start; gap: var(--space-3); }
+    .laszlo-img             { max-width: 100%; }
   }
 </style>

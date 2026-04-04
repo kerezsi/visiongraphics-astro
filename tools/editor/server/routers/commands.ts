@@ -2,8 +2,12 @@ import express from 'express';
 import type { Request, Response } from 'express';
 import { spawn } from 'child_process';
 import { PROJECT_ROOT } from '../lib/fs-utils.js';
+import { buildR2RemotePath } from '../lib/image/path-builder.js';
+import type { PageType } from '../lib/image/path-builder.js';
 
 const router = express.Router();
+
+const VALID_PAGE_TYPES: PageType[] = ['article', 'service', 'project', 'vision-tech'];
 
 function validateSlug(slug: string): boolean {
   return /^[a-zA-Z0-9_-]+$/.test(slug);
@@ -36,10 +40,11 @@ function runCommand(
 
 // ---------------------------------------------------------------------------
 // POST /generate-thumbs — run generate-thumbs.mjs for a slug (or all)
-// Body: { slug?: string }
+// Body: { slug?: string; pageType?: string }
+// When pageType + slug are provided, generates only that collection/slug folder.
 // ---------------------------------------------------------------------------
 router.post('/generate-thumbs', (req: Request, res: Response) => {
-  const { slug } = req.body as { slug?: string };
+  const { slug, pageType } = req.body as { slug?: string; pageType?: string };
 
   if (slug && !validateSlug(slug)) {
     res.status(400).json({ error: 'Invalid slug' });
@@ -47,9 +52,20 @@ router.post('/generate-thumbs', (req: Request, res: Response) => {
   }
 
   const args = ['scripts/generate-thumbs.mjs'];
-  if (slug) args.push('--slug', slug);
 
-  console.log(`[commands] generate-thumbs ${slug ?? '(all)'}`);
+  if (slug && pageType && VALID_PAGE_TYPES.includes(pageType as PageType)) {
+    // Build collection-prefixed slug: e.g. "portfolio/hotel-lycium"
+    const collectionSlug = buildR2RemotePath(pageType as PageType, slug);
+    args.push('--slug', collectionSlug);
+    console.log(`[commands] generate-thumbs --slug ${collectionSlug}`);
+  } else if (slug) {
+    // Fallback: bare slug (generates for matching paths in all collections)
+    args.push('--slug', slug);
+    console.log(`[commands] generate-thumbs --slug ${slug} (no pageType)`);
+  } else {
+    console.log('[commands] generate-thumbs (all)');
+  }
+
   runCommand('node', args, res);
 });
 

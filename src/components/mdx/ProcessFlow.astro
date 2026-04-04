@@ -1,0 +1,179 @@
+---
+interface Step {
+  label: string;
+  sub?: string;
+}
+interface Feedback {
+  from: number; // 0-based step index (origin of the arrow)
+  to: number;   // 0-based step index (destination of the arrow)
+  label?: string;
+}
+interface Props {
+  steps: Step[];
+  feedback?: Feedback[];
+  title?: string;
+}
+const { steps, feedback = [], title } = Astro.props;
+
+// Grid: odd columns = steps, even columns = connectors
+// Step i → grid column 2*i + 1 (1-indexed)
+const gridCols = steps.length * 2 - 1;
+---
+
+<div class="process-flow">
+  {title && <p class="process-flow-title">{title}</p>}
+
+  <div class="process-grid" style={`--grid-cols: ${gridCols};`}>
+
+    {/* Step nodes */}
+    {steps.map((step, i) => (
+      <div class="process-step" style={`grid-column: ${2 * i + 1};`}>
+        <div class="process-dot"></div>
+        <div class="process-step-num">{String(i + 1).padStart(2, '0')}</div>
+        <div class="process-step-label">{step.label}</div>
+        {step.sub && <div class="process-step-sub">{step.sub}</div>}
+      </div>
+    ))}
+
+    {/* Connector lines between steps */}
+    {steps.slice(0, -1).map((_, i) => (
+      <div class="process-connector" style={`grid-column: ${2 * i + 2};`}></div>
+    ))}
+
+    {/* Feedback brackets */}
+    {feedback.map(fb => {
+      const colStart = 2 * fb.to + 1;
+      const colEnd   = 2 * fb.from + 2; // +2 to include the full "from" cell
+      return (
+        <div class="process-feedback"
+             style={`grid-column: ${colStart} / ${colEnd};`}>
+          <div class="pf-bracket">
+            <span class="pf-label">
+              <span class="pf-arrow">↩</span>
+              {fb.label ?? 'Revision round'}
+            </span>
+          </div>
+        </div>
+      );
+    })}
+
+  </div>
+</div>
+
+<style>
+  .process-flow {
+    margin-block: var(--space-8);
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: var(--space-6);
+    overflow-x: auto;
+  }
+  .process-flow-title {
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-faint);
+    margin: 0 0 var(--space-6);
+  }
+
+  /* Grid: step columns are auto-sized, connectors are 1fr */
+  .process-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--grid-cols), 1fr);
+    grid-template-rows: auto auto auto auto; /* dot row, num, label, sub, feedback */
+    min-width: 560px;
+    row-gap: 0;
+  }
+
+  /* Step cell — all rows stacked in one grid column */
+  .process-step {
+    grid-row: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    padding-bottom: 0.5rem;
+    position: relative;
+  }
+
+  /* Dot node */
+  .process-dot {
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    background: var(--color-accent);
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Step number */
+  .process-step-num {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    color: var(--color-accent);
+    line-height: 1;
+  }
+
+  /* Step label */
+  .process-step-label {
+    font-size: var(--fs-small);
+    font-weight: 700;
+    color: var(--color-text);
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  /* Step sub-label */
+  .process-step-sub {
+    font-size: var(--fs-xs);
+    color: var(--color-text-faint);
+    line-height: 1.3;
+    text-align: center;
+  }
+
+  /* Connector — horizontal line in the dot row */
+  .process-connector {
+    grid-row: 1;
+    display: flex;
+    align-items: flex-start;
+    padding-top: 0.28rem; /* aligns with dot center */
+  }
+  .process-connector::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 1px;
+    background: var(--color-border);
+  }
+
+  /* Feedback bracket — sits in its own row below the steps */
+  .process-feedback {
+    grid-row: 2;
+    padding-top: 0.5rem;
+  }
+  .pf-bracket {
+    border: 1px dashed var(--color-border);
+    border-top: none;
+    height: 1.25rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 0.2rem;
+  }
+  .pf-label {
+    font-size: var(--fs-xs);
+    color: var(--color-text-faint);
+    white-space: nowrap;
+    background: var(--color-surface-2);
+    padding: 0 0.35rem;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+  .pf-arrow {
+    color: var(--color-accent);
+  }
+</style>

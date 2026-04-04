@@ -44,7 +44,12 @@ npm run preview      # preview built output
 
 ## Content Management
 
-Content is managed via **Keystatic CMS** at `http://localhost:4321/keystatic` in dev mode.
+Two editors are available in dev mode:
+- **VG Editor** (primary) — `http://localhost:4323/` — custom block-based editor with R2 image upload
+- **Keystatic CMS** (fallback) — `http://localhost:4321/keystatic` — schema-driven MDX editor
+
+VG Editor runs two processes: `npm run editor:server` (API, port varies) + `npm run editor:client` (UI, port 4323).
+Image uploads via VG Editor go to local `.staging/<slug>/`, then "↑ R2" pushes to R2 via rclone.
 
 ### Collections
 
@@ -75,6 +80,8 @@ src/components/mdx/
   DeliverableGrid.astro     — card grid for services (2 or 3 columns)
   TimelineTable.astro       — project phase table for services
   NotableGrid.astro         — two-column list of notable projects
+  ProcessFlow.astro         — horizontal step diagram with optional feedback arc (services)
+  PhaseMatrix.astro         — dot matrix: deliverable types × project phases (services)
   ProjectDescription.astro  — description text block (children, no props)
   ProjectStory.astro        — story/background section (heading prop + children)
   ProjectTasks.astro        — tasks text block (children, no props)
@@ -85,6 +92,14 @@ Also usable in project MDX (registered in portfolio template):
 Tour360      — click-to-load 360° iframe
 YoutubeEmbed — click-to-load YouTube facade
 FilmEmbed    — Vimeo facade
+```
+
+Also usable in service MDX (registered in service template):
+```
+Tour360      — click-to-load 360° iframe
+YoutubeEmbed — click-to-load YouTube facade
+ProcessFlow  — workflow diagram
+PhaseMatrix  — phase × deliverable matrix
 ```
 
 Usage in MDX:
@@ -160,11 +175,51 @@ Public R2 URL: `https://pub-681025dcca3b4bad99aa4a4d65ecc023.r2.dev`
 
 URL structure:
 - Portfolio images: `/_img/portfolio/[project-slug]/[filename]` → 302 redirect → R2
-- Tech images: `/_img/vision-tech/[slug]/[filename]` → 302 redirect → R2
-- Root images: `/hero-bg.jpg` etc. → 302 redirect → R2 root
+- Service images:  `/_img/services/[slug]/[filename]` → 302 redirect → R2
+- Article images:  `/_img/articles/[slug]/[filename]` → 302 redirect → R2
+- Tech images:     `/_img/vision-tech/[slug]/[filename]` → 302 redirect → R2
+- Root images:     `/hero-bg.jpg` etc. → 302 redirect → R2 root
 
-To upload: `upload-images.bat` (uses rclone, remote `r2`, bucket `r2:visiongraphics-images`,
-flag `--s3-no-check-bucket`)
+Redirects defined in `public/_redirects` (Cloudflare Pages only).
+Dev proxy in `astro.config.mjs` (`r2DevProxy`) handles `/_img/*` locally by fetching from R2.
+
+R2 bucket path structure (no `_img/` prefix inside bucket):
+- `portfolio/<slug>/<file>`, `services/<slug>/<file>`, `articles/<slug>/<file>`, `vision-tech/<slug>/<file>`
+
+To upload images: use VG Editor image picker → "↑ R2" button (calls rclone via editor server API).
+All uploads go to R2 via the editor. `upload-images.bat` is retired.
+
+### Thumbnails
+
+Thumbnails are WebP files stored in `public/thumbs/` locally and in R2 under `thumbs/`.
+They are **not committed to git** — generated locally, pushed to R2 via "↑ R2 all", served via `_redirects`.
+
+**Sizes:**
+- `card`  — 600px wide — portfolio grid, service cards, article cards, gallery thumbnail strip
+- `large` — 1600px wide — gallery main viewer, lightbox fallback
+
+**Path structure:**
+```
+public/thumbs/card/<collection>/<slug>/filename.webp
+public/thumbs/large/<collection>/<slug>/filename.webp
+```
+Collections: `portfolio`, `services`, `articles`, `vision-tech`
+
+**Generating thumbnails:**
+```bash
+node scripts/generate-thumbs.mjs                          # all images (R2 + staging)
+node scripts/generate-thumbs.mjs --slug portfolio/hotel-lycium  # single folder
+node scripts/generate-thumbs.mjs --force                  # regenerate existing
+```
+Sources: R2 bucket (all 4 collections) + `tools/editor/.staging/` (locally staged images).
+Output goes to `public/thumbs/` (local only — not committed). Run before "↑ R2 all" in the editor.
+
+**`thumbUrl(src, size?)` — `src/lib/image-url.ts`:**
+```ts
+thumbUrl('/_img/portfolio/slug/01.jpg')          // → /thumbs/card/portfolio/slug/01.webp
+thumbUrl('/_img/services/slug/01.jpg', 'large')  // → /thumbs/large/services/slug/01.webp
+```
+Default size is `'card'`. Gallery main viewer uses `'large'`. Lightbox fullscreen uses the original `src` directly.
 
 ---
 
@@ -237,6 +292,7 @@ src/components/
              ArticleGalleryMounter.tsx, ArticleImageCompareMounter.tsx
   mdx/       SectionBanner.astro, ImageGallery.astro, ImageCompare.astro,
              DeliverableGrid.astro, TimelineTable.astro, NotableGrid.astro,
+             ProcessFlow.astro, PhaseMatrix.astro,
              ProjectDescription.astro, ProjectStory.astro, ProjectTasks.astro
   blocks/    BlockRenderer.astro  (legacy — kept for reference, no longer used)
 ```
@@ -284,8 +340,10 @@ quotes or use a block scalar (`|`).
 
 ### Services (MDX)
 Frontmatter: title, description, tagline, bannerImage, order, published,
-startRequirements, pricing, sidebarLabel, sidebarContent.
-MDX body: SectionBanner, DeliverableGrid, TimelineTable, NotableGrid, ImageGallery, ImageCompare.
+startRequirements, pricing, sidebarLabel, sidebarContent, techniques (array of vision-tech slugs),
+services (array of service slugs — written by editor, links project→service navigation).
+MDX body: SectionBanner, DeliverableGrid, TimelineTable, NotableGrid, ImageGallery, ImageCompare,
+ProcessFlow, PhaseMatrix, Tour360, YoutubeEmbed.
 
 ### Articles (MDX)
 Frontmatter: title, date, excerpt, tags, coverImage, published.
@@ -305,6 +363,22 @@ Filters: category multi-select, features multi-select, year range, text search,
 
 360/film toggles read `has360` / `hasFilm` boolean fields from frontmatter (not derived
 from MDX body). Set these manually in the editor when a project has tours or films.
+
+---
+
+## Keeping CLAUDE.md Current
+
+This file is the single source of truth for how the project works. **Update it whenever:**
+- A workflow changes (editors, image upload, deployment, thumbnail generation)
+- A new MDX component is added or an existing one is renamed/removed
+- A content schema field is added, removed, or repurposed
+- A new tool, script, or npm command is introduced
+- A hard rule is added or relaxed
+- The site structure or URL patterns change
+- A best practice is established through trial and error (especially "we got burned by X")
+
+Updates should be made **in the same commit** as the code change they document.
+If Claude made the change, Claude updates this file. If you made the change manually, note it here.
 
 ---
 

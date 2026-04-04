@@ -1,0 +1,137 @@
+---
+// PhaseMatrix — shows which deliverable types fit which project phases
+// Values: "primary" = filled dot, "secondary" = half dot, "none" = empty dot
+interface Row {
+  label: string;
+  sub?: string;
+  values: Array<'primary' | 'secondary' | 'none'>;
+}
+interface Props {
+  columns: string[];
+  rows: Row[];
+  title?: string;
+}
+const { columns, rows, title } = Astro.props;
+---
+
+<div class="phase-matrix">
+  {title && <p class="phase-matrix-title">{title}</p>}
+  <div class="phase-matrix-table" style={`--cols: ${columns.length + 1};`}>
+    {/* Header row */}
+    <div class="pm-cell pm-header pm-row-label"></div>
+    {columns.map(col => (
+      <div class="pm-cell pm-header pm-col-label">{col}</div>
+    ))}
+    {/* Data rows */}
+    {rows.map(row => (
+      <>
+        <div class="pm-cell pm-row-label">
+          <span class="pm-phase">{row.label}</span>
+          {row.sub && <span class="pm-phase-sub">{row.sub}</span>}
+        </div>
+        {row.values.map(v => (
+          <div class="pm-cell pm-dot-cell">
+            <span class:list={['pm-dot', `pm-dot-${v}`]} aria-label={v} />
+          </div>
+        ))}
+      </>
+    ))}
+  </div>
+  <div class="pm-legend">
+    <span class="pm-legend-item"><span class="pm-dot pm-dot-primary"></span> Primary use</span>
+    <span class="pm-legend-item"><span class="pm-dot pm-dot-secondary"></span> Occasional</span>
+    <span class="pm-legend-item"><span class="pm-dot pm-dot-none"></span> Rarely needed</span>
+  </div>
+</div>
+
+<style>
+  .phase-matrix {
+    margin-block: var(--space-8);
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: var(--space-6);
+    overflow-x: auto;
+  }
+  .phase-matrix-title {
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-faint);
+    margin: 0 0 var(--space-4);
+  }
+  .phase-matrix-table {
+    display: grid;
+    grid-template-columns: 1fr repeat(calc(var(--cols) - 1), minmax(80px, 1fr));
+    gap: 0;
+    min-width: 400px;
+  }
+  .pm-cell {
+    padding: 0.65rem 0.75rem;
+    border-bottom: 1px solid var(--color-border);
+    display: flex;
+    align-items: center;
+  }
+  .pm-header { padding-block: 0.4rem 0.75rem; }
+  .pm-col-label {
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--color-text-faint);
+    justify-content: center;
+  }
+  .pm-row-label {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.15rem;
+  }
+  .pm-phase {
+    font-size: var(--fs-small);
+    font-weight: 600;
+    color: var(--color-text);
+  }
+  .pm-phase-sub {
+    font-size: var(--fs-xs);
+    color: var(--color-text-faint);
+  }
+  .pm-dot-cell { justify-content: center; }
+
+  /* Dots */
+  .pm-dot {
+    display: inline-block;
+    width: 0.85rem;
+    height: 0.85rem;
+    border-radius: 50%;
+    border: 1.5px solid var(--color-border);
+    position: relative;
+    flex-shrink: 0;
+  }
+  .pm-dot-primary {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+  .pm-dot-secondary {
+    background: linear-gradient(to right, var(--color-accent) 50%, transparent 50%);
+    border-color: var(--color-accent);
+  }
+  .pm-dot-none {
+    background: transparent;
+  }
+
+  /* Legend */
+  .pm-legend {
+    display: flex;
+    gap: var(--space-6);
+    flex-wrap: wrap;
+    margin-top: var(--space-4);
+  }
+  .pm-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: var(--fs-xs);
+    color: var(--color-text-faint);
+  }
+</style>

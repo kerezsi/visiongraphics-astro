@@ -1,56 +1,107 @@
 ---
-title: "Architectural Visualization"
-description: "Expert architectural visualization — stills, animations, 360° tours, VR walkthroughs. Budapest-based, working globally since 1996."
-tagline: "Turn plans into decisions."
-bannerImage: "/_img/banners/banner-arch-viz.jpg"
+title: Architectural Visualization
+description: |
+  We turn architectural plans into photorealistic stills, walkthroughs, 360° tours, and VR experiences — helping architects, developers, and planners communicate designs before anything is built. From single concept images to full animation productions.
+  
+tagline: Turn plans into decisions.
+bannerImage: /_img/banners/banner-arch-viz.jpg
 order: 1
 published: true
-startRequirements: "Plans (CAD, PDF, or sketch) · Style references you like · Your deadline. Nothing polished required. We guide the rest."
+startRequirements: |
+  Plans (CAD, PDF, or sketch) · Style references you like · Your deadline. Nothing polished required. We guide the rest.
+  
 pricing: "from €5,000. Final price based on scope. Quote within one business day."
+techniques:
+  - exterior
+  - interior
+  - aerial-integration
+  - night-renderings
+  - photo-integration
+  - 360-renderings
+  - 360-tour
+  - virtual-reality-vr-experience
+  - 3d-animation
+  - site-plan
+  - section
+services:
+  - architectural-visualization
 ---
 
-Buildings are expensive to get wrong. We help you see exactly what you're getting before construction starts. We turn architectural plans into images and animations that show what your building will look like when it's finished.
+Design decisions made on paper cost almost nothing to change. Made after construction starts, they cost everything. We help you see exactly what you're getting before work begins — turning plans into photorealistic images, animations, and interactive tools that make the right decision obvious.
 
 ## What we do
 
 - Spot design issues early when they're cheap to fix
-- Show clients and investors what they're getting
+- Show clients and investors exactly what they're getting
 - Get faster approvals from planning committees
-- Help your team understand the details
-- Market properties before they're built
+- Help your team align on details before they become problems
+- Market properties before a single brick is laid
 
-We offer three main types of visualization: still images, animations, and interactive tools. Each has its strengths, and many clients use a mix of all three. Still images work great for marketing and planning applications. Animations help people understand how spaces flow together. And interactive tools let users explore at their own pace.
+We offer three types of visualization — stills, animations, and interactive tools — each suited to a different kind of decision. Many projects use a mix of all three.
 
-AI is changing how we work. It helps us try out different design options faster and add more detail to our visuals. But we always keep control of the creative process — AI is just another tool in our toolkit.
+<ProcessFlow
+title="How a project moves from brief to delivery"
+steps={[
+{ label: "Brief", sub: "Plans, references, deadline" },
+{ label: "3D Model", sub: "Geometry & context" },
+{ label: "Lighting & Materials", sub: "Atmosphere dialled in" },
+{ label: "Test Renders", sub: "Client review round" },
+{ label: "Final Render", sub: "Full resolution output" },
+{ label: "Post-Production", sub: "Colour, comp, format" },
+{ label: "Delivery", sub: "Files + web-ready exports" },
+]}
+feedback={[
+{ from: 3, to: 1, label: "Revision round — back to modelling or materials" },
+]}
+/>
 
-<SectionBanner image="/_img/banners/banner-arch-viz.jpg" label="Still Images" title="Stills That Inform Decisions" />
+<SectionBanner
+  image="/_img/banners/banner-arch-viz.jpg"
+  label="Still Images"
+  title="Stills That Inform Decisions"
+/>
 
-<DeliverableGrid columns={3} items={[
-  { title: "Exterior Views", desc: "Using V-Ray with 3ds Max, we create photorealistic images showing how your building fits into its surroundings. Typical timeline: 1–2 weeks. Perfect for planning applications, marketing materials, client presentations, and public consultations." },
-  { title: "Interior Views", desc: "We pay special attention to materials, lighting, and atmosphere to create spaces that feel real. Each interior takes 1–2 weeks. Helps with layout checks, client presentations, material testing, tenant marketing, and furniture planning." },
-  { title: "Aerial Views", desc: "Combining drone photography with 3D modelling to show accurate context. 1–2 weeks. Useful for understanding neighbourhood fit, showing site layout, and marketing larger developments." },
-]} />
+<ImageCompare before="/_img/placeholder.jpg" after="/_img/placeholder.jpg" />
 
-<SectionBanner image="/_img/banners/banner-general.jpg" label="Animations" title="Motion That Explains" />
+<DeliverableGrid columns={3} items={[{"title":"Exterior Views","desc":"Photorealistic images showing how your building sits in its surroundings — street level, elevated, or aerial. 1–2 weeks per view.","href":"/vision-tech/exterior/"},{"title":"Interior Views","desc":"Spaces that feel real — materials, lighting, and atmosphere matched to your brief. Used for layout checks, client sign-off, and tenant marketing. 1–2 weeks.","href":"/vision-tech/interior/"},{"title":"Aerial Views","desc":"Your building in context, combining 3D modelling with real drone photography or map data for accurate site placement. 1–2 weeks.","href":"/vision-tech/aerial-integration/"}]} />
 
-<DeliverableGrid columns={3} items={[
-  { title: "Building Walkthroughs", desc: "Take a virtual walk through your building before it exists. These 3–4 week productions show how spaces connect, the flow between areas, views from different spots, light changes through the day, and what it feels like to be there." },
-  { title: "Exterior Flyby", desc: "See your building from every angle. These animations give everyone a clear picture of how the building sits in its surroundings. Perfect for showing the overall design, highlighting key features, and marketing." },
-  { title: "Construction Sequences", desc: "Understanding how your building comes together is crucial. Over 2–3 weeks, we create sequences that help with planning construction stages, spotting potential problems, coordinating contractors, and training site teams." },
-]} />
+<ImageGallery images={[{"src":"/_img/services/architectural-visualization/01.jpg","alt":"01"},{"src":"/_img/services/architectural-visualization/03.jpg","alt":"03"},{"src":"/_img/services/architectural-visualization/08.jpg","alt":"08"},{"src":"/_img/services/architectural-visualization/23.jpg","alt":"23"}]} />
 
-<SectionBanner image="/_img/banners/banner-tech.jpg" label="Interactive Tools" title="Experiences People Remember" />
+<SectionBanner
+  image="/_img/banners/banner-general.jpg"
+  label="Animations"
+  title="Motion That Explains"
+/>
 
-<DeliverableGrid columns={3} items={[
-  { title: "360° Tours", desc: "Web-based tours that work on any device. 2–3 weeks to create. Great for virtual property viewings, design reviews, training staff, marketing to clients, and public consultations." },
-  { title: "Virtual Reality", desc: "Using Unreal Engine, we create fully interactive environments where users can walk around freely. These 4–6 week projects help with understanding spaces properly, testing if layouts work, and showing clients the real scale." },
-  { title: "Interactive Presentations", desc: "Custom applications for desktop and AR viewing. 3–4 weeks. Desktop: real-time exploration, material switching, view comparison, measurement tools. AR: on-site visualisation, scale model viewing, context integration, multi-user sessions." },
-]} />
+<YoutubeEmbed url="https://www.youtube.com/watch?v=PLACEHOLDER" title="Building walkthrough animation — sample" />
 
-<SectionBanner image="/_img/banners/banner-workflow.jpg" label="When You Need It" title="Support Through Every Phase" />
+<DeliverableGrid columns={3} items={[{"title":"Building Walkthroughs","desc":"A continuous animated journey through the building — spaces, daylighting, and scale in a way stills can't convey. 3–4 weeks.","href":"/vision-tech/3d-animation/"},{"title":"Exterior Flyby","desc":"Your building from every angle, landing at the key elevations that matter for marketing and approvals. 2–3 weeks."},{"title":"Construction Sequences","desc":"Frame-by-frame animation showing how the building goes together — phased construction, structural elements, MEP coordination. 2–3 weeks."}]} />
 
-<TimelineTable rows={[
-  { scope: "Concept Design (2–4 weeks)", deliverables: "Quick concept visualizations · Mass studies and volume analysis · Basic material options · Early-stage pricing support" },
-  { scope: "Permit Design (3–5 weeks)", deliverables: "Context studies · Environmental impact views · Planning documentation · Public consultation materials" },
-  { scope: "Detailed Design (3–6 weeks)", deliverables: "Detailed exterior & interior renderings · Material and finish studies · Lighting analysis · Construction detail visualization" },
-]} />
+<SectionBanner
+  image="/_img/banners/banner-tech.jpg"
+  label="Interactive Tools"
+  title="Experiences People Remember"
+/>
+
+<Tour360 url="https://visiongraphics.eu/PANO/PLACEHOLDER/" title="360° tour — sample project" />
+
+<DeliverableGrid columns={3} items={[{"title":"360° Tours","desc":"Web-based panoramic tours that work on any device — phone, tablet, or desktop. Used for virtual viewings, design reviews, and public consultations. 2–3 weeks.","href":"/vision-tech/360-tour/"},{"title":"Virtual Reality","desc":"Fully navigable environments in Unreal Engine — clients walk through spaces at 1:1 scale before construction starts. Most effective for high-value residential and commercial schemes. 4–6 weeks.","href":"/vision-tech/virtual-reality-vr-experience/"},{"title":"Interactive Presentations","desc":"Custom applications for desktop, kiosk, or AR viewing — with material switching, view comparisons, and measurement tools. Built to specification. 3–4 weeks."}]} />
+
+<SectionBanner
+  image="/_img/banners/banner-workflow.jpg"
+  label="When You Need It"
+  title="Support Through Every Phase"
+/>
+
+<PhaseMatrix
+title="Which deliverable fits which project phase"
+columns={["Stills", "Animations", "360° Tours", "VR"]}
+rows={[
+{ label: "Concept Design", sub: "2–4 weeks turnaround", values: ["primary", "none", "none", "none"] },
+{ label: "Permit Design", sub: "3–5 weeks turnaround", values: ["primary", "secondary", "secondary", "none"] },
+{ label: "Detailed Design", sub: "3–6 weeks turnaround", values: ["primary", "primary", "secondary", "secondary"] },
+{ label: "Marketing & Sales", sub: "Ongoing", values: ["primary", "primary", "primary", "primary"] },
+]}
+/>
+
+A typical 5-view exterior package for a mid-size residential block runs €5,000–8,000. A full interior suite of 5 rooms is similar. Multi-apartment schemes, animation productions, and VR projects are scoped individually — send us your brief and we'll quote within one business day.

@@ -2,6 +2,7 @@
 interface Item {
   title: string;
   desc: string;
+  href?: string;
 }
 interface Props {
   columns?: 2 | 3;
@@ -12,27 +13,40 @@ const { columns = 3, items } = Astro.props;
 <div class:list={['deliverable-grid', columns === 3 ? 'grid-3' : 'grid-2']}>
   {items.map(item => (
     <div class="deliverable-card">
-      <h4 class="deliverable-title">{item.title}</h4>
+      {item.href
+        ? <a href={item.href} class="deliverable-title deliverable-title-link">{item.title}</a>
+        : <h4 class="deliverable-title">{item.title}</h4>
+      }
       <p class="deliverable-desc">{item.desc}</p>
     </div>
   ))}
 </div>
 
 <style>
-  .deliverable-grid { display: grid; gap: var(--space-4); }
-  .deliverable-grid.grid-2 { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
-  .deliverable-grid.grid-3 { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+  .deliverable-grid { display: grid; gap: var(--space-6); }
+  .deliverable-grid.grid-2 { grid-template-columns: repeat(2, 1fr); }
+  .deliverable-grid.grid-3 { grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 640px) {
+    .deliverable-grid.grid-2,
+    .deliverable-grid.grid-3 { grid-template-columns: 1fr; }
+  }
   .deliverable-card {
     background: var(--color-surface-2);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-sm);
-    padding: var(--space-4);
+    padding: var(--space-6);
   }
   .deliverable-title {
-    font-size: var(--fs-small);
+    font-size: var(--fs-body);
     font-weight: 700;
     color: var(--color-text);
     margin: 0 0 var(--space-2);
+    display: block;
   }
-  .deliverable-desc { font-size: var(--fs-xs); color: var(--color-text-muted); margin: 0; }
+  a.deliverable-title-link {
+    text-decoration: none;
+    transition: color 200ms;
+  }
+  a.deliverable-title-link:hover { color: var(--color-accent); }
+  .deliverable-desc { font-size: var(--fs-small); color: var(--color-text-muted); margin: 0; line-height: 1.6; }
 </style>

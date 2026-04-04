@@ -2,9 +2,13 @@
 # Images are under /_img/ to avoid colliding with /portfolio/ and /vision-tech/ page routes.
 # (Cloudflare Pages applies 302 redirects BEFORE checking static files)
 
+/thumbs/*           https://pub-681025dcca3b4bad99aa4a4d65ecc023.r2.dev/thumbs/:splat        302
+
 /_img/banners/*     https://pub-681025dcca3b4bad99aa4a4d65ecc023.r2.dev/banners/:splat       302
 /_img/portfolio/*   https://pub-681025dcca3b4bad99aa4a4d65ecc023.r2.dev/portfolio/:splat    302
 /_img/vision-tech/* https://pub-681025dcca3b4bad99aa4a4d65ecc023.r2.dev/vision-tech/:splat  302
+/_img/services/*    https://pub-681025dcca3b4bad99aa4a4d65ecc023.r2.dev/services/:splat     302
+/_img/articles/*    https://pub-681025dcca3b4bad99aa4a4d65ecc023.r2.dev/articles/:splat     302
 /hero-bg.jpg        https://pub-681025dcca3b4bad99aa4a4d65ecc023.r2.dev/hero-bg.jpg         302
 /hero-bg-2.jpg      https://pub-681025dcca3b4bad99aa4a4d65ecc023.r2.dev/hero-bg-2.jpg       302
 /hero-bg-3.jpg      https://pub-681025dcca3b4bad99aa4a4d65ecc023.r2.dev/hero-bg-3.jpg       302

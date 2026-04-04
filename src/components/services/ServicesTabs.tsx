@@ -34,7 +34,9 @@ export default function ServicesTabs({ services }: Props) {
               'st-tab relative flex items-baseline gap-3 px-5 py-[1.1rem]',
               'bg-transparent border-none border-b border-line',
               'text-left cursor-pointer transition-colors duration-[180ms]',
-              i === active ? 'active bg-surface-2' : 'hover:bg-surface-2',
+              i === active
+                ? 'active bg-surface-2 shadow-[inset_3px_0_0_var(--color-accent)]'
+                : 'hover:bg-surface-2 shadow-none',
             ].join(' ')}
             onClick={() => setActive(i)}
             aria-selected={i === active}

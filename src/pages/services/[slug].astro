@@ -1,6 +1,7 @@
 ---
 // src/pages/services/[slug].astro
 import { getCollection } from 'astro:content';
+import { thumbUrl } from '../../lib/image-url';
 import Page from '../../layouts/Page.astro';
 import SectionBanner from '../../components/ui/SectionBanner.astro';
 import MdxSectionBanner from '../../components/mdx/SectionBanner.astro';
@@ -9,6 +10,10 @@ import TimelineTable from '../../components/mdx/TimelineTable.astro';
 import NotableGrid from '../../components/mdx/NotableGrid.astro';
 import ImageGallery from '../../components/mdx/ImageGallery.astro';
 import ImageCompare from '../../components/mdx/ImageCompare.astro';
+import ProcessFlow from '../../components/mdx/ProcessFlow.astro';
+import PhaseMatrix from '../../components/mdx/PhaseMatrix.astro';
+import Tour360 from '../../components/media/Tour360.astro';
+import YouTubeEmbed from '../../components/media/YouTubeEmbed.astro';
 import ArticleGalleryMounter from '../../components/media/ArticleGalleryMounter.tsx';
 import ArticleImageCompareMounter from '../../components/media/ArticleImageCompareMounter.tsx';
 
@@ -24,6 +29,19 @@ if (!entry) return Astro.redirect('/services/');
 const { data } = entry;
 const { Content } = await entry.render();
 
+// Related projects — those that list this service in their services array
+const allProjects = await getCollection('projects', p =>
+  p.data.published && !!p.data.coverImage && (p.data.services ?? []).includes(entry.slug)
+);
+const relatedProjects = allProjects.sort((a, b) => b.data.year - a.data.year).slice(0, 8);
+
+// Linked vision-tech techniques for chip row
+const allTech = await getCollection('vision-tech');
+const linkedTech = (data.techniques ?? [])
+  .map(slug => allTech.find(t => t.slug === slug))
+  .filter(Boolean);
+
+const hasMeta = data.pricing || data.startRequirements || (data.sidebarLabel && data.sidebarContent);
 ---
 
 <Page title={`${data.title} — Services`} description={data.description} fullBleed>
@@ -41,44 +59,91 @@ const { Content } = await entry.render();
       <span>{data.title}</span>
     </div>
 
-    <div class="service-body-grid container">
-      <div class="service-main">
-        <Content components={{
-          SectionBanner: MdxSectionBanner,
-          DeliverableGrid,
-          TimelineTable,
-          NotableGrid,
-          ImageGallery,
-          ImageCompare,
-        }} />
-        <ArticleGalleryMounter client:load />
-        <ArticleImageCompareMounter client:load />
+    {data.tagline && (
+      <div class="service-tagline container">
+        <p class="service-tagline-text">{data.tagline}</p>
       </div>
-      <aside class="service-sidebar">
-          {data.startRequirements && (
-            <div class="sidebar-block">
-              <p class="sidebar-block-label">What you need to start</p>
-              <p class="sidebar-block-content">{data.startRequirements}</p>
-            </div>
-          )}
-          {data.sidebarLabel && data.sidebarContent && (
-            <div class="sidebar-block">
-              <p class="sidebar-block-label">{data.sidebarLabel}</p>
-              <p class="sidebar-block-content">{data.sidebarContent}</p>
-            </div>
-          )}
-          {data.pricing && (
-            <div class="sidebar-block">
-              <p class="sidebar-block-label">Pricing</p>
-              <p class="sidebar-block-content">{data.pricing}</p>
-            </div>
-          )}
-          <div class="sidebar-ctas">
-            <a href="/contact/" class="btn btn-primary">Get a Quote</a>
-            <a href="/portfolio/" class="btn btn-ghost">See Our Work</a>
+    )}
+
+    {hasMeta && (
+      <div class="service-meta container">
+        {data.pricing && (
+          <div class="service-meta-item">
+            <span class="service-meta-label">Pricing</span>
+            <span class="service-meta-value">{data.pricing}</span>
           </div>
-        </aside>
+        )}
+        {data.startRequirements && (
+          <div class="service-meta-item">
+            <span class="service-meta-label">What you need to start</span>
+            <span class="service-meta-value">{data.startRequirements}</span>
+          </div>
+        )}
+        {data.sidebarLabel && data.sidebarContent && (
+          <div class="service-meta-item">
+            <span class="service-meta-label">{data.sidebarLabel}</span>
+            <span class="service-meta-value">{data.sidebarContent}</span>
+          </div>
+        )}
       </div>
+    )}
+
+    <div class="service-main container">
+      <Content components={{
+        SectionBanner: MdxSectionBanner,
+        DeliverableGrid,
+        TimelineTable,
+        NotableGrid,
+        ImageGallery,
+        ImageCompare,
+        ProcessFlow,
+        PhaseMatrix,
+        Tour360,
+        YoutubeEmbed: YouTubeEmbed,
+        YouTubeEmbed,
+      }} />
+      <ArticleGalleryMounter client:load />
+      <ArticleImageCompareMounter client:load />
+    </div>
+
+    {linkedTech.length > 0 && (
+      <div class="svc-techniques container">
+        <span class="svc-techniques-label">Techniques used in this service:</span>
+        <div class="svc-techniques-chips">
+          {linkedTech.map(t => (
+            <a href={`/vision-tech/${t!.slug}/`} class="svc-technique-chip">{t!.data.title}</a>
+          ))}
+        </div>
+      </div>
+    )}
+
+    {relatedProjects.length > 0 && (
+      <section class="svc-related-section">
+        <div class="container">
+          <p class="svc-related-heading">Projects using this service:</p>
+          <div class="svc-carousel-wrap">
+            <button class="svc-carousel-btn svc-carousel-prev" id="svc-prev" aria-label="Previous">&#8592;</button>
+            <div class="svc-carousel" id="svc-carousel">
+              {relatedProjects.map(p => (
+                <a href={`/portfolio/${p.slug}/`} class="svc-rel-card">
+                  <img
+                    src={thumbUrl(p.data.coverImage)}
+                    alt={p.data.title}
+                    loading="lazy"
+                    onerror={`this.onerror=null;this.src='${p.data.coverImage}'`}
+                  />
+                  <div class="svc-rel-body">
+                    <span class="svc-rel-year">{p.data.year}</span>
+                    <span class="svc-rel-title">{p.data.displayTitle ?? p.data.title}</span>
+                  </div>
+                </a>
+              ))}
+            </div>
+            <button class="svc-carousel-btn svc-carousel-next" id="svc-next" aria-label="Next">&#8594;</button>
+          </div>
+        </div>
+      </section>
+    )}
 
     <div class="service-cta container">
       <a href="/portfolio/" class="btn btn-secondary">See Our Work</a>
@@ -87,32 +152,111 @@ const { Content } = await entry.render();
   </div>
 </Page>
 
+<script>
+  const carousel = document.getElementById('svc-carousel') as HTMLElement | null;
+  const prevBtn  = document.getElementById('svc-prev');
+  const nextBtn  = document.getElementById('svc-next');
+  if (carousel) {
+    const cardW = () => carousel.querySelector<HTMLElement>('.svc-rel-card')?.offsetWidth ?? 300;
+    prevBtn?.addEventListener('click', () => carousel.scrollBy({ left: -cardW(), behavior: 'smooth' }));
+    nextBtn?.addEventListener('click', () => carousel.scrollBy({ left:  cardW(), behavior: 'smooth' }));
+
+    // Drag-to-scroll
+    let isDragging = false;
+    let startX = 0;
+    let scrollStart = 0;
+    let moved = false;
+
+    carousel.addEventListener('mousedown', e => {
+      isDragging = true;
+      moved = false;
+      startX = e.pageX;
+      scrollStart = carousel.scrollLeft;
+      carousel.style.cursor = 'grabbing';
+      carousel.style.userSelect = 'none';
+    });
+
+    window.addEventListener('mousemove', e => {
+      if (!isDragging) return;
+      const dx = e.pageX - startX;
+      if (Math.abs(dx) > 4) moved = true;
+      carousel.scrollLeft = scrollStart - dx;
+    });
+
+    window.addEventListener('mouseup', () => {
+      if (!isDragging) return;
+      isDragging = false;
+      carousel.style.cursor = '';
+      carousel.style.userSelect = '';
+    });
+
+    // Prevent click-through on cards after a drag
+    carousel.addEventListener('click', e => {
+      if (moved) e.preventDefault();
+    }, true);
+  }
+</script>
+
 <style>
   .service-page { padding-block: var(--space-16); }
+
   .service-breadcrumb {
     display: flex; align-items: center; gap: 0.5rem;
     font-size: var(--fs-xs); color: var(--color-text-faint); margin-bottom: 2rem;
   }
   .service-breadcrumb a { color: var(--color-text-muted); text-decoration: none; transition: color 200ms; }
   .service-breadcrumb a:hover { color: var(--color-accent); }
-  .service-content { margin-bottom: 3rem; }
-  .service-cta { display: flex; gap: 0.75rem; margin-top: 3rem; }
 
-  /* MDX layout */
-  .service-body-grid {
-    display: grid;
-    grid-template-columns: 1fr 240px;
-    gap: 3rem;
-    align-items: start;
+  .service-tagline { margin-bottom: 2rem; }
+  .service-tagline-text {
+    font-family: var(--font-display);
+    font-size: var(--fs-h5);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--color-text-muted);
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  /* Meta strip */
+  .service-meta {
+    display: flex;
+    flex-wrap: wrap;
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
     margin-bottom: 3rem;
   }
-  @media (max-width: 900px) {
-    .service-body-grid { grid-template-columns: 1fr; }
+  .service-meta-item {
+    flex: 1;
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 1rem 1.5rem 1rem 0;
   }
+  .service-meta-item + .service-meta-item {
+    padding-left: 1.5rem;
+    border-left: 1px solid var(--color-border);
+  }
+  .service-meta-label {
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-faint);
+  }
+  .service-meta-value {
+    font-size: var(--fs-small);
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+
+  /* MDX content */
   .service-main {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+    margin-bottom: 3rem;
   }
   .service-main :global(p) {
     font-size: var(--fs-small);
@@ -148,33 +292,134 @@ const { Content } = await entry.render();
     font-size: 0.75em;
   }
 
-  /* SectionBanner inside MDX body: stays within content column (no full-bleed due to sidebar) */
-  .service-main :global(.article-section-banner) {
-    margin-inline: 0;
-  }
+  .service-cta { display: flex; gap: 0.75rem; margin-top: 1rem; }
 
-  /* Sidebar */
-  .service-sidebar {
+  /* Techniques chip row */
+  .svc-techniques {
+    margin-bottom: var(--space-8);
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    position: sticky;
-    top: 6rem;
+    gap: 0.75rem;
   }
-  .sidebar-block {
-    background: var(--color-surface-2);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-sm);
-    padding: 1rem;
-  }
-  .sidebar-block-label {
+  .svc-techniques-label {
     font-size: var(--fs-xs);
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.1em;
     color: var(--color-text-faint);
-    margin: 0 0 0.5rem;
   }
-  .sidebar-block-content { font-size: var(--fs-small); color: var(--color-text-muted); margin: 0; line-height: 1.5; }
-  .sidebar-ctas { display: flex; flex-direction: column; gap: 0.5rem; }
+  .svc-techniques-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .svc-technique-chip {
+    font-size: var(--fs-xs);
+    color: var(--color-text-muted);
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-border);
+    border-radius: 2px;
+    padding: 0.3rem 0.65rem;
+    text-decoration: none;
+    transition: color 200ms, border-color 200ms;
+    white-space: nowrap;
+  }
+  .svc-technique-chip:hover {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  /* ── Related projects carousel ────────────────────────── */
+  .svc-related-section {
+    border-top: 1px solid var(--color-border);
+    padding-block: var(--space-8);
+    margin-top: var(--space-8);
+  }
+  .svc-related-heading {
+    font-size: var(--fs-small);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-faint);
+    margin-bottom: var(--space-4);
+  }
+  .svc-carousel-wrap {
+    display: flex;
+    align-items: stretch;
+    gap: 1px;
+  }
+  .svc-carousel {
+    flex: 1;
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    gap: 1px;
+    background: var(--color-border);
+    cursor: grab;
+  }
+  .svc-carousel::-webkit-scrollbar { display: none; }
+
+  /* Card — full-bleed image with gradient overlay */
+  .svc-rel-card {
+    flex: 0 0 clamp(200px, 22%, 340px);
+    aspect-ratio: 4 / 3;
+    position: relative;
+    text-decoration: none;
+    scroll-snap-align: start;
+    overflow: hidden;
+    display: block;
+  }
+  .svc-rel-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 400ms ease;
+  }
+  .svc-rel-card:hover img { transform: scale(1.06); }
+  .svc-rel-body {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.18) 55%, transparent 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 1rem 1.1rem;
+    gap: 0.15rem;
+    transition: background 300ms ease;
+  }
+  .svc-rel-card:hover .svc-rel-body {
+    background: linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.28) 65%, transparent 100%);
+  }
+  .svc-rel-year {
+    font-size: var(--fs-xs);
+    color: rgba(255,255,255,0.55);
+    font-family: var(--font-mono);
+    line-height: 1;
+  }
+  .svc-rel-title {
+    font-size: var(--fs-small);
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+  }
+
+  .svc-carousel-btn {
+    flex-shrink: 0;
+    width: 2.5rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+    font-size: var(--fs-body);
+    cursor: pointer;
+    transition: color 200ms ease, background 200ms ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+  .svc-carousel-btn:hover { color: var(--color-accent); background: var(--color-surface-2); }
 </style>

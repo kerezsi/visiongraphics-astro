@@ -47,3 +47,6 @@ public/_img/
 
 # Editor image staging directory — synced to R2 via rclone, not committed
 tools/editor/.staging/
+
+# Thumbnails — generated locally, pushed to R2 via "↑ R2 all", not committed
+public/thumbs/

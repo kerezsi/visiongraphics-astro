@@ -1,50 +1,63 @@
 ---
 title: "Custom Rendering"
-description: "Render farm access for 3ds Max, V-Ray Standalone, and Blender. We work with your scene, not just your files. Vision Graphics Kft., Budapest."
+description: "Dedicated render nodes for 3ds Max, V-Ray Standalone, and Blender — plus 15+ years of V-Ray expertise on call. We prepare your scene properly before it hits the farm: faster renders, fewer errors, lower cost."
 tagline: "When your files won't render, we fix that."
 bannerImage: "/_img/banners/banner-rendering.jpg"
 order: 7
 published: true
-sidebarLabel: "Render farm"
-sidebarContent: "Own hardware, no shared queue · 10–20 dedicated nodes · V-Ray Standalone · Rush priority available"
+startRequirements: "Your MAX, Blender, or VRscene file · Render settings and output spec · Timeline and priority level"
 pricing: "By scope. Hourly for diagnostics. Render farm by node-hour. Quote within hours for urgent jobs."
 ---
 
-Got a project that won't render? Don't have the hardware for an animation? We have a small render farm with 10–20 dedicated nodes. But here's what makes us different: we actually work with you, not just your files. 15+ years with V-Ray. We handle MAX files that crash everywhere else.
+Most render farms take your files and process them as-is. We take your files, prepare them properly, then render them — which means faster frames, fewer errors, and lower cost. Fifteen years of V-Ray expertise means we catch the problems before they become failed overnight renders.
 
 ## What we support
 
-- 3ds Max + V-Ray
-- V-Ray Standalone
-- Blender
+- **3ds Max + V-Ray** — all recent versions, including legacy scene conversion
+- **V-Ray Standalone** — VRscene submission, distributed rendering
+- **Blender** — Cycles and EEVEE
+- **Rush priority** — same-day turnaround for urgent deadline jobs
 
-<SectionBanner image="/_img/banners/banner-general.jpg" label="Who We Help" title="Built for Studios Like Yours" />
+<SectionBanner image="/_img/banners/banner-general.jpg" label="Who We Help" title="Built for Studios That Outgrow Their Hardware" />
 
-We built this service for architects, small visualization studios, and freelancers who create great work but hit hardware or time limits. Most render farms just process whatever you send them. We take the time to understand your project first.
+This service exists for architects, small visualization studios, and freelancers who produce great work but hit hardware limits — particularly on animations, where a local machine would take weeks. We're not a nameless automated farm. You get a real conversation about your scene before we start.
 
-- Create great still renders but need help with animations
-- Don't have the hardware for big or deadline-critical projects
-- Want someone to talk to when things get stuck
-- Have complex scenes that exhaust RAM on other machines
-- Need to get a scene rendering without having to fix it yourself first
+- Need animation output but don't have the compute for it
+- Have deadline-critical projects where hardware failure isn't an option
+- Working with scenes that exhaust RAM on shared farm infrastructure
+- Want someone to talk to when the render isn't looking right
+- Need legacy 3ds Max scenes converted to current V-Ray standards
 
-<SectionBanner image="/_img/banners/banner-workflow.jpg" label="How We Work" title="More Than a Render Farm" />
+<SectionBanner image="/_img/banners/banner-workflow.jpg" label="How We Work" title="Scene First, Render Second" />
 
-First we discuss your goals and timeframe, then we look at your scene. Most render farms just process whatever you send them. We take time to prepare scenes properly — which means faster renders and lower costs for you.
+<ProcessFlow
+  title="How a render job works"
+  steps={[
+    { label: "Brief", sub: "Timeline, specs, priority" },
+    { label: "Scene Check", sub: "Diagnose before we commit" },
+    { label: "Prep", sub: "Optimize for farm submission" },
+    { label: "Test Render", sub: "Frame sample for approval" },
+    { label: "Full Render", sub: "All frames, monitored" },
+    { label: "Delivery", sub: "Frames + compositing pass" },
+  ]}
+/>
 
-- Clean up heavy files before they hit the farm
-- Fix geometry problems that cause render errors
-- Sort out texture and asset issues
-- Check render settings for efficiency
-- Diagnose V-Ray artifacts, GI flickering, and exposure issues
-- Set up render output pipelines with correct passes and elements
+We look at your scene before submitting. Heavy geometry, missing textures, wrong GI settings, oversized texture maps — all of these turn a 6-hour render job into a 36-hour one. We find them first and fix them with you.
 
-<SectionBanner image="/_img/banners/banner-arch-viz.jpg" label="Why Work With Us" title="Real People, Real Results" />
+Common issues we resolve before rendering:
+- V-Ray artifacts, GI flickering, and exposure problems
+- Render-time crashes caused by memory overflows in complex geometry
+- Missing UVs and texture reference problems
+- Light cache issues specific to camera path animations
+- Proxy geometry failures that only appear at render time
 
-We're not one of those huge, automated render farms. We've seen every rendering problem that production can produce — missing UVs, viewport vs. render discrepancies, light cache artifacts, proxy geometry failures — and we know the fastest path to fixing each one.
+<SectionBanner image="/_img/banners/banner-arch-viz.jpg" label="Why Work With Us" title="Expert Hands, Not Just Hardware" />
 
-- You talk to real people who know 3D
-- We help fix problems, not just render frames
-- Consistent results delivered on time
-- Own render farm — no competing for nodes on urgent jobs
-- Legacy scene conversion: update older MAX scenes to current V-Ray standards
+<DeliverableGrid columns={2} items={[
+  { title: "Own hardware", desc: "10–20 dedicated nodes — no shared queue, no competing for resources when your deadline matters. Rush priority available for same-day turnaround." },
+  { title: "V-Ray expertise", desc: "15+ years with V-Ray in production. We understand the renderer, not just the interface — which means we can diagnose and fix problems faster than anyone just reading documentation." },
+  { title: "Scene preparation included", desc: "We don't just press go. Scene prep — optimization, troubleshooting, test frames — is part of the service, not an extra. Prepared scenes render faster and cost less overall." },
+  { title: "Complex files welcome", desc: "Airport terminals, multi-building masterplans, scenes that crash on other machines — we have the RAM and the know-how to handle them. We specialize in files everyone else returns." },
+]} />
+
+Typical turnaround for a prepared scene: still images within 24 hours, animation sequences quoted on frame count and complexity. Rush priority is available for genuine deadline situations — we keep capacity for it.

@@ -69,9 +69,9 @@ const youtubeEmbedComponent = component({
 
 const projectDescriptionComponent = component({
   label: 'Project Description',
-  schema: {
-    content: fields.child({ kind: 'block', placeholder: 'Enter description text...' }),
-  },
+  // Note: children are edited directly as inline MDX content — no schema prop needed.
+  // Using fields.child({ kind: 'block' }) causes a ProseMirror schema error in Keystatic.
+  schema: {},
   preview: (props) => null,
 });
 
@@ -79,16 +79,13 @@ const projectStoryComponent = component({
   label: 'Background / Story',
   schema: {
     heading: fields.text({ label: 'Section heading', defaultValue: 'The Story:' }),
-    content: fields.child({ kind: 'block', placeholder: 'Enter background story...' }),
   },
   preview: (props) => null,
 });
 
 const projectTasksComponent = component({
   label: 'What We Did',
-  schema: {
-    content: fields.child({ kind: 'block', placeholder: 'Describe what was done...' }),
-  },
+  schema: {},
   preview: (props) => null,
 });
 
@@ -233,6 +230,13 @@ export default config({
             { label: 'VR Experience', value: 'vr-experience' },
             { label: 'Animation', value: 'animation' },
             { label: 'Exhibition', value: 'exhibition' },
+            { label: 'Education', value: 'education' },
+            { label: 'Healthcare', value: 'healthcare' },
+            { label: 'Sports', value: 'sports' },
+            { label: 'Civic', value: 'civic' },
+            { label: 'Agriculture', value: 'agriculture' },
+            { label: 'Renovation', value: 'renovation' },
+            { label: 'Transportation', value: 'transportation' },
           ],
         }),
         features: fields.array(
@@ -253,24 +257,32 @@ export default config({
           fields.text({ label: 'Technique Slug' }),
           { label: 'Vision-Tech Techniques Used', itemLabel: (p) => p.value }
         ),
+        services: fields.multiselect({
+          label: 'Related Services',
+          description: 'Which services does this project demonstrate? Used for bidirectional service↔project navigation.',
+          options: [
+            { label: 'Architectural Visualization', value: 'architectural-visualization' },
+            { label: 'Product Visualization',       value: 'product-visualization' },
+            { label: 'Large-Scale Projects',        value: 'large-scale-projects' },
+            { label: 'AI-Enhanced Services',        value: 'advanced-ai-services' },
+            { label: 'Workflow Optimization',       value: 'workflow-optimization' },
+            { label: '3ds Max Tools & Scripting',   value: '3ds-max-tools' },
+            { label: 'Custom Rendering',            value: 'custom-rendering' },
+          ],
+        }),
         has360:  fields.checkbox({ label: 'Has 360° Tour', defaultValue: false }),
         hasFilm: fields.checkbox({ label: 'Has Film / Video', defaultValue: false }),
         featured: fields.checkbox({ label: 'Featured', defaultValue: false }),
         published: fields.checkbox({ label: 'Published', defaultValue: true }),
-        // MDX body: text blocks, gallery images, 360 tours, films, video
+        // MDX body — no component schemas registered here.
+        // The existing MDX files use inline JSX prop expressions (images={[...]})
+        // which are incompatible with Keystatic's ProseMirror node format for
+        // fields.array/fields.object schemas. Registering those components causes
+        // a createAndFill ProseMirror crash that blocks the entire editor page.
+        // Body text is still editable; component blocks appear as opaque embeds.
+        // Use a text editor or direct file editing for gallery/tour/film blocks.
         content: fields.mdx({
           label: 'Content (text blocks, images, tours, films)',
-          components: {
-            SectionBanner:       sectionBannerComponent,
-            ProjectDescription:  projectDescriptionComponent,
-            ProjectStory:        projectStoryComponent,
-            ProjectTasks:        projectTasksComponent,
-            ImageGallery:        imageGalleryComponent,
-            ImageCompare:        imageCompareComponent,
-            Tour360:             tour360Component,
-            FilmEmbed:           filmEmbedComponent,
-            YoutubeEmbed:        youtubeEmbedComponent,
-          },
         }),
       },
     }),

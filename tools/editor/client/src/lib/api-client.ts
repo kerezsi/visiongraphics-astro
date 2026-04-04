@@ -236,11 +236,20 @@ export async function importMarkdown(
 
 // ---- Commands ----
 
-export async function generateThumbs(slug?: string): Promise<{ ok: boolean; stdout: string; stderr: string }> {
+export async function pushAllToR2(): Promise<{ ok: boolean; stdout: string; stderr: string }> {
+  const res = await fetch(`${BASE}/images/push-all-to-r2`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({}),
+  });
+  return json<{ ok: boolean; stdout: string; stderr: string }>(res);
+}
+
+export async function generateThumbs(slug?: string, pageType?: string): Promise<{ ok: boolean; stdout: string; stderr: string }> {
   const res = await fetch(`${BASE}/commands/generate-thumbs`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ slug }),
+    body: JSON.stringify({ slug, pageType }),
   });
   return json<{ ok: boolean; stdout: string; stderr: string }>(res);
 }

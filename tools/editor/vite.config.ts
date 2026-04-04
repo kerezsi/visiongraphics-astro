@@ -15,7 +15,9 @@ export default defineConfig({
       interval: 800,
     },
     proxy: {
-      '/api':    { target: `http://localhost:${process.env.EDITOR_SERVER_PORT ?? 4322}`, changeOrigin: true },
+      // timeout: 0 disables the proxy timeout — required for long-running operations
+      // like rclone uploads and thumbnail generation that can take several minutes.
+      '/api':    { target: `http://localhost:${process.env.EDITOR_SERVER_PORT ?? 4322}`, changeOrigin: true, timeout: 0 },
       '/ws':     { target: `ws://localhost:${process.env.EDITOR_SERVER_PORT ?? 4322}`, ws: true, changeOrigin: true },
       // Proxy image URLs to Express, which serves the project public/ directory
       '/images': { target: `http://localhost:${process.env.EDITOR_SERVER_PORT ?? 4322}`, changeOrigin: true },

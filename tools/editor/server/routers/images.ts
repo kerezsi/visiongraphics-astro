@@ -114,15 +114,15 @@ router.delete('/delete', async (req: Request, res: Response) => {
   if (!url) { res.status(400).json({ error: 'Missing url' }); return; }
   if (!url.startsWith('/_img/')) { res.status(403).json({ error: 'URL must start with /_img/' }); return; }
 
-  // /_img/portfolio/slug/file.jpg → staging/slug/file.jpg
-  // We need to find the file in staging
+  // /_img/portfolio/slug/file.jpg → staging/portfolio/slug/file.jpg
   const parts = url.split('/').filter(Boolean); // ['_img', 'portfolio', 'slug', 'file.jpg']
   if (parts.length < 4) { res.status(400).json({ error: 'Invalid URL format' }); return; }
+  const collection = parts[1];
   const slug = parts[2];
   const filename = parts[3];
   if (!validateSlug(slug)) { res.status(400).json({ error: 'Invalid slug' }); return; }
 
-  const stagingPath = path.join(PROJECT_ROOT, 'tools', 'editor', '.staging', slug, filename);
+  const stagingPath = path.join(PROJECT_ROOT, 'tools', 'editor', '.staging', collection, slug, filename);
   try {
     await fs.unlink(stagingPath);
     res.json({ deleted: true });
@@ -142,7 +142,7 @@ router.post('/push-to-r2', async (req: Request, res: Response) => {
   if (!VALID_PAGE_TYPES.includes(pageType as PageType)) { res.status(400).json({ error: 'Invalid pageType' }); return; }
   if (!validateSlug(slug)) { res.status(400).json({ error: 'Invalid slug' }); return; }
 
-  const stagingDir = path.join(PROJECT_ROOT, 'tools', 'editor', '.staging', slug);
+  const stagingDir = path.join(PROJECT_ROOT, buildStagingDir(pageType as PageType, slug));
   const r2Dest     = `r2:visiongraphics-images/${buildR2RemotePath(pageType as PageType, slug)}/`;
 
   // Check staging dir exists
@@ -176,6 +176,60 @@ router.post('/push-to-r2', async (req: Request, res: Response) => {
   child.on('error', (err: any) => {
     res.status(500).json({ error: `rclone not found or failed: ${err.message}` });
   });
+});
+
+// ---------------------------------------------------------------------------
+// POST /push-all-to-r2 — sync staging + thumbnails to R2 via rclone
+// Runs two sequential rclone copies:
+//   tools/editor/.staging/ → r2:visiongraphics-images/        (originals)
+//   public/thumbs/         → r2:visiongraphics-images/thumbs/ (thumbnails)
+// ---------------------------------------------------------------------------
+router.post('/push-all-to-r2', async (req: Request, res: Response) => {
+  const stagingRoot = path.join(PROJECT_ROOT, 'tools', 'editor', '.staging');
+  const thumbsRoot  = path.join(PROJECT_ROOT, 'public', 'thumbs');
+
+  const jobs: Array<{ src: string; dest: string }> = [];
+
+  try { await fs.access(stagingRoot); jobs.push({ src: stagingRoot, dest: 'r2:visiongraphics-images/' }); } catch { /* no staging */ }
+  try { await fs.access(thumbsRoot);  jobs.push({ src: thumbsRoot,  dest: 'r2:visiongraphics-images/thumbs/' }); } catch { /* no thumbs */ }
+
+  if (jobs.length === 0) {
+    res.status(404).json({ error: 'No staging or thumbs directory found' });
+    return;
+  }
+
+  let combinedOut = '';
+  let combinedErr = '';
+
+  function runJob(i: number): void {
+    if (i >= jobs.length) {
+      res.json({ ok: true, stdout: combinedOut, stderr: combinedErr });
+      return;
+    }
+
+    const { src, dest } = jobs[i];
+    const args = ['copy', src, dest, '--s3-no-check-bucket', '--progress'];
+    console.log(`[images] rclone ${args.join(' ')}`);
+
+    const child = spawn('rclone', args, { cwd: PROJECT_ROOT });
+
+    child.stdout.on('data', (d: Buffer) => { combinedOut += d.toString(); });
+    child.stderr.on('data', (d: Buffer) => { combinedErr += d.toString(); });
+
+    child.on('close', (code) => {
+      if (code === 0) {
+        runJob(i + 1);
+      } else {
+        res.status(500).json({ ok: false, step: dest, code, stdout: combinedOut, stderr: combinedErr });
+      }
+    });
+
+    child.on('error', (err: any) => {
+      res.status(500).json({ error: `rclone not found or failed: ${err.message}`, step: dest });
+    });
+  }
+
+  runJob(0);
 });
 
 export default router;

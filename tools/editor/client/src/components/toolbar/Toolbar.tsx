@@ -3,7 +3,7 @@ import { useDocumentStore } from '../../store/document.ts';
 import { useUIStore } from '../../store/ui.ts';
 import type { EditorView } from '../../store/ui.ts';
 import type { PageType } from '../../types/blocks.ts';
-import { generateThumbs, gitPush } from '../../lib/api-client.ts';
+import { generateThumbs, gitPush, pushAllToR2 } from '../../lib/api-client.ts';
 
 const toolbarStyle: React.CSSProperties = {
   height: 44,
@@ -142,8 +142,12 @@ export function Toolbar() {
   const [savedFlash, setSavedFlash] = useState(false);
   const [isSyncing, setIsSyncing] = useState(false);
   const [syncStatus, setSyncStatus] = useState<string | null>(null);
+  const [isSyncingAll, setIsSyncingAll] = useState(false);
+  const [syncAllStatus, setSyncAllStatus] = useState<string | null>(null);
   const [isThumbing, setIsThumbing] = useState(false);
   const [thumbStatus, setThumbStatus] = useState<string | null>(null);
+  const [isThumbingAll, setIsThumbingAll] = useState(false);
+  const [thumbAllStatus, setThumbAllStatus] = useState<string | null>(null);
   const [isPushing, setIsPushing] = useState(false);
   const [pushStatus, setPushStatus] = useState<string | null>(null);
   const flashTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -201,11 +205,30 @@ export function Toolbar() {
     }
   }
 
+  async function handleSyncAllToR2() {
+    setIsSyncingAll(true);
+    setSyncAllStatus(null);
+    try {
+      const data = await pushAllToR2();
+      if (data.ok) {
+        setSyncAllStatus('All → R2');
+        if (flashTimer.current) clearTimeout(flashTimer.current);
+        flashTimer.current = setTimeout(() => setSyncAllStatus(null), 5000);
+      } else {
+        setError('Sync all failed');
+      }
+    } catch (e) {
+      setError('Sync all failed — is rclone installed?');
+    } finally {
+      setIsSyncingAll(false);
+    }
+  }
+
   async function handleGenerateThumbs() {
     setIsThumbing(true);
     setThumbStatus(null);
     try {
-      await generateThumbs(slug || undefined);
+      await generateThumbs(slug || undefined, pageType || undefined);
       setThumbStatus('Thumbs done');
       if (flashTimer.current) clearTimeout(flashTimer.current);
       flashTimer.current = setTimeout(() => setThumbStatus(null), 5000);
@@ -213,6 +236,21 @@ export function Toolbar() {
       setError(e instanceof Error ? e.message : 'Thumbs failed');
     } finally {
       setIsThumbing(false);
+    }
+  }
+
+  async function handleGenerateAllThumbs() {
+    setIsThumbingAll(true);
+    setThumbAllStatus(null);
+    try {
+      await generateThumbs(undefined, undefined);
+      setThumbAllStatus('All thumbs done');
+      if (flashTimer.current) clearTimeout(flashTimer.current);
+      flashTimer.current = setTimeout(() => setThumbAllStatus(null), 5000);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Thumbs all failed');
+    } finally {
+      setIsThumbingAll(false);
     }
   }
 
@@ -306,17 +344,29 @@ export function Toolbar() {
             {syncStatus && (
               <span style={{ color: '#22c55e', fontSize: 11 }}>{syncStatus}</span>
             )}
+            {syncAllStatus && (
+              <span style={{ color: '#22c55e', fontSize: 11 }}>{syncAllStatus}</span>
+            )}
             {thumbStatus && (
               <span style={{ color: '#22c55e', fontSize: 11 }}>{thumbStatus}</span>
+            )}
+            {thumbAllStatus && (
+              <span style={{ color: '#22c55e', fontSize: 11 }}>{thumbAllStatus}</span>
             )}
             {pushStatus && (
               <span style={{ color: '#22c55e', fontSize: 11 }}>{pushStatus}</span>
             )}
-            <ToolbarBtn onClick={handleSyncToR2} disabled={isSyncing}>
+            <ToolbarBtn onClick={handleSyncToR2} disabled={isSyncing || isSyncingAll}>
               {isSyncing ? 'Syncing…' : '↑ R2'}
             </ToolbarBtn>
-            <ToolbarBtn onClick={handleGenerateThumbs} disabled={isThumbing}>
+            <ToolbarBtn onClick={handleSyncAllToR2} disabled={isSyncing || isSyncingAll}>
+              {isSyncingAll ? 'Syncing all…' : '↑ R2 all'}
+            </ToolbarBtn>
+            <ToolbarBtn onClick={handleGenerateThumbs} disabled={isThumbing || isThumbingAll}>
               {isThumbing ? 'Thumbing…' : '⟳ Thumbs'}
+            </ToolbarBtn>
+            <ToolbarBtn onClick={handleGenerateAllThumbs} disabled={isThumbing || isThumbingAll}>
+              {isThumbingAll ? 'Thumbing all…' : '⟳ Thumbs all'}
             </ToolbarBtn>
             <ToolbarBtn onClick={handleGitPush} disabled={isPushing}>
               {isPushing ? 'Pushing…' : '↑ Git'}

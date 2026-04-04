@@ -53,6 +53,12 @@ const nextProject = sorted[currentIndex - 1] ?? null;
 function formatTech(slug: string): string {
   return slug.replace(/-/g, '\u00A0').toUpperCase();
 }
+
+// Resolve service slugs to titles for display
+const allServices = data.services && data.services.length > 0
+  ? await getCollection('services', s => s.data.published)
+  : [];
+const relatedServices = allServices.filter(s => (data.services ?? []).includes(s.slug));
 ---
 
 <Page
@@ -132,7 +138,7 @@ function formatTech(slug: string): string {
       </div>
     </div>
 
-    <!-- "The Task:" section header + techniques -->
+    <!-- "The Task:" section header + techniques + services -->
     <div class="project-task-header">
       <h2 class="project-red-heading">The Task:</h2>
       {data.techniques && data.techniques.length > 0 && (
@@ -141,6 +147,17 @@ function formatTech(slug: string): string {
             <>
               {i > 0 && <span class="tech-sep"> | </span>}
               <a href={`/vision-tech/${t}/`} class="tech-item">{formatTech(t)}</a>
+            </>
+          ))}
+        </div>
+      )}
+      {relatedServices.length > 0 && (
+        <div class="services-bar">
+          <span class="services-bar-label">Services:</span>
+          {relatedServices.map((svc, i) => (
+            <>
+              {i > 0 && <span class="tech-sep"> · </span>}
+              <a href={`/services/${svc.slug}/`} class="service-item">{svc.data.title}</a>
             </>
           ))}
         </div>
@@ -355,6 +372,30 @@ function formatTech(slug: string): string {
   .tech-sep {
     color: var(--color-text-faint);
   }
+
+  .services-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.3em;
+    margin-top: var(--space-3);
+    font-size: var(--fs-xs);
+  }
+  .services-bar-label {
+    color: var(--color-text-faint);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-right: 0.2em;
+  }
+  .service-item {
+    color: var(--color-text-muted);
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    transition: color 150ms ease;
+  }
+  .service-item:hover { color: var(--color-accent); }
 
   /* =====================
      MDX body content
