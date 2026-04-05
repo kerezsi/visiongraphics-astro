@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { listContent, patchFrontmatter } from '../../lib/api-client.ts';
+import { listContent, patchFrontmatter, generateThumbs } from '../../lib/api-client.ts';
 import { useUIStore } from '../../store/ui.ts';
 import { useDocumentStore } from '../../store/document.ts';
 
@@ -204,6 +204,7 @@ export function ArticlesOverview() {
   const [rows, setRows] = useState<ArticleRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState<string | null>(null);
+  const [thumbing, setThumbingRow] = useState<string | null>(null);
   const [sortKey, setSortKey] = useState<SortKey>('date-desc');
   const setError = useUIStore((s) => s.setError);
   const setView = useUIStore((s) => s.setView);
@@ -241,6 +242,17 @@ export function ArticlesOverview() {
     } catch {
       setError(`Failed to update tags for ${row.slug}`);
       setRows(rows);
+    }
+  }
+
+  async function handleThumbs(row: ArticleRow) {
+    setThumbingRow(row.slug);
+    try {
+      await generateThumbs(row.slug, 'article');
+    } catch {
+      setError(`Thumbs failed for ${row.slug}`);
+    } finally {
+      setThumbingRow(null);
     }
   }
 
@@ -296,6 +308,7 @@ export function ArticlesOverview() {
             <th style={{ ...th, width: 90, textAlign: 'center' }}>Published</th>
             <th style={th}>Tags</th>
             <th style={{ ...th, width: 60 }}></th>
+            <th style={{ ...th, width: 44 }}></th>
           </tr>
         </thead>
         <tbody>
@@ -334,6 +347,25 @@ export function ArticlesOverview() {
                     }}
                   >
                     Open
+                  </button>
+                </td>
+                <td style={td}>
+                  <button
+                    onClick={() => handleThumbs(row)}
+                    disabled={thumbing === row.slug}
+                    title="Generate thumbnails for this article"
+                    style={{
+                      background: 'none',
+                      border: '1px solid var(--color-border)',
+                      color: thumbing === row.slug ? 'var(--color-text-faint)' : 'var(--color-text-muted)',
+                      borderRadius: 'var(--radius-sm)',
+                      padding: '2px 6px',
+                      fontSize: 11,
+                      cursor: thumbing === row.slug ? 'default' : 'pointer',
+                      opacity: thumbing === row.slug ? 0.6 : 1,
+                    }}
+                  >
+                    {thumbing === row.slug ? '…' : '⟳'}
                   </button>
                 </td>
               </tr>

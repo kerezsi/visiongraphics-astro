@@ -55,8 +55,9 @@ Image uploads via VG Editor go to local `.staging/<slug>/`, then "↑ R2" pushes
 - **Editor** — block-based content editor (default view)
 - **Pages** — enable/disable and reorder nav items (drag-to-reorder, saved to `src/data/nav-config.json`)
 - **Projects** — batch toggle Published / Featured per project; Open button loads file into editor
-- **Articles** — batch toggle Published, inline tag editor; Open button loads file into editor
-- **Vision-Tech** — batch toggle Published; Open button loads file into editor
+- **Articles** — batch toggle Published, inline tag editor; Open button loads file into editor; ⟳ per-row thumb generation
+- **Services** — batch toggle Published; Open button loads file into editor; ⟳ per-row thumb generation
+- **Vision-Tech** — batch toggle Published; Open button loads file into editor; ⟳ per-row thumb generation
 - **Collections** — manage reference collections (clients, designers, cities, countries, client-types, categories)
 
 ### Collections
@@ -250,15 +251,34 @@ empty strings before rendering `<img>` tags.
 ## Design System
 
 ### Aesthetic Direction
-**Dark luxury editorial.** Portfolio imagery is the hero — everything else steps back.
+**Dark luxury editorial** (default). Light mode available via toggle — warm off-white, not clinical white.
+
+### Theme System
+- Toggle: `src/components/ui/ThemeToggle.astro` — sun/moon button in header (desktop + mobile nav)
+- Switching: sets `document.documentElement.dataset.theme = 'light'` / removes it for dark
+- Persistence: `localStorage` key `vg-theme`; fallback to `prefers-color-scheme`
+- Flash prevention: inline `<script is:inline>` in `Base.astro` `<head>` applies theme before first paint
+- Light mode tokens defined under `[data-theme="light"]` in `global.css`
 
 ### Color Palette (`src/styles/global.css`)
 
+Dark mode (default `:root`):
 ```css
 --color-bg: #1a1a1a;   --color-surface: #121212;  --color-surface-2: #0f0f0f;
---color-border: #2a2a2a;  --color-accent: #da1313;
---color-text: #f0f0f1;  --color-text-muted: #bbbbbb;  --color-text-faint: #7a7a7a;
+--color-border: #333333;  --color-accent: #da1313;
+--color-text: #f0f0f1;  --color-text-muted: #c8c8c8;  --color-text-faint: #8a8a8a;
+--color-header-bg: rgba(26, 26, 26, 0.95);
 ```
+
+Light mode (`[data-theme="light"]`):
+```css
+--color-bg: #f7f5f2;   --color-surface: #eeeae5;  --color-surface-2: #e5e1da;
+--color-border: #d0cbc3;  --color-accent: #c41010;
+--color-text: #18160f;  --color-text-muted: #47433b;  --color-text-faint: #8a8075;
+--color-header-bg: rgba(247, 245, 242, 0.95);
+```
+
+**`--color-header-bg`** — use this variable for the header background, NOT a hardcoded rgba. It automatically switches between themes.
 
 ### Layout
 
@@ -312,7 +332,7 @@ src/pages/
 ```
 src/components/
   layout/    Header.astro, Footer.astro, Nav.astro, MobileNav.tsx
-  ui/        Button.astro, Tag.astro, SectionLabel.astro, SectionBanner.astro
+  ui/        Button.astro, Tag.astro, SectionLabel.astro, SectionBanner.astro, ThemeToggle.astro
   portfolio/ PortfolioGrid.astro, PortfolioFilter.tsx, ProjectCard.astro, ProjectGallery.astro
   media/     Tour360.astro, FilmEmbed.astro, YouTubeEmbed.astro, ImageLightbox.tsx,
              ArticleGalleryMounter.tsx, ArticleImageCompareMounter.tsx

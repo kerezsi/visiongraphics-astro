@@ -3,33 +3,30 @@ import { listContent, patchFrontmatter, generateThumbs } from '../../lib/api-cli
 import { useUIStore } from '../../store/ui.ts';
 import { useDocumentStore } from '../../store/document.ts';
 
-interface VTechRow {
+interface ServiceRow {
   slug: string;
   path: string;
   title: string;
-  technique: string | null;
-  cost: string | null;
+  order: number | null;
   published: boolean;
 }
 
-type SortKey = 'title-asc' | 'title-desc' | 'technique-asc' | 'cost-asc' | 'published';
+type SortKey = 'order-asc' | 'title-asc' | 'title-desc' | 'published';
 
 const SORT_OPTIONS: { key: SortKey; label: string }[] = [
-  { key: 'title-asc',     label: 'Title A–Z' },
-  { key: 'title-desc',    label: 'Title Z–A' },
-  { key: 'technique-asc', label: 'Technique' },
-  { key: 'cost-asc',      label: 'Cost' },
-  { key: 'published',     label: 'Published first' },
+  { key: 'order-asc',  label: 'Order' },
+  { key: 'title-asc',  label: 'Title A–Z' },
+  { key: 'title-desc', label: 'Title Z–A' },
+  { key: 'published',  label: 'Published first' },
 ];
 
-function sortRows(rows: VTechRow[], key: SortKey): VTechRow[] {
+function sortRows(rows: ServiceRow[], key: SortKey): ServiceRow[] {
   return [...rows].sort((a, b) => {
     switch (key) {
-      case 'title-asc':     return a.title.localeCompare(b.title);
-      case 'title-desc':    return b.title.localeCompare(a.title);
-      case 'technique-asc': return (a.technique ?? '').localeCompare(b.technique ?? '');
-      case 'cost-asc':      return (a.cost ?? '').localeCompare(b.cost ?? '');
-      case 'published':     return Number(b.published) - Number(a.published);
+      case 'order-asc':  return (a.order ?? 99) - (b.order ?? 99);
+      case 'title-asc':  return a.title.localeCompare(b.title);
+      case 'title-desc': return b.title.localeCompare(a.title);
+      case 'published':  return Number(b.published) - Number(a.published);
     }
   });
 }
@@ -48,6 +45,12 @@ const heading: React.CSSProperties = {
   fontWeight: 600,
   color: 'var(--color-text)',
   marginBottom: 4,
+};
+
+const sub: React.CSSProperties = {
+  fontSize: 11,
+  color: 'var(--color-text-faint)',
+  marginBottom: 24,
 };
 
 const table: React.CSSProperties = {
@@ -105,20 +108,20 @@ function Toggle({ value, onChange }: { value: boolean; onChange: () => void }) {
   );
 }
 
-export function VisionTechOverview() {
-  const [rows, setRows] = useState<VTechRow[]>([]);
+export function ServicesOverview() {
+  const [rows, setRows] = useState<ServiceRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState<string | null>(null);
   const [thumbing, setThumbingRow] = useState<string | null>(null);
-  const [sortKey, setSortKey] = useState<SortKey>('title-asc');
+  const [sortKey, setSortKey] = useState<SortKey>('order-asc');
   const setError = useUIStore((s) => s.setError);
   const setView = useUIStore((s) => s.setView);
   const loadFile = useDocumentStore((s) => s.loadFile);
 
   useEffect(() => {
-    listContent('vision-tech')
-      .then((items) => setRows(items as VTechRow[]))
-      .catch(() => setError('Could not load vision-tech'))
+    listContent('services')
+      .then((items) => setRows(items as ServiceRow[]))
+      .catch(() => setError('Could not load services'))
       .finally(() => setLoading(false));
   }, []);
 
@@ -139,10 +142,10 @@ export function VisionTechOverview() {
     }
   }
 
-  async function handleThumbs(row: VTechRow) {
+  async function handleThumbs(row: ServiceRow) {
     setThumbingRow(row.slug);
     try {
-      await generateThumbs(row.slug, 'vision-tech');
+      await generateThumbs(row.slug, 'service');
     } catch {
       setError(`Thumbs failed for ${row.slug}`);
     } finally {
@@ -150,7 +153,7 @@ export function VisionTechOverview() {
     }
   }
 
-  async function handleOpen(row: VTechRow) {
+  async function handleOpen(row: ServiceRow) {
     try {
       await loadFile(row.path);
       setView('editor');
@@ -169,11 +172,9 @@ export function VisionTechOverview() {
 
   return (
     <div style={wrap}>
-      <div style={heading}>Vision-Tech</div>
+      <div style={heading}>Services</div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 20 }}>
-        <span style={{ fontSize: 11, color: 'var(--color-text-faint)' }}>
-          {rows.length} tech pages — toggle Published inline.
-        </span>
+        <span style={sub}>{rows.length} services — toggle Published, click Open to edit.</span>
         <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginLeft: 'auto' }}>
           <span style={{ fontSize: 10, color: 'var(--color-text-faint)' }}>Sort:</span>
           {SORT_OPTIONS.map((opt) => (
@@ -200,8 +201,7 @@ export function VisionTechOverview() {
         <thead>
           <tr>
             <th style={th}>Title</th>
-            <th style={{ ...th, width: 130 }}>Technique</th>
-            <th style={{ ...th, width: 70 }}>Cost</th>
+            <th style={{ ...th, width: 60, textAlign: 'center' }}>Order</th>
             <th style={{ ...th, width: 90, textAlign: 'center' }}>Published</th>
             <th style={{ ...th, width: 60 }}></th>
             <th style={{ ...th, width: 44 }}></th>
@@ -220,11 +220,8 @@ export function VisionTechOverview() {
                     {row.slug}
                   </span>
                 </td>
-                <td style={{ ...td, color: 'var(--color-text-muted)', fontSize: 11 }}>
-                  {row.technique ?? '—'}
-                </td>
-                <td style={{ ...td, color: 'var(--color-text-muted)', fontSize: 11 }}>
-                  {row.cost ?? '—'}
+                <td style={{ ...td, textAlign: 'center', color: 'var(--color-text-muted)', fontSize: 11 }}>
+                  {row.order ?? '—'}
                 </td>
                 <td style={{ ...td, textAlign: 'center' }}>
                   <Toggle value={row.published} onChange={() => togglePublished(i)} />
@@ -249,7 +246,7 @@ export function VisionTechOverview() {
                   <button
                     onClick={() => handleThumbs(row)}
                     disabled={thumbing === row.slug}
-                    title="Generate thumbnails for this vision-tech page"
+                    title="Generate thumbnails for this service"
                     style={{
                       background: 'none',
                       border: '1px solid var(--color-border)',

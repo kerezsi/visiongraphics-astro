@@ -25,6 +25,14 @@ const fullTitle = title === 'Vision Graphics'
 <!doctype html>
 <html lang="en">
 <head>
+  <!-- Theme: apply before first paint to avoid flash of wrong theme -->
+  <script is:inline>
+    (function(){
+      var t = localStorage.getItem('vg-theme') ||
+              (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+      if (t === 'light') document.documentElement.dataset.theme = 'light';
+    })();
+  </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="generator" content={Astro.generator} />

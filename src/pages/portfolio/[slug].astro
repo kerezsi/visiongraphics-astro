@@ -212,7 +212,6 @@ const relatedServices = allServices.filter(s => (data.services ?? []).includes(s
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: brightness(0.45);
   }
 
   .project-hero-overlay {
@@ -221,7 +220,13 @@ const relatedServices = allServices.filter(s => (data.services ?? []).includes(s
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.2) 50%, transparent 80%);
+    background: linear-gradient(
+      to top,
+      rgba(0,0,0,0.92) 0%,
+      rgba(0,0,0,0.80) 20%,
+      rgba(0,0,0,0.30) 45%,
+      transparent      65%
+    );
     padding-bottom: 3rem;
   }
 
@@ -313,7 +318,7 @@ const relatedServices = allServices.filter(s => (data.services ?? []).includes(s
 
   .project-description {
     font-size: var(--fs-body);
-    color: var(--color-text);
+    color: var(--color-text-muted);
     line-height: 1.7;
     margin-bottom: 1.25rem;
     max-width: 68ch;

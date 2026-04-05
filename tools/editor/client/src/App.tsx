@@ -10,6 +10,7 @@ import { ProjectsOverview } from './components/overviews/ProjectsOverview.tsx';
 import { ArticlesOverview } from './components/overviews/ArticlesOverview.tsx';
 import { CollectionsOverview } from './components/overviews/CollectionsOverview.tsx';
 import { VisionTechOverview } from './components/overviews/VisionTechOverview.tsx';
+import { ServicesOverview } from './components/overviews/ServicesOverview.tsx';
 import { useAIStore } from './store/ai.ts';
 import { useUIStore } from './store/ui.ts';
 
@@ -124,6 +125,8 @@ export default function App() {
           <ProjectsOverview />
         ) : view === 'articles' ? (
           <ArticlesOverview />
+        ) : view === 'services' ? (
+          <ServicesOverview />
         ) : view === 'vtech' ? (
           <VisionTechOverview />
         ) : (

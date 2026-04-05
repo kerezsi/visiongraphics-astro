@@ -12,12 +12,14 @@
   --color-bg:          #1a1a1a;   /* page background */
   --color-surface:     #121212;   /* cards, panels */
   --color-surface-2:   #0f0f0f;   /* raised surfaces, hover */
-  --color-border:      #2a2a2a;   /* subtle borders */
+  --color-border:      #333333;   /* subtle borders */
   --color-accent:      #da1313;   /* brand red — primary accent */
   --color-accent-2:    #da1313;   /* CTAs (same brand red) */
   --color-text:        #f0f0f1;   /* near-white headings */
-  --color-text-muted:  #bbbbbb;   /* secondary text */
-  --color-text-faint:  #7a7a7a;   /* disabled, placeholders */
+  --color-text-muted:  #c8c8c8;   /* secondary text */
+  --color-text-faint:  #8a8a8a;   /* disabled, placeholders */
+
+  --color-header-bg:   rgba(26, 26, 26, 0.95);
 
   --font-display: 'Work Sans', system-ui, sans-serif;
   --font-body:    'Work Sans', system-ui, sans-serif;
@@ -65,6 +67,20 @@
   --size-logo-sm: 1.875rem;  /*  30px →  60px */
   --size-header:  4.5rem;    /*  72px → 144px */
 }
+/* ─── Light Mode Tokens ─────────────────────────────────────────── */
+[data-theme="light"] {
+  --color-bg:          #f7f5f2;
+  --color-surface:     #eeeae5;
+  --color-surface-2:   #e5e1da;
+  --color-border:      #d0cbc3;
+  --color-accent:      #c41010;
+  --color-accent-2:    #c41010;
+  --color-text:        #18160f;
+  --color-text-muted:  #47433b;
+  --color-text-faint:  #8a8075;
+  --color-header-bg:   rgba(247, 245, 242, 0.95);
+}
+
 /* ─── Base Reset & Body ─────────────────────────────────────────── */
 *, *::before, *::after {
   box-sizing: border-box;

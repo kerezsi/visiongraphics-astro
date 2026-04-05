@@ -391,9 +391,9 @@ export default function PortfolioFilter({ projects, minYear, maxYear }: Props) {
                 <h3 className="font-display text-body font-bold text-content leading-[1.2] m-0">
                   {project.title}
                 </h3>
-                {(project.client || project.city || project.country) && (
+                {(project.city || project.country) && (
                   <p className="text-[0.78rem] text-muted leading-[1.5] max-w-none m-0">
-                    {project.client || [project.city, project.country].filter(Boolean).join(', ')}
+                    {[project.city, project.country].filter(Boolean).join(', ')}
                   </p>
                 )}
               </div>

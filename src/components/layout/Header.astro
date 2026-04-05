@@ -2,6 +2,8 @@
 // src/components/layout/Header.astro
 
 import navConfigRaw from '../../data/nav-config.json';
+import ThemeToggle from '../ui/ThemeToggle.astro';
+
 const navItems = (navConfigRaw as Array<{ label: string; href: string; enabled: boolean }>)
   .filter((item) => item.enabled);
 
@@ -34,6 +36,11 @@ function isActive(href: string): boolean {
       ))}
     </nav>
 
+    <!-- Theme toggle (desktop only — also in mobile nav dropdown) -->
+    <span class="desktop-theme-toggle">
+      <ThemeToggle />
+    </span>
+
     <!-- Mobile menu button -->
     <button
       class="mobile-menu-btn"
@@ -57,6 +64,10 @@ function isActive(href: string): boolean {
         {item.label}
       </a>
     ))}
+    <div class="mobile-nav-theme">
+      <ThemeToggle />
+      <span class="mobile-nav-theme-label">Toggle light/dark</span>
+    </div>
   </nav>
 </header>
 
@@ -85,7 +96,7 @@ function isActive(href: string): boolean {
     position: sticky;
     top: 0;
     z-index: 100;
-    background: rgba(26, 26, 26, 0.95);
+    background: var(--color-header-bg);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid transparent;
@@ -190,13 +201,30 @@ function isActive(href: string): boolean {
     background: rgba(218, 19, 19, 0.08);
   }
 
+  .mobile-nav-theme {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3);
+    margin-top: var(--space-2);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .mobile-nav-theme-label {
+    font-family: var(--font-body);
+    font-size: var(--fs-small);
+    font-weight: 300;
+    color: var(--color-text-faint);
+  }
+
   /* Responsive */
   @media (min-width: 901px) {
     .mobile-nav { display: none !important; }
   }
 
   @media (max-width: 900px) {
-    .desktop-nav   { display: none; }
+    .desktop-nav         { display: none; }
+    .desktop-theme-toggle { display: none; }
     .mobile-menu-btn { display: flex; align-items: center; }
   }
 </style>

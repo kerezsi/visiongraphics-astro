@@ -117,6 +117,7 @@ const VIEW_TABS: { key: EditorView; label: string }[] = [
   { key: 'pages',       label: 'Pages' },
   { key: 'projects',    label: 'Projects' },
   { key: 'articles',    label: 'Articles' },
+  { key: 'services',    label: 'Services' },
   { key: 'vtech',       label: 'Vision-Tech' },
   { key: 'collections', label: 'Collections' },
 ];
