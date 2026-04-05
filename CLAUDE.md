@@ -51,12 +51,20 @@ Two editors are available in dev mode:
 VG Editor runs two processes: `npm run editor:server` (API, port varies) + `npm run editor:client` (UI, port 4323).
 Image uploads via VG Editor go to local `.staging/<slug>/`, then "↑ R2" pushes to R2 via rclone.
 
+**VG Editor toolbar tabs:**
+- **Editor** — block-based content editor (default view)
+- **Pages** — enable/disable and reorder nav items (drag-to-reorder, saved to `src/data/nav-config.json`)
+- **Projects** — batch toggle Published / Featured per project; Open button loads file into editor
+- **Articles** — batch toggle Published, inline tag editor; Open button loads file into editor
+- **Vision-Tech** — batch toggle Published; Open button loads file into editor
+- **Collections** — manage reference collections (clients, designers, cities, countries, client-types, categories)
+
 ### Collections
 
 | Collection | Path | Format | Notes |
 |---|---|---|---|
 | Articles | `src/content/articles/*.mdx` | MDX | Blog posts with components |
-| Services | `src/content/services/*.mdx` | MDX | Service pages with sidebar |
+| Services | `src/content/services/*.mdx` | MDX | Service detail pages (full-width, no sidebar) |
 | Projects | `src/content/projects/*.mdx` | MDX | Portfolio projects |
 | Vision-Tech | `src/content/vision-tech/*.mdx` | MDX | Technology detail pages |
 | Clients | `src/content/clients/*.yaml` | YAML | Reference collection |
@@ -69,6 +77,16 @@ Image uploads via VG Editor go to local `.staging/<slug>/`, then "↑ R2" pushes
 ### Keystatic Config
 
 `keystatic.config.ts` in project root. Defines all collection schemas.
+
+**CRITICAL — Keystatic projects MDX field has NO components registered.**
+Registering `fields.array(fields.object())` schemas (e.g. `imageGalleryComponent`) in
+`content: fields.mdx({ components: {...} })` for the projects collection causes a
+ProseMirror `createAndFill` crash that blocks the entire editor page. Root cause: the
+inline JSX prop format used in existing MDX files (`images={[{...}]}`) is incompatible
+with Keystatic's internal ProseMirror node representation of array/object schemas.
+**Do not add component schemas back to the projects `fields.mdx({})` call.**
+Body text and all frontmatter fields are still fully editable; component blocks appear
+as opaque embeds (preserved on save, not visually editable in Keystatic UI).
 
 ### MDX Components (for use in content files)
 
@@ -100,6 +118,9 @@ Tour360      — click-to-load 360° iframe
 YoutubeEmbed — click-to-load YouTube facade
 ProcessFlow  — workflow diagram
 PhaseMatrix  — phase × deliverable matrix
+NotableGrid  — two-column list of notable projects
+ImageGallery — lightbox image grid
+ImageCompare — before/after slider
 ```
 
 Usage in MDX:
@@ -218,8 +239,11 @@ Output goes to `public/thumbs/` (local only — not committed). Run before "↑ 
 ```ts
 thumbUrl('/_img/portfolio/slug/01.jpg')          // → /thumbs/card/portfolio/slug/01.webp
 thumbUrl('/_img/services/slug/01.jpg', 'large')  // → /thumbs/large/services/slug/01.webp
+thumbUrl(undefined)                              // → '' (safe — projects without coverImage)
 ```
 Default size is `'card'`. Gallery main viewer uses `'large'`. Lightbox fullscreen uses the original `src` directly.
+`src` accepts `string | undefined | null` — returns `''` for falsy input. Always filter out
+empty strings before rendering `<img>` tags.
 
 ---
 
@@ -264,7 +288,9 @@ Default size is `'card'`. Gallery main viewer uses `'large'`. Lightbox fullscree
 
 ## Site Structure
 
-**Nav:** Portfolio · Services · Technologies · FAQ · Pricing · Blog · About · Contact
+**Nav:** driven by `src/data/nav-config.json` — edit via VG Editor → Pages tab or directly in the file.
+Currently enabled: Portfolio · Services · Technologies · About · Contact
+Currently disabled: FAQ · Pricing · Blog (toggle on when pages are ready)
 
 ```
 src/pages/
@@ -310,8 +336,15 @@ See `src/content/config.ts` for full Zod schemas.
 Frontmatter fields: title, displayTitle, year, description (SEO/cards only),
 client (reference), designer (reference), city (reference), country (reference),
 clientType (reference), categories (array of references), features (array),
-techniques (array of vision-tech slugs), tags (array), coverImage,
-has360 (boolean), hasFilm (boolean), published, featured.
+techniques (array of vision-tech slugs), services (array of service slugs),
+tags (array), coverImage, has360 (boolean), hasFilm (boolean), published, featured.
+
+**`services` field** — which services this project demonstrates. Used for bidirectional
+service↔project navigation: service pages show a carousel of projects that list them.
+Set via the Keystatic multiselect or VG Editor Projects overview. Valid values match
+the service collection slugs: `architectural-visualization`, `product-visualization`,
+`large-scale-projects`, `advanced-ai-services`, `workflow-optimization`,
+`3ds-max-tools`, `custom-rendering`.
 
 **`story` and `tasks` are NO LONGER frontmatter fields.** They live in the MDX body
 as `<ProjectStory>` and `<ProjectTasks>` children components.
@@ -325,25 +358,39 @@ Gallery/compare require `ArticleGalleryMounter` + `ArticleImageCompareMounter` c
 
 **Portfolio page layout** (`[slug].astro`):
 - **"The Project:"** (red heading) → description text → data line (Field / Date / Location / Client / Architect)
-- **"The Task:"** (red heading) → techniques bar (`|` separated) → MDX body content
+- **"The Task:"** (red heading) → techniques bar (`|` separated) → services bar (links to service pages) → MDX body content
 - **"The Story:"** (red heading, editable per project) → story text — rendered by `<ProjectStory>`
+
+The services bar only renders when `services` frontmatter is non-empty.
 
 **Filter detection:** `has360` and `hasFilm` are manual boolean checkboxes in the editor.
 Tick them when adding a `<Tour360>` or `<FilmEmbed>`/`<YoutubeEmbed>` to a project.
 
 **Valid category values:** `architectural-visualization`, `residential`, `commercial`,
 `office`, `airport`, `infrastructure`, `urban`, `hospitality`, `industrial`,
-`product-visualization`, `vr-experience`, `animation`, `exhibition`
+`product-visualization`, `vr-experience`, `animation`, `exhibition`,
+`education`, `healthcare`, `sports`, `civic`, `agriculture`, `renovation`, `transportation`
 
 **YAML gotcha:** If `description` contains a colon followed by a space, wrap in double
 quotes or use a block scalar (`|`).
 
 ### Services (MDX)
 Frontmatter: title, description, tagline, bannerImage, order, published,
-startRequirements, pricing, sidebarLabel, sidebarContent, techniques (array of vision-tech slugs),
-services (array of service slugs — written by editor, links project→service navigation).
+startRequirements, pricing, sidebarLabel, sidebarContent, techniques (array of vision-tech slugs).
 MDX body: SectionBanner, DeliverableGrid, TimelineTable, NotableGrid, ImageGallery, ImageCompare,
 ProcessFlow, PhaseMatrix, Tour360, YoutubeEmbed.
+
+Note: the reverse link (which projects belong to this service) comes from the **project's** `services`
+array — there is no `services` field on the service schema itself.
+
+**Service detail page layout** (`src/pages/services/[slug].astro`):
+- Full-width, no sidebar. Layout: banner → breadcrumb → tagline → meta strip → MDX body → techniques chips → related projects carousel → CTAs.
+- **Meta strip** — horizontal flex row showing `pricing`, `startRequirements`, and optionally `sidebarLabel`+`sidebarContent`. Only renders when at least one field exists.
+- **Techniques chip row** — rendered from `techniques` frontmatter array (vision-tech slugs). Links to `/vision-tech/[slug]/`.
+- **Related projects carousel** — projects whose `services` array includes this service slug. Drag-to-scroll, gradient overlay cards.
+- **`DeliverableGrid` `href` prop** — optional; when provided, the card title becomes a link (use for vision-tech cross-links).
+
+**ServicesTabs active indicator** — uses `shadow-[inset_3px_0_0_var(--color-accent)]`, NOT `border-l-*`. Reason: `border-none` on the button element suppresses all border-style, making border-l invisible.
 
 ### Articles (MDX)
 Frontmatter: title, date, excerpt, tags, coverImage, published.
