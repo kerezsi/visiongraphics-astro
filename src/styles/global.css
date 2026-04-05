@@ -72,7 +72,7 @@
   --color-bg:          #f7f5f2;
   --color-surface:     #eeeae5;
   --color-surface-2:   #e5e1da;
-  --color-border:      #d0cbc3;
+  --color-border:      #9a9088;
   --color-accent:      #c41010;
   --color-accent-2:    #c41010;
   --color-text:        #18160f;
@@ -207,6 +207,14 @@ a {
   border-color: var(--color-accent);
   transform: translateY(-2px);
 }
+
+/* ─── Portfolio grid cards ───────────────────────────────────── */
+/* Dark mode: subtle white-alpha border with brighter hover */
+.pf-card { border-color: rgba(255,255,255,0.12); }
+.pf-card:hover { border-color: rgba(255,255,255,0.35); }
+/* Light mode: use the theme border colour */
+[data-theme="light"] .pf-card { border-color: var(--color-border); }
+[data-theme="light"] .pf-card:hover { border-color: var(--color-text-faint); }
 
 /* ─── Buttons ────────────────────────────────────────────────── */
 .btn {

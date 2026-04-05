@@ -36,6 +36,10 @@ const { image, label, title } = Astro.props;
     background: linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.25) 100%);
   }
 
+  :global([data-theme="light"]) .article-section-banner__overlay {
+    background: linear-gradient(to top, rgba(247, 245, 242, 0.88) 0%, rgba(247, 245, 242, 0.25) 100%);
+  }
+
   .article-section-banner__content {
     position: relative;
     z-index: 1;

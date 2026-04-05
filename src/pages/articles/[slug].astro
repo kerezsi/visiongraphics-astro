@@ -217,6 +217,9 @@ const nextArticle = sorted[currentIndex - 1] ?? null;
     inset: 0;
     background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.2) 100%);
   }
+  :global([data-theme="light"]) .article-content.prose :global(.article-section-banner__overlay) {
+    background: linear-gradient(to top, rgba(247,245,242,0.88) 0%, rgba(247,245,242,0.25) 100%);
+  }
 
   .article-content.prose :global(.article-section-banner__content) {
     position: relative;

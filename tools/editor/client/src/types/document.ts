@@ -25,6 +25,7 @@ export interface ProjectMeta {
   features: string[];
   tags: string[];
   techniques?: string[];
+  services?: string[];
   coverImage: string;
   published: boolean;
   featured: boolean;

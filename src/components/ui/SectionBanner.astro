@@ -67,7 +67,7 @@ const HeadingTag = headingLevel;
     display: block;
   }
 
-  /* Dark gradient — darker than PageHero since these are smaller */
+  /* Gradient overlay — dark by default, overridden for light mode */
   .section-banner__overlay {
     position: absolute;
     inset: 0;
@@ -85,6 +85,24 @@ const HeadingTag = headingLevel;
       180deg,
       rgba(10, 10, 10, 0.3) 0%,
       rgba(10, 10, 10, 0.85) 100%
+    );
+  }
+
+  /* Light mode — fade to off-white */
+  :global([data-theme="light"]) .section-banner__overlay {
+    background: linear-gradient(
+      105deg,
+      rgba(247, 245, 242, 0.92) 0%,
+      rgba(247, 245, 242, 0.72) 55%,
+      rgba(247, 245, 242, 0.30) 100%
+    );
+  }
+
+  :global([data-theme="light"]) .section-banner--center .section-banner__overlay {
+    background: linear-gradient(
+      180deg,
+      rgba(247, 245, 242, 0.20) 0%,
+      rgba(247, 245, 242, 0.88) 100%
     );
   }
 

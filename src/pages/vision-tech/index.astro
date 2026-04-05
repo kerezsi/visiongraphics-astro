@@ -251,7 +251,7 @@ const purpose_vals    = [...new Set(techniques.flatMap(t => t.data.purpose))].so
   #vt-count { font-size: var(--fs-xs); color: var(--color-text-faint); }
   .vt-reset { font-size: var(--fs-xs); color: var(--color-accent); background: none; border: none; cursor: pointer; padding: 0; font-family: var(--font-body); }
 
-  .vt-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+  .vt-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(max(280px, 22%), 1fr)); gap: 1.5rem; }
   /* Tech items — red border */
   .vt-card { display: flex; flex-direction: column; background: var(--color-surface); border: 1px solid var(--color-accent); border-radius: var(--radius-sm); overflow: hidden; text-decoration: none; transition: border-color 250ms ease, transform 250ms ease; }
   .vt-card:hover { border-color: var(--color-accent); transform: translateY(-2px); }

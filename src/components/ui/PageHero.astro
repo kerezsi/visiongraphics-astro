@@ -59,7 +59,7 @@ const { image, label, title, variant = 'page', imageAlt = '' } = Astro.props;
     display: block;
   }
 
-  /* Dark gradient: solid on left, transparent on right */
+  /* Gradient: solid on left, transparent on right — colour adapts to theme */
   .page-hero__bg::after {
     content: '';
     position: absolute;
@@ -70,6 +70,17 @@ const { image, label, title, variant = 'page', imageAlt = '' } = Astro.props;
       var(--color-bg) 28%,
       rgba(26, 26, 26, 0.80) 52%,
       rgba(26, 26, 26, 0.28) 72%,
+      transparent 100%
+    );
+  }
+
+  :global([data-theme="light"]) .page-hero__bg::after {
+    background: linear-gradient(
+      to right,
+      var(--color-bg) 0%,
+      var(--color-bg) 28%,
+      rgba(247, 245, 242, 0.80) 52%,
+      rgba(247, 245, 242, 0.28) 72%,
       transparent 100%
     );
   }
@@ -122,6 +133,15 @@ const { image, label, title, variant = 'page', imageAlt = '' } = Astro.props;
         var(--color-bg) 45%,
         rgba(26, 26, 26, 0.88) 70%,
         rgba(26, 26, 26, 0.65) 100%
+      );
+    }
+    :global([data-theme="light"]) .page-hero__bg::after {
+      background: linear-gradient(
+        to right,
+        var(--color-bg) 0%,
+        var(--color-bg) 45%,
+        rgba(247, 245, 242, 0.88) 70%,
+        rgba(247, 245, 242, 0.65) 100%
       );
     }
   }

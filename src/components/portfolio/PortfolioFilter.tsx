@@ -159,7 +159,7 @@ export default function PortfolioFilter({ projects, minYear, maxYear }: Props) {
       {/* ── Controls ── */}
       <div className="bg-surface border border-line rounded-token-sm px-6 py-4 mb-10 flex flex-col gap-4">
 
-        {/* Search + sort + filter toggle */}
+        {/* Search + sort + filter toggle + count */}
         <div className="pf-search-row flex gap-3 items-center">
           <div className="relative flex-1">
             <svg
@@ -213,6 +213,12 @@ export default function PortfolioFilter({ projects, minYear, maxYear }: Props) {
               <path d="M1 1l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
             </svg>
           </button>
+
+          <span className="font-mono text-[0.75rem] text-faint whitespace-nowrap flex-shrink-0">
+            {filtered.length === projects.length
+              ? `${projects.length} projects`
+              : `${filtered.length} of ${projects.length}`}
+          </span>
         </div>
 
         {/* Collapsible filter groups */}
@@ -334,28 +340,16 @@ export default function PortfolioFilter({ projects, minYear, maxYear }: Props) {
           </div>
         )}
 
-        {/* Results count — always visible */}
-        <div className="border-t border-line pt-3">
-          <span className="font-mono text-[0.75rem] text-faint">
-            {filtered.length === projects.length
-              ? `${projects.length} projects`
-              : `${filtered.length} of ${projects.length}`}
-          </span>
-        </div>
-
       </div>
 
       {/* ── Grid ── */}
       {filtered.length > 0 ? (
-        <div className="pf-grid grid gap-6" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))' }}>
+        <div className="pf-grid grid gap-6" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(max(280px, 22%), 1fr))' }}>
           {filtered.map(project => (
             <a
               key={project.slug}
               href={`/portfolio/${project.slug}/`}
               className="pf-card group flex flex-col bg-surface border rounded-token-sm overflow-hidden no-underline transition-[border-color,transform] duration-[250ms] ease-in-out hover:-translate-y-0.5"
-              style={{ borderColor: 'rgba(255,255,255,0.12)' }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.35)'; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.12)'; }}
             >
               <div className="relative aspect-video overflow-hidden bg-surface-2">
                 <img

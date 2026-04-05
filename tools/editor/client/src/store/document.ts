@@ -43,6 +43,7 @@ function defaultMeta(pageType: PageType): PageMeta {
         categories: [],
         features: [],
         tags: [],
+        services: [],
         coverImage: '',
         published: false,
         featured: false,

@@ -154,3 +154,17 @@
 .hc-title {
   font-size: clamp(var(--fs-h4), 3vw, var(--fs-h2));
 }
+
+/* Overlay gradient — dark by default, fades to page bg in light mode */
+.hc-overlay {
+  background: linear-gradient(to top, rgba(10,10,18,0.88) 0%, rgba(10,10,18,0.25) 45%, transparent 70%);
+}
+.hc-overlay:hover {
+  background: linear-gradient(to top, rgba(10,10,18,0.92) 0%, rgba(10,10,18,0.30) 45%, transparent 70%);
+}
+[data-theme="light"] .hc-overlay {
+  background: linear-gradient(to top, rgba(247,245,242,0.92) 0%, rgba(247,245,242,0.30) 45%, transparent 70%);
+}
+[data-theme="light"] .hc-overlay:hover {
+  background: linear-gradient(to top, rgba(247,245,242,0.96) 0%, rgba(247,245,242,0.38) 45%, transparent 70%);
+}

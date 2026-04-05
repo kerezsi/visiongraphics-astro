@@ -4,7 +4,6 @@ import { getCollection } from 'astro:content';
 import { thumbUrl } from '../../lib/image-url';
 import Page from '../../layouts/Page.astro';
 import SectionBanner from '../../components/ui/SectionBanner.astro';
-import MdxSectionBanner from '../../components/mdx/SectionBanner.astro';
 import DeliverableGrid from '../../components/mdx/DeliverableGrid.astro';
 import TimelineTable from '../../components/mdx/TimelineTable.astro';
 import NotableGrid from '../../components/mdx/NotableGrid.astro';
@@ -88,9 +87,9 @@ const hasMeta = data.pricing || data.startRequirements || (data.sidebarLabel && 
       </div>
     )}
 
-    <div class="service-main container">
+    <div class="service-main">
       <Content components={{
-        SectionBanner: MdxSectionBanner,
+        SectionBanner,
         DeliverableGrid,
         TimelineTable,
         NotableGrid,
@@ -198,7 +197,7 @@ const hasMeta = data.pricing || data.startRequirements || (data.sidebarLabel && 
 </script>
 
 <style>
-  .service-page { padding-block: var(--space-16); }
+  .service-page { padding-block: var(--space-16); overflow-x: hidden; }
 
   .service-breadcrumb {
     display: flex; align-items: center; gap: 0.5rem;
@@ -251,13 +250,46 @@ const hasMeta = data.pricing || data.startRequirements || (data.sidebarLabel && 
     line-height: 1.5;
   }
 
-  /* MDX content */
+  /* MDX content — no .container so SectionBanners are naturally full-width */
   .service-main {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
     margin-bottom: 3rem;
+    width: 100%;
+    max-width: 2400px;
+    margin-inline: auto;
   }
+
+  /* SectionBanners escape the flex container — full viewport width */
+  .service-main :global(.section-banner) {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  /* The banner's inner .container already handles its own padding — no extra indent on label/title */
+  .service-main :global(.section-banner p),
+  .service-main :global(.section-banner h2) {
+    padding-inline: 0;
+  }
+
+  /* All other MDX content gets container-equivalent padding */
+  .service-main :global(p),
+  .service-main :global(h2),
+  .service-main :global(ul),
+  .service-main :global(.deliverable-grid),
+  .service-main :global(.process-flow),
+  .service-main :global(.phase-matrix),
+  .service-main :global(.timeline-table),
+  .service-main :global(.notable-grid),
+  .service-main :global(.article-gallery-mount),
+  .service-main :global(.image-compare-mount),
+  .service-main :global(.tour-wrap),
+  .service-main :global(.yt-embed) {
+    padding-inline: clamp(1.5rem, 5vw, 4rem);
+  }
+
   .service-main :global(p) {
     font-size: var(--fs-small);
     color: var(--color-text-muted);
@@ -272,7 +304,7 @@ const hasMeta = data.pricing || data.startRequirements || (data.sidebarLabel && 
   }
   .service-main :global(ul) {
     list-style: none;
-    padding: 0;
+    padding-block: 0;
     margin: 0;
     display: flex;
     flex-direction: column;

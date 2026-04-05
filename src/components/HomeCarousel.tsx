@@ -63,10 +63,7 @@ export default function HomeCarousel({ slides }: Props) {
       {/* Bottom overlay with project info */}
       <a
         href={`/portfolio/${slide.slug}/`}
-        className="absolute inset-0 flex items-end no-underline cursor-pointer transition-[background] duration-300"
-        style={{ background: 'linear-gradient(to top, rgba(10,10,18,0.88) 0%, rgba(10,10,18,0.25) 45%, transparent 70%)' }}
-        onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'linear-gradient(to top, rgba(10,10,18,0.92) 0%, rgba(10,10,18,0.3) 45%, transparent 70%)'; }}
-        onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'linear-gradient(to top, rgba(10,10,18,0.88) 0%, rgba(10,10,18,0.25) 45%, transparent 70%)'; }}
+        className="hc-overlay absolute inset-0 flex items-end no-underline cursor-pointer transition-[background] duration-300"
         tabIndex={0}
       >
         {/* hc-info padding uses clamp() — applied via components.css */}

@@ -2,6 +2,7 @@
 // src/pages/vision-tech/[slug].astro
 import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
 import Page from '../../layouts/Page.astro';
+import SectionBanner from '../../components/ui/SectionBanner.astro';
 import { thumbUrl } from '../../lib/image-url';
 import Tour360 from '../../components/media/Tour360.astro';
 import FilmEmbed from '../../components/media/FilmEmbed.astro';
@@ -34,14 +35,14 @@ const specificMatches = allProjects.filter(p => {
   return catMatch && featMatch;
 }).sort((a, b) => b.data.year - a.data.year);
 
-// 2. If fewer than 6 specific matches, fill with featured arch-viz projects
+// 2. If fewer than 6 specific matches, fill with featured/recent projects
 let related: typeof allProjects;
 if (specificMatches.length >= 6) {
   related = specificMatches.slice(0, 8);
 } else {
   const specificSlugs = new Set(specificMatches.map(p => p.slug));
   const fallback = allProjects
-    .filter(p => !specificSlugs.has(p.slug) && p.data.categories.some(c => c.id === 'architectural-visualization'))
+    .filter(p => !specificSlugs.has(p.slug))
     .sort((a, b) => (b.data.featured ? 1 : 0) - (a.data.featured ? 1 : 0) || b.data.year - a.data.year);
   related = [...specificMatches, ...fallback].slice(0, 8);
 }
@@ -63,18 +64,16 @@ const relatedClientNames = await Promise.all(
 >
 
   <!-- ─── Hero ─────────────────────────────────────────────── -->
-  <section class="vt-detail-hero">
-    <div class="vt-detail-hero-img">
-      <img src={data.image} alt={data.title} />
-    </div>
-    <div class="vt-detail-hero-overlay">
-      <div class="container">
-        <a href="/vision-tech/" class="vt-back">&larr; All Techniques</a>
-        <p class="section-label">{data.technique}</p>
-        <h1 class="display-lg">{data.title}</h1>
-      </div>
-    </div>
-  </section>
+  <SectionBanner
+    image={data.image}
+    label={data.technique ?? 'Technique'}
+    title={data.title}
+    size="page"
+    headingLevel="h1"
+  />
+  <div class="vt-breadcrumb container">
+    <a href="/vision-tech/" class="vt-back">&larr; All Techniques</a>
+  </div>
 
   <!-- ─── Description + inline fields ─────────────────────── -->
   <section class="section vt-desc-section">
@@ -215,36 +214,18 @@ const relatedClientNames = await Promise.all(
 </script>
 
 <style>
-  /* ─── Hero ──────────────────────────────────────────────── */
-  .vt-detail-hero {
-    position: relative;
-    height: clamp(280px, 40vh, 480px);
-    overflow: hidden;
-  }
-
-  .vt-detail-hero-img { position: absolute; inset: 0; }
-
-  .vt-detail-hero-img img {
-    width: 100%; height: 100%;
-    object-fit: cover; object-position: center;
-  }
-
-  .vt-detail-hero-overlay {
-    position: absolute; inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 60%, transparent 100%);
-    display: flex; align-items: flex-end;
-    padding-bottom: 3rem;
+  /* ─── Breadcrumb ────────────────────────────────────────── */
+  .vt-breadcrumb {
+    padding-block: var(--space-4);
   }
 
   .vt-back {
     display: inline-block;
     font-size: var(--fs-xs); letter-spacing: 0.08em;
     color: var(--color-text-muted); text-decoration: none;
-    margin-bottom: 1rem; transition: color 200ms ease;
+    transition: color 200ms ease;
   }
   .vt-back:hover { color: var(--color-text); }
-  .vt-detail-hero-overlay .section-label { margin-bottom: 0.4rem; }
-  .vt-detail-hero-overlay h1 { text-shadow: 0 2px 12px rgba(0,0,0,0.5); }
 
   /* ─── Description section ───────────────────────────────── */
   .vt-desc-section { padding-bottom: var(--space-8); }
@@ -260,7 +241,7 @@ const relatedClientNames = await Promise.all(
     font-size: var(--fs-body);
     line-height: 1.75;
     color: var(--color-text-muted);
-    max-width: 80ch;
+    max-width: 72ch;
     margin-bottom: var(--space-6);
   }
 
@@ -303,7 +284,7 @@ const relatedClientNames = await Promise.all(
   }
 
   /* ─── Rich body content ─────────────────────────────────── */
-  .vt-body-content { max-width: 62ch; }
+  .vt-body-content { max-width: none; }
 
   .vt-body-content :global(h2) {
     font-size: var(--fs-h5); font-weight: 600;

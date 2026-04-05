@@ -20,7 +20,8 @@ function isActive(href: string): boolean {
 
     <!-- Logo -->
     <a href="/" class="logo" aria-label="Vision Graphics — Home">
-      <img src="/logo.png" alt="Vision Graphics Kft." class="logo-img" width="160" height="39" />
+      <img src="/logo.png"   alt="Vision Graphics Kft." class="logo-img logo-dark"  width="160" height="39" />
+      <img src="/logo_b.png" alt=""                      class="logo-img logo-light" width="160" height="39" aria-hidden="true" />
     </a>
 
     <!-- Desktop Nav -->
@@ -121,6 +122,9 @@ function isActive(href: string): boolean {
     @apply block w-auto;
     height: var(--size-logo);
   }
+  .logo-light { display: none; }
+  :global([data-theme="light"]) .logo-dark  { display: none; }
+  :global([data-theme="light"]) .logo-light { display: block; }
 
   /* Desktop Nav */
   .desktop-nav {

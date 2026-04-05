@@ -32,7 +32,8 @@ const links = [
       <!-- Brand column -->
       <div class="footer-brand">
         <a href="/" class="footer-logo" aria-label="Vision Graphics — Home">
-          <img src="/logo.png" alt="Vision Graphics Kft." class="footer-logo-img" width="140" height="34" />
+          <img src="/logo.png"   alt="Vision Graphics Kft." class="footer-logo-img footer-logo-dark"  width="140" height="34" />
+          <img src="/logo_b.png" alt=""                      class="footer-logo-img footer-logo-light" width="140" height="34" aria-hidden="true" />
         </a>
         <p class="footer-bio">
           Architectural visualization, Budapest.
@@ -110,6 +111,9 @@ const links = [
     @apply block w-auto;
     height: var(--size-logo-sm);
   }
+  .footer-logo-light { display: none; }
+  :global([data-theme="light"]) .footer-logo-dark  { display: none; }
+  :global([data-theme="light"]) .footer-logo-light { display: block; }
 
   .footer-bio {
     @apply text-small text-muted;

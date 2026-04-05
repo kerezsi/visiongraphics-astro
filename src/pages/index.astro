@@ -292,7 +292,7 @@ const teaserServices = allServices
   /* ── Hero ─────────────────────────────────────────────────── */
   .hero {
     position: relative;
-    min-height: 92vh;
+    min-height: 70vh;
     display: flex;
     align-items: center;
     overflow: hidden;
@@ -365,6 +365,14 @@ const teaserServices = allServices
       rgba(0, 0, 0, 0.92) 0%,
       rgba(0, 0, 0, 0.70) 50%,
       rgba(0, 0, 0, 0.40) 100%
+    );
+  }
+  :global([data-theme="light"]) .hero-bg-overlay {
+    background: linear-gradient(
+      105deg,
+      rgba(247, 245, 242, 0.92) 0%,
+      rgba(247, 245, 242, 0.70) 50%,
+      rgba(247, 245, 242, 0.35) 100%
     );
   }
 

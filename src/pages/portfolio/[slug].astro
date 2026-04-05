@@ -229,6 +229,15 @@ const relatedServices = allServices.filter(s => (data.services ?? []).includes(s
     );
     padding-bottom: 3rem;
   }
+  :global([data-theme="light"]) .project-hero-overlay {
+    background: linear-gradient(
+      to top,
+      rgba(247,245,242,0.95) 0%,
+      rgba(247,245,242,0.82) 20%,
+      rgba(247,245,242,0.35) 45%,
+      transparent            65%
+    );
+  }
 
   .project-hero-meta {
     display: flex;
