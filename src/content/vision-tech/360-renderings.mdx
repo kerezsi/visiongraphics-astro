@@ -1,6 +1,7 @@
 ---
 title: 360 Renderings
-description: Computer-generated 360° panoramic images rendered in 3ds Max with V-Ray. A spherical camera captures the complete environment from a fixed viewpoint — look in any direction, including up and down.
+description: |
+  Computer-generated 360° panoramic images rendered in 3ds Max with V-Ray. A spherical camera captures the complete environment from a fixed viewpoint — look in any direction, including up and down.
 image: /_img/vision-tech/360-renderings.jpg
 technique: Traditional
 cost: €€
@@ -24,44 +25,44 @@ published: true
 
 A standard rendering shows one camera angle. A 360 rendering shows the complete sphere around a single point — you look in any direction, including straight up at the ceiling and straight down at the floor. We produce these in 3ds Max using V-Ray's panoramic camera, which renders an equirectangular image covering the full 360° × 180° field of view.
 
-<Tour360 url="https://visiongraphics.eu/PANO/TESTVERHEGYI/KINT/" title="Exterior 360 rendering — residential development" />
+<Tour360 url="https://visiongraphics.eu/PANO/TESTVERHEGYI/KINT/" title="Exterior 360 rendering — residential development" coverImage="/_img/vision-tech/360-renderings/2209-mage-style-use-grey-colors-only-very-s-2.jpg" />
 
 ## What it takes to do this properly
 
 The main constraint of 360 rendering is that there is nowhere to hide. In a standard rendering, areas outside the camera frame don't need to be finished. In a 360, the complete model — ceiling, floor, every wall, every corner — must be complete and properly detailed. This makes 360 renderings more expensive to set up than a comparable flat render, but the same viewpoint can be revisited from any direction without additional rendering.
 
-**Model completeness** — all geometry in every direction must be present and textured. Unfinished areas that would be cropped in a flat render are fully visible in 360.
+Model completeness — all geometry in every direction must be present and textured. Unfinished areas that would be cropped in a flat render are fully visible in 360.
 
-**Resolution** — equirectangular images need to be rendered at significantly higher resolution than flat images to maintain the same perceived quality when viewed interactively. We typically work at 8K × 4K (32 megapixels) as a base.
+Resolution — equirectangular images need to be rendered at significantly higher resolution than flat images to maintain the same perceived quality when viewed interactively. We typically work at 8K × 4K (32 megapixels) as a base.
 
-**Lighting** — the lighting rig must work from all directions simultaneously. A light source visible in the frame in a flat render is hidden; in 360 it's part of the image.
+Lighting — the lighting rig must work from all directions simultaneously. A light source visible in the frame in a flat render is hidden; in 360 it's part of the image.
 
-<Tour360 url="https://visiongraphics.eu/PANO/CSERJE_A01/" title="Interior 360 rendering — residential apartment" />
+<Tour360 url="https://visiongraphics.eu/PANO/CSERJE_A01/" title="Interior 360 rendering — residential apartment" coverImage="/_img/vision-tech/360-renderings/2210-mage-style-use-grey-colors-only-very-s.jpg" />
 
 ## What we need from you
 
 <SpecTable rows={[
-  { label: "3D model", value: "Complete in all directions from the chosen viewpoint — no unfinished areas. CAD/IFC for us to build from, or an existing 3ds Max model." },
-  { label: "Viewpoints", value: "Eye-level positions agreed before rendering. Each viewpoint is a separate render at full cost." },
-  { label: "Material specs", value: "Same requirements as for flat renderings. More surfaces are visible, so material coverage needs to be more complete." },
-  { label: "Lighting design", value: "Interior viewpoints need a fully resolved lighting setup — everything is visible." },
+{ label: "3D model", value: "Complete in all directions from the chosen viewpoint — no unfinished areas. CAD/IFC for us to build from, or an existing 3ds Max model." },
+{ label: "Viewpoints", value: "Eye-level positions agreed before rendering. Each viewpoint is a separate render at full cost." },
+{ label: "Material specs", value: "Same requirements as for flat renderings. More surfaces are visible, so material coverage needs to be more complete." },
+{ label: "Lighting design", value: "Interior viewpoints need a fully resolved lighting setup — everything is visible." },
 ]} />
 
 ## Delivery
 
-Equirectangular images viewable in any 360 browser viewer, embedded on websites, or loaded into Pano2VR for use in a full [360 Tour](/vision-tech/360-tour/). VR-headset compatible via WebVR.
+Equirectangular images viewable in any 360 browser viewer, embedded on websites, or loaded into Pano2VR for use in a full 360 Tour. VR-headset compatible via WebVR.
 
 ## When to use 360 renderings
 
-- **Spatial review** — the most efficient way to check how a room actually feels before it's built. Plan layouts, ceiling heights, and view connections are hard to judge from flat images.
-- **Checking sight lines** — what can you see from the kitchen into the living area? What's the view from the bed toward the window? 360 answers these questions directly.
-- **Client sign-off** — putting a client inside the room, even at a screen, is more convincing than showing them a selected angle.
-- **VR headset use** — 360 renderings are the source for [3DOF VR experiences](/vision-tech/virtual-reality-vr-experience/), which add a headset and full spatial immersion.
+- Spatial review — the most efficient way to check how a room actually feels before it's built. Plan layouts, ceiling heights, and view connections are hard to judge from flat images.
+- Checking sight lines — what can you see from the kitchen into the living area? What's the view from the bed toward the window? 360 answers these questions directly.
+- Client sign-off — putting a client inside the room, even at a screen, is more convincing than showing them a selected angle.
+- VR headset use — 360 renderings are the source for 3DOF VR experiences, which add a headset and full spatial immersion.
 
 ## Related techniques
 
-For capturing an existing space rather than an unbuilt one: [360 Photography](/vision-tech/360-photography/)
+For capturing an existing space rather than an unbuilt one: 360 Photography
 
-For showing new elements inside a real photographed space: [360 Photo Integration](/vision-tech/360-photo-integration/)
+For showing new elements inside a real photographed space: 360 Photo Integration
 
-For connecting multiple viewpoints into a navigable experience: [360 Tour](/vision-tech/360-tour/)
+For connecting multiple viewpoints into a navigable experience: 360 Tour
