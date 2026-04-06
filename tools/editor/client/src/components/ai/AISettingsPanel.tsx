@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useAIStore } from '../../store/ai.ts';
 import { getEditorConfig, saveEditorConfig } from '../../lib/api-client.ts';
 
-const label: React.CSSProperties = {
+const lbl: React.CSSProperties = {
   fontSize: 10,
   color: 'var(--color-text-faint)',
   textTransform: 'uppercase',
@@ -21,6 +21,7 @@ export function AISettingsPanel() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
+    if (!open) return;
     getEditorConfig()
       .then((cfg) => {
         setOllamaBase(cfg.ollamaBase);
@@ -46,7 +47,6 @@ export function AISettingsPanel() {
 
   return (
     <div style={{ borderTop: '1px solid var(--color-border)' }}>
-      {/* Toggle header */}
       <button
         onClick={() => setOpen((v) => !v)}
         style={{
@@ -71,7 +71,7 @@ export function AISettingsPanel() {
       {open && (
         <div style={{ padding: '0 12px 12px' }}>
           <div style={{ marginBottom: 8 }}>
-            <label style={label}>Ollama address</label>
+            <label style={lbl}>Ollama address</label>
             <input
               type="text"
               value={ollamaBase}
@@ -81,7 +81,7 @@ export function AISettingsPanel() {
             />
           </div>
           <div style={{ marginBottom: 10 }}>
-            <label style={label}>SwarmUI address</label>
+            <label style={lbl}>SwarmUI address</label>
             <input
               type="text"
               value={swarmBase}

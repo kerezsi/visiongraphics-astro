@@ -14,12 +14,20 @@ export interface SwarmPromptItem {
   text: string;
 }
 
+export interface OllamaSystemPrompt {
+  name: string;
+  text: string;
+}
+
 export interface EditorConfig {
   ollamaBase: string;
   swarmBase: string;
   swarmModels: string[];
   swarmStyles: SwarmStyle[];
   swarmPrompts: SwarmPromptItem[];
+  ollamaSystemPrompts: OllamaSystemPrompt[];
+  activeSystemPromptName: string;
+  ollamaTaskPrompts: Partial<Record<string, string>>;
 }
 
 const DEFAULTS: EditorConfig = {
@@ -28,6 +36,9 @@ const DEFAULTS: EditorConfig = {
   swarmModels: [],
   swarmStyles: [],
   swarmPrompts: [],
+  ollamaSystemPrompts: [],
+  activeSystemPromptName: '',
+  ollamaTaskPrompts: {},
 };
 
 let cache: EditorConfig | null = null;

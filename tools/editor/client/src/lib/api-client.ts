@@ -188,12 +188,13 @@ export async function generateParagraph(
 }
 
 export async function generateBannerSubject(params: {
-  title?: string;
-  description?: string;
-  tags?: string[];
-  sectionLabel?: string;
-  sectionTitle?: string;
-  bodyText?: string;
+  title?: string | undefined;
+  description?: string | undefined;
+  tags?: string[] | undefined;
+  sectionLabel?: string | undefined;
+  sectionTitle?: string | undefined;
+  bodyText?: string | undefined;
+  model?: string | undefined;
 }): Promise<string> {
   const res = await fetch(`${BASE}/ollama/banner-subject`, {
     method: 'POST',
@@ -269,6 +270,7 @@ export async function importMarkdown(
 
 export interface SwarmStyle { name: string; text: string; }
 export interface SwarmPromptItem { name: string; text: string; }
+export interface OllamaSystemPrompt { name: string; text: string; }
 
 export interface EditorConfig {
   ollamaBase: string;
@@ -276,6 +278,9 @@ export interface EditorConfig {
   swarmModels: string[];
   swarmStyles: SwarmStyle[];
   swarmPrompts: SwarmPromptItem[];
+  ollamaSystemPrompts: OllamaSystemPrompt[];
+  activeSystemPromptName: string;
+  ollamaTaskPrompts: Partial<Record<string, string>>;
 }
 
 export async function getEditorConfig(): Promise<EditorConfig> {

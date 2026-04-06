@@ -16,10 +16,14 @@ export function BlockHost({ block, isNested = false }: BlockHostProps) {
   const [isHovered, setIsHovered] = useState(false);
   const selectedBlockId = useUIStore((s) => s.selectedBlockId);
   const selectBlock = useUIStore((s) => s.selectBlock);
+  const aiBlockSelectMode = useUIStore((s) => s.aiBlockSelectMode);
+  const aiSelectedBlockIds = useUIStore((s) => s.aiSelectedBlockIds);
+  const toggleAiSelectedBlock = useUIStore((s) => s.toggleAiSelectedBlock);
   const removeBlock = useDocumentStore((s) => s.removeBlock);
   const duplicateBlock = useDocumentStore((s) => s.duplicateBlock);
 
   const isSelected = selectedBlockId === block.id;
+  const isAiSelected = aiSelectedBlockIds.includes(block.id);
   const entry = blockRegistry.get(block.type);
 
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
@@ -31,17 +35,21 @@ export function BlockHost({ block, isNested = false }: BlockHostProps) {
 
   const wrapperStyle: React.CSSProperties = {
     position: 'relative',
-    border: isSelected
+    border: aiBlockSelectMode
+      ? isAiSelected
+        ? '2px solid #22c55e'
+        : isHovered ? '1px solid #22c55e44' : '1px solid var(--color-border)'
+      : isSelected
       ? '1px solid var(--color-accent)'
       : isHovered
       ? '1px solid var(--color-border)'
       : '1px solid transparent',
     borderRadius: 'var(--radius-sm)',
-    cursor: 'default',
+    cursor: aiBlockSelectMode ? 'pointer' : 'default',
     transform: transformStyle,
     transition,
     opacity: isDragging ? 0.4 : 1,
-    background: 'var(--color-bg)',
+    background: aiBlockSelectMode && isAiSelected ? '#22c55e0d' : 'var(--color-bg)',
   };
 
   const dragHandleStyle: React.CSSProperties = {
@@ -107,7 +115,11 @@ export function BlockHost({ block, isNested = false }: BlockHostProps) {
 
   function handleClick(e: React.MouseEvent) {
     e.stopPropagation();
-    selectBlock(block.id);
+    if (aiBlockSelectMode) {
+      toggleAiSelectedBlock(block.id);
+    } else {
+      selectBlock(block.id);
+    }
   }
 
   return (
@@ -118,21 +130,40 @@ export function BlockHost({ block, isNested = false }: BlockHostProps) {
       onMouseLeave={() => setIsHovered(false)}
       onClick={handleClick}
     >
+      {/* AI block select checkbox overlay */}
+      {aiBlockSelectMode && (
+        <div style={{
+          position: 'absolute', top: 8, left: 8, zIndex: 20,
+          width: 18, height: 18,
+          background: isAiSelected ? '#22c55e' : 'var(--color-surface)',
+          border: '2px solid ' + (isAiSelected ? '#22c55e' : '#22c55e66'),
+          borderRadius: 3,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          pointerEvents: 'none',
+        }}>
+          {isAiSelected && (
+            <span style={{ color: '#fff', fontSize: 11, lineHeight: 1, fontWeight: 700 }}>✓</span>
+          )}
+        </div>
+      )}
+
       {/* Drag handle */}
-      <div
-        style={dragHandleStyle}
-        {...attributes}
-        {...listeners}
-        title="Drag to reorder"
-      >
-        ⠿
-      </div>
+      {!aiBlockSelectMode && (
+        <div
+          style={dragHandleStyle}
+          {...attributes}
+          {...listeners}
+          title="Drag to reorder"
+        >
+          ⠿
+        </div>
+      )}
 
       {/* Block type badge */}
       <div style={typeBadgeStyle}>{entry?.label ?? block.type}</div>
 
-      {/* Hover toolbar */}
-      <div style={toolbarStyle}>
+      {/* Hover toolbar — hidden in AI select mode */}
+      <div style={{ ...toolbarStyle, opacity: aiBlockSelectMode ? 0 : toolbarStyle.opacity }}>
         <button
           style={iconBtnStyle}
           title="Duplicate"

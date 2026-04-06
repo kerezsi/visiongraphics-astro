@@ -15,5 +15,8 @@
     }
   ],
   "swarmPrompts": [],
+  "ollamaSystemPrompts": [],
+  "activeSystemPromptName": "",
+  "ollamaTaskPrompts": {},
   "comfyBase": "http://192.168.0.69:7821"
 }

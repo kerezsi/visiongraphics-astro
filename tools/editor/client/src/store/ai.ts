@@ -6,6 +6,10 @@ export interface SwarmFormState {
   swarmModel: string;
   swarmSize: number;
   swarmFormat: string;
+  swarmSteps: number;
+  swarmCfg: number;
+  swarmSampler: string;
+  swarmScheduler: string;
   swarmStyleName: string;
   swarmPrompt: string;
   swarmImageCount: number;
@@ -37,6 +41,10 @@ export const useAIStore = create<AIStore>((set, get) => ({
   swarmModel: '',
   swarmSize: 1024,
   swarmFormat: '16:9',
+  swarmSteps: 4,
+  swarmCfg: 1,
+  swarmSampler: 'euler',
+  swarmScheduler: 'simple',
   swarmStyleName: '',
   swarmPrompt: '',
   swarmImageCount: 1,

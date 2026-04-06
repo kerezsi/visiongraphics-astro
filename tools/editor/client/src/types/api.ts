@@ -94,6 +94,8 @@ export interface SwarmGenerateRequest {
   height?: number;
   steps?: number;
   cfgscale?: number;
+  sampler?: string;
+  scheduler?: string;
   seed?: number;
   images?: number;
   pageType?: string;

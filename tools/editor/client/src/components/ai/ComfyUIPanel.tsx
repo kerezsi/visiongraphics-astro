@@ -119,11 +119,21 @@ function SaveAsWidget({
 // Main panel
 // ---------------------------------------------------------------------------
 export function ComfyUIPanel() {
-  const swarmAvailable = useAIStore((s) => s.swarmAvailable);
-  const ollamaAvailable = useAIStore((s) => s.ollamaAvailable);
+  const aiBlockSelectMode = useUIStore((s) => s.aiBlockSelectMode);
+  const aiSelectedBlockIds = useUIStore((s) => s.aiSelectedBlockIds);
+  const setAiBlockSelectMode = useUIStore((s) => s.setAiBlockSelectMode);
+  const clearAiSelectedBlocks = useUIStore((s) => s.clearAiSelectedBlocks);
+
+  const swarmAvailable   = useAIStore((s) => s.swarmAvailable);
+  const ollamaAvailable  = useAIStore((s) => s.ollamaAvailable);
+  const selectedModel    = useAIStore((s) => s.selectedModel);
   const swarmModel      = useAIStore((s) => s.swarmModel);
   const swarmSize       = useAIStore((s) => s.swarmSize);
   const swarmFormat     = useAIStore((s) => s.swarmFormat);
+  const swarmSteps      = useAIStore((s) => s.swarmSteps);
+  const swarmCfg        = useAIStore((s) => s.swarmCfg);
+  const swarmSampler    = useAIStore((s) => s.swarmSampler);
+  const swarmScheduler  = useAIStore((s) => s.swarmScheduler);
   const swarmStyleName  = useAIStore((s) => s.swarmStyleName);
   const swarmPrompt     = useAIStore((s) => s.swarmPrompt);
   const swarmImageCount = useAIStore((s) => s.swarmImageCount);
@@ -145,6 +155,10 @@ export function ComfyUIPanel() {
   const model      = swarmModel;
   const size       = swarmSize as Size;
   const format     = swarmFormat as Format;
+  const steps      = swarmSteps;
+  const cfg        = swarmCfg;
+  const sampler    = swarmSampler;
+  const scheduler  = swarmScheduler;
   const styleName  = swarmStyleName;
   const prompt     = swarmPrompt;
   const imageCount = swarmImageCount;
@@ -152,18 +166,21 @@ export function ComfyUIPanel() {
   const setModel      = (v: string)  => setSwarmForm({ swarmModel: v });
   const setSize       = (v: Size)    => setSwarmForm({ swarmSize: v });
   const setFormat     = (v: Format)  => setSwarmForm({ swarmFormat: v });
+  const setSteps      = (v: number)  => setSwarmForm({ swarmSteps: v });
+  const setCfg        = (v: number)  => setSwarmForm({ swarmCfg: v });
+  const setSampler    = (v: string)  => setSwarmForm({ swarmSampler: v });
+  const setScheduler  = (v: string)  => setSwarmForm({ swarmScheduler: v });
   const setStyleName  = (v: string)  => setSwarmForm({ swarmStyleName: v });
   const setPrompt     = (v: string)  => setSwarmForm({ swarmPrompt: v });
   const setImageCount = (v: number)  => setSwarmForm({ swarmImageCount: v });
 
-  // Block picker state (ephemeral — no need to persist)
-  const [pickerOpen, setPickerOpen] = useState(false);
-  const [checkedIds, setCheckedIds] = useState<Set<string>>(new Set());
+  // (block selection state lives in UIStore — aiBlockSelectMode / aiSelectedBlockIds)
 
   // Generation state
   const [generating, setGenerating] = useState(false);
   const [subjectLoading, setSubjectLoading] = useState(false);
   const [lastSubject, setLastSubject] = useState<string | null>(null);
+  const [subjectPreview, setSubjectPreview] = useState<string | null>(null); // text being sent
   const [subjectError, setSubjectError] = useState<string | null>(null);
   const [outputImages, setOutputImages] = useState<Array<{ filename: string; url: string }>>([]);
   const [gallery, setGallery] = useState<Array<{ filename: string; url: string }>>([]);
@@ -246,33 +263,28 @@ export function ComfyUIPanel() {
 
   // --- Block text extraction ---
   function extractText(b: any): string {
-    const p = b.props ?? {};
+    // Plain string (e.g. items in results-list)
+    if (typeof b === 'string') return b.trim();
+    const p = b.props ?? b ?? {};
     const parts: string[] = [];
     if (typeof p.text === 'string' && p.text) parts.push(p.text);
     if (typeof p.html === 'string') parts.push(p.html.replace(/<[^>]+>/g, ' ').trim());
     if (typeof p.label === 'string' && p.label) parts.push(p.label);
     if (typeof p.title === 'string' && p.title) parts.push(p.title);
-    for (const key of ['children', 'left', 'right', 'items'] as const) {
+    if (typeof p.heading === 'string' && p.heading) parts.push(p.heading);
+    if (typeof p.content === 'string' && p.content) parts.push(p.content);
+    if (typeof p.desc === 'string' && p.desc) parts.push(p.desc);
+    if (typeof p.caption === 'string' && p.caption) parts.push(p.caption);
+    for (const key of ['children', 'left', 'right', 'items', 'rows', 'blocks'] as const) {
       if (Array.isArray(p[key])) parts.push(...p[key].map((c: any) => extractText(c)));
     }
     return parts.filter(Boolean).join(' ').trim();
   }
 
-  const textBlocks = blocks
-    .map((b: any) => ({ id: b.id, type: b.type as string, text: extractText(b) }))
-    .filter((b) => b.text.length > 3);
-
-  function toggleBlock(id: string) {
-    setCheckedIds((prev) => {
-      const next = new Set(prev);
-      next.has(id) ? next.delete(id) : next.add(id);
-      return next;
-    });
-  }
 
   // --- Banner subject from page/section content via Ollama ---
   async function handleSubjectFromContent() {
-    const hasBlocks = checkedIds.size > 0;
+    const hasBlocks = aiSelectedBlockIds.length > 0;
     const hasPageMeta = !!(meta.title || meta.description || (Array.isArray(meta.tags) && (meta.tags as string[]).length));
     if (!hasBlocks && !hasPageMeta) {
       setSubjectError('Open a page in the editor or select blocks first');
@@ -281,42 +293,53 @@ export function ComfyUIPanel() {
 
     setSubjectLoading(true);
     setLastSubject(null);
+    setSubjectPreview(null);
     setSubjectError(null);
-    setPickerOpen(false);
     try {
       let bodyText: string | undefined;
       let sectionLabel: string | undefined;
       let sectionTitle: string | undefined;
+      // When blocks are selected, send ONLY block text — no page meta.
+      // This forces the LLM to derive from the selected content, not generic title/tags.
+      let useMetaFallback = true;
 
-      if (checkedIds.size > 0) {
-        const pickedBlocks = (blocks as any[]).filter((b) => checkedIds.has(b.id));
+      if (aiSelectedBlockIds.length > 0) {
+        useMetaFallback = false;
+        const pickedBlocks = (blocks as any[]).filter((b) => aiSelectedBlockIds.includes(b.id));
         const sectionBanner = pickedBlocks.find((b) => b.type === 'section-banner');
         if (sectionBanner) {
           sectionLabel = sectionBanner.props?.label;
           sectionTitle = sectionBanner.props?.title;
         }
-        bodyText = pickedBlocks.map((b) => extractText(b)).filter(Boolean).join('\n');
+        bodyText = pickedBlocks.map((b) => extractText(b)).filter(Boolean).join('\n\n');
+        if (!bodyText && !sectionLabel && !sectionTitle) {
+          setSubjectError('No text found in selected blocks — select blocks with text content');
+          return;
+        }
+        setSubjectPreview((bodyText ?? `${sectionLabel ?? ''} ${sectionTitle ?? ''}`).trim().slice(0, 200));
       } else {
         const sel = selectedBlockId ? (blocks as any[]).find((b) => b.id === selectedBlockId) : null;
         if (sel?.type === 'section-banner') {
           sectionLabel = sel.props?.label;
           sectionTitle = sel.props?.title;
+          useMetaFallback = false;
         }
       }
 
       const subject = await generateBannerSubject({
-        title:       (meta.title as string) ?? '',
-        description: (meta.description as string) ?? '',
-        tags:        Array.isArray(meta.tags) ? (meta.tags as string[]) : [],
+        title:       useMetaFallback ? ((meta.title as string) ?? '') : undefined,
+        description: useMetaFallback ? ((meta.description as string) ?? '') : undefined,
+        tags:        useMetaFallback && Array.isArray(meta.tags) ? (meta.tags as string[]) : undefined,
         sectionLabel,
         sectionTitle,
         bodyText,
+        model:       selectedModel || undefined,
       });
 
       if (subject) {
         setPrompt(subject);
         setLastSubject(subject);
-        setCheckedIds(new Set());
+        clearAiSelectedBlocks();
       } else {
         setSubjectError('Ollama returned an empty response — try a different model or select more content');
       }
@@ -343,6 +366,10 @@ export function ComfyUIPanel() {
         model: model.trim() || undefined,
         width,
         height,
+        steps,
+        cfgscale: cfg,
+        sampler: sampler.trim() || undefined,
+        scheduler: scheduler.trim() || undefined,
         images: imageCount,
         pageType,
         slug,
@@ -401,6 +428,60 @@ export function ComfyUIPanel() {
                 ↻ Fetch models from SwarmUI
               </button>
             )}
+          </div>
+
+          {/* ── Steps / CFG / Sampler / Scheduler ── */}
+          <div style={{ marginBottom: 8 }}>
+            <div style={{ display: 'flex', gap: 4, alignItems: 'flex-end' }}>
+              <div style={{ flex: '0 0 44px' }}>
+                <label style={lbl}>Steps</label>
+                <input
+                  type="number"
+                  value={steps}
+                  min={1} max={150}
+                  onChange={(e) => setSteps(Math.max(1, Number(e.target.value)))}
+                  style={{ width: '100%', fontSize: 11 }}
+                />
+              </div>
+              <div style={{ flex: '0 0 44px' }}>
+                <label style={lbl}>CFG</label>
+                <input
+                  type="number"
+                  value={cfg}
+                  min={0} max={30} step={0.5}
+                  onChange={(e) => setCfg(Math.max(0, Number(e.target.value)))}
+                  style={{ width: '100%', fontSize: 11 }}
+                />
+              </div>
+              <div style={{ flex: 1 }}>
+                <label style={lbl}>Sampler</label>
+                <input
+                  list="swarm-sampler-list"
+                  value={sampler}
+                  onChange={(e) => setSampler(e.target.value)}
+                  style={{ width: '100%', fontSize: 11 }}
+                />
+                <datalist id="swarm-sampler-list">
+                  {['euler', 'euler_cfg_pp', 'euler_ancestral', 'dpmpp_2m', 'dpmpp_2m_sde', 'dpmpp_3m_sde', 'lcm', 'heun', 'ddim'].map((s) => (
+                    <option key={s} value={s} />
+                  ))}
+                </datalist>
+              </div>
+              <div style={{ flex: 1 }}>
+                <label style={lbl}>Scheduler</label>
+                <input
+                  list="swarm-scheduler-list"
+                  value={scheduler}
+                  onChange={(e) => setScheduler(e.target.value)}
+                  style={{ width: '100%', fontSize: 11 }}
+                />
+                <datalist id="swarm-scheduler-list">
+                  {['simple', 'normal', 'karras', 'exponential', 'sgm_uniform', 'ddim_uniform', 'beta'].map((s) => (
+                    <option key={s} value={s} />
+                  ))}
+                </datalist>
+              </div>
+            </div>
           </div>
 
           {sep}
@@ -467,17 +548,17 @@ export function ComfyUIPanel() {
               {ollamaAvailable && (
                 <>
                   <button
-                    style={miniBtn(pickerOpen)}
-                    onClick={() => setPickerOpen((v) => !v)}
-                    title="Select blocks to generate subject from"
+                    style={miniBtn(aiBlockSelectMode || aiSelectedBlockIds.length > 0)}
+                    onClick={() => setAiBlockSelectMode(!aiBlockSelectMode)}
+                    title={aiBlockSelectMode ? 'Exit block selection mode' : 'Select blocks in the canvas for AI generation'}
                   >
-                    ☰ {checkedIds.size > 0 ? `${checkedIds.size} block${checkedIds.size > 1 ? 's' : ''}` : 'Blocks'}
+                    ☰ {aiSelectedBlockIds.length > 0 ? `${aiSelectedBlockIds.length} block${aiSelectedBlockIds.length > 1 ? 's' : ''}` : 'Blocks'}
                   </button>
                   <button
                     style={miniBtn()}
                     onClick={handleSubjectFromContent}
                     disabled={subjectLoading}
-                    title={checkedIds.size > 0 ? 'Generate subject from selected blocks' : 'Generate subject from page meta'}
+                    title={aiSelectedBlockIds.length > 0 ? 'Generate subject from selected blocks' : 'Generate subject from page meta'}
                   >
                     {subjectLoading ? '…' : '✦ Generate'}
                   </button>
@@ -485,50 +566,17 @@ export function ComfyUIPanel() {
               )}
             </div>
 
-            {/* Block picker */}
-            {pickerOpen && textBlocks.length > 0 && (
-              <div style={{
-                border: '1px solid var(--color-border)',
-                borderRadius: 'var(--radius-sm)',
-                marginBottom: 6,
-                maxHeight: 160,
-                overflowY: 'auto',
-              }}>
-                {textBlocks.map((b) => (
-                  <label
-                    key={b.id}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'flex-start',
-                      gap: 6,
-                      padding: '4px 8px',
-                      cursor: 'pointer',
-                      borderBottom: '1px solid var(--color-border)',
-                      background: checkedIds.has(b.id) ? 'var(--color-surface-2)' : 'transparent',
-                    }}
-                  >
-                    <input
-                      type="checkbox"
-                      checked={checkedIds.has(b.id)}
-                      onChange={() => toggleBlock(b.id)}
-                      style={{ marginTop: 2, flexShrink: 0 }}
-                    />
-                    <div style={{ minWidth: 0 }}>
-                      <div style={{ fontSize: 9, color: 'var(--color-text-faint)', marginBottom: 1 }}>
-                        {b.type}
-                      </div>
-                      <div style={{ fontSize: 10, color: 'var(--color-text-muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                        {b.text.slice(0, 70)}
-                      </div>
-                    </div>
-                  </label>
-                ))}
-              </div>
-            )}
-
             {subjectLoading && (
               <div style={{ fontSize: 10, color: 'var(--color-text-faint)', fontStyle: 'italic', marginBottom: 4 }}>
                 Asking Ollama…
+                {subjectPreview && (
+                  <div style={{
+                    marginTop: 3, fontStyle: 'normal', fontFamily: 'monospace',
+                    color: 'var(--color-text-faint)', wordBreak: 'break-word', lineHeight: 1.4,
+                  }}>
+                    {subjectPreview.length > 120 ? subjectPreview.slice(0, 120) + '…' : subjectPreview}
+                  </div>
+                )}
               </div>
             )}
             {subjectError && !subjectLoading && (

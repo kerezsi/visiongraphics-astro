@@ -83,7 +83,7 @@ router.get('/models', async (_req: Request, res: Response) => {
       files?: Array<string | { name: string; title?: string }>;
     };
     const models = (data.files ?? []).map((f) =>
-      typeof f === 'string' ? f : (f.title ?? f.name)
+      typeof f === 'string' ? f : f.name
     );
     res.json({ models });
   } catch {
@@ -130,7 +130,7 @@ router.get('/output/:filename', (req: Request, res: Response) => {
 // POST /generate
 // ---------------------------------------------------------------------------
 router.post('/generate', async (req: Request, res: Response) => {
-  const { prompt, negativeprompt, model, width, height, steps, cfgscale, seed, images: imageCount, pageType, slug } =
+  const { prompt, negativeprompt, model, width, height, steps, cfgscale, sampler, scheduler, seed, images: imageCount, pageType, slug } =
     req.body as {
       prompt: string;
       negativeprompt?: string;
@@ -139,6 +139,8 @@ router.post('/generate', async (req: Request, res: Response) => {
       height?: number;
       steps?: number;
       cfgscale?: number;
+      sampler?: string;
+      scheduler?: string;
       seed?: number;
       images?: number;
       pageType?: string;
@@ -164,6 +166,8 @@ router.post('/generate', async (req: Request, res: Response) => {
       height: height ?? 768,
       steps: steps ?? 4,
       cfgscale: cfgscale ?? 1,
+      sampler: sampler ?? 'euler',
+      scheduler: scheduler ?? 'simple',
     };
 
     // Send one request per image, each with a unique random seed
