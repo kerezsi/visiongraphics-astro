@@ -58,21 +58,37 @@ The left panel **AI** tab integrates two local AI services:
 **Ollama** (text generation)
 - Status dot shows availability; model dropdown populated from Ollama's tag list.
 - Quick actions: generate excerpt from page content, free-form prompt.
-- Used internally by the SwarmUI panel to derive banner subjects from page content.
+- The selected model here is also used by the SwarmUI panel's ✦ Generate block workflow.
 
 **SwarmUI** (image generation)
 - Connects to a SwarmUI instance (not ComfyUI directly — SwarmUI wraps the backend).
-- **Model** — text input with datalist autocomplete from SwarmUI's model list; saved models persist in `editor-config.json`. "↻ Fetch models" pulls the list from SwarmUI.
+- **Model** — text input with datalist autocomplete from SwarmUI's model list (`f.name` — the internal filename identifier, not display title); saved models persist in `editor-config.json`. "↻ Fetch models" pulls the list from SwarmUI.
+- **Steps / CFG / Sampler / Scheduler** — generation parameters shown in a compact row below the model field. Defaults: steps = 4, CFG = 1, sampler = euler, scheduler = simple (tuned for LCM/Lightning/Turbo models).
 - **Size** — base resolution: 1024 / 1328 / 1536 / 2048. Total pixel count equals `base²` (same megapixel budget as 1:1 at that size).
 - **Format** — aspect ratio: 21:9 / 2:1 / 16:9 / 1:1 / 9:16. Both dimensions calculated from `sqrt(area × ratio)`, rounded to nearest 8px.
 - **Style** — saved named styles (positive prompt suffixes). Appended to the prompt at generation time, not mixed into the textarea. Save current prompt as a new style; load style text into prompt via ↓.
 - **Prompt** — textarea. "Save…" names and saves the prompt to `swarmPrompts` in config. "Load prompt…" dropdown restores a saved prompt.
-- **✦ Generate / ☰ Blocks** — Ollama-powered banner subject workflow:
-  - "☰ Blocks" opens a scrollable checklist of all text-containing blocks on the current page.
-  - Check one or more blocks, then click "✦ Generate" — Ollama derives a cinematic visual subject from that content and writes it into the prompt field.
-  - If no blocks are checked, falls back to the current page's meta (title / description / tags), or to a selected SectionBanner block's label + title.
-  - Result also shown as a `✦ …` preview above the textarea in case of React timing issues.
-- **Generated images** are downloaded from SwarmUI and saved to `tools/editor/.swarmui-output/YYYY-MM-DD_HH-MM-SS.png`. Served at `/api/swarmui/output/<filename>`. Last 12 thumbnails shown as a gallery strip; click to re-display.
+- **☰ Blocks / ✦ Generate** — Ollama-powered banner subject workflow:
+  - "☰ Blocks" activates **AI block selection mode** on the canvas. A green banner appears at the top of the canvas; blocks get checkbox overlays; normal drag/toolbar is hidden.
+  - Click blocks in the canvas to toggle selection (green border + tint = selected). Click "✕ Exit" in the banner or "☰ Blocks" again to cancel.
+  - "✦ Generate" sends the selected blocks' extracted text to Ollama (using the model selected in the Ollama panel above). The result is written into the SwarmUI prompt field.
+  - When blocks are selected, **only block text is sent** — page meta (title/description/tags) is intentionally excluded so the LLM derives from the actual selection. Falls back to page meta only if no blocks are selected.
+  - If no text can be extracted from the selected blocks, an error is shown rather than hallucinating from meta.
+  - While Ollama is processing, a preview of the extracted text (first 120 chars) is shown below "Asking Ollama…" so you can verify what was sent.
+- **Generated images** are downloaded from SwarmUI and saved to `tools/editor/.swarmui-output/YYYY-MM-DD_HH-MM-SS.jpg` (JPEG, no EXIF). Served at `/api/swarmui/output/<filename>`. Last 12 thumbnails shown as a gallery strip; click to re-display.
+
+**Block text extraction** (`extractText` in `ComfyUIPanel.tsx`):
+Handles `props.text`, `props.html` (strips tags), `props.label`, `props.title`, `props.heading`, `props.content`, `props.desc`, `props.caption`. Recurses into `children`, `left`, `right`, `items`, `rows`, `blocks`. Plain strings in arrays (e.g. `results-list` items) are handled directly. Falls back to the raw object if no `props` wrapper.
+
+**Prompt Settings** (collapsible section in the AI tab)
+- **System Prompts** — named, saved system prompts. One can be active at a time. The active system prompt is prepended to both the banner-subject generation and the Ollama chat, overriding the task-specific prompt. Dropdown to select active; textarea to edit; Update / Save as… / ✕ delete. Changing the active selection saves immediately.
+- **Task Prompts** — per-endpoint editable system instructions. Each row shows `default` or `✎ custom` (red) and can be expanded to edit. Clicking Save overwrites; Reset to default clears back to built-in. Endpoints covered:
+  - `bannerSubject` — system instruction for block → image prompt generation. Default: *"Extract the essence of the following text, and synthetize it as an image. Describe the subject of this image in 3-4 sentences. Only write about the subject, and nothing about the style and the composition."*
+  - `chat` — system context for the free-form Ollama chat panel
+  - `excerpt` — instruction for excerpt generation
+  - `caption` — instruction for SectionBanner label + title suggestions (must keep LABEL:/TITLE: format)
+  - `paragraph` — system context for paragraph writing/rewriting
+  - `summaryDescription` / `summaryStory` / `summaryTasks` — per-field instructions for summary generation
 
 **AI Settings** (collapsible section at the bottom of the AI tab)
 - Ollama address (default `http://localhost:11434`)
@@ -86,7 +102,10 @@ The left panel **AI** tab integrates two local AI services:
   "swarmBase":  "http://192.168.x.x:7801",
   "swarmModels":  ["modelName/file.safetensors"],
   "swarmStyles":  [{ "name": "Cinematic BW", "text": "black and white, cinematic..." }],
-  "swarmPrompts": [{ "name": "Glass Tower", "text": "lone glass tower at dusk..." }]
+  "swarmPrompts": [{ "name": "Glass Tower", "text": "lone glass tower at dusk..." }],
+  "ollamaSystemPrompts": [{ "name": "Art Director", "text": "You are an art director..." }],
+  "activeSystemPromptName": "Art Director",
+  "ollamaTaskPrompts": { "bannerSubject": "...", "chat": "...", "excerpt": "..." }
 }
 ```
 
@@ -94,8 +113,9 @@ The left panel **AI** tab integrates two local AI services:
 - Host must listen on `0.0.0.0` (not `127.0.0.1`) to accept network connections.
 - Default port: 7801. Set the editor's SwarmUI address accordingly.
 - No WS bridge — generation uses SwarmUI's blocking HTTP API (`POST /API/GenerateText2Image`), so long generations simply hold the HTTP connection open (up to 3 min timeout).
+- Model identifiers must be the internal `name` field from `ListModels` (the filename path), not the display `title`.
 
-**SwarmUI generation defaults:** steps = 4, CFG = 1 (tuned for LCM/Lightning/Turbo models).
+**Ollama NDJSON quirk:** Ollama sometimes returns streaming NDJSON even with `stream: false`. All server-side Ollama calls use `ollamaGenerate()` which aggregates all chunk `response` fields when multiple lines are returned, ensuring the full response is captured regardless of streaming behaviour.
 
 **VG Editor block palette — auto-registry:**
 The block palette is filtered per page type based on what components are actually registered
