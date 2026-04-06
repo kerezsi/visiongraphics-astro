@@ -14,6 +14,14 @@ import ProjectStory from '../../components/mdx/ProjectStory.astro';
 import ProjectTasks from '../../components/mdx/ProjectTasks.astro';
 import ArticleGalleryMounter from '../../components/media/ArticleGalleryMounter.tsx';
 import ArticleImageCompareMounter from '../../components/media/ArticleImageCompareMounter.tsx';
+import ProcessFlow from '../../components/mdx/ProcessFlow.astro';
+import SpecTable from '../../components/mdx/SpecTable.astro';
+import CompareTable from '../../components/mdx/CompareTable.astro';
+import NotableGrid from '../../components/mdx/NotableGrid.astro';
+import DeliverableGrid from '../../components/mdx/DeliverableGrid.astro';
+import TimelineTable from '../../components/mdx/TimelineTable.astro';
+import PhaseMatrix from '../../components/mdx/PhaseMatrix.astro';
+import SingleImage from '../../components/mdx/SingleImage.astro';
 import { getCollection, getEntry } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -166,7 +174,7 @@ const relatedServices = allServices.filter(s => (data.services ?? []).includes(s
 
     <!-- MDX body: ProjectTasks text → media → ProjectStory -->
     <div class="project-content">
-      <Content components={{ ImageGallery, ImageCompare, Tour360, FilmEmbed, YouTubeEmbed, YoutubeEmbed: YouTubeEmbed, SectionBanner: MdxSectionBanner, ProjectDescription, ProjectStory, ProjectTasks }} />
+      <Content components={{ ImageGallery, ImageCompare, SingleImage, Tour360, FilmEmbed, YouTubeEmbed, YoutubeEmbed: YouTubeEmbed, SectionBanner: MdxSectionBanner, ProjectDescription, ProjectStory, ProjectTasks, ProcessFlow, SpecTable, CompareTable, NotableGrid, DeliverableGrid, TimelineTable, PhaseMatrix }} />
       <ArticleGalleryMounter client:load />
       <ArticleImageCompareMounter client:load />
     </div>

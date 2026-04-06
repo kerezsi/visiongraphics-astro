@@ -6,7 +6,7 @@ import fs from 'fs/promises';
 import { spawn } from 'child_process';
 import { PROJECT_ROOT, validatePath } from '../lib/fs-utils.js';
 import { processImage } from '../lib/image/processor.js';
-import { buildImageDir, buildImageUrl, buildR2RemotePath, sanitizeFilename } from '../lib/image/path-builder.js';
+import { buildStagingDir, buildImageDir, buildImageUrl, buildR2RemotePath, sanitizeFilename } from '../lib/image/path-builder.js';
 import type { PageType } from '../lib/image/path-builder.js';
 
 const router = express.Router();

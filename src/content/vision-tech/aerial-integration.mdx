@@ -1,6 +1,7 @@
 ---
 title: Aerial Integration
-description: Proposed buildings rendered in 3ds Max with V-Ray and composited into real aerial photographs. The surrounding context is real; the new building is rendered to match it precisely — lighting, perspective, shadow, and color.
+description: |
+  Proposed buildings rendered in 3ds Max with V-Ray and composited into real aerial photographs. The surrounding context is real; the new building is rendered to match it precisely — lighting, perspective, shadow, and color.
 image: /_img/vision-tech/aerial-integration.jpg
 technique: Hybrid
 cost: €€
@@ -32,56 +33,43 @@ The result is the most grounded way to show how a new building will affect its s
 ## Nemetvölgyi residential development
 
 <ImageCompare before="/_img/vision-tech/aerial-integration/NV_exterior_006a.jpg" after="/_img/vision-tech/aerial-integration/NV_exterior_006.jpg" label="Nemetvölgyi — view 1" />
-<ImageCompare before="/_img/vision-tech/aerial-integration/NV_exterior_005a.jpg" after="/_img/vision-tech/aerial-integration/NV_exterior_005.jpg" label="Nemetvölgyi — view 2" />
-<ImageCompare before="/_img/vision-tech/aerial-integration/NV_exterior_009a.jpg" after="/_img/vision-tech/aerial-integration/NV_exterior_009.jpg" label="Nemetvölgyi — view 3" />
-<ImageCompare before="/_img/vision-tech/aerial-integration/NV_exterior_008a.jpg" after="/_img/vision-tech/aerial-integration/NV_exterior_008.jpg" label="Nemetvölgyi — view 4" />
-<ImageCompare before="/_img/vision-tech/aerial-integration/NV_exterior_007a.jpg" after="/_img/vision-tech/aerial-integration/NV_exterior_007.jpg" label="Nemetvölgyi — view 5" />
 
 ## How the composite is made
 
-**Perspective matching** — the virtual camera in 3ds Max is positioned at the exact location and altitude of the real camera. For drone photographs, we take GPS position, altitude, and bearing directly from the flight log. For aircraft photography, we derive it from ground reference points and camera EXIF data. Small errors in camera position cause visible perspective misalignment at building edges.
+Perspective matching — the virtual camera in 3ds Max is positioned at the exact location and altitude of the real camera. For drone photographs, we take GPS position, altitude, and bearing directly from the flight log. For aircraft photography, we derive it from ground reference points and camera EXIF data. Small errors in camera position cause visible perspective misalignment at building edges.
 
-**Lighting match** — the V-Ray sun is set to match the real photograph's sun position, calculated from the shoot date, time, and location. The rendered shadows fall on the same ground plane as real shadows in the photograph.
+Lighting match — the V-Ray sun is set to match the real photograph's sun position, calculated from the shoot date, time, and location. The rendered shadows fall on the same ground plane as real shadows in the photograph.
 
-**Shadow casting** — a shadow catcher plane covers the ground area around the building. The render produces a shadow layer that is blended into the photograph as a separate pass, preserving the real ground texture underneath.
+Shadow casting — a shadow catcher plane covers the ground area around the building. The render produces a shadow layer that is blended into the photograph as a separate pass, preserving the real ground texture underneath.
 
-**Color grading** — the render is matched to the photograph's overall color, exposure, and contrast in post. Aerial photographs often have a color cast from atmospheric haze; the render is adjusted to match.
+Color grading — the render is matched to the photograph's overall color, exposure, and contrast in post. Aerial photographs often have a color cast from atmospheric haze; the render is adjusted to match.
 
 ## Airport infrastructure
 
 <ImageCompare before="/_img/vision-tech/aerial-integration/legi-2a.jpg" after="/_img/vision-tech/aerial-integration/legi-2.jpg" label="Airport development — view 1" />
-<ImageCompare before="/_img/vision-tech/aerial-integration/legi-4a.jpg" after="/_img/vision-tech/aerial-integration/legi-4.jpg" label="Airport development — view 2" />
-<ImageCompare before="/_img/vision-tech/aerial-integration/legi-3a.jpg" after="/_img/vision-tech/aerial-integration/legi-3.jpg" label="Airport development — view 3" />
-
-<ImageCompare before="/_img/vision-tech/aerial-integration/Camera_LEGI_3266_B_verzio_a.jpg" after="/_img/vision-tech/aerial-integration/Camera_LEGI_3266_B_verzio.jpg" label="Airport terminal — aerial overview" />
 
 ## Getting the base photograph
 
 The aerial photograph is the foundation of the composite. We shoot it specifically for the integration where possible — planning the altitude, angle, and timing in advance using the 3D model to identify the most effective views. Where an existing aerial photograph is used, we assess whether the perspective, resolution, and lighting conditions are suitable before modeling begins.
 
 Sources we use:
-- **Drone photography** — the most common; flexible scheduling, precise positioning, good resolution for mid-scale projects
-- **Aircraft/helicopter** — for large sites, restricted airspace, or altitude requirements beyond drone limits
-- **Existing aerial imagery** — usable if resolution and perspective are appropriate; saves photography cost but limits angle selection
+
+- Drone photography — the most common; flexible scheduling, precise positioning, good resolution for mid-scale projects
+- Aircraft/helicopter — for large sites, restricted airspace, or altitude requirements beyond drone limits
+- Existing aerial imagery — usable if resolution and perspective are appropriate; saves photography cost but limits angle selection
 
 ## Mixed-use urban development
 
-<ImageCompare before="/_img/vision-tech/aerial-integration/07a.jpg" after="/_img/vision-tech/aerial-integration/07.jpg" label="Mixed-use — view 1" />
-<ImageCompare before="/_img/vision-tech/aerial-integration/06a.jpg" after="/_img/vision-tech/aerial-integration/06.jpg" label="Mixed-use — view 2" />
-<ImageCompare before="/_img/vision-tech/aerial-integration/05a.jpg" after="/_img/vision-tech/aerial-integration/05.jpg" label="Mixed-use — view 3" />
 <ImageCompare before="/_img/vision-tech/aerial-integration/04a.jpg" after="/_img/vision-tech/aerial-integration/04.jpg" label="Mixed-use — view 4" />
-<ImageCompare before="/_img/vision-tech/aerial-integration/03a.jpg" after="/_img/vision-tech/aerial-integration/03.jpg" label="Mixed-use — view 5" />
-<ImageCompare before="/_img/vision-tech/aerial-integration/02a.jpg" after="/_img/vision-tech/aerial-integration/02.jpg" label="Mixed-use — view 6" />
-<ImageCompare before="/_img/vision-tech/aerial-integration/01a.jpg" after="/_img/vision-tech/aerial-integration/01.jpg" label="Mixed-use — view 7" />
 
 ## What we need from you
 
 <SpecTable rows={[
-  { label: "3D model", value: "The proposed building in 3ds Max or as an IFC/CAD file we can model from. Must include the roofline and all visible elevations." },
-  { label: "Site plans", value: "Accurate positioning on the site — the building footprint must be placed precisely on the real ground." },
-  { label: "Material specs", value: "Roof materials, facade cladding, glazing. These are visible from above in aerial views — roof treatment especially." },
-  { label: "Base photograph", value: "We shoot it as part of the project, or supply an existing aerial if suitable. We assess suitability before modeling begins." },
-  { label: "Landscape", value: "Any landscaping, ground works, or site modifications that should appear alongside the building." },
+{ label: "3D model", value: "The proposed building in 3ds Max or as an IFC/CAD file we can model from. Must include the roofline and all visible elevations." },
+{ label: "Site plans", value: "Accurate positioning on the site — the building footprint must be placed precisely on the real ground." },
+{ label: "Material specs", value: "Roof materials, facade cladding, glazing. These are visible from above in aerial views — roof treatment especially." },
+{ label: "Base photograph", value: "We shoot it as part of the project, or supply an existing aerial if suitable. We assess suitability before modeling begins." },
+{ label: "Landscape", value: "Any landscaping, ground works, or site modifications that should appear alongside the building." },
 ]} />
 
 ## Sasad Liget residential complex
@@ -90,8 +78,8 @@ Sources we use:
 
 ## Related techniques
 
-For ground-level integration — the same technique from street height: [Photo Integration](/vision-tech/photo-integration/)
+For ground-level integration — the same technique from street height: Photo Integration
 
-For the aerial photograph base: [Drone Photography](/vision-tech/drone-photography/) or [Aerial Photography](/vision-tech/aerial-photography/)
+For the aerial photograph base: Drone Photography or Aerial Photography
 
-For showing the site in 360° from above: [360 Photo Integration](/vision-tech/360-photo-integration/)
+For showing the site in 360° from above: 360 Photo Integration

@@ -6,9 +6,9 @@ import { MetaPanel } from '../inspector/MetaPanel.tsx';
 import { blockRegistry } from '../../lib/block-registry.ts';
 
 const panelStyle: React.CSSProperties = {
-  width: 280,
+  width: '100%',
+  height: '100%',
   background: 'var(--color-surface)',
-  borderLeft: '1px solid var(--color-border)',
   overflowY: 'auto',
   display: 'flex',
   flexDirection: 'column',

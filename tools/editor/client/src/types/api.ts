@@ -95,6 +95,7 @@ export interface SwarmGenerateRequest {
   steps?: number;
   cfgscale?: number;
   seed?: number;
+  images?: number;
   pageType?: string;
   slug?: string;
 }

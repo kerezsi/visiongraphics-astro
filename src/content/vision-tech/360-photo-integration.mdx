@@ -1,6 +1,7 @@
 ---
 title: 360 Photo Integration
-description: New elements rendered in 3ds Max with V-Ray and composited into real 360° photographs. Proposed changes to an existing space appear in their actual context — the real room, the real light, the real surroundings — with the new design elements inserted.
+description: |
+  New elements rendered in 3ds Max with V-Ray and composited into real 360° photographs. Proposed changes to an existing space appear in their actual context — the real room, the real light, the real surroundings — with the new design elements inserted.
 image: /_img/vision-tech/360-photo-integration.jpg
 technique: AI-Enhanced
 cost: €€
@@ -10,9 +11,7 @@ reality: Hybrid Reality-Vision
 purpose:
   - Communication
   - Decision Support
-gallery:
-  - /_img/vision-tech/360-photo-integration/01.jpg
-  - /_img/vision-tech/360-photo-integration/02.jpg
+gallery: []
 relatedCategories:
   - vr-experience
   - exhibition
@@ -33,43 +32,43 @@ This is the most convincing way to visualize changes to an existing space, becau
 
 Integrating a 3D render into a flat photograph is a camera-matching problem. Integrating into a 360 panorama is significantly harder: the camera position must match in all three axes for the full sphere, and the lighting must match the real HDR sky and interior conditions captured at the moment of the shoot.
 
-**Camera matching** — we set up a V-Ray camera in 3ds Max at the exact physical position of the 360 camera in the real space. Measurements are taken on site. Small errors in position cause perspective misalignment that is immediately visible in a 360 viewer.
+Camera matching — we set up a V-Ray camera in 3ds Max at the exact physical position of the 360 camera in the real space. Measurements are taken on site. Small errors in position cause perspective misalignment that is immediately visible in a 360 viewer.
 
-**Lighting match** — we extract the lighting conditions from the 360 photograph itself (using it as an HDR environment map) and use it to illuminate the rendered elements. This ensures the new elements pick up light from the real sky and the real interior sources.
+Lighting match — we extract the lighting conditions from the 360 photograph itself (using it as an HDR environment map) and use it to illuminate the rendered elements. This ensures the new elements pick up light from the real sky and the real interior sources.
 
-**Shadow and reflection** — rendered elements must cast shadows onto and receive reflections from real surfaces. This requires geometry for the existing surfaces even though they won't be rendered — only used for shadow reception and reflections.
+Shadow and reflection — rendered elements must cast shadows onto and receive reflections from real surfaces. This requires geometry for the existing surfaces even though they won't be rendered — only used for shadow reception and reflections.
 
-**Compositing** — the rendered elements are layered into the equirectangular image with matched exposure, color grade, and edge treatment.
+Compositing — the rendered elements are layered into the equirectangular image with matched exposure, color grade, and edge treatment.
 
 <Tour360 url="https://visiongraphics.eu/PANO/AVALON/" title="Aerial 360 photo integration — new development in real aerial panorama" />
 
 ## What this is used for
 
-**Renovation proposals** — showing what a space will look like after changes without needing to model every unchanged element. Only the new parts are rendered.
+Renovation proposals — showing what a space will look like after changes without needing to model every unchanged element. Only the new parts are rendered.
 
-**Planning submissions** — proposed buildings inserted into 360 panoramas taken from adjacent streets or viewpoints. Reviewers see the proposal in its actual context, from a real standing position, in all directions.
+Planning submissions — proposed buildings inserted into 360 panoramas taken from adjacent streets or viewpoints. Reviewers see the proposal in its actual context, from a real standing position, in all directions.
 
-**Fit-out visualization** — new furniture, partitions, cladding, or equipment shown in the real shell of an existing building before fit-out begins.
+Fit-out visualization — new furniture, partitions, cladding, or equipment shown in the real shell of an existing building before fit-out begins.
 
-**Design alternatives** — multiple versions of a proposed change can be rendered and presented as separate viewpoints in the same tour, letting clients compare options in context.
+Design alternatives — multiple versions of a proposed change can be rendered and presented as separate viewpoints in the same tour, letting clients compare options in context.
 
-<Tour360 url="https://visiongraphics.eu/PANO/SZERENCSEJATEK_PARKOLO/" title="Exterior 360 photo integration — new building in existing environment" />
+<Tour360 url="https://visiongraphics.eu/PANO/SZERENCSEJATEK_PARKOLO/" title="Exterior 360 photo integration — new elements in the parking area " />
 
 ## What we need from you
 
 <SpecTable rows={[
-  { label: "Access for photography", value: "We need to photograph the real space before any integration work can begin. Coordination with the site is required." },
-  { label: "Plans of new elements", value: "CAD drawings, IFC files, or a detailed brief for what needs to be built in 3D. Only the new elements need to be modeled." },
-  { label: "Material specs", value: "For the new rendered elements. Existing surfaces are taken from the photograph." },
-  { label: "Preferred viewpoints", value: "Agreed before the shoot — viewpoint positions determine where integrations will be most effective." },
+{ label: "Access for photography", value: "We need to photograph the real space before any integration work can begin. Coordination with the site is required." },
+{ label: "Plans of new elements", value: "CAD drawings, IFC files, or a detailed brief for what needs to be built in 3D. Only the new elements need to be modeled." },
+{ label: "Material specs", value: "For the new rendered elements. Existing surfaces are taken from the photograph." },
+{ label: "Preferred viewpoints", value: "Agreed before the shoot — viewpoint positions determine where integrations will be most effective." },
 ]} />
 
 ## Related techniques
 
-For documenting the existing space before changes: [360 Photography](/vision-tech/360-photography/)
+For documenting the existing space before changes: 360 Photography
 
-For visualizing a completely unbuilt space in 360: [360 Renderings](/vision-tech/360-renderings/)
+For visualizing a completely unbuilt space in 360: 360 Renderings
 
-For the flat (non-360) equivalent — building composited into a street-level photograph: [Photo Integration](/vision-tech/photo-integration/)
+For the flat (non-360) equivalent — building composited into a street-level photograph: Photo Integration
 
-For assembling multiple viewpoints into a navigable tour: [360 Tour](/vision-tech/360-tour/)
+For assembling multiple viewpoints into a navigable tour: 360 Tour

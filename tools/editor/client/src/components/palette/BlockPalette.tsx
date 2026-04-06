@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDraggable } from '@dnd-kit/core';
 import { blocksByGroup } from '../../lib/block-registry.ts';
 import type { BlockRegistryEntry } from '../../types/blocks.ts';
@@ -68,8 +68,47 @@ function PaletteItem({ entry }: { entry: BlockRegistryEntry }) {
   );
 }
 
+// Cache the registry across renders (same session, same server state)
+let registryCache: Record<string, string[]> | null = null;
+
 export function BlockPalette() {
-  const groups = blocksByGroup();
+  const pageType = useDocumentStore((s) => s.pageType);
+  const [allowedTypes, setAllowedTypes] = useState<Set<string> | null>(null);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        // Use cached value if available; re-fetch when pageType changes
+        if (!registryCache) {
+          const res = await fetch('/api/registry');
+          if (res.ok) registryCache = await res.json();
+        }
+        if (registryCache && pageType && registryCache[pageType]) {
+          setAllowedTypes(new Set(registryCache[pageType]));
+        } else {
+          setAllowedTypes(null); // no filter — show all blocks
+        }
+      } catch {
+        setAllowedTypes(null); // on error, show all blocks
+      }
+    };
+    load();
+    // Reset cache when pageType changes so a fresh fetch can pick up template edits
+    return () => { if (pageType) registryCache = null; };
+  }, [pageType]);
+
+  const allGroups = blocksByGroup();
+
+  // Filter each group to only blocks allowed on the current page type.
+  // If allowedTypes is null (no document open, fetch failed) show everything.
+  const groups = allowedTypes
+    ? Object.fromEntries(
+        Object.entries(allGroups).map(([key, entries]) => [
+          key,
+          entries.filter((e) => allowedTypes.has(e.type)),
+        ])
+      )
+    : allGroups;
 
   return (
     <div
@@ -90,7 +129,7 @@ export function BlockPalette() {
         Drag to position · double-click to insert after selection
       </div>
 
-      {GROUP_ORDER.filter((g) => groups[g]).map((groupKey) => (
+      {GROUP_ORDER.filter((g) => groups[g]?.length > 0).map((groupKey) => (
         <div key={groupKey}>
           <div
             style={{

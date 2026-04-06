@@ -237,6 +237,10 @@ export async function getSwarmGallery(): Promise<SwarmGalleryItem[]> {
   return json<SwarmGalleryItem[]>(res);
 }
 
+export async function openSwarmOutputFolder(): Promise<void> {
+  await fetch(`${BASE}/swarmui/open-output`, { method: 'POST' });
+}
+
 export async function swarmGenerate(params: SwarmGenerateRequest): Promise<SwarmGenerateResponse> {
   const res = await fetch(`${BASE}/swarmui/generate`, {
     method: 'POST',

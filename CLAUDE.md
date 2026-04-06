@@ -97,6 +97,22 @@ The left panel **AI** tab integrates two local AI services:
 
 **SwarmUI generation defaults:** steps = 4, CFG = 1 (tuned for LCM/Lightning/Turbo models).
 
+**VG Editor block palette — auto-registry:**
+The block palette is filtered per page type based on what components are actually registered
+in the Astro page templates. The editor server exposes `GET /api/registry` which scans
+the four content templates (`portfolio/[slug].astro`, `services/[slug].astro`,
+`vision-tech/[slug].astro`, `articles/[slug].astro`) at request time, extracts the
+`<Content components={{ ... }}>` prop, and maps component names → editor block types.
+The palette fetches this on load and shows only blocks valid for the open page type.
+Falls back to showing all blocks if no document is open or the fetch fails.
+
+When adding a new MDX component to the editor:
+1. Create the Astro `.astro` component
+2. Import and add it to `<Content components={{ ... }}>` in the relevant template(s)
+3. Add the VG Editor block: client types, client registry, server types, block-mapper, codegen, UI component, blocks/index.tsx
+4. Add the component name → block type mapping to `tools/editor/server/lib/astro-registry-scanner.ts`
+The palette will automatically show the new block only on page types where its Astro component is registered.
+
 **VG Editor toolbar tabs:**
 - **Editor** — block-based content editor (default view)
 - **Pages** — enable/disable and reorder nav items (drag-to-reorder, saved to `src/data/nav-config.json`)
@@ -147,6 +163,7 @@ src/components/mdx/
   NotableGrid.astro         — two-column list of notable projects
   ProcessFlow.astro         — horizontal step diagram with optional feedback arc (services + vision-tech)
   PhaseMatrix.astro         — dot matrix: deliverable types × project phases (services)
+  SingleImage.astro         — single image with click-to-fullscreen (reuses ImageLightbox)
   SpecTable.astro           — 2-column spec table: label | value (vision-tech)
   CompareTable.astro        — multi-column comparison table: feature × option (vision-tech)
   ProjectDescription.astro  — description text block (children, no props)
@@ -190,6 +207,8 @@ Usage in MDX:
 <TimelineTable rows={[{ scope: "...", deliverables: "..." }]} />
 <NotableGrid items={[{ name: "...", year: "..." }]} />
 <ImageGallery images={[{ src: "...", alt: "..." }]} />
+<SingleImage src="/_img/..." alt="..." />
+<SingleImage src="/_img/..." alt="..." caption="Optional caption" />
 <Tour360 url="https://visiongraphics.eu/PANO/SLUG/" title="Description" />
 <YoutubeEmbed url="https://www.youtube.com/watch?v=ID" title="Description" />
 

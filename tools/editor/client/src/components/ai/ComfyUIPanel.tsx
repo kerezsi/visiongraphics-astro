@@ -9,6 +9,7 @@ import {
   getEditorConfig,
   saveEditorConfig,
   generateBannerSubject,
+  openSwarmOutputFolder,
 } from '../../lib/api-client.ts';
 import type { SwarmStyle, SwarmPromptItem } from '../../lib/api-client.ts';
 
@@ -120,6 +121,13 @@ function SaveAsWidget({
 export function ComfyUIPanel() {
   const swarmAvailable = useAIStore((s) => s.swarmAvailable);
   const ollamaAvailable = useAIStore((s) => s.ollamaAvailable);
+  const swarmModel      = useAIStore((s) => s.swarmModel);
+  const swarmSize       = useAIStore((s) => s.swarmSize);
+  const swarmFormat     = useAIStore((s) => s.swarmFormat);
+  const swarmStyleName  = useAIStore((s) => s.swarmStyleName);
+  const swarmPrompt     = useAIStore((s) => s.swarmPrompt);
+  const swarmImageCount = useAIStore((s) => s.swarmImageCount);
+  const setSwarmForm    = useAIStore((s) => s.setSwarmForm);
   const pageType = useDocumentStore((s) => s.pageType);
   const slug = useDocumentStore((s) => s.slug);
   const meta = useDocumentStore((s) => s.meta) as Record<string, unknown>;
@@ -133,14 +141,22 @@ export function ComfyUIPanel() {
   const [savedStyles, setSavedStyles] = useState<SwarmStyle[]>([]);
   const [savedPrompts, setSavedPrompts] = useState<SwarmPromptItem[]>([]);
 
-  // Form state
-  const [model, setModel] = useState('');
-  const [size, setSize] = useState<Size>(1024);
-  const [format, setFormat] = useState<Format>('16:9');
-  const [styleName, setStyleName] = useState('');
-  const [prompt, setPrompt] = useState('');
+  // Form state — backed by AI store so it survives tab/page switches
+  const model      = swarmModel;
+  const size       = swarmSize as Size;
+  const format     = swarmFormat as Format;
+  const styleName  = swarmStyleName;
+  const prompt     = swarmPrompt;
+  const imageCount = swarmImageCount;
 
-  // Block picker state
+  const setModel      = (v: string)  => setSwarmForm({ swarmModel: v });
+  const setSize       = (v: Size)    => setSwarmForm({ swarmSize: v });
+  const setFormat     = (v: Format)  => setSwarmForm({ swarmFormat: v });
+  const setStyleName  = (v: string)  => setSwarmForm({ swarmStyleName: v });
+  const setPrompt     = (v: string)  => setSwarmForm({ swarmPrompt: v });
+  const setImageCount = (v: number)  => setSwarmForm({ swarmImageCount: v });
+
+  // Block picker state (ephemeral — no need to persist)
   const [pickerOpen, setPickerOpen] = useState(false);
   const [checkedIds, setCheckedIds] = useState<Set<string>>(new Set());
 
@@ -327,6 +343,7 @@ export function ComfyUIPanel() {
         model: model.trim() || undefined,
         width,
         height,
+        images: imageCount,
         pageType,
         slug,
       });
@@ -567,25 +584,35 @@ export function ComfyUIPanel() {
           </div>
 
           {/* ── Generate ── */}
-          <button
-            onClick={handleGenerate}
-            disabled={generating || !effectivePrompt}
-            style={{
-              width: '100%',
-              background: 'var(--color-accent)',
-              border: 'none',
-              color: '#fff',
-              borderRadius: 'var(--radius-sm)',
-              padding: '6px 0',
-              fontSize: 11,
-              fontWeight: 600,
-              cursor: generating || !effectivePrompt ? 'default' : 'pointer',
-              opacity: generating || !effectivePrompt ? 0.6 : 1,
-              marginBottom: 8,
-            }}
-          >
-            {generating ? 'Generating…' : `Generate  ${width}×${height}`}
-          </button>
+          <div style={{ ...row, marginBottom: 8 }}>
+            <select
+              value={imageCount}
+              onChange={(e) => setImageCount(Number(e.target.value))}
+              disabled={generating}
+              style={{ width: 44, flexShrink: 0, fontSize: 11, textAlign: 'center' }}
+              title="Number of images"
+            >
+              {[1,2,3,4,5,6,7,8].map((n) => <option key={n} value={n}>{n}</option>)}
+            </select>
+            <button
+              onClick={handleGenerate}
+              disabled={generating || !effectivePrompt}
+              style={{
+                flex: 1,
+                background: 'var(--color-accent)',
+                border: 'none',
+                color: '#fff',
+                borderRadius: 'var(--radius-sm)',
+                padding: '6px 0',
+                fontSize: 11,
+                fontWeight: 600,
+                cursor: generating || !effectivePrompt ? 'default' : 'pointer',
+                opacity: generating || !effectivePrompt ? 0.6 : 1,
+              }}
+            >
+              {generating ? 'Generating…' : `Generate  ${width}×${height}`}
+            </button>
+          </div>
 
           {/* ── Output ── */}
           {outputImages.length > 0 && (
@@ -598,19 +625,37 @@ export function ComfyUIPanel() {
                   style={{ width: '100%', borderRadius: 'var(--radius-sm)', display: 'block', marginBottom: 4 }}
                 />
               ))}
-              <button
-                onClick={() => setOutputImages([])}
-                style={{ ...miniBtn(), width: '100%', textAlign: 'center' }}
-              >
-                Clear
-              </button>
+              <div style={{ ...row }}>
+                <button
+                  onClick={() => setOutputImages([])}
+                  style={{ ...miniBtn(), flex: 1, textAlign: 'center' }}
+                >
+                  Clear
+                </button>
+                <button
+                  onClick={() => openSwarmOutputFolder().catch(() => {})}
+                  style={miniBtn()}
+                  title="Open output folder in Explorer"
+                >
+                  📁
+                </button>
+              </div>
             </div>
           )}
 
           {/* ── Gallery ── */}
           {gallery.length > 0 && (
             <div>
-              <div style={{ ...lbl, marginBottom: 4 }}>Recent</div>
+              <div style={{ ...row, marginBottom: 4 }}>
+                <span style={{ ...lbl, marginBottom: 0, flex: 1 }}>Recent</span>
+                <button
+                  onClick={() => openSwarmOutputFolder().catch(() => {})}
+                  style={miniBtn()}
+                  title="Open output folder in Explorer"
+                >
+                  📁
+                </button>
+              </div>
               <div style={{ display: 'flex', gap: 3, flexWrap: 'wrap' }}>
                 {gallery.slice(0, 12).map((img) => (
                   <img

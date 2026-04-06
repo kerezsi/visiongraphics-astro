@@ -1,0 +1,155 @@
+---
+/**
+ * SingleImage — one image with click-to-fullscreen.
+ * Self-contained: renders the image directly + uses <dialog> for the lightbox.
+ * No React portals needed.
+ *
+ * Usage in MDX:
+ *   <SingleImage src="/_img/vision-tech/slug/01.jpg" alt="Description" />
+ *   <SingleImage src="/_img/..." alt="..." caption="Optional caption text" />
+ */
+interface Props {
+  src: string;
+  alt?: string;
+  caption?: string;
+}
+const { src, alt = '', caption } = Astro.props;
+// Stable unique ID for the dialog (generated at build/request time, both fine)
+const id = `si-${Math.random().toString(36).slice(2, 9)}`;
+---
+
+<figure class="mdx-single-image">
+  <button
+    class="mdx-single-image-trigger"
+    aria-label="View full-size image"
+    onclick={`document.getElementById('${id}').showModal()`}
+  >
+    <img
+      src={src}
+      alt={alt}
+      class="mdx-single-image-img"
+      loading="lazy"
+      decoding="async"
+    />
+    <span class="mdx-single-image-zoom" aria-hidden="true">⊕</span>
+  </button>
+
+  <dialog
+    id={id}
+    class="mdx-image-dialog"
+    onclick="this.close()"
+  >
+    <button
+      class="mdx-image-dialog-close"
+      onclick="event.stopPropagation(); this.closest('dialog').close()"
+      aria-label="Close"
+    >✕</button>
+    <img
+      src={src}
+      alt={alt}
+      class="mdx-image-dialog-img"
+      onclick="event.stopPropagation()"
+    />
+  </dialog>
+
+  {caption && <figcaption class="mdx-single-image-caption">{caption}</figcaption>}
+</figure>
+
+<style>
+  .mdx-single-image {
+    margin: var(--space-8) 0;
+  }
+
+  /* Clickable image container */
+  .mdx-single-image-trigger {
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: none;
+    background: var(--color-surface);
+    cursor: zoom-in;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .mdx-single-image-img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    display: block;
+    transition: transform 500ms ease;
+  }
+
+  .mdx-single-image-trigger:hover .mdx-single-image-img {
+    transform: scale(1.02);
+  }
+
+  /* Zoom hint (matches gallery-zoom-hint style) */
+  .mdx-single-image-zoom {
+    position: absolute;
+    bottom: 0.6rem;
+    right: 0.75rem;
+    font-size: 1.1rem;
+    color: rgba(240, 237, 232, 0.55);
+    pointer-events: none;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+    transition: color 200ms;
+  }
+
+  .mdx-single-image-trigger:hover .mdx-single-image-zoom {
+    color: rgba(240, 237, 232, 0.9);
+  }
+
+  /* Native dialog lightbox */
+  .mdx-image-dialog {
+    padding: 0;
+    background: rgba(0, 0, 0, 0.0);
+    border: none;
+    max-width: 95vw;
+    max-height: 95vh;
+    cursor: zoom-out;
+    overflow: visible;
+  }
+
+  .mdx-image-dialog::backdrop {
+    background: rgba(0, 0, 0, 0.88);
+  }
+
+  .mdx-image-dialog-img {
+    display: block;
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+    cursor: default;
+  }
+
+  .mdx-image-dialog-close {
+    position: absolute;
+    top: -2rem;
+    right: 0;
+    background: rgba(0, 0, 0, 0.65);
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1;
+    padding: 0.35rem 0.6rem;
+    border-radius: 3px;
+    transition: background 150ms;
+  }
+
+  .mdx-image-dialog-close:hover {
+    background: rgba(218, 19, 19, 0.75);
+  }
+
+  /* Caption */
+  .mdx-single-image-caption {
+    font-size: var(--fs-xs);
+    color: var(--color-text-faint);
+    text-align: center;
+    margin-top: var(--space-2);
+    font-style: italic;
+    letter-spacing: 0.02em;
+    max-width: none;
+  }
+</style>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Toolbar } from './components/toolbar/Toolbar.tsx';
 import { LeftPanel } from './components/panels/LeftPanel.tsx';
 import { Canvas } from './components/panels/Canvas.tsx';
@@ -56,6 +56,47 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode }, Error
   }
 }
 
+const DIVIDER_W = 4;
+const MIN_PANEL = 160;
+
+function useDragDivider(
+  initial: number,
+  side: 'left' | 'right',
+  containerRef: React.RefObject<HTMLDivElement>
+) {
+  const [width, setWidth] = useState(initial);
+  const dragging = useRef(false);
+  const startX = useRef(0);
+  const startW = useRef(0);
+
+  const onMouseDown = useCallback((e: React.MouseEvent) => {
+    dragging.current = true;
+    startX.current = e.clientX;
+    startW.current = width;
+    e.preventDefault();
+  }, [width]);
+
+  useEffect(() => {
+    function onMove(e: MouseEvent) {
+      if (!dragging.current || !containerRef.current) return;
+      const dx = e.clientX - startX.current;
+      const delta = side === 'left' ? dx : -dx;
+      const containerW = containerRef.current.offsetWidth;
+      const newW = Math.max(MIN_PANEL, Math.min(startW.current + delta, containerW / 2));
+      setWidth(newW);
+    }
+    function onUp() { dragging.current = false; }
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseup', onUp);
+    return () => {
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('mouseup', onUp);
+    };
+  }, [side, containerRef]);
+
+  return { width, onMouseDown };
+}
+
 const styles: Record<string, React.CSSProperties> = {
   root: {
     display: 'flex',
@@ -65,11 +106,17 @@ const styles: Record<string, React.CSSProperties> = {
     background: 'var(--color-bg)',
   },
   body: {
-    display: 'grid',
-    gridTemplateColumns: '240px 1fr 280px',
+    display: 'flex',
     flex: 1,
     overflow: 'hidden',
     minHeight: 0,
+  },
+  divider: {
+    width: DIVIDER_W,
+    flexShrink: 0,
+    background: 'var(--color-border)',
+    cursor: 'col-resize',
+    transition: 'background 0.15s',
   },
   errorBar: {
     position: 'fixed',
@@ -105,6 +152,10 @@ export default function App() {
   const isPreviewOpen = useUIStore((s) => s.isPreviewOpen);
   const view = useUIStore((s) => s.view);
 
+  const bodyRef = useRef<HTMLDivElement>(null);
+  const left  = useDragDivider(240, 'left',  bodyRef);
+  const right = useDragDivider(280, 'right', bodyRef);
+
   useEffect(() => {
     checkServices();
   }, [checkServices]);
@@ -114,10 +165,28 @@ export default function App() {
       <div style={styles.root}>
         <Toolbar />
         {view === 'editor' ? (
-          <div style={styles.body}>
-            <LeftPanel />
-            <Canvas />
-            <RightPanel />
+          <div style={styles.body} ref={bodyRef}>
+            <div style={{ width: left.width, flexShrink: 0, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+              <LeftPanel />
+            </div>
+            <div
+              style={styles.divider}
+              onMouseDown={left.onMouseDown}
+              onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--color-accent)')}
+              onMouseLeave={(e) => (e.currentTarget.style.background = 'var(--color-border)')}
+            />
+            <div style={{ flex: 1, overflow: 'hidden', minWidth: 0, display: 'flex', flexDirection: 'column' }}>
+              <Canvas />
+            </div>
+            <div
+              style={styles.divider}
+              onMouseDown={right.onMouseDown}
+              onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--color-accent)')}
+              onMouseLeave={(e) => (e.currentTarget.style.background = 'var(--color-border)')}
+            />
+            <div style={{ width: right.width, flexShrink: 0, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+              <RightPanel />
+            </div>
           </div>
         ) : view === 'pages' ? (
           <PagesOverview />

@@ -8,6 +8,7 @@ export type BlockType =
   | 'deliverable-grid'
   | 'timeline-table'
   | 'notable-grid'
+  | 'single-image'
   | 'tour-360'
   | 'youtube-embed'
   | 'film-embed'
@@ -25,6 +26,7 @@ export type BlockData =
   | { id: string; type: 'deliverable-grid'; props: DeliverableGridProps }
   | { id: string; type: 'timeline-table';   props: TimelineTableProps }
   | { id: string; type: 'notable-grid';     props: NotableGridProps }
+  | { id: string; type: 'single-image';     props: SingleImageProps }
   | { id: string; type: 'tour-360';         props: Tour360Props }
   | { id: string; type: 'youtube-embed';    props: YouTubeEmbedProps }
   | { id: string; type: 'film-embed';       props: FilmEmbedProps }
@@ -62,6 +64,12 @@ export interface TimelineTableProps {
 
 export interface NotableGridProps {
   items: Array<{ name: string; year: string }>;
+}
+
+export interface SingleImageProps {
+  src: string;
+  alt?: string;
+  caption?: string;
 }
 
 export interface ImageGalleryProps {

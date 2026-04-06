@@ -18,6 +18,17 @@ export const blockRegistry = new Map<BlockType, BlockRegistryEntry>([
     description: '<SectionBanner> — full-width banner with image, label, heading',
   }],
 
+  ['single-image', {
+    type: 'single-image',
+    label: 'Single Image',
+    group: 'mdx-component',
+    icon: '□',
+    allowedIn: 'all',
+    canNest: false,
+    defaultProps: { src: '', alt: '', caption: '' },
+    description: '<SingleImage> — one image with click-to-fullscreen',
+  }],
+
   ['image-gallery', {
     type: 'image-gallery',
     label: 'Image Gallery',

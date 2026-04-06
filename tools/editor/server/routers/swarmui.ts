@@ -1,7 +1,9 @@
 import express from 'express';
 import type { Request, Response } from 'express';
+import { exec } from 'child_process';
 import fs from 'fs';
 import path from 'path';
+import sharp from 'sharp';
 import { getConfig } from '../lib/editor-config.js';
 import { PROJECT_ROOT } from '../lib/fs-utils.js';
 
@@ -33,9 +35,14 @@ async function downloadImage(url: string): Promise<string> {
   const resp = await fetch(url, { signal: AbortSignal.timeout(60_000) });
   if (!resp.ok) throw new Error(`Failed to download: ${resp.status}`);
   const buf = Buffer.from(await resp.arrayBuffer());
-  const ts = new Date().toISOString().replace(/[:.]/g, '-').replace('T', '_').slice(0, 19);
-  const filename = `${ts}.png`;
-  fs.writeFileSync(path.join(OUTPUT_DIR, filename), buf);
+  const now = new Date();
+  const ts = now.toISOString().replace(/[:.]/g, '-').replace('T', '_').slice(0, 23);
+  const filename = `${ts}.jpg`;
+  // Convert to JPEG, quality 92. Sharp strips all EXIF/ICC/IPTC by default (no withMetadata call).
+  const jpg = await sharp(buf)
+    .jpeg({ quality: 92, mozjpeg: true })
+    .toBuffer();
+  fs.writeFileSync(path.join(OUTPUT_DIR, filename), jpg);
   return filename;
 }
 
@@ -123,7 +130,7 @@ router.get('/output/:filename', (req: Request, res: Response) => {
 // POST /generate
 // ---------------------------------------------------------------------------
 router.post('/generate', async (req: Request, res: Response) => {
-  const { prompt, negativeprompt, model, width, height, steps, cfgscale, seed, pageType, slug } =
+  const { prompt, negativeprompt, model, width, height, steps, cfgscale, seed, images: imageCount, pageType, slug } =
     req.body as {
       prompt: string;
       negativeprompt?: string;
@@ -133,6 +140,7 @@ router.post('/generate', async (req: Request, res: Response) => {
       steps?: number;
       cfgscale?: number;
       seed?: number;
+      images?: number;
       pageType?: string;
       slug?: string;
     };
@@ -145,46 +153,56 @@ router.post('/generate', async (req: Request, res: Response) => {
   try {
     const sessionId = await getSession();
 
-    const genResp = await fetch(`${swarmBase()}/API/GenerateText2Image`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        session_id: sessionId,
-        images: 1,
-        prompt,
-        negativeprompt: negativeprompt ?? 'blurry, ugly, bad quality, low resolution',
-        model: model ?? '',
-        width: width ?? 1024,
-        height: height ?? 768,
-        steps: steps ?? 4,
-        cfgscale: cfgscale ?? 1,
-        seed: seed ?? -1,
-      }),
-      signal: AbortSignal.timeout(GENERATE_TIMEOUT),
-    });
-
-    if (!genResp.ok) {
-      const text = await genResp.text();
-      res.status(genResp.status).json({ error: `SwarmUI error: ${text}` });
-      return;
-    }
-
-    const genData = (await genResp.json()) as {
-      images?: Array<string | { image: string }>;
-      error_id?: string;
-      error?: string;
+    const count = Math.max(1, Math.min(imageCount ?? 1, 8));
+    const baseParams = {
+      session_id: sessionId,
+      images: 1,
+      prompt,
+      negativeprompt: negativeprompt ?? 'blurry, ugly, bad quality, low resolution',
+      model: model ?? '',
+      width: width ?? 1024,
+      height: height ?? 768,
+      steps: steps ?? 4,
+      cfgscale: cfgscale ?? 1,
     };
 
-    if (genData.error_id || genData.error) {
-      res.status(400).json({ error: genData.error ?? genData.error_id });
-      return;
-    }
+    // Send one request per image, each with a unique random seed
+    const genResults = await Promise.all(
+      Array.from({ length: count }, () =>
+        fetch(`${swarmBase()}/API/GenerateText2Image`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            ...baseParams,
+            seed: seed ?? Math.floor(Math.random() * 2_147_483_647),
+          }),
+          signal: AbortSignal.timeout(GENERATE_TIMEOUT),
+        })
+      )
+    );
 
-    // Resolve absolute URLs from SwarmUI
-    const remoteUrls = (genData.images ?? []).map((img) => {
-      const p = typeof img === 'string' ? img : img.image;
-      return p.startsWith('http') ? p : `${swarmBase()}/${p}`;
-    });
+    // Collect all image URLs, surface first error if any
+    const remoteUrls: string[] = [];
+    for (const genResp of genResults) {
+      if (!genResp.ok) {
+        const text = await genResp.text();
+        res.status(genResp.status).json({ error: `SwarmUI error: ${text}` });
+        return;
+      }
+      const genData = (await genResp.json()) as {
+        images?: Array<string | { image: string }>;
+        error_id?: string;
+        error?: string;
+      };
+      if (genData.error_id || genData.error) {
+        res.status(400).json({ error: genData.error ?? genData.error_id });
+        return;
+      }
+      for (const img of genData.images ?? []) {
+        const p = typeof img === 'string' ? img : img.image;
+        remoteUrls.push(p.startsWith('http') ? p : `${swarmBase()}/${p}`);
+      }
+    }
 
     // Download and save each image locally
     const savedImages: Array<{ filename: string; url: string }> = [];
@@ -206,6 +224,21 @@ router.post('/generate', async (req: Request, res: Response) => {
       res.status(500).json({ error: err.message });
     }
   }
+});
+
+// ---------------------------------------------------------------------------
+// POST /open-output — open the output folder in the OS file explorer
+// ---------------------------------------------------------------------------
+router.post('/open-output', (_req: Request, res: Response) => {
+  const cmd = process.platform === 'win32'
+    ? `explorer "${OUTPUT_DIR}"`
+    : process.platform === 'darwin'
+    ? `open "${OUTPUT_DIR}"`
+    : `xdg-open "${OUTPUT_DIR}"`;
+  exec(cmd, (err) => {
+    if (err) { res.status(500).json({ error: err.message }); return; }
+    res.json({ ok: true });
+  });
 });
 
 export default router;

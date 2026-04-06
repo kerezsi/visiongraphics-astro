@@ -7,6 +7,7 @@ import { fileURLToPath } from 'url';
 import type { IncomingMessage } from 'http';
 
 import { PROJECT_ROOT } from './lib/fs-utils.js';
+import { scanAstroRegistry } from './lib/astro-registry-scanner.js';
 import filesRouter from './routers/files.js';
 import imagesRouter from './routers/images.js';
 import contentRouter from './routers/content.js';
@@ -95,6 +96,24 @@ if (fs.existsSync(distDir)) {
 
 app.get('/api/health', (_req, res) => {
   res.json({ ok: true, version: '1.0.0' });
+});
+
+// ---------------------------------------------------------------------------
+// Block registry — scanned live from Astro page templates.
+// Returns { project: BlockType[], service: BlockType[], ... } so the editor
+// client can filter the block palette to only show blocks available on the
+// current page type. Re-scanned on every request so template changes are
+// picked up without restarting the editor server.
+// ---------------------------------------------------------------------------
+
+app.get('/api/registry', (_req, res) => {
+  try {
+    const registry = scanAstroRegistry(PROJECT_ROOT);
+    res.json(registry);
+  } catch (err) {
+    console.error('[editor] Failed to scan Astro registry:', err);
+    res.status(500).json({ error: 'Registry scan failed' });
+  }
 });
 
 // ---------------------------------------------------------------------------

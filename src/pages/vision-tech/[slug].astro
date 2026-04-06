@@ -7,11 +7,17 @@ import { thumbUrl } from '../../lib/image-url';
 import Tour360 from '../../components/media/Tour360.astro';
 import FilmEmbed from '../../components/media/FilmEmbed.astro';
 import YouTubeEmbed from '../../components/media/YouTubeEmbed.astro';
-import ImageLightbox from '../../components/media/ImageLightbox';
+import ImageLightbox from '../../components/media/ImageLightbox.tsx';
 import MdxImageCompare from '../../components/mdx/ImageCompare.astro';
 import MdxImageGallery from '../../components/mdx/ImageGallery.astro';
-import ArticleImageCompareMounter from '../../components/media/ArticleImageCompareMounter';
-import ArticleGalleryMounter from '../../components/media/ArticleGalleryMounter';
+import MdxSectionBanner from '../../components/mdx/SectionBanner.astro';
+import SingleImage from '../../components/mdx/SingleImage.astro';
+import NotableGrid from '../../components/mdx/NotableGrid.astro';
+import DeliverableGrid from '../../components/mdx/DeliverableGrid.astro';
+import TimelineTable from '../../components/mdx/TimelineTable.astro';
+import PhaseMatrix from '../../components/mdx/PhaseMatrix.astro';
+import ArticleImageCompareMounter from '../../components/media/ArticleImageCompareMounter.tsx';
+import ArticleGalleryMounter from '../../components/media/ArticleGalleryMounter.tsx';
 import ProcessFlow from '../../components/mdx/ProcessFlow.astro';
 import SpecTable from '../../components/mdx/SpecTable.astro';
 import CompareTable from '../../components/mdx/CompareTable.astro';
@@ -123,7 +129,7 @@ const relatedClientNames = await Promise.all(
   <section class="vt-block-section">
     <div class="container">
       <div class="vt-body-content">
-        <Content components={{ Tour360, FilmEmbed, YouTubeEmbed, YoutubeEmbed: YouTubeEmbed, ImageCompare: MdxImageCompare, ImageGallery: MdxImageGallery, ProcessFlow, SpecTable, CompareTable }} />
+        <Content components={{ Tour360, FilmEmbed, YouTubeEmbed, YoutubeEmbed: YouTubeEmbed, ImageCompare: MdxImageCompare, ImageGallery: MdxImageGallery, SectionBanner: MdxSectionBanner, SingleImage, ProcessFlow, SpecTable, CompareTable, NotableGrid, DeliverableGrid, TimelineTable, PhaseMatrix }} />
         <ArticleImageCompareMounter client:load />
         <ArticleGalleryMounter client:load />
       </div>

@@ -7,9 +7,9 @@ import { ComfyUIPanel } from '../ai/ComfyUIPanel.tsx';
 import { AISettingsPanel } from '../ai/AISettingsPanel.tsx';
 
 const panelStyle: React.CSSProperties = {
-  width: 240,
+  width: '100%',
+  height: '100%',
   background: 'var(--color-surface)',
-  borderRight: '1px solid var(--color-border)',
   display: 'flex',
   flexDirection: 'column',
   overflow: 'hidden',

@@ -13,7 +13,7 @@ type Segment = ProseSegment | ComponentSegment;
 
 // Known MDX component names (used as blocks in this editor)
 const MDX_COMPONENTS = new Set([
-  'SectionBanner', 'ImageGallery', 'ImageCompare',
+  'SectionBanner', 'SingleImage', 'ImageGallery', 'ImageCompare',
   'DeliverableGrid', 'TimelineTable', 'NotableGrid',
   'Tour360', 'YoutubeEmbed', 'FilmEmbed',
 ]);
@@ -233,6 +233,17 @@ function componentToBlock(name: string, props: Record<string, unknown>): BlockDa
           title:  (props.title  as string) ?? '',
         },
       } as BlockData;
+
+    case 'SingleImage':
+      return {
+        id: randomUUID(),
+        type: 'single-image',
+        props: {
+          src:     (props.src     as string) ?? '',
+          alt:     (props.alt     as string) ?? '',
+          caption: (props.caption as string) ?? '',
+        },
+      };
 
     case 'ImageGallery':
       return {

@@ -111,6 +111,14 @@ function blockToMdx(block: BlockData): string | null {
       return `<SectionBanner\n  ${parts.join('\n  ')}\n/>`;
     }
 
+    case 'single-image': {
+      if (!p.src) return null;
+      const parts: string[] = [`src="${p.src}"`];
+      if (p.alt)     parts.push(`alt="${p.alt}"`);
+      if (p.caption) parts.push(`caption="${p.caption}"`);
+      return `<SingleImage ${parts.join(' ')} />`;
+    }
+
     case 'image-gallery': {
       const images = (p.images ?? []) as Array<{ src: string; alt: string }>;
       if (images.length === 0) return null;

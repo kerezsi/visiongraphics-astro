@@ -12,7 +12,11 @@ import ImageCompare from '../../components/mdx/ImageCompare.astro';
 import ProcessFlow from '../../components/mdx/ProcessFlow.astro';
 import PhaseMatrix from '../../components/mdx/PhaseMatrix.astro';
 import Tour360 from '../../components/media/Tour360.astro';
+import FilmEmbed from '../../components/media/FilmEmbed.astro';
 import YouTubeEmbed from '../../components/media/YouTubeEmbed.astro';
+import SpecTable from '../../components/mdx/SpecTable.astro';
+import CompareTable from '../../components/mdx/CompareTable.astro';
+import SingleImage from '../../components/mdx/SingleImage.astro';
 import ArticleGalleryMounter from '../../components/media/ArticleGalleryMounter.tsx';
 import ArticleImageCompareMounter from '../../components/media/ArticleImageCompareMounter.tsx';
 
@@ -100,8 +104,12 @@ const hasMeta = data.pricing || data.startRequirements || (data.sidebarLabel && 
         ProcessFlow,
         PhaseMatrix,
         Tour360,
+        FilmEmbed,
         YoutubeEmbed: YouTubeEmbed,
         YouTubeEmbed,
+        SpecTable,
+        CompareTable,
+        SingleImage,
       }} />
       <ArticleGalleryMounter client:load />
       <ArticleImageCompareMounter client:load />

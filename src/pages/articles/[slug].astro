@@ -5,9 +5,20 @@ import Page from '../../layouts/Page.astro';
 import { getCollection } from 'astro:content';
 import ArticleImageCompareMounter from '../../components/media/ArticleImageCompareMounter.tsx';
 import ArticleGalleryMounter from '../../components/media/ArticleGalleryMounter.tsx';
+import Tour360 from '../../components/media/Tour360.astro';
+import FilmEmbed from '../../components/media/FilmEmbed.astro';
+import YouTubeEmbed from '../../components/media/YouTubeEmbed.astro';
 import SectionBanner from '../../components/mdx/SectionBanner.astro';
 import ImageGallery from '../../components/mdx/ImageGallery.astro';
 import ImageCompare from '../../components/mdx/ImageCompare.astro';
+import ProcessFlow from '../../components/mdx/ProcessFlow.astro';
+import SpecTable from '../../components/mdx/SpecTable.astro';
+import CompareTable from '../../components/mdx/CompareTable.astro';
+import NotableGrid from '../../components/mdx/NotableGrid.astro';
+import DeliverableGrid from '../../components/mdx/DeliverableGrid.astro';
+import TimelineTable from '../../components/mdx/TimelineTable.astro';
+import PhaseMatrix from '../../components/mdx/PhaseMatrix.astro';
+import SingleImage from '../../components/mdx/SingleImage.astro';
 
 export async function getStaticPaths() {
   const articles = await getCollection('articles', ({ data }) => data.published);
@@ -79,7 +90,7 @@ const nextArticle = sorted[currentIndex - 1] ?? null;
     <!-- Content -->
     <div class="article-layout">
       <div class="article-content prose">
-        <Content components={{ SectionBanner, ImageGallery, ImageCompare }} />
+        <Content components={{ SectionBanner, ImageGallery, ImageCompare, SingleImage, Tour360, FilmEmbed, YouTubeEmbed, YoutubeEmbed: YouTubeEmbed, ProcessFlow, SpecTable, CompareTable, NotableGrid, DeliverableGrid, TimelineTable, PhaseMatrix }} />
         <ArticleImageCompareMounter client:load />
         <ArticleGalleryMounter client:load />
       </div>

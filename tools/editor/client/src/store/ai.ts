@@ -1,7 +1,17 @@
 import { create } from 'zustand';
 import * as api from '../lib/api-client.ts';
 
-interface AIStore {
+// Persistent form state for the SwarmUI panel — survives tab/page switches
+export interface SwarmFormState {
+  swarmModel: string;
+  swarmSize: number;
+  swarmFormat: string;
+  swarmStyleName: string;
+  swarmPrompt: string;
+  swarmImageCount: number;
+}
+
+interface AIStore extends SwarmFormState {
   ollamaAvailable: boolean;
   ollamaModels: string[];
   selectedModel: string;
@@ -13,6 +23,7 @@ interface AIStore {
   generateText: (prompt: string, context?: string) => Promise<string>;
   generateAltText: (imageUrl: string) => Promise<string>;
   generateExcerpt: (title: string, body: string) => Promise<string>;
+  setSwarmForm: (patch: Partial<SwarmFormState>) => void;
 }
 
 export const useAIStore = create<AIStore>((set, get) => ({
@@ -21,6 +32,14 @@ export const useAIStore = create<AIStore>((set, get) => ({
   selectedModel: '',
   swarmAvailable: false,
   isCheckingServices: false,
+
+  // SwarmUI form — persists across tab/page switches
+  swarmModel: '',
+  swarmSize: 1024,
+  swarmFormat: '16:9',
+  swarmStyleName: '',
+  swarmPrompt: '',
+  swarmImageCount: 1,
 
   checkServices: async () => {
     set({ isCheckingServices: true });
@@ -73,4 +92,6 @@ export const useAIStore = create<AIStore>((set, get) => ({
   generateExcerpt: async (title, body) => {
     return api.generateExcerpt(title, body);
   },
+
+  setSwarmForm: (patch) => set(patch),
 }));

@@ -15,9 +15,11 @@ import BodyLeadBlock from './BodyLeadBlock.tsx';
 import BodyTextBlock from './BodyTextBlock.tsx';
 import ResultsListBlock from './ResultsListBlock.tsx';
 import RichTextBlock from './RichTextBlock.tsx';
+import SingleImageBlock from './SingleImageBlock.tsx';
 
 export const blockComponentMap: Record<BlockType, React.ComponentType<{ block: BlockData }>> = {
   'SectionBanner':    SectionBannerBlock    as React.ComponentType<{ block: BlockData }>,
+  'single-image':     SingleImageBlock      as React.ComponentType<{ block: BlockData }>,
   'image-gallery':    ImageGalleryBlock     as React.ComponentType<{ block: BlockData }>,
   'image-compare':    ImageCompareBlock     as React.ComponentType<{ block: BlockData }>,
   'deliverable-grid': DeliverableGridBlock  as React.ComponentType<{ block: BlockData }>,

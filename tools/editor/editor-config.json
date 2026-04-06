@@ -2,13 +2,16 @@
   "ollamaBase": "http://192.168.0.69:11434",
   "swarmBase": "http://192.168.0.63:7861",
   "swarmModels": [
-    "Flux.1-schnell",
-    "Flux / flux1-schnell-fp8"
+    "Flux.1-schnell"
   ],
   "swarmStyles": [
     {
       "name": "style A",
       "text": "photorealistic image . The main subject is on the right side of the image.\n\nimage style: use grey colors only. very shallow depth of field. Smooth gradient from dark grey on the left to light grey on the right, Subtle red accents only on the right side\nLow contrast, with the lightest color being light grey\nLeft side: Minimal detail, dark grey, simplified shapes or outlines.\nCenter: Gradual emergence of more defined shapes and details.\nRight side: Majority of the detailed content, medium grey with muted red accents.\nTransition: Smooth progression from left to right, from dark grey to light grey\nIncreasing level of detail and complexity from left to right."
+    },
+    {
+      "name": "tech_banner",
+      "text": "image style: depth of field. Use dark greys and ligh grays. Strong red accents only on the important elements. Half of the image is with low saturation, but use Bold colors at other important parts. Strong contrast,"
     }
   ],
   "swarmPrompts": [],

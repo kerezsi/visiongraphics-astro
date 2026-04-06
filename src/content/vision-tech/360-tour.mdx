@@ -1,6 +1,8 @@
 ---
 title: 360 Tour
-description: Multiple 360° viewpoints connected into a navigable experience. Built in Pano2VR with hotspot navigation, floor plan overlays, and optional VR headset support. Source material can be photographs, renderings, or a combination.
+description: |
+  Multiple 360° viewpoints connected into a navigable experience. Built in Pano2VR with hotspot navigation, floor plan overlays, and optional VR headset support. Source material can be photographs, renderings, or a combination.
+  
 image: /_img/vision-tech/360-tour.jpg
 technique: Digital
 cost: €€
@@ -29,40 +31,40 @@ A single 360 viewpoint shows a complete sphere from one position. A tour connect
 
 ## What Pano2VR builds
 
-**Hotspot navigation** — clickable points in the panorama that move you to an adjacent viewpoint. These are placed to match natural sightlines — you click toward a doorway and arrive in the next room from the corresponding position.
+Hotspot navigation — clickable points in the panorama that move you to an adjacent viewpoint. These are placed to match natural sightlines — you click toward a doorway and arrive in the next room from the corresponding position.
 
-**Floor plan overlay** — a minimap showing the building plan with the current viewpoint highlighted. Viewers always know where they are in the building and can jump directly to any position.
+Floor plan overlay — a minimap showing the building plan with the current viewpoint highlighted. Viewers always know where they are in the building and can jump directly to any position.
 
-**Information points** — hotspots that open text, images, or links rather than changing the viewpoint. Used to label room areas, highlight materials, or link to specification documents.
+Information points — hotspots that open text, images, or links rather than changing the viewpoint. Used to label room areas, highlight materials, or link to specification documents.
 
-**Custom navigation interface** — branded controls matching the project identity. Navigation can be configured for touch, mouse, gyroscope (on mobile), or VR headset.
+Custom navigation interface — branded controls matching the project identity. Navigation can be configured for touch, mouse, gyroscope (on mobile), or VR headset.
 
-**VR compatibility** — tours are delivered as WebVR-compatible, so the same link opens in a browser on screen or in a VR headset. No separate app required.
+VR compatibility — tours are delivered as WebVR-compatible, so the same link opens in a browser on screen or in a VR headset. No separate app required.
 
 <Tour360 url="https://visiongraphics.eu/PANO/AYT_T2_EXPO/" title="360 tour — multi-floor airport terminal, floor plan navigation" />
 
 ## The four 360 techniques compared
 
 <CompareTable
-  headers={["360 Photography", "360 Renderings", "360 Photo Integration", "360 Tour"]}
-  rows={[
-    { label: "Depicts", values: ["Real existing space", "Unbuilt design", "New elements in real space", "Any — navigation layer over the others"] },
-    { label: "3D model", values: ["Not required", "Required — complete", "Required — new elements only", "Not required"] },
-    { label: "On-site shoot", values: ["Yes", "No", "Yes", "Depends on source"] },
-    { label: "Navigate between views", values: ["No — single point", "No — single point", "No — single point", "Yes — this is what a tour is"] },
-    { label: "VR headset", values: ["Via tour", "Via tour", "Via tour", "Yes — standalone"] },
-    { label: "Typical use", values: ["Documentation, real estate", "Design review, client preview", "Renovation, planning approval", "Presentations, exhibitions, remote visits"] },
-  ]}
-  caption="All four techniques in the 360 suite"
+headers={["360 Photography", "360 Renderings", "360 Photo Integration", "360 Tour"]}
+rows={[
+{ label: "Depicts", values: ["Real existing space", "Unbuilt design", "New elements in real space", "Any — navigation layer over the others"] },
+{ label: "3D model", values: ["Not required", "Required — complete", "Required — new elements only", "Not required"] },
+{ label: "On-site shoot", values: ["Yes", "No", "Yes", "Depends on source"] },
+{ label: "Navigate between views", values: ["No — single point", "No — single point", "No — single point", "Yes — this is what a tour is"] },
+{ label: "VR headset", values: ["Via tour", "Via tour", "Via tour", "Yes — standalone"] },
+{ label: "Typical use", values: ["Documentation, real estate", "Design review, client preview", "Renovation, planning approval", "Presentations, exhibitions, remote visits"] },
+]}
+caption="All four techniques in the 360 suite"
 />
 
 ## Mixing source types in one tour
 
 Tours don't need to be a single type of panorama throughout. Common combinations:
 
-- **Rendered interior viewpoints + real aerial 360 photograph** — show the unbuilt apartment in context of the real site
-- **Multiple design alternatives** — the same physical space rendered in two or three different configurations, switchable within the tour
-- **Construction progress** — real photographic viewpoints updated periodically and published as a new version of the same tour link
+- Rendered interior viewpoints + real aerial 360 photograph — show the unbuilt apartment in context of the real site
+- Multiple design alternatives — the same physical space rendered in two or three different configurations, switchable within the tour
+- Construction progress — real photographic viewpoints updated periodically and published as a new version of the same tour link
 
 <Tour360 url="https://visiongraphics.eu/PANO/AYT_VR/" title="360 tour — design alternatives, same space rendered in multiple configurations" />
 
@@ -72,21 +74,24 @@ For use at sales events, exhibitions, or on-site visits where internet access is
 
 This is our preferred format for residential pre-sales events — the immersive experience is significantly more effective than a screen, and the paired tablet means the sales team stays in control of what's being shown.
 
+<ImageGallery images={[{"src":"/_img/vision-tech/360-tour/495373920-10213743003166171-8349668242143708587-n.jpg","alt":"495373920_10213743003166171_8349668242143708587_n"},{"src":"/_img/vision-tech/360-tour/495380522-10213742999806087-2410275650509146921-n.jpg","alt":"495380522_10213742999806087_2410275650509146921_n"},{"src":"/_img/vision-tech/360-tour/495587462-10213743000366101-1279711646376999714-n.jpg","alt":"495587462_10213743000366101_1279711646376999714_n"},{"src":"/_img/vision-tech/360-tour/496944047-10213742999686084-5088113894096025011-n.jpg","alt":"496944047_10213742999686084_5088113894096025011_n"},{"src":"/_img/vision-tech/360-tour/497108520-10213743002446153-2279518246668265827-n.jpg","alt":"497108520_10213743002446153_2279518246668265827_n"},{"src":"/_img/vision-tech/360-tour/497521017-10213743002406152-3683011073681937631-n.jpg","alt":"497521017_10213743002406152_3683011073681937631_n"}]} />
+
 ## What we need from you
 
 <SpecTable rows={[
-  { label: "Source panoramas", value: "Rendered equirectangular images (from 360 Renderings or 360 Photo Integration) and/or on-site 360 photographs. These are the raw material for the tour." },
-  { label: "Navigation plan", value: "Which viewpoints connect to which, and where hotspots should be placed. A floor plan is the best way to communicate this." },
-  { label: "Floor plan", value: "For the minimap overlay. Simplified and cleaned up — we do this if you don't have a suitable version." },
-  { label: "Brand assets", value: "Logo, colors, and any UI style requirements for the navigation interface." },
-  { label: "Hosting", value: "Tours are delivered as files for hosting on your server or ours. We can arrange hosting if needed." },
+{ label: "Source panoramas", value: "Rendered equirectangular images (from 360 Renderings or 360 Photo Integration) and/or on-site 360 photographs. These are the raw material for the tour." },
+{ label: "Navigation plan", value: "Which viewpoints connect to which, and where hotspots should be placed. A floor plan is the best way to communicate this." },
+{ label: "Floor plan", value: "For the minimap overlay. Simplified and cleaned up — we do this if you don't have a suitable version." },
+{ label: "Brand assets", value: "Logo, colors, and any UI style requirements for the navigation interface." },
+{ label: "Hosting", value: "Tours are delivered as files for hosting on your server or ours. We can arrange hosting if needed." },
 ]} />
 
 ## Related techniques
 
 Source material for tours — choose based on what you're showing:
-- [360 Photography](/vision-tech/360-photography/) — real existing spaces
-- [360 Renderings](/vision-tech/360-renderings/) — unbuilt spaces
-- [360 Photo Integration](/vision-tech/360-photo-integration/) — proposed changes in real spaces
 
-For full walk-through freedom with 6DOF movement: [Virtual Reality](/vision-tech/virtual-reality-vr-experience/)
+- 360 Photography — real existing spaces
+- 360 Renderings — unbuilt spaces
+- 360 Photo Integration — proposed changes in real spaces
+
+For full walk-through freedom with 6DOF movement: Virtual Reality
