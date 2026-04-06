@@ -1,6 +1,6 @@
 ---
 title: Adaptive Reuse Illustrations
-description: Before-and-after visualizations showing the transformation of existing structures for new purposes. These images highlight the creative repurposing of buildings and spaces.
+description: Before-and-after visualizations of existing buildings transformed into new uses — factory to residential, warehouse to office, industrial site to mixed-use development. Produced from site photography combined with 3D modeling or AI-enhanced compositing.
 image: /_img/vision-tech/adaptive-reuse-illustrations.jpg
 technique: AI-Enhanced
 cost: €€
@@ -21,14 +21,70 @@ relatedCategories:
   - exhibition
   - urban
 relatedFeatures: []
+published: true
 ---
 
-<h3>What Are Adaptive Reuse Illustrations?</h3><p>These visuals tell the story of how old buildings can become something new. We create before-and-after images that show the transformation of existing structures. Think of it as a window into the future - seeing how that old factory could become modern apartments, or how a historic warehouse might transform into a vibrant community space.</p> 
- 
- 
- <h6>Why They Matter</h6><p>Cities are always looking for smart ways to grow without sprawling outward. Reusing old buildings makes sense, but it's often hard to get everyone on board. After all, when you're standing in a run-down industrial space, it takes real vision to see its potential as a modern office or living space. Our illustrations bridge that gap, helping everyone see what's possible.</p><h3>The Fastest Way: AI-Enhanced Creation</h3><p>We've developed a quick way to explore possibilities using AI. Here's how it works:</p><h6>Rapid Concept Generation</h6><p>Take a photo of the existing building, describe what you want it to become, and our AI tools can show you different options in minutes. This helps architects and developers try out ideas quickly before diving into detailed designs.</p><h6>Smart Detail Enhancement</h6><p>The AI understands architectural styles and can add historically accurate details. It knows how materials age and can show realistic weathering patterns. This means you get convincing visuals fast.</p><h6>Automatic Context Building</h6><p>Need to show how the building fits into its neighborhood? The AI can generate surrounding context that matches the local style, saving hours of manual modeling.</p><h3>Our Technical Approach</h3><p>We use several methods to create these transformations, picking the right one for each project.</p> 
- 
- 
- 
- 
- <h6>Documentation Phase</h6><p>First, we capture everything about the existing building using laser scans, photos, and drone footage. We look through old documents and study how the building was constructed. This gives us an accurate starting point.</p><h6>Digital Recreation</h6><p>Next, we create an exact digital copy of the building. We process laser scans, clean up the data, and add in details from our photos. This becomes our "before" state.</p><h3>Visualization Methods</h3><p>We've got three main ways to show these transformations:</p><h6>Photo-Based</h6><p>When we're mainly showing exterior changes, we start with high-quality photos. We clean them up, add new elements, and adjust materials and lighting to show the transformation.</p><h6>3D-Based</h6><p>For bigger changes, especially inside the building, we create everything in 3D. This lets us move walls, add floors, or completely reimagine the space while keeping everything accurate.</p><h6>Hybrid Approach</h6><p>Sometimes we mix both methods. We might use real photos for the background and context, but add 3D elements for the new parts of the building. This gives us the best of both worlds - realism and flexibility.</p><h3>Getting the Details Right</h3><p>We check everything carefully: Is it historically accurate? Could it actually be built? Do the materials look right? Is the lighting consistent? Does it match the right scale? Each image goes through this review process.</p><h2>What You Get</h2><p>You'll receive high-resolution images that work everywhere - from big presentation screens to websites. Want to show the transformation interactively? We can create sliding before/after comparisons that let people explore the changes themselves.</p><h3>How Long Does It Take?</h3><p>Using traditional methods, you're looking at 2-3 weeks from start to finish. But with our AI-enhanced workflow, we can show you initial concepts in days, then refine them based on your feedback.</p><h3>What We Need From You</h3><p>To get started, we need:</p><ul><li>Some good photos of the building</li><li>Basic info about what you want to create</li><li>Any historical documents you have</li><li>Your timeline and budget</li><li>Ideas about how you'll use the images</li></ul><p>Want to see how we could transform your building? Let's talk about your project.</p>
+Adaptive reuse projects face a specific communication problem: the site is real and visible, but the proposed transformation requires imagination to picture. A decommissioned factory, an empty warehouse, a deteriorated residential block — stakeholders see what's there now, not what's possible. Adaptive reuse illustrations bridge that gap by combining the existing building with the proposed new use.
+
+The result is a visualization that's anchored in reality (the actual site, the actual scale, the actual neighbourhood) while showing a designed future that doesn't exist yet.
+
+## Production approaches
+
+The right technique depends on the extent of the transformation and the quality of site documentation.
+
+<CompareTable
+  headers={["Photo-Based Compositing", "3D + Photo Hybrid", "Full 3D"]}
+  rows={[
+    { label: "Approach", values: ["Existing photograph retouched and composited with new elements", "3D model of new elements composited over site photography", "Full V-Ray render of transformed building, matched to site context"] },
+    { label: "What stays real", values: ["Site context, scale, neighbourhood", "Site photography for background and context; 3D for new architecture", "Nothing — fully modeled, but matched to real geometry"] },
+    { label: "What changes", values: ["Facade treatment, new additions, landscaping, people", "New floors, extensions, structural interventions", "Complete interior and exterior transformation"] },
+    { label: "Works best when", values: ["Surface-level transformation: cladding, windows, landscaping, signage", "Partial structural change: rooftop addition, facade intervention, new entrance", "Radical transformation where existing fabric is largely removed or reconfigured"] },
+    { label: "Speed", values: ["Fastest — no 3D model needed", "Medium — 3D for new elements only", "Slower — full model required"] },
+    { label: "Model requirement", values: ["No 3D model required", "Partial 3D model of new elements", "Full 3D model of transformed building"] },
+  ]}
+  caption="Choosing the right production approach for the transformation"
+/>
+
+## Photo-based compositing
+
+For transformations primarily affecting the facade — new cladding, window replacement, facade cleaning, ground floor activation, added landscaping — high-quality site photography provides the base. We photograph the building at the appropriate angle and lighting conditions, then composite the proposed changes over the existing fabric.
+
+The challenge here is not technical but perceptual: the eye is very good at detecting inconsistencies in lighting, scale, and perspective between composited elements. Shadows must fall correctly. Reflections must be consistent. New material textures must match the apparent age and weather condition of the existing context. This is detail work, not automation.
+
+AI-enhanced compositing (ComfyUI with Flux, using ControlNet to preserve the existing structure's geometry) accelerates the generation of surface variation and material alternatives. Multiple facade treatments can be generated rapidly for comparison — brick, render, cladding, mixed — from the same base photograph.
+
+## 3D + photo hybrid
+
+When the transformation involves structural additions — a rooftop extension, a new entrance volume, additional floors — the new elements are modeled in 3ds Max and composited over site photography. The existing building in the photograph provides ground truth for scale and context; the 3D elements are matched to the photograph's perspective, lens characteristics, and lighting.
+
+Shadow casting between 3D elements and the photographed building requires careful setup. The 3D scene includes a rough stand-in model of the existing building (just enough geometry for shadow receiving and perspective matching) even though the building itself comes from the photograph.
+
+## Before-and-after presentation
+
+The visualization gains communicative power from being shown as a comparison rather than a standalone image. Three formats work well:
+
+**Static side-by-side** — the existing building photograph alongside the proposed state. Clear and fast to read; works in any context including print.
+
+**Interactive slider** — the existing and proposed images overlaid with a draggable divider. Viewers control the comparison, which creates more engagement with the proposed transformation. We produce these as ImageCompare blocks embeddable in web presentations.
+
+**Phased sequence** — multiple images showing intermediate states: existing → cleared and prepared → phase one complete → full transformation. Useful for phased developments and planning submissions where the transformation happens over time.
+
+## What we need from you
+
+<SpecTable rows={[
+  { label: "Site photography", value: "High-resolution photographs of the existing building from the angles the visualization will show. We shoot on-site if site access is available; if not, we work from provided photography. Consistent, diffuse lighting conditions work best — overcast or early/late sun with long shadows is harder to composite into than an evenly lit overcast day." },
+  { label: "Design intent", value: "What the transformed building should become and to what extent the existing fabric is preserved. A sketch, scheme drawing, or description is sufficient to begin. A developed design allows more precision." },
+  { label: "Key changes", value: "Specifically what changes and what stays. The existing fabric that remains visible anchors the viewer in reality — identifying it early avoids modeling work that isn't needed." },
+  { label: "Presentation format", value: "Static images, interactive before-and-after, phased sequence. This determines production approach and output file format." },
+  { label: "Audience and use", value: "Planning submission, investor presentation, public consultation, social media. Different audiences have different expectations for finish level and explanatory labeling." },
+]} />
+
+## Related techniques
+
+For stylizing an existing interior into different design directions: [Interior Styling](/vision-tech/interior-styling/)
+
+For transforming the exterior character of a building using AI: [Architectural Styling](/vision-tech/architectural-styling/)
+
+For full photorealistic rendering of the completed design: [Photorealistic Rendering](/vision-tech/photorealistic-rendering/)
+
+For interactive before-and-after comparison: [Photo Integration](/vision-tech/photo-integration/)

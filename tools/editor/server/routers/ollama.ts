@@ -1,16 +1,20 @@
 import express from 'express';
 import type { Request, Response } from 'express';
+import { getConfig } from '../lib/editor-config.js';
 
 const router = express.Router();
 
-const OLLAMA_BASE = 'http://localhost:11434';
 const DEFAULT_MODEL = 'llama3';
+
+function ollamaBase(): string {
+  return getConfig().ollamaBase;
+}
 
 // ---------------------------------------------------------------------------
 // Helper — fetch from Ollama with error handling (graceful degradation)
 // ---------------------------------------------------------------------------
 async function ollamaFetch(path: string, init?: RequestInit): Promise<Response> {
-  const url = `${OLLAMA_BASE}${path}`;
+  const url = `${ollamaBase()}${path}`;
   const response = await fetch(url, {
     ...init,
     signal: AbortSignal.timeout(60_000), // 60s timeout
@@ -23,7 +27,7 @@ async function ollamaFetch(path: string, init?: RequestInit): Promise<Response> 
 // ---------------------------------------------------------------------------
 router.get('/models', async (_req: Request, res: Response) => {
   try {
-    const resp = await fetch(`${OLLAMA_BASE}/api/tags`, {
+    const resp = await fetch(`${ollamaBase()}/api/tags`, {
       signal: AbortSignal.timeout(5_000),
     });
     if (!resp.ok) {
@@ -54,7 +58,7 @@ router.post('/chat', async (req: Request, res: Response) => {
   }
 
   try {
-    const resp = await fetch(`${OLLAMA_BASE}/api/chat`, {
+    const resp = await fetch(`${ollamaBase()}/api/chat`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ model, messages, stream }),
@@ -113,7 +117,7 @@ router.post('/generate', async (req: Request, res: Response) => {
   }
 
   try {
-    const resp = await fetch(`${OLLAMA_BASE}/api/generate`, {
+    const resp = await fetch(`${ollamaBase()}/api/generate`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ model, prompt, stream }),
@@ -168,7 +172,7 @@ router.post('/alt-text', async (req: Request, res: Response) => {
   // Determine the model to use
   let model = DEFAULT_MODEL;
   try {
-    const tagsResp = await fetch(`${OLLAMA_BASE}/api/tags`, {
+    const tagsResp = await fetch(`${ollamaBase()}/api/tags`, {
       signal: AbortSignal.timeout(3_000),
     });
     if (tagsResp.ok) {
@@ -190,7 +194,7 @@ router.post('/alt-text', async (req: Request, res: Response) => {
     `Respond with ONLY the alt text, no preamble, no quotes.`;
 
   try {
-    const resp = await fetch(`${OLLAMA_BASE}/api/generate`, {
+    const resp = await fetch(`${ollamaBase()}/api/generate`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ model, prompt, stream: false }),
@@ -228,7 +232,7 @@ router.post('/excerpt', async (req: Request, res: Response) => {
   // Determine available model
   let model = DEFAULT_MODEL;
   try {
-    const tagsResp = await fetch(`${OLLAMA_BASE}/api/tags`, {
+    const tagsResp = await fetch(`${ollamaBase()}/api/tags`, {
       signal: AbortSignal.timeout(3_000),
     });
     if (tagsResp.ok) {
@@ -252,7 +256,7 @@ router.post('/excerpt', async (req: Request, res: Response) => {
     `Respond with ONLY the excerpt text. No preamble, no quotes, no explanation.`;
 
   try {
-    const resp = await fetch(`${OLLAMA_BASE}/api/generate`, {
+    const resp = await fetch(`${ollamaBase()}/api/generate`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ model, prompt, stream: false }),
@@ -288,7 +292,7 @@ router.post('/caption', async (req: Request, res: Response) => {
 
   let model = DEFAULT_MODEL;
   try {
-    const tagsResp = await fetch(`${OLLAMA_BASE}/api/tags`, { signal: AbortSignal.timeout(3_000) });
+    const tagsResp = await fetch(`${ollamaBase()}/api/tags`, { signal: AbortSignal.timeout(3_000) });
     if (tagsResp.ok) {
       const tagsData = (await tagsResp.json()) as { models?: Array<{ name: string }> };
       const models = tagsData.models ?? [];
@@ -310,7 +314,7 @@ router.post('/caption', async (req: Request, res: Response) => {
     `Nothing else.`;
 
   try {
-    const resp = await fetch(`${OLLAMA_BASE}/api/generate`, {
+    const resp = await fetch(`${ollamaBase()}/api/generate`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ model, prompt, stream: false }),
@@ -345,7 +349,7 @@ router.post('/paragraph', async (req: Request, res: Response) => {
 
   let model = DEFAULT_MODEL;
   try {
-    const tagsResp = await fetch(`${OLLAMA_BASE}/api/tags`, { signal: AbortSignal.timeout(3_000) });
+    const tagsResp = await fetch(`${ollamaBase()}/api/tags`, { signal: AbortSignal.timeout(3_000) });
     if (tagsResp.ok) {
       const tagsData = (await tagsResp.json()) as { models?: Array<{ name: string }> };
       const models = tagsData.models ?? [];
@@ -368,7 +372,7 @@ router.post('/paragraph', async (req: Request, res: Response) => {
     `Respond with ONLY the paragraph text. No preamble, no quotes, no explanation.`;
 
   try {
-    const resp = await fetch(`${OLLAMA_BASE}/api/generate`, {
+    const resp = await fetch(`${ollamaBase()}/api/generate`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ model, prompt: llmPrompt, stream: false }),
@@ -398,7 +402,7 @@ router.post('/summary', async (req: Request, res: Response) => {
 
   let model = DEFAULT_MODEL;
   try {
-    const tagsResp = await fetch(`${OLLAMA_BASE}/api/tags`, { signal: AbortSignal.timeout(3_000) });
+    const tagsResp = await fetch(`${ollamaBase()}/api/tags`, { signal: AbortSignal.timeout(3_000) });
     if (tagsResp.ok) {
       const tagsData = (await tagsResp.json()) as { models?: Array<{ name: string }> };
       const models = tagsData.models ?? [];
@@ -426,7 +430,7 @@ router.post('/summary', async (req: Request, res: Response) => {
     `Respond with ONLY the ${field} text. No preamble, no labels, no quotes.`;
 
   try {
-    const resp = await fetch(`${OLLAMA_BASE}/api/generate`, {
+    const resp = await fetch(`${ollamaBase()}/api/generate`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ model, prompt: llmPrompt, stream: false }),
@@ -437,6 +441,67 @@ router.post('/summary', async (req: Request, res: Response) => {
 
     const data = (await resp.json()) as { response?: string };
     res.json({ text: (data.response ?? '').trim() });
+  } catch (err: any) {
+    if (err.name === 'TimeoutError' || err.code === 'ECONNREFUSED') res.status(503).json({ error: 'Ollama not available' });
+    else res.status(500).json({ error: err.message });
+  }
+});
+
+// ---------------------------------------------------------------------------
+// POST /banner-subject — derive a cinematic visual subject from page/section content
+// ---------------------------------------------------------------------------
+router.post('/banner-subject', async (req: Request, res: Response) => {
+  const { title, description, tags, sectionLabel, sectionTitle, bodyText } = req.body as {
+    title?: string;
+    description?: string;
+    tags?: string[];
+    sectionLabel?: string;
+    sectionTitle?: string;
+    bodyText?: string;
+  };
+
+  let model = DEFAULT_MODEL;
+  try {
+    const tagsResp = await fetch(`${ollamaBase()}/api/tags`, { signal: AbortSignal.timeout(3_000) });
+    if (tagsResp.ok) {
+      const tagsData = (await tagsResp.json()) as { models?: Array<{ name: string }> };
+      const models = tagsData.models ?? [];
+      model = models.find((m) => m.name.includes('llama3'))?.name ?? models[0]?.name ?? DEFAULT_MODEL;
+    }
+  } catch { /* use default */ }
+
+  const isSection = sectionLabel || sectionTitle;
+  const context = [
+    isSection
+      ? `Section: "${sectionLabel ?? ''}" — "${sectionTitle ?? ''}" (page: "${title ?? ''}")`
+      : title && `Page title: "${title}"`,
+    !isSection && description && `Description: "${description}"`,
+    !isSection && tags?.length && `Tags: ${tags.join(', ')}`,
+    bodyText && `Content:\n${bodyText.slice(0, 1500)}`,
+  ].filter(Boolean).join('\n');
+
+  const llmPrompt =
+    `You are an art director for a luxury architectural visualization studio. ` +
+    `Given the content below, write a concise cinematic visual subject for a banner image (5–10 words). ` +
+    `It should be evocative and atmosphere-driven, not literal. ` +
+    `Example outputs: "lone figure crossing a vast concrete lobby", "suspension bridge emerging from morning fog", "empty staircase lit by a single shaft of light". ` +
+    `\n\nContent:\n${context}\n\n` +
+    `Respond with ONLY the subject. No preamble, no quotes, no explanation.`;
+
+  try {
+    const resp = await fetch(`${ollamaBase()}/api/generate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model, prompt: llmPrompt, stream: false }),
+      signal: AbortSignal.timeout(60_000),
+    });
+    if (!resp.ok) { res.status(resp.status).json({ error: 'Ollama request failed' }); return; }
+    const raw = await resp.text();
+    // Ollama may return NDJSON (streaming lines) even with stream:false — take last non-empty line
+    const lines = raw.split('\n').filter((l) => l.trim());
+    const lastLine = lines[lines.length - 1] ?? '{}';
+    const data = JSON.parse(lastLine) as { response?: string };
+    res.json({ subject: (data.response ?? '').trim() });
   } catch (err: any) {
     if (err.name === 'TimeoutError' || err.code === 'ECONNREFUSED') res.status(503).json({ error: 'Ollama not available' });
     else res.status(500).json({ error: err.message });

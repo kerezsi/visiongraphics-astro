@@ -205,19 +205,26 @@ router.patch('/collections/:name/:slug', async (req: Request, res: Response) => 
     res.status(400).json({ error: 'Missing title' });
     return;
   }
-  const filePath = `src/content/${name}/${slug}.yaml`;
+  // Prefer .md; fall back to legacy .yaml
   let safePath: string;
-  try { safePath = validatePath(filePath); } catch {
-    res.status(400).json({ error: 'Invalid path' });
-    return;
+  let foundExt: 'md' | 'yaml' | null = null;
+  for (const ext of ['md', 'yaml'] as const) {
+    try {
+      const candidate = validatePath(`src/content/${name}/${slug}.${ext}`);
+      await fs.access(candidate);
+      safePath = candidate;
+      foundExt = ext;
+      break;
+    } catch { /* try next */ }
   }
-  try {
-    await fs.access(safePath);
-  } catch {
+  if (!foundExt) {
     res.status(404).json({ error: `Entry "${slug}" not found` });
     return;
   }
-  await fs.writeFile(safePath, `title: ${JSON.stringify(title)}\n`, 'utf-8');
+  const newContent = foundExt === 'md'
+    ? `---\ntitle: ${JSON.stringify(title)}\n---\n`
+    : `title: ${JSON.stringify(title)}\n`;
+  await fs.writeFile(safePath!, newContent, 'utf-8');
   res.json({ slug, title });
 });
 
@@ -231,26 +238,30 @@ router.delete('/collections/:name/:slug', async (req: Request, res: Response) =>
     res.status(400).json({ error: `Unknown collection: ${name}` });
     return;
   }
-  const filePath = `src/content/${name}/${slug}.yaml`;
-  let safePath: string;
-  try { safePath = validatePath(filePath); } catch {
-    res.status(400).json({ error: 'Invalid path' });
+  // Prefer .md; fall back to legacy .yaml
+  let safePath: string | null = null;
+  for (const ext of ['md', 'yaml']) {
+    try {
+      const candidate = validatePath(`src/content/${name}/${slug}.${ext}`);
+      await fs.access(candidate);
+      safePath = candidate;
+      break;
+    } catch { /* try next */ }
+  }
+  if (!safePath) {
+    res.status(404).json({ error: `Entry "${slug}" not found` });
     return;
   }
   try {
     await fs.unlink(safePath);
     res.json({ deleted: true });
   } catch (err: any) {
-    if (err.code === 'ENOENT') {
-      res.status(404).json({ error: `Entry "${slug}" not found` });
-    } else {
-      res.status(500).json({ error: err.message });
-    }
+    res.status(500).json({ error: err.message });
   }
 });
 
 // ---------------------------------------------------------------------------
-// POST /collections/:name — create a new YAML entry in a reference collection
+// POST /collections/:name — create a new entry in a reference collection
 // Body: { slug, title }
 // ---------------------------------------------------------------------------
 router.post('/collections/:name', async (req: Request, res: Response) => {
@@ -269,7 +280,7 @@ router.post('/collections/:name', async (req: Request, res: Response) => {
     res.status(400).json({ error: 'Invalid slug' });
     return;
   }
-  const filePath = `src/content/${name}/${slug}.yaml`;
+  const filePath = `src/content/${name}/${slug}.md`;
   let safePath: string;
   try {
     safePath = validatePath(filePath);
@@ -277,12 +288,15 @@ router.post('/collections/:name', async (req: Request, res: Response) => {
     res.status(400).json({ error: 'Invalid path' });
     return;
   }
-  try {
-    await fs.access(safePath);
-    res.status(409).json({ error: `Entry "${slug}" already exists` });
-    return;
-  } catch { /* doesn't exist — good */ }
-  const content = `title: ${JSON.stringify(title)}\n`;
+  // Check for existing entry under either extension
+  for (const ext of ['md', 'yaml']) {
+    try {
+      await fs.access(validatePath(`src/content/${name}/${slug}.${ext}`));
+      res.status(409).json({ error: `Entry "${slug}" already exists` });
+      return;
+    } catch { /* doesn't exist — good */ }
+  }
+  const content = `---\ntitle: ${JSON.stringify(title)}\n---\n`;
   await fs.mkdir(path.dirname(safePath), { recursive: true });
   await fs.writeFile(safePath, content, 'utf-8');
   res.json({ slug, title, path: filePath });

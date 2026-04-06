@@ -9,17 +9,22 @@ import FilmEmbed from '../../components/media/FilmEmbed.astro';
 import YouTubeEmbed from '../../components/media/YouTubeEmbed.astro';
 import ImageLightbox from '../../components/media/ImageLightbox';
 import MdxImageCompare from '../../components/mdx/ImageCompare.astro';
+import MdxImageGallery from '../../components/mdx/ImageGallery.astro';
 import ArticleImageCompareMounter from '../../components/media/ArticleImageCompareMounter';
+import ArticleGalleryMounter from '../../components/media/ArticleGalleryMounter';
+import ProcessFlow from '../../components/mdx/ProcessFlow.astro';
+import SpecTable from '../../components/mdx/SpecTable.astro';
+import CompareTable from '../../components/mdx/CompareTable.astro';
 
 export async function getStaticPaths() {
-  const all = await getCollection('vision-tech');
+  const all = await getCollection('vision-tech', e => e.data.published !== false);
   return all.map(entry => ({ params: { slug: entry.slug } }));
 }
 
 const { slug } = Astro.params;
 const all = await getCollection('vision-tech');
 const entry = all.find(e => e.slug === slug);
-if (!entry) return Astro.redirect('/vision-tech/');
+if (!entry || entry.data.published === false) return Astro.redirect('/vision-tech/');
 const { data } = entry;
 const { Content } = await entry.render();
 
@@ -118,8 +123,9 @@ const relatedClientNames = await Promise.all(
   <section class="vt-block-section">
     <div class="container">
       <div class="vt-body-content">
-        <Content components={{ Tour360, FilmEmbed, YouTubeEmbed, YoutubeEmbed: YouTubeEmbed, ImageCompare: MdxImageCompare }} />
+        <Content components={{ Tour360, FilmEmbed, YouTubeEmbed, YoutubeEmbed: YouTubeEmbed, ImageCompare: MdxImageCompare, ImageGallery: MdxImageGallery, ProcessFlow, SpecTable, CompareTable }} />
         <ArticleImageCompareMounter client:load />
+        <ArticleGalleryMounter client:load />
       </div>
     </div>
   </section>
@@ -295,8 +301,9 @@ const relatedClientNames = await Promise.all(
     color: var(--color-text); margin: 1.5rem 0 0.5rem;
   }
   .vt-body-content :global(p) {
-    font-size: var(--fs-small); line-height: 1.75;
+    font-size: var(--fs-body); line-height: 1.75;
     color: var(--color-text-muted); margin: 0.6rem 0;
+    max-width: none;
   }
   .vt-body-content :global(ul),
   .vt-body-content :global(ol) {
@@ -304,7 +311,7 @@ const relatedClientNames = await Promise.all(
     display: flex; flex-direction: column; gap: 0.3rem;
   }
   .vt-body-content :global(li) {
-    font-size: var(--fs-small); line-height: 1.65; color: var(--color-text-muted);
+    font-size: var(--fs-body); line-height: 1.65; color: var(--color-text-muted);
   }
   .vt-body-content :global(strong) { color: var(--color-text); font-weight: 600; }
   .vt-body-content :global(a) {

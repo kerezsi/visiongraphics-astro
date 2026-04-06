@@ -1,19 +1,11 @@
 import { create } from 'zustand';
 import * as api from '../lib/api-client.ts';
 
-interface ComfyJob {
-  id: string;
-  progress: number;
-  status: 'pending' | 'complete' | 'error';
-  outputUrl?: string;
-}
-
 interface AIStore {
   ollamaAvailable: boolean;
   ollamaModels: string[];
   selectedModel: string;
-  comfyAvailable: boolean;
-  activeJob: ComfyJob | null;
+  swarmAvailable: boolean;
   isCheckingServices: boolean;
 
   checkServices: () => Promise<void>;
@@ -21,25 +13,21 @@ interface AIStore {
   generateText: (prompt: string, context?: string) => Promise<string>;
   generateAltText: (imageUrl: string) => Promise<string>;
   generateExcerpt: (title: string, body: string) => Promise<string>;
-  startComfyJob: (workflow: object, pageType: string, slug: string) => Promise<string>;
-  updateJob: (job: Partial<ComfyJob>) => void;
-  clearJob: () => void;
 }
 
 export const useAIStore = create<AIStore>((set, get) => ({
   ollamaAvailable: false,
   ollamaModels: [],
   selectedModel: '',
-  comfyAvailable: false,
-  activeJob: null,
+  swarmAvailable: false,
   isCheckingServices: false,
 
   checkServices: async () => {
     set({ isCheckingServices: true });
     try {
-      const [ollamaResult, comfyResult] = await Promise.allSettled([
+      const [ollamaResult, swarmResult] = await Promise.allSettled([
         api.getOllamaModels(),
-        api.getComfyStatus(),
+        api.getSwarmStatus(),
       ]);
 
       const ollamaData =
@@ -47,19 +35,19 @@ export const useAIStore = create<AIStore>((set, get) => ({
           ? ollamaResult.value
           : { available: false, models: [] };
 
-      const comfyData =
-        comfyResult.status === 'fulfilled'
-          ? comfyResult.value
+      const swarmData =
+        swarmResult.status === 'fulfilled'
+          ? swarmResult.value
           : { available: false };
 
       set({
         ollamaAvailable: ollamaData.available,
         ollamaModels: ollamaData.models ?? [],
         selectedModel: ollamaData.models?.[0] ?? '',
-        comfyAvailable: comfyData.available,
+        swarmAvailable: swarmData.available,
       });
     } catch {
-      set({ ollamaAvailable: false, comfyAvailable: false });
+      set({ ollamaAvailable: false, swarmAvailable: false });
     } finally {
       set({ isCheckingServices: false });
     }
@@ -85,22 +73,4 @@ export const useAIStore = create<AIStore>((set, get) => ({
   generateExcerpt: async (title, body) => {
     return api.generateExcerpt(title, body);
   },
-
-  startComfyJob: async (workflow, pageType, slug) => {
-    const { jobId } = await api.startComfyGenerate(
-      workflow as Record<string, unknown>,
-      pageType,
-      slug
-    );
-    set({ activeJob: { id: jobId, progress: 0, status: 'pending' } });
-    return jobId;
-  },
-
-  updateJob: (patch) => {
-    set((s) => ({
-      activeJob: s.activeJob ? { ...s.activeJob, ...patch } : null,
-    }));
-  },
-
-  clearJob: () => set({ activeJob: null }),
 }));

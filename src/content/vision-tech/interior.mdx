@@ -1,6 +1,6 @@
 ---
 title: Interior
-description: Images or renderings depicting the inside spaces of buildings or structures. Interior visuals showcase room layouts decor and the overall ambiance of indoor environments.
+description: Photorealistic renderings of interior spaces produced in 3ds Max with V-Ray. Global illumination, IES photometric lighting, and physically-based materials create accurate previews of rooms before they're built or fitted out.
 image: /_img/vision-tech/interior.jpg
 technique: Digital
 cost: €
@@ -23,80 +23,67 @@ relatedCategories:
   - hospitality
 relatedFeatures:
   - Interior
+published: true
 ---
 
-<h2>What are Interior Visualizations?</h2><p>They're images that show what rooms will look like before they're built. We create photorealistic renders of any interior space - from apartments and offices to hotels and restaurants.</p> 
- 
- 
- 
- 
- 
-  
- <h2>Why Visualize Interiors?</h2><p>It's hard to imagine spaces from plans. Interior visuals solve that problem:</p><ul><li>Help clients truly understand the design</li><li>Test different materials and furniture</li><li>Spot design issues before construction</li><li>Start marketing before completion</li><li>Make better decisions about details</li></ul><p>Good interior visuals save time and money by getting everyone on the same page early.</p><h2>How We Create Them</h2><p>We build everything in 3D, then make it look real:</p><ol><li>Create the basic geometry from plans</li><li>Add windows and openings for natural light</li><li>Place furniture and fixtures</li><li>Apply accurate materials to all surfaces</li><li>Set up natural lighting conditions</li><li>Render with photorealistic quality</li></ol><p>The details matter a lot in interiors. We get the light bouncing between surfaces just right, make sure materials look real, and add small details that give the space life.</p> 
- 
- 
- <h2>When to Visualize Interiors</h2><p>This works best when:</p><ul><li>Design is still being refined</li><li>Clients need to understand the space</li><li>You're choosing between options</li><li>Marketing needs to start early</li><li>You need to show functionality</li></ul> 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-  
- <h2>What You Get</h2><p>We deliver:</p><ul><li>High-resolution interior images</li><li>Multiple view options</li><li>Different material variations if needed</li><li>Day and night lighting options</li><li>Files ready for any use</li></ul> 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-  
- 
- 
- <h2>What We Need From You</h2><p>To create good interior visuals, we need:</p><ul><li>Floor plans with dimensions</li><li>Ceiling heights</li><li>Material specifications</li><li>Furniture plans if available</li><li>Lighting information</li><li>Reference images you like</li></ul><h2>Getting Started</h2><p>Want to see your interior spaces? Let's talk about what you need:</p><ul><li>Project type</li><li>How many views</li><li>Timeline</li><li>How you'll use the images</li><li>Special requirements</li></ul><p>We'll help you get exactly what you need.</p><p>Want to show the outside too? Check out our <a href="/_img/vision-tech/exterior/">Exterior</a> visualization services. For a more immersive experience, consider <a href="/_img/vision-tech/360-renderings/">360 Renderings</a>.</p>
+Interior renderings show how rooms look and feel before they're built. The technical challenge is lighting: unlike an exterior, an interior relies on light that bounces through the space multiple times before reaching the camera, making V-Ray's global illumination the core of the work.
+
+## The technical challenge
+
+Getting interior light right requires careful setup at every stage:
+
+**Global illumination** — light bounces off every surface in the scene. Material reflectivity and diffuse color directly affect how adjacent areas read. A slightly warm plaster behaves very differently from a neutral white wall, and both look different at different ceiling heights.
+
+**Artificial lighting** — IES photometric profiles sourced from the actual luminaire manufacturers give the most accurate results. Without them, we estimate from fixture type, which introduces guesswork that only becomes apparent in the final render.
+
+**Window portals** — daylit interiors need proper light portal geometry at every glazing opening, plus a matched HDRI for the exterior sky. The exposure ratio between interior and exterior determines whether glazing reads as a view or a blown-out white void.
+
+**Material proximity** — the camera is close to every surface in an interior. Material work is heavier than for exterior work: wood grain, fabric weave, specular variation in stone, grout detail in tiling. These only read convincingly with layered material setups.
+
+The gap between a credible interior render and an unconvincing one is almost always lighting and material quality, not model complexity.
+
+<ProcessFlow
+  steps={[
+    { label: "Brief", sub: "rooms, views, mood" },
+    { label: "3D model", sub: "from floor plans" },
+    { label: "Materials", sub: "surfaces, finishes" },
+    { label: "Furniture", sub: "specific or indicative" },
+    { label: "Lighting rig", sub: "GI + sources" },
+    { label: "Draft render", sub: "review composition" },
+    { label: "Production", sub: "4K V-Ray final" },
+  ]}
+  feedback={[{ from: 5, to: 2, label: "Layout or finish revision" }]}
+  title="Production workflow"
+/>
+
+## What we need from you
+
+<SpecTable rows={[
+  { label: "Floor plans", value: "With accurate dimensions. Ceiling heights are essential — they directly affect lighting quality and cannot be guessed." },
+  { label: "Finish schedule", value: "Floor, wall, ceiling materials with product references where possible. The more specific, the more accurate the material behavior." },
+  { label: "Furniture", value: "Specific pieces if the interior design is resolved; style references and approximate sizes if not." },
+  { label: "Lighting design", value: "IES files from the luminaire manufacturer, or fixture product names so we can source them. Without this, artificial lighting is estimated." },
+  { label: "Sections", value: "Useful for spaces with complex ceiling geometry, coffered ceilings, split levels, or double-height volumes." },
+]} />
+
+## Delivery
+
+4K stills per agreed camera position. Full HD for digital and presentation use. Multiple rooms or view variants share the same model — each additional view costs the setup time for that camera position and lighting adjustment, not a full rebuild.
+
+## When interior renderings earn their keep
+
+**Design development** — testing finish combinations before specifying materials is where these pay for themselves most directly. Catching a material conflict or proportion problem in a render costs minutes; catching it on site costs weeks.
+
+**Pre-sales** — marketing apartments, hotel rooms, or commercial fit-outs before construction or fit-out is complete.
+
+**Client sign-off** — reducing surprises when the design involves complex spatial relationships or non-standard material combinations.
+
+**FF&E coordination** — showing furniture and fixtures in context before purchasing decisions are finalized.
+
+## Related techniques
+
+For a fully explorable interior rather than fixed camera views: [360 Renderings](/vision-tech/360-renderings/)
+
+For an immersive walk-through experience: [Virtual Reality](/vision-tech/virtual-reality-vr-experience/)
+
+For the building exterior: [Exterior](/vision-tech/exterior/)

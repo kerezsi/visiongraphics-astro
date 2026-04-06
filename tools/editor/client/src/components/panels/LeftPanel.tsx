@@ -4,6 +4,7 @@ import { FileBrowser } from '../file-browser/FileBrowser.tsx';
 import { BlockPalette } from '../palette/BlockPalette.tsx';
 import { OllamaPanel } from '../ai/OllamaPanel.tsx';
 import { ComfyUIPanel } from '../ai/ComfyUIPanel.tsx';
+import { AISettingsPanel } from '../ai/AISettingsPanel.tsx';
 
 const panelStyle: React.CSSProperties = {
   width: 240,
@@ -77,6 +78,7 @@ export function LeftPanel() {
             <OllamaPanel />
             <div style={{ height: 1, background: 'var(--color-border)' }} />
             <ComfyUIPanel />
+            <AISettingsPanel />
           </div>
         )}
       </div>

@@ -65,7 +65,8 @@ const hasMeta = data.pricing || data.startRequirements || (data.sidebarLabel && 
     )}
 
     {hasMeta && (
-      <div class="service-meta container">
+      <div class="container">
+      <div class="service-meta">
         {data.pricing && (
           <div class="service-meta-item">
             <span class="service-meta-label">Pricing</span>
@@ -85,9 +86,10 @@ const hasMeta = data.pricing || data.startRequirements || (data.sidebarLabel && 
           </div>
         )}
       </div>
+      </div>
     )}
 
-    <div class="service-main">
+    <div class="service-main container">
       <Content components={{
         SectionBanner,
         DeliverableGrid,
@@ -250,59 +252,53 @@ const hasMeta = data.pricing || data.startRequirements || (data.sidebarLabel && 
     line-height: 1.5;
   }
 
-  /* MDX content — no .container so SectionBanners are naturally full-width */
+  /* MDX content — .container class (on the HTML element) provides side padding.
+     SectionBanners escape to full viewport width via the position trick. */
   .service-main {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: var(--space-4);
     margin-bottom: 3rem;
-    width: 100%;
-    max-width: 2400px;
-    margin-inline: auto;
   }
 
-  /* SectionBanners escape the flex container — full viewport width */
+  /* SectionBanners: full viewport width, equal breathing room above and below.
+     Both margins keep spacing external — never padding inside visual containers. */
   .service-main :global(.section-banner) {
     width: 100vw;
     position: relative;
     left: 50%;
     transform: translateX(-50%);
-  }
-  /* The banner's inner .container already handles its own padding — no extra indent on label/title */
-  .service-main :global(.section-banner p),
-  .service-main :global(.section-banner h2) {
-    padding-inline: 0;
+    margin-top: clamp(1.5rem, 3vw, 3rem);
+    margin-bottom: clamp(1.5rem, 3vw, 3rem);
   }
 
-  /* All other MDX content gets container-equivalent padding */
-  .service-main :global(p),
-  .service-main :global(h2),
-  .service-main :global(ul),
-  .service-main :global(.deliverable-grid),
-  .service-main :global(.process-flow),
-  .service-main :global(.phase-matrix),
-  .service-main :global(.timeline-table),
-  .service-main :global(.notable-grid),
-  .service-main :global(.article-gallery-mount),
-  .service-main :global(.image-compare-mount),
-  .service-main :global(.tour-wrap),
-  .service-main :global(.yt-embed) {
-    padding-inline: clamp(1.5rem, 5vw, 4rem);
+  /* Consecutive banners: cancel the stacked margins */
+  .service-main :global(.section-banner + .section-banner) {
+    margin-top: 0;
   }
 
-  .service-main :global(p) {
+  /* Zero out block margins on all direct children — flex gap is the sole spacer.
+     Banner margins override this because they are declared below (same specificity,
+     last declaration wins). */
+  .service-main > :global(*) {
+    margin-block: 0;
+  }
+
+  /* Direct-child typography — scoped to top-level MDX elements only so nested
+     card/component text (deliverable-grid, process-flow, etc.) is not affected */
+  .service-main > :global(p) {
     font-size: var(--fs-small);
     color: var(--color-text-muted);
     line-height: 1.7;
     margin: 0;
   }
-  .service-main :global(h2) {
+  .service-main > :global(h2) {
     font-size: var(--fs-h4);
     font-weight: 700;
     color: var(--color-text);
-    margin: 0.5rem 0 0;
+    margin: 0;
   }
-  .service-main :global(ul) {
+  .service-main > :global(ul) {
     list-style: none;
     padding-block: 0;
     margin: 0;

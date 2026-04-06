@@ -1,6 +1,6 @@
 ---
 title: Photo Integration
-description: The process of combining photographs with digital elements or renderings. This technique can be used to place proposed designs in real-world contexts or enhance existing imagery.
+description: A proposed building rendered in 3ds Max with V-Ray and composited into a real ground-level photograph of its site. The surroundings are real; the new building is rendered to match the photograph's perspective, lighting, and conditions.
 image: /_img/vision-tech/photo-integration.jpg
 technique: Hybrid
 cost: €€
@@ -23,6 +23,62 @@ relatedCategories:
   - airport
 relatedFeatures:
   - Photo Integration
+published: true
 ---
 
-<h2>What is Photo Integration?</h2><p>We take a real photo of a site and add your building to it. It's that simple. Your design appears in its actual context, as if it was already built and someone took a photo of it.</p><h2>Why Use Photo Integration?</h2><p>It's the most realistic way to show how your project will look in its real setting:</p><ul><li>Shows exact scale in relation to surroundings</li><li>Uses actual lighting conditions from the photo</li><li>Helps people understand the impact on the neighborhood</li><li>More convincing than pure renderings for many viewers</li><li>Perfect for planning submissions and public consultations</li></ul><p>Good photo integrations help everyone visualize the finished project in a way that pure renderings sometimes can't.</p><h2>How We Create Them</h2><p>Getting this right requires careful attention to detail:</p><ol><li>Take photos from the right angles and heights</li><li>Create a 3D model of your building</li><li>Match the exact camera position and lens characteristics</li><li>Align the sun direction and lighting conditions</li><li>Add shadows and reflections that match the photo</li><li>Blend everything seamlessly</li></ol><p>The goal is to make it look like your building was there when the photo was taken.</p><h2>When to Use Photo Integration</h2><p>This works best when:</p><ul><li>You need to show context and surroundings</li><li>Working in sensitive or historic areas</li><li>Presenting to planning authorities</li><li>Showing impact on views and sightlines</li><li>Public consultations require realistic visuals</li></ul><h2>What You Get</h2><p>We deliver:</p><ul><li>High-resolution integrated images</li><li>Multiple viewpoints if needed</li><li>Before/after comparisons</li><li>Detailed technical notes for planning submissions</li><li>Files ready for print or digital use</li></ul><h2>What We Need From You</h2><p>To create good integrations, we need:</p><ul><li>Your building's 3D model</li><li>Site plans showing exact location</li><li>Material specifications</li><li>Any landscape plans</li><li>Specific viewpoints if required</li></ul><h2>Getting Started</h2><p>Want to see your building in its real context? Let's talk about what you need:</p><ul><li>Location details</li><li>Project timeline</li><li>How you'll use the images</li><li>Any specific viewpoints required</li><li>Special requirements</li></ul><p>We'll help you create the most realistic preview of your project.</p><p>Need aerial views too? Check out our <a href="/_img/vision-tech/aerial-integration/">Aerial Integration</a> or <a href="/_img/vision-tech/drone-photography/">Drone Photography</a> services.</p>
+Photo integration places a rendered building into a real photograph of the site, shot from street level or a nearby vantage point. The existing streetscape, neighboring buildings, vegetation, and ground conditions are real. The proposed building is rendered in V-Ray to match the photograph's camera, lighting, and exposure, then composited in.
+
+This is the standard format for planning submissions that require visualization of impact on the street environment, and for client presentations where showing the building in its actual context is more persuasive than a standalone render.
+
+## The technical process
+
+**Photography** — we photograph the site from positions that will show the building clearly and from viewpoints that planning authorities are likely to use. Camera position, lens, and exposure data are recorded precisely.
+
+**Perspective matching** — a V-Ray camera is set up in 3ds Max to replicate the exact field of view, position, and tilt of the real camera. We use EXIF focal length data and measured camera height. The 3D model is placed on a geo-referenced site plan so the building sits at its exact real-world position.
+
+**Lighting** — the V-Ray sun is set to the real date, time, and GPS location of the photograph. Rendered shadows fall in the same direction as real shadows visible in the image. For overcast conditions, a matched HDRI is used instead.
+
+**Shadow catcher and reflection** — a shadow catcher plane on the ground receives shadows cast by the rendered building, preserving the real ground texture and road surface beneath. Glazing and polished facades pick up reflections from a matched environment.
+
+**Post-processing** — the render is matched to the photograph's color, contrast, and atmospheric haze. The composite edge between rendered building and real photograph is refined at full resolution.
+
+<ProcessFlow
+  steps={[
+    { label: "Site photography", sub: "positions, EXIF data" },
+    { label: "Camera match", sub: "V-Ray, measured position" },
+    { label: "3D model", sub: "building on site plan" },
+    { label: "Lighting match", sub: "sun position, conditions" },
+    { label: "Render passes", sub: "building, shadow, reflection" },
+    { label: "Composite", sub: "match + grade" },
+  ]}
+  feedback={[{ from: 5, to: 1, label: "Angle or lighting revision" }]}
+  title="Production workflow"
+/>
+
+## When photo integration is used
+
+**Planning submissions** — many planning authorities require photomontage or visualized impact assessments showing proposed buildings from defined viewpoints in the existing streetscape. Photo integration is the standard technique for these.
+
+**Public consultation** — showing local residents and stakeholders what a new building will look like from their street, from a park, or from a specific viewpoint they know.
+
+**Historic and sensitive contexts** — for projects in conservation areas or adjacent to listed buildings, showing the proposed building next to the real existing context is more credible than a standalone render.
+
+**Client presentations** — for developers and investors who find real-context images more convincing than pure visualization.
+
+## What we need from you
+
+<SpecTable rows={[
+  { label: "3D model", value: "The proposed building in 3ds Max, or drawings and IFC for us to model from." },
+  { label: "Site plan", value: "Accurate footprint positioning. The building must be placed at its real GPS coordinates." },
+  { label: "Material specs", value: "Facade, glazing, ground floor treatment — everything visible from the street." },
+  { label: "Required viewpoints", value: "Any specific positions required by planners or the brief. We photograph from these positions and design additional views around them." },
+  { label: "Landscape", value: "Street-level planting, paving, street furniture if designed. We use real site photography for everything that already exists." },
+]} />
+
+## Related techniques
+
+For the same technique from above: [Aerial Integration](/vision-tech/aerial-integration/)
+
+For ground-level photography to document existing conditions: [Drone Photography](/vision-tech/drone-photography/)
+
+For a 360° version — the building inserted into a real 360° panorama: [360 Photo Integration](/vision-tech/360-photo-integration/)

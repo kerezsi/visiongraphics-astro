@@ -51,6 +51,52 @@ Two editors are available in dev mode:
 VG Editor runs two processes: `npm run editor:server` (API, port varies) + `npm run editor:client` (UI, port 4323).
 Image uploads via VG Editor go to local `.staging/<slug>/`, then "↑ R2" pushes to R2 via rclone.
 
+### VG Editor — AI Tab
+
+The left panel **AI** tab integrates two local AI services:
+
+**Ollama** (text generation)
+- Status dot shows availability; model dropdown populated from Ollama's tag list.
+- Quick actions: generate excerpt from page content, free-form prompt.
+- Used internally by the SwarmUI panel to derive banner subjects from page content.
+
+**SwarmUI** (image generation)
+- Connects to a SwarmUI instance (not ComfyUI directly — SwarmUI wraps the backend).
+- **Model** — text input with datalist autocomplete from SwarmUI's model list; saved models persist in `editor-config.json`. "↻ Fetch models" pulls the list from SwarmUI.
+- **Size** — base resolution: 1024 / 1328 / 1536 / 2048. Total pixel count equals `base²` (same megapixel budget as 1:1 at that size).
+- **Format** — aspect ratio: 21:9 / 2:1 / 16:9 / 1:1 / 9:16. Both dimensions calculated from `sqrt(area × ratio)`, rounded to nearest 8px.
+- **Style** — saved named styles (positive prompt suffixes). Appended to the prompt at generation time, not mixed into the textarea. Save current prompt as a new style; load style text into prompt via ↓.
+- **Prompt** — textarea. "Save…" names and saves the prompt to `swarmPrompts` in config. "Load prompt…" dropdown restores a saved prompt.
+- **✦ Generate / ☰ Blocks** — Ollama-powered banner subject workflow:
+  - "☰ Blocks" opens a scrollable checklist of all text-containing blocks on the current page.
+  - Check one or more blocks, then click "✦ Generate" — Ollama derives a cinematic visual subject from that content and writes it into the prompt field.
+  - If no blocks are checked, falls back to the current page's meta (title / description / tags), or to a selected SectionBanner block's label + title.
+  - Result also shown as a `✦ …` preview above the textarea in case of React timing issues.
+- **Generated images** are downloaded from SwarmUI and saved to `tools/editor/.swarmui-output/YYYY-MM-DD_HH-MM-SS.png`. Served at `/api/swarmui/output/<filename>`. Last 12 thumbnails shown as a gallery strip; click to re-display.
+
+**AI Settings** (collapsible section at the bottom of the AI tab)
+- Ollama address (default `http://localhost:11434`)
+- SwarmUI address (default `http://localhost:7801`)
+- "Save & reconnect" writes to `tools/editor/editor-config.json` and re-checks service availability.
+
+**`tools/editor/editor-config.json`** — persists all AI settings between server restarts:
+```json
+{
+  "ollamaBase": "http://localhost:11434",
+  "swarmBase":  "http://192.168.x.x:7801",
+  "swarmModels":  ["modelName/file.safetensors"],
+  "swarmStyles":  [{ "name": "Cinematic BW", "text": "black and white, cinematic..." }],
+  "swarmPrompts": [{ "name": "Glass Tower", "text": "lone glass tower at dusk..." }]
+}
+```
+
+**SwarmUI setup requirements:**
+- Host must listen on `0.0.0.0` (not `127.0.0.1`) to accept network connections.
+- Default port: 7801. Set the editor's SwarmUI address accordingly.
+- No WS bridge — generation uses SwarmUI's blocking HTTP API (`POST /API/GenerateText2Image`), so long generations simply hold the HTTP connection open (up to 3 min timeout).
+
+**SwarmUI generation defaults:** steps = 4, CFG = 1 (tuned for LCM/Lightning/Turbo models).
+
 **VG Editor toolbar tabs:**
 - **Editor** — block-based content editor (default view)
 - **Pages** — enable/disable and reorder nav items (drag-to-reorder, saved to `src/data/nav-config.json`)
@@ -99,8 +145,10 @@ src/components/mdx/
   DeliverableGrid.astro     — card grid for services (2 or 3 columns)
   TimelineTable.astro       — project phase table for services
   NotableGrid.astro         — two-column list of notable projects
-  ProcessFlow.astro         — horizontal step diagram with optional feedback arc (services)
+  ProcessFlow.astro         — horizontal step diagram with optional feedback arc (services + vision-tech)
   PhaseMatrix.astro         — dot matrix: deliverable types × project phases (services)
+  SpecTable.astro           — 2-column spec table: label | value (vision-tech)
+  CompareTable.astro        — multi-column comparison table: feature × option (vision-tech)
   ProjectDescription.astro  — description text block (children, no props)
   ProjectStory.astro        — story/background section (heading prop + children)
   ProjectTasks.astro        — tasks text block (children, no props)
@@ -122,6 +170,17 @@ PhaseMatrix  — phase × deliverable matrix
 NotableGrid  — two-column list of notable projects
 ImageGallery — lightbox image grid
 ImageCompare — before/after slider
+```
+
+Also usable in vision-tech MDX (registered in vision-tech template):
+```
+Tour360      — click-to-load 360° iframe
+YoutubeEmbed — click-to-load YouTube facade
+ImageCompare — before/after slider
+ImageGallery — lightbox image grid
+ProcessFlow  — workflow diagram
+SpecTable    — 2-column spec table: rows={[{ label, value }]} caption?
+CompareTable — multi-column comparison: headers={[...]} rows={[{ label, values:[...] }]} caption?
 ```
 
 Usage in MDX:
@@ -304,6 +363,17 @@ Light mode (`[data-theme="light"]`):
 --space-16: 4rem;    --size-header: 4.5rem;  --size-logo: 2.25rem;
 ```
 
+### Global CSS Gotchas
+
+**`p { max-width: 65ch }`** — `global.css` applies a global max-width to all `<p>` elements.
+Any page template that uses full-width prose (MDX body content, etc.) must override this with
+`max-width: none` in its scoped `p` selector. Example:
+```css
+.my-body-content :global(p) { max-width: none; }
+```
+Without this override, body paragraphs sit narrow inside a wide container while block components
+(ProcessFlow, SpecTable, tables, etc.) span full width — creating an inconsistent layout.
+
 ---
 
 ## Site Structure
@@ -338,7 +408,7 @@ src/components/
              ArticleGalleryMounter.tsx, ArticleImageCompareMounter.tsx
   mdx/       SectionBanner.astro, ImageGallery.astro, ImageCompare.astro,
              DeliverableGrid.astro, TimelineTable.astro, NotableGrid.astro,
-             ProcessFlow.astro, PhaseMatrix.astro,
+             ProcessFlow.astro, PhaseMatrix.astro, SpecTable.astro, CompareTable.astro,
              ProjectDescription.astro, ProjectStory.astro, ProjectTasks.astro
   blocks/    BlockRenderer.astro  (legacy — kept for reference, no longer used)
 ```
@@ -411,6 +481,26 @@ array — there is no `services` field on the service schema itself.
 - **`DeliverableGrid` `href` prop** — optional; when provided, the card title becomes a link (use for vision-tech cross-links).
 
 **ServicesTabs active indicator** — uses `shadow-[inset_3px_0_0_var(--color-accent)]`, NOT `border-l-*`. Reason: `border-none` on the button element suppresses all border-style, making border-l invisible.
+
+### Vision-Tech (MDX)
+Frontmatter: title, description, image, technique, cost, model3d, complexity, reality,
+purpose (array), gallery (array of image URLs), relatedCategories (array), relatedFeatures (array),
+published (boolean, default true).
+
+`published: false` hides the page from the index and redirects the slug to `/vision-tech/`.
+Currently hidden: `cultural-context-integration` (no real projects yet).
+
+**Two AI-only tech pages link to an external platform:**
+- `ai-animation` — AI video from stills, links to [ai.visiongraphics.eu](https://ai.visiongraphics.eu)
+- `ai-render-upgrade` — photorealistic variations from existing renders, links to [ai.visiongraphics.eu](https://ai.visiongraphics.eu)
+
+**Vision-tech page template** (`src/pages/vision-tech/[slug].astro`) registers:
+`Tour360`, `FilmEmbed`, `YouTubeEmbed`, `YoutubeEmbed` (alias), `ImageCompare`, `ImageGallery`,
+`ProcessFlow`, `SpecTable`, `CompareTable` — plus `ArticleGalleryMounter` and
+`ArticleImageCompareMounter` as client islands.
+
+**Body text sizing in vision-tech template:** paragraphs and list items use `var(--fs-body)` (not
+`var(--fs-small)`), and `max-width: none` overrides the global `p { max-width: 65ch }` rule.
 
 ### Articles (MDX)
 Frontmatter: title, date, excerpt, tags, coverImage, published.

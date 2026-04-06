@@ -1,6 +1,6 @@
 ---
 title: Night Renderings
-description: Computer-generated images depicting architectural designs or landscapes as they would appear at night. These renderings highlight lighting design illuminated features and the nighttime ambiance of spaces.
+description: Photorealistic night views produced in 3ds Max with V-Ray. Each light source — facade luminaires, interior spill through glazing, street lighting — is individually set up with accurate photometric data. A distinct lighting rig, not a variant of a daytime render.
 image: /_img/vision-tech/night-renderings.jpg
 technique: Digital
 cost: €€
@@ -20,125 +20,57 @@ relatedCategories:
   - office
   - hospitality
 relatedFeatures: []
+published: true
 ---
 
-<h2>What are Night Renderings?</h2><p>They're digital images showing how your building will look at night. We show lighting designs, illuminated features, and how the building glows in darkness.</p> 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-  
- <h2>Why Create Night Views?</h2><p>Buildings change completely after dark. Night renderings show a side that daytime visuals miss:</p><ul><li>Showcase lighting design features</li><li>Show how the building becomes a landmark at night</li><li>Reveal interior-exterior relationships</li><li>Create mood and atmosphere</li><li>Demonstrate security and safety features</li></ul><p>Many projects actually look more striking at night when lighting design takes center stage.</p><h2>How We Create Them</h2><p>Night scenes need special attention to look realistic:</p><ol><li>Start with the same 3D model used for daytime shots</li><li>Create a lighting plan based on specifications</li><li>Add all light sources - interior, exterior, street lights</li><li>Set up accurate light behavior and reflections</li><li>Balance exposure like a night photograph</li><li>Add atmospheric effects for realism</li></ol><p>Getting the light levels right is tricky. We make sure windows glow naturally, exterior lights cast realistic pools, and everything has the right brightness.</p> 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-  
- <h2>When to Use Night Renderings</h2><p>These work best when:</p><ul><li>Lighting is a key design feature</li><li>The building has interesting illuminated elements</li><li>You want to show 24-hour activity</li><li>Marketing needs dramatic images</li><li>The project includes public spaces used at night</li></ul> 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-  
- <h2>What You Get</h2><p>We deliver:</p><ul><li>High-resolution night scene images</li><li>Multiple lighting options if needed</li><li>Twilight and full night versions</li><li>Files ready for any use</li><li>Lighting specification notes if required</li></ul> 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-  
- 
- 
- <h2>What We Need From You</h2><p>To create good night visuals, we need:</p><ul><li>The same plans used for daytime renderings</li><li>Lighting design specifications</li><li>Information about interior lighting</li><li>Material specifications (some behave differently at night)</li><li>Reference images of the look you want</li></ul><h2>Getting Started</h2><p>Want to see your building after dark? Let's talk about what you need:</p><ul><li>Project type</li><li>How many views</li><li>Your timeline</li><li>How you'll use the images</li><li>Any special lighting features to highlight</li></ul><p>We'll help you show your project in its best light.</p><p>Want to see how your building looks in daylight too? Check out our <a href="/_img/vision-tech/exterior/">Exterior</a> visualization services.</p>
+Night renderings are not a checkbox variant added to an exterior order. They require a separate lighting rig, different material setup, and an exposure calibration that treats the scene like a long-exposure photograph. Every light source visible in the frame — facade luminaires, interior spill through glazing, street lighting — needs to be individually defined with realistic intensities and photometric profiles.
+
+The payoff is visual: many buildings read more powerfully after dark, when architectural lighting becomes the dominant design element.
+
+## What makes night rendering technically distinct
+
+In a daytime exterior, sunlight does most of the work. At night, the scene is assembled from many independent sources:
+
+**Facade lighting** — each luminaire needs a type (spot, flood, linear, wash) and intensity. IES photometric files from the lighting designer give accurate beam shapes and falloff. Without them, we estimate from fixture type, which produces plausible but imprecise results.
+
+**Interior spill** — the warm glow through glazing is often what makes or breaks a night render. This requires the interior lighting to be set up correctly, at least in the zones visible through glass. A dark interior with lit floors reads very differently from one with ceiling-mounted downlights.
+
+**Street and environment lighting** — surrounding buildings, streetlights, and sky glow set the ambient exposure baseline. Urban and suburban sites have very different ambient levels; both affect how the building reads in the frame.
+
+**Emissive materials** — backlit signage, edge-lit glazing, lit reveals, and any facade element that glows need emissive material properties in V-Ray rather than external light sources.
+
+**Exposure calibration** — virtual camera settings mirror a real night photograph: longer exposure, different ISO response, color temperature shift. Getting this wrong produces images that look like a grey daytime scene with lights added, not a night photograph.
+
+## When night views add real value
+
+Night renderings are worth the additional setup when lighting is an intentional design feature, not an afterthought:
+
+- **Architectural lighting design** is part of the project brief — there's something to show
+- The building has illuminated facade elements (lit fins, reveals, perforated screens, backlit cladding)
+- **Hospitality, retail, or cultural buildings** where night presence affects commercial performance
+- **Urban landmarks** where the building will be a recognizable element in the city skyline after dark
+- **Award submissions and publications** where a distinctive image with strong graphic qualities matters
+
+For projects without a developed lighting design, a basic night render is possible but limited. The result depends entirely on what there is to light.
+
+## What we need from you
+
+<SpecTable rows={[
+  { label: "Lighting design", value: "IES profiles or luminaire product specs preferred. Without them, results are estimated from fixture type and general intent." },
+  { label: "Interior lighting", value: "At least indicative — we need to know what the spill through glazing should look like. Fully dark interiors are also a valid brief." },
+  { label: "Facade elements", value: "Any backlit, emissive, or externally lit cladding components need to be specified — material, color temperature, intensity direction." },
+  { label: "3D model", value: "The same model used for daytime exterior renders. Night and day views should be planned together to avoid duplicate modeling." },
+  { label: "Reference mood", value: "Dusk or full night? Warm or cool atmosphere? Reference photographs of comparable projects are useful here." },
+]} />
+
+## Delivery
+
+4K stills matching the daytime exterior views. Twilight (blue hour) and full night are different setups — agree which before work starts. Both can be produced from the same model but require separate rendering time.
+
+## Related techniques
+
+For daytime counterpart — same model: [Exterior](/vision-tech/exterior/)
+
+For interior lighting validation: [Interior](/vision-tech/interior/)
+
+For animated lighting transitions (day to dusk to night): [3D Animation](/vision-tech/3d-animation/)

@@ -6,7 +6,10 @@ import type {
   UploadImageResponse,
   OllamaModelsResponse,
   OllamaChatMessage,
-  ComfyStatusResponse,
+  SwarmStatusResponse,
+  SwarmGenerateRequest,
+  SwarmGenerateResponse,
+  SwarmGalleryItem,
 } from '../types/api.ts';
 
 const BASE = '/api';
@@ -184,6 +187,23 @@ export async function generateParagraph(
   return data.text;
 }
 
+export async function generateBannerSubject(params: {
+  title?: string;
+  description?: string;
+  tags?: string[];
+  sectionLabel?: string;
+  sectionTitle?: string;
+  bodyText?: string;
+}): Promise<string> {
+  const res = await fetch(`${BASE}/ollama/banner-subject`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(params),
+  });
+  const data = await json<{ subject: string }>(res);
+  return data.subject;
+}
+
 export async function generateSummary(
   model: string,
   field: string,
@@ -199,24 +219,31 @@ export async function generateSummary(
   return data.text;
 }
 
-// ---- ComfyUI ----
+// ---- SwarmUI ----
 
-export async function getComfyStatus(): Promise<ComfyStatusResponse> {
-  const res = await fetch(`${BASE}/comfyui/status`);
-  return json<ComfyStatusResponse>(res);
+export async function getSwarmStatus(): Promise<SwarmStatusResponse> {
+  const res = await fetch(`${BASE}/swarmui/status`);
+  return json<SwarmStatusResponse>(res);
 }
 
-export async function startComfyGenerate(
-  workflow: Record<string, unknown>,
-  pageType: string,
-  slug: string
-): Promise<{ jobId: string }> {
-  const res = await fetch(`${BASE}/comfyui/generate`, {
+export async function getSwarmModels(): Promise<string[]> {
+  const res = await fetch(`${BASE}/swarmui/models`);
+  const data = await json<{ models: string[] }>(res);
+  return data.models;
+}
+
+export async function getSwarmGallery(): Promise<SwarmGalleryItem[]> {
+  const res = await fetch(`${BASE}/swarmui/gallery`);
+  return json<SwarmGalleryItem[]>(res);
+}
+
+export async function swarmGenerate(params: SwarmGenerateRequest): Promise<SwarmGenerateResponse> {
+  const res = await fetch(`${BASE}/swarmui/generate`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ workflow, pageType, slug }),
+    body: JSON.stringify(params),
   });
-  return json<{ jobId: string }>(res);
+  return json<SwarmGenerateResponse>(res);
 }
 
 // ---- Import ----
@@ -232,6 +259,33 @@ export async function importMarkdown(
     body: JSON.stringify({ markdown, pageType, slug }),
   });
   return json<{ blocks: BlockData[]; frontmatter: PageMeta }>(res);
+}
+
+// ---- Editor config ----
+
+export interface SwarmStyle { name: string; text: string; }
+export interface SwarmPromptItem { name: string; text: string; }
+
+export interface EditorConfig {
+  ollamaBase: string;
+  swarmBase: string;
+  swarmModels: string[];
+  swarmStyles: SwarmStyle[];
+  swarmPrompts: SwarmPromptItem[];
+}
+
+export async function getEditorConfig(): Promise<EditorConfig> {
+  const res = await fetch(`${BASE}/config`);
+  return json<EditorConfig>(res);
+}
+
+export async function saveEditorConfig(updates: Partial<EditorConfig>): Promise<EditorConfig> {
+  const res = await fetch(`${BASE}/config`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(updates),
+  });
+  return json<EditorConfig>(res);
 }
 
 // ---- Commands ----

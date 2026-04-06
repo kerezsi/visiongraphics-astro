@@ -1,18 +1,22 @@
 import express from 'express';
 import type { Request, Response } from 'express';
+import { getConfig } from '../lib/editor-config.js';
 
 const router = express.Router();
 
-const COMFYUI_BASE = 'http://localhost:8188';
 const REQUEST_TIMEOUT = 10_000; // 10s for status checks
 const GENERATE_TIMEOUT = 30_000; // 30s for submitting a job
+
+function comfyBase(): string {
+  return getConfig().comfyBase;
+}
 
 // ---------------------------------------------------------------------------
 // GET /status — check if ComfyUI is available
 // ---------------------------------------------------------------------------
 router.get('/status', async (_req: Request, res: Response) => {
   try {
-    const resp = await fetch(`${COMFYUI_BASE}/system_stats`, {
+    const resp = await fetch(`${comfyBase()}/system_stats`, {
       signal: AbortSignal.timeout(REQUEST_TIMEOUT),
     });
     if (resp.ok) {
@@ -24,7 +28,7 @@ router.get('/status', async (_req: Request, res: Response) => {
   } catch {
     // Also try /queue as fallback
     try {
-      const resp = await fetch(`${COMFYUI_BASE}/queue`, {
+      const resp = await fetch(`${comfyBase()}/queue`, {
         signal: AbortSignal.timeout(REQUEST_TIMEOUT),
       });
       res.json({ available: resp.ok });
@@ -50,7 +54,7 @@ router.post('/generate', async (req: Request, res: Response) => {
   }
 
   try {
-    const resp = await fetch(`${COMFYUI_BASE}/prompt`, {
+    const resp = await fetch(`${comfyBase()}/prompt`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ prompt: workflow }),
@@ -92,7 +96,7 @@ router.get('/job/:promptId', async (req: Request, res: Response) => {
   }
 
   try {
-    const resp = await fetch(`${COMFYUI_BASE}/history/${promptId}`, {
+    const resp = await fetch(`${comfyBase()}/history/${promptId}`, {
       signal: AbortSignal.timeout(REQUEST_TIMEOUT),
     });
 
@@ -132,7 +136,7 @@ router.get('/job/:promptId', async (req: Request, res: Response) => {
         for (const img of nodeOutput.images) {
           // ComfyUI image reference: { filename, subfolder, type }
           const subfolder = img.subfolder ? `${img.subfolder}/` : '';
-          outputFiles.push(`${COMFYUI_BASE}/view?filename=${encodeURIComponent(img.filename)}&subfolder=${encodeURIComponent(img.subfolder ?? '')}&type=${img.type ?? 'output'}`);
+          outputFiles.push(`${comfyBase()}/view?filename=${encodeURIComponent(img.filename)}&subfolder=${encodeURIComponent(img.subfolder ?? '')}&type=${img.type ?? 'output'}`);
         }
       }
     }

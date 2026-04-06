@@ -80,28 +80,35 @@ export interface GenerateExcerptResponse {
   excerpt: string;
 }
 
-// ---- ComfyUI ----
+// ---- SwarmUI ----
 
-export interface ComfyStatusResponse {
+export interface SwarmStatusResponse {
   available: boolean;
 }
 
-export interface ComfyGenerateRequest {
-  workflow: Record<string, unknown>;
-  pageType: string;
-  slug: string;
+export interface SwarmGenerateRequest {
+  prompt: string;
+  negativeprompt?: string;
+  model?: string;
+  width?: number;
+  height?: number;
+  steps?: number;
+  cfgscale?: number;
+  seed?: number;
+  pageType?: string;
+  slug?: string;
 }
 
-export interface ComfyGenerateResponse {
-  jobId: string;
+export interface SwarmGenerateResponse {
+  status: 'complete';
+  images: Array<{ filename: string; url: string }>;
+  pageType?: string;
+  slug?: string;
 }
 
-export interface ComfyProgressEvent {
-  type: 'progress' | 'complete' | 'error';
-  jobId: string;
-  progress?: number;
-  outputUrl?: string;
-  error?: string;
+export interface SwarmGalleryItem {
+  filename: string;
+  url: string;
 }
 
 // ---- Import ----

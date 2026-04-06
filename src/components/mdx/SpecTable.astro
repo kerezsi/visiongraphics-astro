@@ -1,0 +1,33 @@
+---
+interface Row {
+  label: string;
+  value: string;
+}
+interface Props {
+  rows: Row[];
+  caption?: string;
+}
+const { rows, caption } = Astro.props;
+---
+
+<div class="my-[var(--space-6)]">
+  {caption && (
+    <p class="text-[length:var(--fs-xs)] font-bold uppercase tracking-[0.1em] text-[var(--color-text-faint)] mb-[var(--space-4)]">
+      {caption}
+    </p>
+  )}
+  <table class="w-full border-collapse">
+    <tbody>
+      {rows.map(row => (
+        <tr class="border-b border-[var(--color-border)] last:border-0">
+          <td class="py-[var(--space-2)] pr-[var(--space-6)] align-top text-[length:var(--fs-small)] font-bold text-[var(--color-text)] uppercase tracking-[0.05em] whitespace-nowrap w-2/5">
+            {row.label}
+          </td>
+          <td class="py-[var(--space-2)] text-[length:var(--fs-small)] text-[var(--color-text-muted)] leading-relaxed">
+            {row.value}
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>

@@ -87,6 +87,7 @@ const visionTech = defineCollection({
     relatedFeatures: z.array(z.string()).default([]),
     // Ordered content blocks (text + media, interleaved)
     blocks: z.array(contentBlock).optional(),
+    published: z.boolean().default(true),
   }),
 });
 

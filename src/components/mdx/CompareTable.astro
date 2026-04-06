@@ -1,0 +1,46 @@
+---
+interface Row {
+  label: string;
+  values: string[];
+}
+interface Props {
+  headers: string[];
+  rows: Row[];
+  caption?: string;
+}
+const { headers, rows, caption } = Astro.props;
+---
+
+<div class="my-[var(--space-6)] overflow-x-auto">
+  {caption && (
+    <p class="text-[length:var(--fs-xs)] font-bold uppercase tracking-[0.1em] text-[var(--color-text-faint)] mb-[var(--space-4)]">
+      {caption}
+    </p>
+  )}
+  <table class="w-full border-collapse min-w-[360px]">
+    <thead>
+      <tr class="border-b-2 border-[var(--color-border)]">
+        <th class="py-[var(--space-2)] pr-[var(--space-6)] text-[length:var(--fs-xs)] font-bold text-[var(--color-text-faint)] uppercase tracking-[0.08em] text-left"></th>
+        {headers.map(h => (
+          <th class="py-[var(--space-2)] px-[var(--space-4)] text-[length:var(--fs-xs)] font-bold text-[var(--color-accent)] uppercase tracking-[0.08em] text-left">
+            {h}
+          </th>
+        ))}
+      </tr>
+    </thead>
+    <tbody>
+      {rows.map(row => (
+        <tr class="border-b border-[var(--color-border)] last:border-0">
+          <td class="py-[var(--space-2)] pr-[var(--space-6)] align-top text-[length:var(--fs-small)] font-bold text-[var(--color-text)] whitespace-nowrap">
+            {row.label}
+          </td>
+          {row.values.map(v => (
+            <td class="py-[var(--space-2)] px-[var(--space-4)] align-top text-[length:var(--fs-small)] text-[var(--color-text-muted)] leading-relaxed">
+              {v}
+            </td>
+          ))}
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>

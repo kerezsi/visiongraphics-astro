@@ -4,7 +4,7 @@ import { getCollection } from 'astro:content';
 import Page from '../../layouts/Page.astro';
 import SectionBanner from '../../components/ui/SectionBanner.astro';
 
-const allTech = await getCollection('vision-tech');
+const allTech = await getCollection('vision-tech', e => e.data.published !== false);
 const techniques = allTech.sort((a, b) => a.data.title.localeCompare(b.data.title));
 
 const techniques_vals = [...new Set(techniques.map(t => t.data.technique).filter(Boolean))].sort();

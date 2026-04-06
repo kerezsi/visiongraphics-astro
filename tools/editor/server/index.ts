@@ -4,7 +4,6 @@ import http from 'http';
 import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
-import { WebSocketServer, WebSocket } from 'ws';
 import type { IncomingMessage } from 'http';
 
 import { PROJECT_ROOT } from './lib/fs-utils.js';
@@ -12,7 +11,8 @@ import filesRouter from './routers/files.js';
 import imagesRouter from './routers/images.js';
 import contentRouter from './routers/content.js';
 import ollamaRouter from './routers/ollama.js';
-import comfyuiRouter from './routers/comfyui.js';
+import swarmuiRouter from './routers/swarmui.js';
+import configRouter from './routers/config.js';
 import importRouter from './routers/import-md.js';
 import codegenRouter from './routers/codegen.js';
 import commandsRouter from './routers/commands.js';
@@ -105,7 +105,8 @@ app.use('/api/files', filesRouter);
 app.use('/api/images', imagesRouter);
 app.use('/api/content', contentRouter);
 app.use('/api/ollama', ollamaRouter);
-app.use('/api/comfyui', comfyuiRouter);
+app.use('/api/swarmui', swarmuiRouter);
+app.use('/api/config', configRouter);
 app.use('/api/import', importRouter);
 app.use('/api/codegen', codegenRouter);
 app.use('/api/commands', commandsRouter);
@@ -132,88 +133,9 @@ app.get('*', (_req, res) => {
 
 const server = http.createServer(app);
 
-// ---------------------------------------------------------------------------
-// WebSocket server — bridge /ws/comfyui to ComfyUI ws://localhost:8188/ws
-// ---------------------------------------------------------------------------
-
-const wss = new WebSocketServer({ noServer: true });
-
-server.on('upgrade', (request: IncomingMessage, socket, head) => {
-  const url = request.url ?? '';
-
-  if (url.startsWith('/ws/comfyui')) {
-    wss.handleUpgrade(request, socket, head, (clientWs) => {
-      wss.emit('connection', clientWs, request);
-    });
-  } else {
-    socket.destroy();
-  }
-});
-
-wss.on('connection', (clientWs: WebSocket, _request: IncomingMessage) => {
-  let comfyWs: WebSocket | null = null;
-  let isComfyConnected = false;
-
-  // Attempt to connect to ComfyUI WebSocket
-  const connectToComfy = () => {
-    try {
-      comfyWs = new WebSocket('ws://localhost:8188/ws');
-
-      comfyWs.on('open', () => {
-        isComfyConnected = true;
-        console.log('[ws] ComfyUI bridge connected');
-      });
-
-      comfyWs.on('message', (data) => {
-        if (clientWs.readyState === WebSocket.OPEN) {
-          clientWs.send(data);
-        }
-      });
-
-      comfyWs.on('close', (code, reason) => {
-        isComfyConnected = false;
-        console.log(`[ws] ComfyUI bridge closed: ${code} ${reason}`);
-        // Notify client that ComfyUI disconnected
-        if (clientWs.readyState === WebSocket.OPEN) {
-          clientWs.send(
-            JSON.stringify({ type: 'comfyui_disconnected', code, reason: reason.toString() })
-          );
-        }
-      });
-
-      comfyWs.on('error', (err) => {
-        // ComfyUI not running — send graceful notification
-        if (clientWs.readyState === WebSocket.OPEN) {
-          clientWs.send(
-            JSON.stringify({ type: 'comfyui_unavailable', message: 'ComfyUI is not running' })
-          );
-        }
-        isComfyConnected = false;
-      });
-    } catch (err) {
-      console.warn('[ws] Could not connect to ComfyUI:', (err as Error).message);
-    }
-  };
-
-  connectToComfy();
-
-  // Forward client messages to ComfyUI
-  clientWs.on('message', (data) => {
-    if (comfyWs && isComfyConnected && comfyWs.readyState === WebSocket.OPEN) {
-      comfyWs.send(data);
-    }
-  });
-
-  clientWs.on('close', () => {
-    if (comfyWs) {
-      comfyWs.close();
-      comfyWs = null;
-    }
-  });
-
-  clientWs.on('error', (err) => {
-    console.error('[ws] Client WebSocket error:', err.message);
-  });
+// Reject any stray WS upgrade requests (no WS bridge needed for SwarmUI)
+server.on('upgrade', (_request: IncomingMessage, socket) => {
+  socket.destroy();
 });
 
 // ---------------------------------------------------------------------------
@@ -226,7 +148,6 @@ server.listen(PORT, () => {
   console.log('  ─────────────────────────────────────────');
   console.log(`  API:          http://localhost:${PORT}/api`);
   console.log(`  Health:       http://localhost:${PORT}/api/health`);
-  console.log(`  WS (ComfyUI): ws://localhost:${PORT}/ws/comfyui`);
   console.log(`  Project root: ${PROJECT_ROOT}`);
   console.log('');
 });

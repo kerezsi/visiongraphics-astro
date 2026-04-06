@@ -1,8 +1,8 @@
 ---
 title: Exterior
-description: Images or renderings focusing on the outside appearance of buildings or structures. Exterior visuals showcase architectural design materials and how a building interacts with its surroundings.
+description: Photorealistic still images of building exteriors produced in 3ds Max with V-Ray. Models are built from architectural drawings, materials are physically based, and lighting is simulated from the actual site coordinates and time of day.
 image: /_img/vision-tech/exterior.jpg
-technique: AI-Enhanced
+technique: Digital
 cost: €
 model3d: Output from 3D Model
 complexity: 1 - Basic
@@ -23,38 +23,70 @@ relatedCategories:
   - airport
 relatedFeatures:
   - Exterior
+published: true
 ---
 
-<h2>What are Exterior Visualizations?</h2><p>They're images that show the outside of your building before it exists. Think of them as digital photos of your future project - showing facades, materials, landscaping, and how it all fits together.</p> 
- 
- 
- 
- 
- 
- 
- 
- 
-  
- <h2>Why Create Exterior Visuals?</h2><p>They help everyone see what you're planning to build:</p><ul><li>Get clients excited about the design</li><li>Show planning authorities what you're proposing</li><li>Start marketing before construction</li><li>Test different design options quickly</li><li>See how materials work together</li></ul><p>Good exterior visuals can sell a project, win approvals, and catch problems early.</p><h2>How We Create Them</h2><p>We build everything digitally, then make it look like a photo:</p><ol><li>Create accurate 3D models from plans</li><li>Add site context and landscaping</li><li>Apply real-world materials</li><li>Set up natural lighting</li><li>Add people and activities</li><li>Render with photorealistic quality</li></ol><p>We pay special attention to scale, context, and atmosphere to make the images feel real.</p> 
- 
- 
- <h2>When to Use Exterior Visuals</h2><p>These work best when:</p><ul><li>You need to present designs to clients</li><li>Submitting planning applications</li><li>Marketing to buyers or tenants</li><li>Testing facade options</li><li>Showing how a building fits its surroundings</li></ul> 
- 
- 
- <h2>What You Get</h2><p>We deliver:</p><ul><li>High-resolution exterior images</li><li>Multiple viewpoints</li><li>Different times of day (including <a href="#">Night Renderings</a> if needed)</li><li>Seasonal variations if required</li><li>Files ready for print or digital use</li></ul> 
- 
- 
- 
- 
-  
- 
- 
- <h2>What We Need From You</h2><p>To create good exterior visuals, we need:</p><ul><li>Plans and elevations</li><li>Site information</li><li>Material specifications</li><li>Landscape plans if available</li><li>Any context information</li><li>Reference images you like</li></ul><h2>Our Approach</h2><p>We believe exteriors need to show more than just the building. They should tell a story about:</p><ul><li>How people will use the space</li><li>How the building fits its neighborhood</li><li>What the atmosphere will be like</li><li>How it changes with light and weather</li><li>What makes your project special</li></ul> 
- 
- 
- 
- 
- 
- 
-  
- <h2>Getting Started</h2><p>Ready to see your building? Let's talk about what you need:</p><ul><li>Project type and scale</li><li>How many views</li><li>Your timeline</li><li>How you'll use the images</li><li>Any special requirements</li></ul><p>We'll help you figure out the best approach.</p><p>Want to see inside too? Check out our <a href="/_img/vision-tech/interior/">Interior</a> visualization services. For real context, consider <a href="/_img/vision-tech/photo-integration/">Photo Integration</a>.</p>
+Exterior renderings show the outside of a building as a photorealistic still image before it's built. We work in 3ds Max with V-Ray — modeling from your architectural drawings, applying physically-based materials, and simulating daylight for the site's location and chosen time of day.
+
+The result is a fixed camera view that reads as a photograph of the finished building.
+
+## What goes into it
+
+A convincing exterior depends on several things working together:
+
+**Context modeling** — how much of the surroundings needs to be built in 3D depends on how prominently it appears in the chosen view. For tight urban sites this can mean significant surrounding geometry.
+
+**Materials** — concrete, glass, cladding, brick. V-Ray's physically-based material system requires real reflectivity, roughness, and translucency values. Manufacturer product references help significantly over guesswork.
+
+**Entourage** — people, vehicles, vegetation placed to show scale and activity without distracting from the architecture.
+
+**Camera and lighting** — sun position is set from the actual site coordinates and agreed-on time of day. Camera placement is decided before rendering begins.
+
+<ProcessFlow
+  steps={[
+    { label: "Brief", sub: "views, mood, time of day" },
+    { label: "3D model", sub: "from CAD / IFC" },
+    { label: "Materials", sub: "PBR, manufacturer refs" },
+    { label: "Camera & light", sub: "sun angle, sky" },
+    { label: "Draft render", sub: "full HD review" },
+    { label: "Production", sub: "4K V-Ray final" },
+    { label: "Post", sub: "grade, entourage, output" },
+  ]}
+  feedback={[{ from: 4, to: 2, label: "Material or context revision" }]}
+  title="Production workflow"
+/>
+
+## What we need from you
+
+<SpecTable rows={[
+  { label: "Plans & elevations", value: "CAD (DWG/DXF) or IFC preferred. PDFs work but add modeling time." },
+  { label: "Material specs", value: "Product names or manufacturer references. Hex colors are the bare minimum — we'll make them work but physical material behavior requires more." },
+  { label: "Site context", value: "Neighboring buildings, street level, significant trees or features that appear in the view." },
+  { label: "Camera views", value: "Agree these before work begins. Repositioning a camera after the render is started costs a full re-render." },
+  { label: "Reference images", value: "Show us the atmosphere you want, not just the architectural style. Lighting mood is what matters most here." },
+  { label: "Landscape", value: "Planting plan if it exists; otherwise we propose context-appropriate vegetation." },
+]} />
+
+## Delivery
+
+Stills at 4K (3840 × 2160 minimum, wider for panoramic formats). Full HD versions for web and presentation use. TIFF for print, JPEG for digital delivery.
+
+Day and night variants are billed separately — each requires a distinct lighting rig.
+
+## When it's worth doing
+
+- **Design development** — catching spatial problems before they're built is the primary value, not the final image
+- **Planning applications** that require visualization supporting documents
+- **Pre-sales and marketing** before construction starts
+- **Facade option studies** — same model, material swap renders to compare alternatives
+- **Competition submissions**
+
+## Related techniques
+
+For maximum context realism — the 3D model composited into a real photograph of the site: [Photo Integration](/vision-tech/photo-integration/)
+
+For nighttime lighting: [Night Renderings](/vision-tech/night-renderings/)
+
+For interior spaces: [Interior](/vision-tech/interior/)
+
+For aerial views of the building in its site: [Aerial Integration](/vision-tech/aerial-integration/)
