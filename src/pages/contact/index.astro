@@ -75,13 +75,13 @@ import SectionBanner from '../../components/ui/SectionBanner.astro';
         <h2 class="form-title">Send a Message</h2>
 
         <!--
-          Replace action URL with your Formspree endpoint:
-          https://formspree.io/f/YOUR_FORM_ID
-          Or use Cloudflare Pages Forms if available.
+          Submitted to a Cloudflare Pages Function at /api/contact
+          (see functions/api/contact.ts). The function forwards the
+          payload to info@visiongraphics.hu via Resend.
         -->
         <form
           class="contact-form"
-          action="https://formspree.io/f/YOUR_FORM_ID"
+          action="/api/contact"
           method="POST"
           id="contact-form"
           novalidate

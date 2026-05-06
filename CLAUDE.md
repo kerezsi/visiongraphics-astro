@@ -344,6 +344,39 @@ Default size is `'card'`. Gallery main viewer uses `'large'`. Lightbox fullscree
 `src` accepts `string | undefined | null` — returns `''` for falsy input. Always filter out
 empty strings before rendering `<img>` tags.
 
+### Contact Form
+
+The `/contact/` form posts to **`/api/contact`**, a Cloudflare Pages Function defined
+in `functions/api/contact.ts`. The function validates the payload, runs the honeypot
+check, and forwards the message as email via the **Resend** API.
+
+**Required Cloudflare Pages env vars** (Settings → Environment variables → Production):
+
+| Variable | Value |
+|---|---|
+| `RESEND_API_KEY` | API key from resend.com — set as a **secret** |
+| `CONTACT_TO` | `info@visiongraphics.hu` |
+| `CONTACT_FROM` | `contact@visiongraphics.hu` (must be on a Resend-verified domain) |
+
+**One-time Resend setup:**
+1. Create a Resend account, add `visiongraphics.hu` as a sending domain.
+2. Add the DKIM/SPF DNS records Resend provides to the `visiongraphics.hu` zone.
+3. Wait for verification (usually < 5 min once DNS propagates).
+4. Generate an API key, paste into the `RESEND_API_KEY` Pages secret.
+
+**Local testing** (optional — function does not run under `astro dev`):
+```bash
+npm run build
+npx wrangler pages dev dist \
+  --binding RESEND_API_KEY=re_xxx \
+  --binding CONTACT_TO=info@visiongraphics.hu \
+  --binding CONTACT_FROM=contact@visiongraphics.hu
+```
+
+The Pages Function lives **outside** Astro's `src/` tree and is bundled by Cloudflare's
+build step automatically — no Astro config changes needed. The static build (`output:
+'static'`) is unaffected.
+
 ---
 
 ## Design System
