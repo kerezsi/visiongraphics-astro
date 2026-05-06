@@ -1,9 +1,7 @@
 {
   "ollamaBase": "http://192.168.0.69:11434",
-  "swarmBase": "http://192.168.0.63:7861",
-  "swarmModels": [
-    "Flux.1-schnell"
-  ],
+  "swarmBase": "http://192.168.0.61:7861",
+  "swarmModels": [],
   "swarmStyles": [
     {
       "name": "style A",

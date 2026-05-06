@@ -3,6 +3,7 @@
 import { getCollection } from 'astro:content';
 import Page from '../../layouts/Page.astro';
 import SectionBanner from '../../components/ui/SectionBanner.astro';
+import { thumbUrl } from '../../lib/image-url';
 
 const allTech = await getCollection('vision-tech', e => e.data.published !== false);
 const techniques = allTech.sort((a, b) => a.data.title.localeCompare(b.data.title));
@@ -106,7 +107,7 @@ const purpose_vals    = [...new Set(techniques.flatMap(t => t.data.purpose))].so
             data-purpose={t.data.purpose.join('|')}
           >
             <div class="vt-card-img">
-              <img src={t.data.image} alt={t.data.title} loading="lazy" />
+              <img src={thumbUrl(t.data.image)} alt={t.data.title} loading="lazy" />
             </div>
             <div class="vt-card-body">
               <div class="vt-card-meta">
