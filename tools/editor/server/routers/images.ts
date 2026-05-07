@@ -3,11 +3,11 @@ import type { Request, Response } from 'express';
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs/promises';
-import { spawn } from 'child_process';
 import { PROJECT_ROOT, validatePath } from '../lib/fs-utils.js';
 import { processImage } from '../lib/image/processor.js';
 import { buildStagingDir, buildImageDir, buildImageUrl, buildR2RemotePath, sanitizeFilename } from '../lib/image/path-builder.js';
 import type { PageType } from '../lib/image/path-builder.js';
+import { spawnDetached, readChildLog, cleanupChildLog } from '../lib/spawn-detached.js';
 
 const router = express.Router();
 
@@ -157,23 +157,22 @@ router.post('/push-to-r2', async (req: Request, res: Response) => {
 
   console.log(`[images] rclone ${args.join(' ')}`);
 
-  const child = spawn('rclone', args, { cwd: PROJECT_ROOT });
-
-  let stdout = '';
-  let stderr = '';
-
-  child.stdout.on('data', (d: Buffer) => { stdout += d.toString(); });
-  child.stderr.on('data', (d: Buffer) => { stderr += d.toString(); });
+  // Spawn detached so the upload survives an editor server restart
+  // (e.g. tsx watch reloading after a code change).
+  const { child, logFile } = spawnDetached('rclone', args, { cwd: PROJECT_ROOT });
 
   child.on('close', (code) => {
+    const log = readChildLog(logFile);
+    cleanupChildLog(logFile);
     if (code === 0) {
-      res.json({ ok: true, stdout, stderr, destination: r2Dest });
+      res.json({ ok: true, stdout: log, destination: r2Dest });
     } else {
-      res.status(500).json({ ok: false, code, stdout, stderr });
+      res.status(500).json({ ok: false, code, stdout: log });
     }
   });
 
   child.on('error', (err: any) => {
+    cleanupChildLog(logFile);
     res.status(500).json({ error: `rclone not found or failed: ${err.message}` });
   });
 });
@@ -199,11 +198,10 @@ router.post('/push-all-to-r2', async (req: Request, res: Response) => {
   }
 
   let combinedOut = '';
-  let combinedErr = '';
 
   function runJob(i: number): void {
     if (i >= jobs.length) {
-      res.json({ ok: true, stdout: combinedOut, stderr: combinedErr });
+      res.json({ ok: true, stdout: combinedOut });
       return;
     }
 
@@ -211,20 +209,21 @@ router.post('/push-all-to-r2', async (req: Request, res: Response) => {
     const args = ['copy', src, dest, '--s3-no-check-bucket', '--progress'];
     console.log(`[images] rclone ${args.join(' ')}`);
 
-    const child = spawn('rclone', args, { cwd: PROJECT_ROOT });
-
-    child.stdout.on('data', (d: Buffer) => { combinedOut += d.toString(); });
-    child.stderr.on('data', (d: Buffer) => { combinedErr += d.toString(); });
+    // Spawn detached — survives parent restart.
+    const { child, logFile } = spawnDetached('rclone', args, { cwd: PROJECT_ROOT });
 
     child.on('close', (code) => {
+      combinedOut += `\n---- ${dest} ----\n` + readChildLog(logFile);
+      cleanupChildLog(logFile);
       if (code === 0) {
         runJob(i + 1);
       } else {
-        res.status(500).json({ ok: false, step: dest, code, stdout: combinedOut, stderr: combinedErr });
+        res.status(500).json({ ok: false, step: dest, code, stdout: combinedOut });
       }
     });
 
     child.on('error', (err: any) => {
+      cleanupChildLog(logFile);
       res.status(500).json({ error: `rclone not found or failed: ${err.message}`, step: dest });
     });
   }

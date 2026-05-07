@@ -4,6 +4,7 @@ import { spawn, execFileSync } from 'child_process';
 import { PROJECT_ROOT } from '../lib/fs-utils.js';
 import { buildR2RemotePath } from '../lib/image/path-builder.js';
 import type { PageType } from '../lib/image/path-builder.js';
+import { spawnDetached, readChildLog, cleanupChildLog } from '../lib/spawn-detached.js';
 
 // Read the current git branch synchronously without touching the working tree.
 // Used as a guard for /git-push and /git-promote — both expect develop.
@@ -32,22 +33,23 @@ function runCommand(
   args: string[],
   res: Response
 ): void {
-  const child = spawn(cmd, args, { cwd: PROJECT_ROOT, shell: false });
-  let stdout = '';
-  let stderr = '';
-
-  child.stdout.on('data', (d: Buffer) => { stdout += d.toString(); });
-  child.stderr.on('data', (d: Buffer) => { stderr += d.toString(); });
+  // Spawn detached — survives a parent restart (tsx watch reloading on file
+  // change). Used for long-running commands like generate-thumbs.mjs which
+  // can take tens of seconds and must not be killed mid-flight.
+  const { child, logFile } = spawnDetached(cmd, args, { cwd: PROJECT_ROOT });
 
   child.on('close', (code) => {
+    const log = readChildLog(logFile);
+    cleanupChildLog(logFile);
     if (code === 0) {
-      res.json({ ok: true, stdout, stderr });
+      res.json({ ok: true, stdout: log });
     } else {
-      res.status(500).json({ ok: false, code, stdout, stderr });
+      res.status(500).json({ ok: false, code, stdout: log });
     }
   });
 
   child.on('error', (err: Error) => {
+    cleanupChildLog(logFile);
     res.status(500).json({ error: err.message });
   });
 }
