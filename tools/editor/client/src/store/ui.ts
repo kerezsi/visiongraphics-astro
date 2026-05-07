@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-export type EditorView = 'editor' | 'pages' | 'projects' | 'articles' | 'services' | 'collections' | 'vtech';
+export type EditorView = 'editor' | 'pages' | 'pricing' | 'projects' | 'articles' | 'services' | 'collections' | 'vtech';
 
 interface UIStore {
   selectedBlockId: string | null;

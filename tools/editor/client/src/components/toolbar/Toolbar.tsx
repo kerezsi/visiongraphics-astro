@@ -115,6 +115,7 @@ function ToolbarBtn({
 const VIEW_TABS: { key: EditorView; label: string }[] = [
   { key: 'editor',      label: 'Editor' },
   { key: 'pages',       label: 'Pages' },
+  { key: 'pricing',     label: 'Pricing' },
   { key: 'projects',    label: 'Projects' },
   { key: 'articles',    label: 'Articles' },
   { key: 'services',    label: 'Services' },

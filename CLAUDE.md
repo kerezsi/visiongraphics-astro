@@ -136,6 +136,9 @@ The palette will automatically show the new block only on page types where its A
 **VG Editor toolbar tabs:**
 - **Editor** — block-based content editor (default view)
 - **Pages** — enable/disable and reorder nav items (drag-to-reorder, saved to `src/data/nav-config.json`)
+- **Pricing** — edit everything on `/pricing/`. Two sections:
+  - *Pricing Packages* — the three cards (name, price, description, included bullets, CTA, highlight flag); add/remove/reorder. Saved to `src/data/pricing-packages.json`.
+  - *Reference Pricing* — the line-item price table below the cards. Editable: intro, footer note, categories (title + reorder + add/remove), and per-row code/item/value with reorder + add/remove. Saved to `src/data/pricing-reference.json`.
 - **Projects** — batch toggle Published / Featured per project; Open button loads file into editor
 - **Articles** — batch toggle Published, inline tag editor; Open button loads file into editor; ⟳ per-row thumb generation
 - **Services** — batch toggle Published; Open button loads file into editor; ⟳ per-row thumb generation

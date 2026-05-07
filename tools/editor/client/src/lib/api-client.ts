@@ -360,6 +360,63 @@ export async function putNavConfig(items: NavItem[]): Promise<void> {
   await json<{ ok: boolean }>(res);
 }
 
+// ---- Pricing packages ----
+
+export interface PricingPackage {
+  name:      string;
+  price:     string;
+  desc:      string;
+  includes:  string[];
+  cta:       string;
+  href:      string;
+  highlight: boolean;
+}
+
+export async function getPricingPackages(): Promise<PricingPackage[]> {
+  const res = await fetch(`${BASE}/content/pricing-packages`);
+  return json<PricingPackage[]>(res);
+}
+
+export async function putPricingPackages(items: PricingPackage[]): Promise<void> {
+  const res = await fetch(`${BASE}/content/pricing-packages`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(items),
+  });
+  await json<{ ok: boolean }>(res);
+}
+
+// ---- Reference pricing ----
+
+export interface PricingRefRow {
+  code:  string;
+  item:  string;
+  value: string;
+}
+export interface PricingRefCategory {
+  title: string;
+  rows:  PricingRefRow[];
+}
+export interface PricingReference {
+  intro:      string;
+  note:       string;
+  categories: PricingRefCategory[];
+}
+
+export async function getPricingReference(): Promise<PricingReference> {
+  const res = await fetch(`${BASE}/content/pricing-reference`);
+  return json<PricingReference>(res);
+}
+
+export async function putPricingReference(data: PricingReference): Promise<void> {
+  const res = await fetch(`${BASE}/content/pricing-reference`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+  await json<{ ok: boolean }>(res);
+}
+
 // ---- Codegen ----
 
 export async function previewCode(document: DocumentState): Promise<string> {

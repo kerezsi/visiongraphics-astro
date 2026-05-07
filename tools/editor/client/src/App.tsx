@@ -6,6 +6,7 @@ import { RightPanel } from './components/panels/RightPanel.tsx';
 import { ImportDialog } from './components/dialogs/ImportDialog.tsx';
 import { PreviewDialog } from './components/dialogs/PreviewDialog.tsx';
 import { PagesOverview } from './components/overviews/PagesOverview.tsx';
+import { PricingOverview } from './components/overviews/PricingOverview.tsx';
 import { ProjectsOverview } from './components/overviews/ProjectsOverview.tsx';
 import { ArticlesOverview } from './components/overviews/ArticlesOverview.tsx';
 import { CollectionsOverview } from './components/overviews/CollectionsOverview.tsx';
@@ -190,6 +191,8 @@ export default function App() {
           </div>
         ) : view === 'pages' ? (
           <PagesOverview />
+        ) : view === 'pricing' ? (
+          <PricingOverview />
         ) : view === 'projects' ? (
           <ProjectsOverview />
         ) : view === 'articles' ? (

@@ -1,0 +1,46 @@
+[
+  {
+    "name": "Essential",
+    "price": "from €1,200",
+    "desc": "Single building or product. Perfect for planning applications, property launches, and single-phase presentations.",
+    "includes": [
+      "Up to 5 still images",
+      "Two rounds of client feedback",
+      "High-resolution JPG",
+      "1–2 week timeline"
+    ],
+    "cta": "Get a Quote",
+    "href": "/contact/",
+    "highlight": false
+  },
+  {
+    "name": "Professional",
+    "price": "from €15,000",
+    "desc": "Full visualization package for multi-phase projects or marketing campaigns. Animation and 360° tour included.",
+    "includes": [
+      "Up to 15 still images",
+      "Short animation (up to 90 sec)",
+      "360° tour option",
+      "3–4 week timeline",
+      "Three rounds of client feedback"
+    ],
+    "cta": "Get a Quote",
+    "href": "/contact/",
+    "highlight": true
+  },
+  {
+    "name": "Enterprise",
+    "price": "Custom",
+    "desc": "Airport-scale, urban masterplan, or multi-phase integrated marketing. Scoped individually. László as single point of contact throughout.",
+    "includes": [
+      "Unlimited scope by agreement",
+      "4K animation",
+      "VR walkthrough",
+      "Dedicated timeline",
+      "Specialist network as required"
+    ],
+    "cta": "Talk to Us",
+    "href": "/contact/",
+    "highlight": false
+  }
+]

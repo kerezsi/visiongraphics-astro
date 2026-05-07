@@ -361,6 +361,118 @@ router.put('/nav-config', async (req: Request, res: Response) => {
 });
 
 // ---------------------------------------------------------------------------
+// GET /pricing-packages — read src/data/pricing-packages.json
+// ---------------------------------------------------------------------------
+router.get('/pricing-packages', async (_req: Request, res: Response) => {
+  try {
+    const filePath = path.join(PROJECT_ROOT, 'src', 'data', 'pricing-packages.json');
+    const raw = await fs.readFile(filePath, 'utf-8');
+    res.json(JSON.parse(raw));
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ---------------------------------------------------------------------------
+// PUT /pricing-packages — write src/data/pricing-packages.json
+// Body: PricingPackage[]
+// ---------------------------------------------------------------------------
+router.put('/pricing-packages', async (req: Request, res: Response) => {
+  const items = req.body;
+  if (!Array.isArray(items)) {
+    res.status(400).json({ error: 'Body must be an array' });
+    return;
+  }
+  // Light shape validation
+  for (const it of items) {
+    if (typeof it !== 'object' || it === null) {
+      res.status(400).json({ error: 'Each item must be an object' });
+      return;
+    }
+    const keys = ['name', 'price', 'desc', 'cta', 'href'];
+    for (const k of keys) {
+      if (typeof (it as any)[k] !== 'string') {
+        res.status(400).json({ error: `Field "${k}" must be a string` });
+        return;
+      }
+    }
+    if (!Array.isArray((it as any).includes)) {
+      res.status(400).json({ error: 'Field "includes" must be an array of strings' });
+      return;
+    }
+    if (typeof (it as any).highlight !== 'boolean') {
+      res.status(400).json({ error: 'Field "highlight" must be a boolean' });
+      return;
+    }
+  }
+  try {
+    const filePath = path.join(PROJECT_ROOT, 'src', 'data', 'pricing-packages.json');
+    await fs.writeFile(filePath, JSON.stringify(items, null, 2) + '\n', 'utf-8');
+    res.json({ ok: true });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ---------------------------------------------------------------------------
+// GET /pricing-reference — read src/data/pricing-reference.json
+// ---------------------------------------------------------------------------
+router.get('/pricing-reference', async (_req: Request, res: Response) => {
+  try {
+    const filePath = path.join(PROJECT_ROOT, 'src', 'data', 'pricing-reference.json');
+    const raw = await fs.readFile(filePath, 'utf-8');
+    res.json(JSON.parse(raw));
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ---------------------------------------------------------------------------
+// PUT /pricing-reference — write src/data/pricing-reference.json
+// Body: { intro: string; note: string; categories: [{ title, rows: [{code, item, value}] }] }
+// ---------------------------------------------------------------------------
+router.put('/pricing-reference', async (req: Request, res: Response) => {
+  const body = req.body;
+  if (typeof body !== 'object' || body === null) {
+    res.status(400).json({ error: 'Body must be an object' });
+    return;
+  }
+  if (typeof body.intro !== 'string' || typeof body.note !== 'string') {
+    res.status(400).json({ error: 'Fields "intro" and "note" must be strings' });
+    return;
+  }
+  if (!Array.isArray(body.categories)) {
+    res.status(400).json({ error: 'Field "categories" must be an array' });
+    return;
+  }
+  for (const cat of body.categories) {
+    if (typeof cat !== 'object' || cat === null || typeof cat.title !== 'string' || !Array.isArray(cat.rows)) {
+      res.status(400).json({ error: 'Each category must have a string "title" and an array "rows"' });
+      return;
+    }
+    for (const row of cat.rows) {
+      if (typeof row !== 'object' || row === null) {
+        res.status(400).json({ error: 'Each row must be an object' });
+        return;
+      }
+      for (const k of ['code', 'item', 'value']) {
+        if (typeof (row as any)[k] !== 'string') {
+          res.status(400).json({ error: `Row field "${k}" must be a string` });
+          return;
+        }
+      }
+    }
+  }
+  try {
+    const filePath = path.join(PROJECT_ROOT, 'src', 'data', 'pricing-reference.json');
+    await fs.writeFile(filePath, JSON.stringify(body, null, 2) + '\n', 'utf-8');
+    res.json({ ok: true });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ---------------------------------------------------------------------------
 // GET /:name — list any collection (reference or MDX)
 // ---------------------------------------------------------------------------
 router.get('/:name', async (req: Request, res: Response) => {

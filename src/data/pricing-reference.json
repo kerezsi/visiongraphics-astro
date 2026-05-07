@@ -1,0 +1,141 @@
+{
+  "intro": "Every project is quoted individually. The figures below give you a concrete sense of what individual deliverables cost — use them to build a rough estimate before we talk.",
+  "note": "All prices ex. VAT. Payment: 30–40% deposit, milestone payments, balance on delivery. Rush timelines available — additional fees apply. NDAs signed on request.",
+  "categories": [
+    {
+      "title": "3D Modeling",
+      "rows": [
+        {
+          "code": "A1",
+          "item": "Base 3D model — exterior from plans, geometric precision",
+          "value": "€2,300–5,000+"
+        }
+      ]
+    },
+    {
+      "title": "Exterior Visualization",
+      "rows": [
+        {
+          "code": "B1",
+          "item": "Daytime renders — set of 5 photorealistic exterior views",
+          "value": "€980"
+        },
+        {
+          "code": "B2",
+          "item": "Night version — evening/night lighting variations",
+          "value": "€700"
+        },
+        {
+          "code": "B3",
+          "item": "Extra exterior views",
+          "value": "€195/image"
+        },
+        {
+          "code": "B4",
+          "item": "360° tour — 5 viewpoints, 3D environment, web/VR compatible",
+          "value": "€1,525"
+        },
+        {
+          "code": "B5",
+          "item": "Extra panoramic viewpoints",
+          "value": "€145/viewpoint"
+        },
+        {
+          "code": "B6",
+          "item": "Photo integration into photographed panoramas",
+          "value": "€115/viewpoint"
+        }
+      ]
+    },
+    {
+      "title": "Interior Visualization",
+      "rows": [
+        {
+          "code": "C1",
+          "item": "Studio unit — 3–4 stills + 3–4 viewpoint panorama tour",
+          "value": "€1,725/unit"
+        },
+        {
+          "code": "C2",
+          "item": "1-bed unit — 5–7 stills + 5–7 viewpoint panorama tour",
+          "value": "€2,025/unit"
+        },
+        {
+          "code": "C3",
+          "item": "2-bed unit — 7–9 stills + 6–8 viewpoint panorama tour",
+          "value": "€2,400/unit"
+        },
+        {
+          "code": "C4",
+          "item": "3-bed unit — 8–11 stills + 7–9 viewpoint panorama tour",
+          "value": "€2,775/unit"
+        },
+        {
+          "code": "C5",
+          "item": "Common areas — lobby and corridor with panorama tour",
+          "value": "€500–2,000+"
+        }
+      ]
+    },
+    {
+      "title": "Floor Plans",
+      "rows": [
+        {
+          "code": "D1",
+          "item": "Unique floor plan",
+          "value": "€82/plan"
+        },
+        {
+          "code": "D2",
+          "item": "Variant plan",
+          "value": "€44/plan"
+        },
+        {
+          "code": "D3",
+          "item": "Copy plan",
+          "value": "€4/plan"
+        },
+        {
+          "code": "D4",
+          "item": "Sales sheet",
+          "value": "€115"
+        },
+        {
+          "code": "D5",
+          "item": "Sheet assembly",
+          "value": "€40/unit"
+        },
+        {
+          "code": "D6",
+          "item": "Level floor plan",
+          "value": "€100/floor"
+        }
+      ]
+    },
+    {
+      "title": "Animation",
+      "rows": [
+        {
+          "code": "E1",
+          "item": "Base film — 1.5-minute HD animation with people and vehicles",
+          "value": "€8,000"
+        },
+        {
+          "code": "E2",
+          "item": "Extra animation footage",
+          "value": "€90/second"
+        }
+      ]
+    },
+    {
+      "title": "Interactive",
+      "rows": [
+        {
+          "code": "F1",
+          "item": "VR app integration — full integration with automated views",
+          "value": "€8,000"
+        }
+      ]
+    }
+  ]
+}

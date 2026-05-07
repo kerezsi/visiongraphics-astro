@@ -3,53 +3,8 @@
 
 import Page from '../../layouts/Page.astro';
 import SectionBanner from '../../components/ui/SectionBanner.astro';
-
-const packages = [
-  {
-    name: 'Essential',
-    price: 'from €5,000',
-    desc: 'Single building or product. Standard delivery. Perfect for planning applications, property launches, and single-phase presentations.',
-    includes: [
-      'Up to 5 still images',
-      'Two rounds of client feedback',
-      'High-resolution TIFF + web JPG',
-      'Standard 2–3 week timeline',
-    ],
-    cta: 'Get a Quote',
-    href: '/contact/',
-    highlight: false,
-  },
-  {
-    name: 'Professional',
-    price: 'from €15,000',
-    desc: 'Full visualization package for multi-phase projects or marketing campaigns. Animation included. Faster delivery.',
-    includes: [
-      'Up to 15 still images',
-      'Short animation (up to 90 sec)',
-      '360° tour option',
-      'Accelerated 1–2 week timeline',
-      'Three rounds of client feedback',
-    ],
-    cta: 'Get a Quote',
-    href: '/contact/',
-    highlight: true,
-  },
-  {
-    name: 'Enterprise',
-    price: 'Custom',
-    desc: 'Airport-scale, urban masterplan, or multi-phase integrated marketing. Scoped individually. László as single point of contact throughout.',
-    includes: [
-      'Unlimited scope by agreement',
-      '4K animation',
-      'VR walkthrough',
-      'Dedicated timeline',
-      'Specialist network as required',
-    ],
-    cta: 'Talk to Us',
-    href: '/contact/',
-    highlight: false,
-  },
-];
+import packages from '../../data/pricing-packages.json';
+import reference from '../../data/pricing-reference.json';
 ---
 
 <Page
@@ -61,8 +16,8 @@ const packages = [
 
     <SectionBanner
       image="/_img/banners/banner-general.jpg"
-      label="Transparent Pricing"
-      title="No Surprises."
+      label="Investment"
+      title="Pricing"
       size="page"
       headingLevel="h1"
     />
@@ -105,155 +60,26 @@ const packages = [
     <!-- Line-item reference pricing -->
     <div class="line-items">
       <h2 class="line-items-title">Reference Pricing</h2>
-      <p class="line-items-intro">
-        Every project is quoted individually. The figures below give you a concrete sense
-        of what individual deliverables cost — use them to build a rough estimate before we talk.
-      </p>
+      <p class="line-items-intro">{reference.intro}</p>
 
       <div class="price-categories">
-
-        <div class="price-cat">
-          <h3 class="price-cat-title">3D Modeling</h3>
-          <div class="price-rows">
-            <div class="price-row">
-              <span class="price-code">A1</span>
-              <span class="price-item">Base 3D model — exterior from plans, geometric precision</span>
-              <span class="price-val">€2,300–5,000+</span>
+        {reference.categories.map(cat => (
+          <div class="price-cat">
+            <h3 class="price-cat-title">{cat.title}</h3>
+            <div class="price-rows">
+              {cat.rows.map(row => (
+                <div class="price-row">
+                  <span class="price-code">{row.code}</span>
+                  <span class="price-item">{row.item}</span>
+                  <span class="price-val">{row.value}</span>
+                </div>
+              ))}
             </div>
           </div>
-        </div>
-
-        <div class="price-cat">
-          <h3 class="price-cat-title">Exterior Visualization</h3>
-          <div class="price-rows">
-            <div class="price-row">
-              <span class="price-code">B1</span>
-              <span class="price-item">Daytime renders — set of 5 photorealistic exterior views</span>
-              <span class="price-val">€980</span>
-            </div>
-            <div class="price-row">
-              <span class="price-code">B2</span>
-              <span class="price-item">Night version — evening/night lighting variations</span>
-              <span class="price-val">€700</span>
-            </div>
-            <div class="price-row">
-              <span class="price-code">B3</span>
-              <span class="price-item">Extra exterior views</span>
-              <span class="price-val">€195/image</span>
-            </div>
-            <div class="price-row">
-              <span class="price-code">B4</span>
-              <span class="price-item">360° tour — 5 viewpoints, 3D environment, web/VR compatible</span>
-              <span class="price-val">€1,525</span>
-            </div>
-            <div class="price-row">
-              <span class="price-code">B5</span>
-              <span class="price-item">Extra panoramic viewpoints</span>
-              <span class="price-val">€145/viewpoint</span>
-            </div>
-            <div class="price-row">
-              <span class="price-code">B6</span>
-              <span class="price-item">Photo integration into photographed panoramas</span>
-              <span class="price-val">€115/viewpoint</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="price-cat">
-          <h3 class="price-cat-title">Interior Visualization</h3>
-          <div class="price-rows">
-            <div class="price-row">
-              <span class="price-code">C1</span>
-              <span class="price-item">Studio unit — 3–4 stills + 3–4 viewpoint panorama tour</span>
-              <span class="price-val">€1,725/unit</span>
-            </div>
-            <div class="price-row">
-              <span class="price-code">C2</span>
-              <span class="price-item">1-bed unit — 5–7 stills + 5–7 viewpoint panorama tour</span>
-              <span class="price-val">€2,025/unit</span>
-            </div>
-            <div class="price-row">
-              <span class="price-code">C3</span>
-              <span class="price-item">2-bed unit — 7–9 stills + 6–8 viewpoint panorama tour</span>
-              <span class="price-val">€2,400/unit</span>
-            </div>
-            <div class="price-row">
-              <span class="price-code">C4</span>
-              <span class="price-item">3-bed unit — 8–11 stills + 7–9 viewpoint panorama tour</span>
-              <span class="price-val">€2,775/unit</span>
-            </div>
-            <div class="price-row">
-              <span class="price-code">C5</span>
-              <span class="price-item">Common areas — lobby and corridor with panorama tour</span>
-              <span class="price-val">€500–2,000+</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="price-cat">
-          <h3 class="price-cat-title">Floor Plans</h3>
-          <div class="price-rows">
-            <div class="price-row">
-              <span class="price-code">D1</span>
-              <span class="price-item">Unique floor plan</span>
-              <span class="price-val">€82/plan</span>
-            </div>
-            <div class="price-row">
-              <span class="price-code">D2</span>
-              <span class="price-item">Variant plan</span>
-              <span class="price-val">€44/plan</span>
-            </div>
-            <div class="price-row">
-              <span class="price-code">D3</span>
-              <span class="price-item">Copy plan</span>
-              <span class="price-val">€4/plan</span>
-            </div>
-            <div class="price-row">
-              <span class="price-code">D4</span>
-              <span class="price-item">Sales sheet</span>
-              <span class="price-val">€115</span>
-            </div>
-            <div class="price-row">
-              <span class="price-code">D5</span>
-              <span class="price-item">Sheet assembly</span>
-              <span class="price-val">€40/unit</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="price-cat">
-          <h3 class="price-cat-title">Animation</h3>
-          <div class="price-rows">
-            <div class="price-row">
-              <span class="price-code">E1</span>
-              <span class="price-item">Base film — 1.5-minute HD animation with people and vehicles</span>
-              <span class="price-val">€8,000</span>
-            </div>
-            <div class="price-row">
-              <span class="price-code">E2</span>
-              <span class="price-item">Extra animation footage</span>
-              <span class="price-val">€90/second</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="price-cat">
-          <h3 class="price-cat-title">Interactive</h3>
-          <div class="price-rows">
-            <div class="price-row">
-              <span class="price-code">F1</span>
-              <span class="price-item">VR app integration — full integration with automated views</span>
-              <span class="price-val">€8,000</span>
-            </div>
-          </div>
-        </div>
-
+        ))}
       </div>
 
-      <p class="line-items-note">
-        All prices ex. VAT. Payment: 30–40% deposit, milestone payments, balance on delivery.
-        Rush timelines available — additional fees apply. NDAs signed on request.
-      </p>
+      <p class="line-items-note">{reference.note}</p>
     </div>
 
     <!-- What drives cost -->
