@@ -37,16 +37,29 @@ const { Content } = await entry.render();
 // Related portfolio projects
 const allProjects = await getCollection('projects', p => p.data.published && !!p.data.coverImage);
 
-// 1. Specific match: relatedCategories (subcategory) + relatedFeatures
-const specificMatches = allProjects.filter(p => {
-  const catMatch = data.relatedCategories.length === 0 ||
-    data.relatedCategories.some(c => p.data.categories.some(pc => pc.id === c));
-  const featMatch = data.relatedFeatures.length === 0 ||
-    data.relatedFeatures.some(f => p.data.features.includes(f));
-  return catMatch && featMatch;
-}).sort((a, b) => b.data.year - a.data.year);
+// 1. Strongest match: projects that explicitly list this technique in their `techniques` array.
+//    This is the primary signal — projects opt into being shown on a technique page.
+const techniqueMatches = allProjects
+  .filter(p => p.data.techniques?.includes(slug!))
+  .sort((a, b) => b.data.year - a.data.year);
 
-// 2. If fewer than 6 specific matches, fill with featured/recent projects
+// 2. Broader match: relatedCategories + relatedFeatures (legacy matching).
+//    Skip projects already in techniqueMatches to avoid duplicates.
+const techniqueMatchSlugs = new Set(techniqueMatches.map(p => p.slug));
+const categoryFeatureMatches = allProjects
+  .filter(p => {
+    if (techniqueMatchSlugs.has(p.slug)) return false;
+    const catMatch = data.relatedCategories.length === 0 ||
+      data.relatedCategories.some(c => p.data.categories.some(pc => pc.id === c));
+    const featMatch = data.relatedFeatures.length === 0 ||
+      data.relatedFeatures.some(f => p.data.features.includes(f));
+    return catMatch && featMatch;
+  })
+  .sort((a, b) => b.data.year - a.data.year);
+
+const specificMatches = [...techniqueMatches, ...categoryFeatureMatches];
+
+// 3. If still fewer than 6, fill with featured/recent projects.
 let related: typeof allProjects;
 if (specificMatches.length >= 6) {
   related = specificMatches.slice(0, 8);
