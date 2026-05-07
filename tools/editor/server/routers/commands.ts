@@ -1,9 +1,23 @@
 import express from 'express';
 import type { Request, Response } from 'express';
-import { spawn } from 'child_process';
+import { spawn, execFileSync } from 'child_process';
 import { PROJECT_ROOT } from '../lib/fs-utils.js';
 import { buildR2RemotePath } from '../lib/image/path-builder.js';
 import type { PageType } from '../lib/image/path-builder.js';
+
+// Read the current git branch synchronously without touching the working tree.
+// Used as a guard for /git-push and /git-promote — both expect develop.
+function getCurrentBranch(): string | null {
+  try {
+    const out = execFileSync('git', ['rev-parse', '--abbrev-ref', 'HEAD'], {
+      cwd: PROJECT_ROOT,
+      encoding: 'utf-8',
+    });
+    return out.trim();
+  } catch {
+    return null;
+  }
+}
 
 const router = express.Router();
 
@@ -149,20 +163,31 @@ function runSteps(
 
 // ---------------------------------------------------------------------------
 // POST /git-push — commit current changes and push to develop.
-// Always operates on the develop branch: switches to develop if currently
-// on a different branch (changes carry over), then commits and pushes.
+//
+// Refuses to run unless the working directory is on the develop branch.
+// We intentionally do NOT try to auto-switch — `git checkout` mutates the
+// working tree, which causes tsx watch to kill this server mid-sequence
+// (see /git-promote comment block for details).
+//
 // Body: { message?: string }
 // ---------------------------------------------------------------------------
 router.post('/git-push', async (req: Request, res: Response) => {
+  const branch = getCurrentBranch();
+  if (branch !== 'develop') {
+    res.status(409).json({
+      ok: false,
+      error: `Cannot push from branch "${branch ?? 'unknown'}". The editor must be on develop.`,
+      hint: 'Run `git checkout develop` in a terminal, then try again.',
+    });
+    return;
+  }
+
   const { message } = req.body as { message?: string };
   const commitMsg = message ?? 'editor: update content';
 
   console.log(`[commands] git push → develop: "${commitMsg}"`);
 
   const steps: Step[] = [
-    // Make sure we're on develop. If already there, this is a no-op.
-    // If uncommitted changes don't conflict with develop's tree, they carry over.
-    { cmd: 'git', args: ['checkout', 'develop'] },
     { cmd: 'git', args: ['add', '-A'] },
     { cmd: 'git', args: ['commit', '-m', commitMsg], tolerantCommit: true },
     { cmd: 'git', args: ['push', 'origin', 'develop'] },
@@ -173,43 +198,62 @@ router.post('/git-push', async (req: Request, res: Response) => {
 
 // ---------------------------------------------------------------------------
 // POST /git-promote — promote develop → master (publish to production).
-// 1. Ensure on develop, commit any pending changes
-// 2. Push develop to origin
-// 3. Switch to master, merge develop with --no-ff (creates a release commit)
-// 4. Push master to origin
-// 5. Switch back to develop
-// Body: { message?: string }  — used for any pending develop commit
+//
+// IMPORTANT — NO `git checkout` calls in this sequence.
+//
+// The editor server runs under `tsx watch`, which restarts the process
+// whenever any .ts file in the project changes. A previous version of this
+// endpoint used `git checkout master` to do a merge there; that reverted
+// the working tree to master's older code, tsx detected the file change,
+// killed the running process mid-sequence, and the promote aborted —
+// stranding the repo on master with no master push and the editor UI
+// reloaded to master's older state (no Live button, etc.).
+//
+// The fix: push develop's tip directly to origin/master via a refspec.
+// This is a fast-forward push — no merge commit, but linear history is
+// fine for a solo workflow, and crucially it touches ZERO files in the
+// working tree. tsx never sees a change. The process keeps running.
+//
+// Body: { message?: string } — used for any pending develop commit
 // ---------------------------------------------------------------------------
 router.post('/git-promote', async (req: Request, res: Response) => {
+  const branch = getCurrentBranch();
+  if (branch !== 'develop') {
+    res.status(409).json({
+      ok: false,
+      error: `Cannot promote from branch "${branch ?? 'unknown'}". The editor must be on develop.`,
+      hint: 'Run `git checkout develop` in a terminal, then try again.',
+    });
+    return;
+  }
+
   const { message } = req.body as { message?: string };
   const commitMsg = message ?? 'editor: update content';
-  const releaseMsg = `release: promote develop → master (${new Date().toISOString().slice(0, 19).replace('T', ' ')})`;
 
-  console.log(`[commands] git promote develop → master`);
+  console.log(`[commands] git promote develop → origin/master (refspec push)`);
 
   const steps: Step[] = [
-    // Ensure we're on develop and any pending edits are committed there
-    { cmd: 'git', args: ['checkout', 'develop'] },
+    // Sync remote refs so we have an accurate view of origin/master
+    { cmd: 'git', args: ['fetch', 'origin'] },
+
+    // Commit any pending edits on the current (develop) branch
     { cmd: 'git', args: ['add', '-A'] },
     { cmd: 'git', args: ['commit', '-m', commitMsg], tolerantCommit: true },
+
+    // Push develop normally (updates staging + the develop branch alias)
     { cmd: 'git', args: ['push', 'origin', 'develop'] },
 
-    // Promote to master
-    { cmd: 'git', args: ['checkout', 'master'] },
-    // Pull master in case origin/master moved (e.g. external commits)
-    { cmd: 'git', args: ['pull', '--ff-only', 'origin', 'master'] },
-    // Merge develop with an explicit release commit
-    { cmd: 'git', args: ['merge', '--no-ff', 'develop', '-m', releaseMsg] },
-    { cmd: 'git', args: ['push', 'origin', 'master'] },
+    // Push develop's tip to origin/master via refspec (fast-forward).
+    // This triggers the Cloudflare Pages production build for visiongraphics.eu.
+    // No working-tree change → tsx watch doesn't restart → sequence completes.
+    { cmd: 'git', args: ['push', 'origin', 'develop:master'] },
+
+    // Update local master ref to match — keeps `git log master..develop`
+    // and similar comparisons accurate. Pure ref update, no working-tree change.
+    { cmd: 'git', args: ['update-ref', 'refs/heads/master', 'refs/heads/develop'] },
   ];
 
-  // ALWAYS check out develop at the end, even if a step above failed.
-  // Prevents getting stranded on master if the merge or push has a problem.
-  const finallySteps: Step[] = [
-    { cmd: 'git', args: ['checkout', 'develop'] },
-  ];
-
-  runSteps(steps, res, PROJECT_ROOT, finallySteps);
+  runSteps(steps, res, PROJECT_ROOT);
 });
 
 export default router;
