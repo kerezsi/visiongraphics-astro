@@ -3,6 +3,7 @@
 
 import Page from '../../layouts/Page.astro';
 import SectionBanner from '../../components/ui/SectionBanner.astro';
+import Icon from '../../components/ui/Icon.astro';
 ---
 
 <Page
@@ -30,14 +31,14 @@ import SectionBanner from '../../components/ui/SectionBanner.astro';
           <h3 class="info-label">Direct contact</h3>
           <div class="info-items">
             <a href="tel:+36309454179" class="info-item">
-              <span class="info-icon" aria-hidden="true">📞</span>
+              <Icon name="phone" size={18} class="info-icon" />
               <div>
                 <span class="info-item-label">Phone</span>
                 <span class="info-item-value">+36 30 945 4179</span>
               </div>
             </a>
             <a href="mailto:info@visiongraphics.eu" class="info-item">
-              <span class="info-icon" aria-hidden="true">✉</span>
+              <Icon name="mail" size={18} class="info-icon" />
               <div>
                 <span class="info-item-label">Email</span>
                 <span class="info-item-value">info@visiongraphics.eu</span>
@@ -260,7 +261,7 @@ import SectionBanner from '../../components/ui/SectionBanner.astro';
 
   .info-item:hover { color: var(--color-accent); }
 
-  .info-icon { font-size: var(--fs-body); margin-top: 0.1rem; flex-shrink: 0; }
+  .info-icon { color: var(--color-accent); margin-top: 0.15rem; flex-shrink: 0; }
 
   .info-item-label {
     display: block;
