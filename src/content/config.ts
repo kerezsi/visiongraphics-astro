@@ -126,7 +126,7 @@ const projects = defineCollection({
       alt: z.string(),
     })).default([]),
 
-    // Pano2VR 360 tours (hosted on visiongraphics.eu/PANO/...)
+    // Pano2VR 360 tours (hosted on pano.visiongraphics.eu/...)
     tour360: z.array(z.object({
       title: z.string(),
       url:   z.string().url(),

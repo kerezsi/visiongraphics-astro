@@ -1,3 +1,7 @@
+# PANO tours — served from tarhely (subdomain pano.visiongraphics.eu maps to /PANO/)
+# Backward compatibility for old visiongraphics.eu/PANO/X/ links shared externally.
+/PANO/*             https://pano.visiongraphics.eu/:splat                                    301
+
 # Image redirects — served from Cloudflare R2
 # Images are under /_img/ to avoid colliding with /portfolio/ and /vision-tech/ page routes.
 # (Cloudflare Pages applies 302 redirects BEFORE checking static files)

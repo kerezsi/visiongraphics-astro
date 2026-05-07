@@ -238,7 +238,7 @@ Usage in MDX:
 <ImageGallery images={[{ src: "...", alt: "..." }]} />
 <SingleImage src="/_img/..." alt="..." />
 <SingleImage src="/_img/..." alt="..." caption="Optional caption" />
-<Tour360 url="https://visiongraphics.eu/PANO/SLUG/" title="Description" />
+<Tour360 url="https://pano.visiongraphics.eu/SLUG/" title="Description" />
 <YoutubeEmbed url="https://www.youtube.com/watch?v=ID" title="Description" />
 
 {/* Project text blocks — use children, NOT a text prop */}
@@ -279,7 +279,7 @@ use repeated `SectionBanner + ImageGallery + Tour360` blocks to group content:
 {/* Each section: banner → gallery → optional tour */}
 <SectionBanner image="/_img/portfolio/slug/30.jpg" label="Apartment" title="C-401" />
 <ImageGallery images={[...apartment images...]} />
-<Tour360 url="https://visiongraphics.eu/PANO/SLUG_C401/" title="Apartment C-401 — 360°" />
+<Tour360 url="https://pano.visiongraphics.eu/SLUG_C401/" title="Apartment C-401 — 360°" />
 ```
 
 Image numbering: R2 images are sequential (`01.jpg`, `02.jpg`… `09.jpg`, `10.jpg`…
@@ -317,6 +317,19 @@ R2 bucket path structure (no `_img/` prefix inside bucket):
 
 To upload images: use VG Editor image picker → "↑ R2" button (calls rclone via editor server API).
 All uploads go to R2 via the editor. `upload-images.bat` is retired.
+
+### 360 Tour Hosting (`pano.visiongraphics.eu`)
+
+Pano2VR 360° tours are NOT served from Cloudflare Pages. They live on
+the tarhely shared host under `/public_html/PANO/`, exposed via the
+subdomain `pano.visiongraphics.eu` (DocRoot points to `/PANO/`).
+
+URL pattern in MDX: `https://pano.visiongraphics.eu/<TOUR_SLUG>/`
+(no `/PANO/` segment — the subdomain is rooted there).
+
+Backward compatibility: `public/_redirects` 301-redirects any old
+`visiongraphics.eu/PANO/X/` request to `pano.visiongraphics.eu/X/`,
+so external links shared in the past keep working.
 
 ### Thumbnails
 
