@@ -3,7 +3,7 @@ import { useDocumentStore } from '../../store/document.ts';
 import { useUIStore } from '../../store/ui.ts';
 import type { EditorView } from '../../store/ui.ts';
 import type { PageType } from '../../types/blocks.ts';
-import { generateThumbs, gitPush, pushAllToR2 } from '../../lib/api-client.ts';
+import { generateThumbs, gitPush, gitPromote, pushAllToR2 } from '../../lib/api-client.ts';
 
 const toolbarStyle: React.CSSProperties = {
   height: 44,
@@ -83,25 +83,37 @@ function ToolbarBtn({
   children,
   onClick,
   accent,
+  variant,
   disabled,
+  title,
 }: {
   children: React.ReactNode;
   onClick?: () => void;
   accent?: boolean;
+  variant?: 'default' | 'live';
   disabled?: boolean;
+  title?: string;
 }) {
+  const isLive = variant === 'live';
   return (
     <button
       onClick={onClick}
       disabled={disabled}
+      title={title}
       style={{
-        background: accent ? 'var(--color-accent)' : 'none',
-        color: accent ? '#fff' : 'var(--color-text-muted)',
-        border: accent ? 'none' : '1px solid var(--color-border)',
+        background: isLive
+          ? 'transparent'
+          : accent ? 'var(--color-accent)' : 'none',
+        color: isLive
+          ? '#f59e0b'
+          : accent ? '#fff' : 'var(--color-text-muted)',
+        border: isLive
+          ? '1px solid #f59e0b'
+          : accent ? 'none' : '1px solid var(--color-border)',
         borderRadius: 'var(--radius-sm)',
         padding: '4px 10px',
         fontSize: 11,
-        fontWeight: accent ? 600 : 400,
+        fontWeight: accent || isLive ? 600 : 400,
         cursor: disabled ? 'default' : 'pointer',
         opacity: disabled ? 0.5 : 1,
         whiteSpace: 'nowrap',
@@ -152,6 +164,8 @@ export function Toolbar() {
   const [thumbAllStatus, setThumbAllStatus] = useState<string | null>(null);
   const [isPushing, setIsPushing] = useState(false);
   const [pushStatus, setPushStatus] = useState<string | null>(null);
+  const [isPromoting, setIsPromoting] = useState(false);
+  const [promoteStatus, setPromoteStatus] = useState<string | null>(null);
   const flashTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const title = (meta as Record<string, unknown>).title as string | undefined;
@@ -262,13 +276,39 @@ export function Toolbar() {
     const msg = slug ? `editor: update ${slug}` : 'editor: update content';
     try {
       await gitPush(msg);
-      setPushStatus('Pushed');
+      setPushStatus('Pushed → develop');
       if (flashTimer.current) clearTimeout(flashTimer.current);
       flashTimer.current = setTimeout(() => setPushStatus(null), 5000);
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Git push failed');
     } finally {
       setIsPushing(false);
+    }
+  }
+
+  async function handleGitPromote() {
+    const ok = window.confirm(
+      'Publish to LIVE?\n\n' +
+      'This will:\n' +
+      '  1. Commit & push pending changes to develop (staging)\n' +
+      '  2. Merge develop → master\n' +
+      '  3. Push master — visiongraphics.eu will rebuild and update.\n\n' +
+      'Continue?'
+    );
+    if (!ok) return;
+
+    setIsPromoting(true);
+    setPromoteStatus(null);
+    const msg = slug ? `editor: update ${slug}` : 'editor: update content';
+    try {
+      await gitPromote(msg);
+      setPromoteStatus('Live updated');
+      if (flashTimer.current) clearTimeout(flashTimer.current);
+      flashTimer.current = setTimeout(() => setPromoteStatus(null), 7000);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Promote to master failed');
+    } finally {
+      setIsPromoting(false);
     }
   }
 
@@ -370,8 +410,23 @@ export function Toolbar() {
             <ToolbarBtn onClick={handleGenerateAllThumbs} disabled={isThumbing || isThumbingAll}>
               {isThumbingAll ? 'Thumbing all…' : '⟳ Thumbs all'}
             </ToolbarBtn>
-            <ToolbarBtn onClick={handleGitPush} disabled={isPushing}>
+            {promoteStatus && (
+              <span style={{ color: '#f59e0b', fontSize: 11 }}>{promoteStatus}</span>
+            )}
+            <ToolbarBtn
+              onClick={handleGitPush}
+              disabled={isPushing || isPromoting}
+              title="Commit & push to develop branch (updates the staging URL)"
+            >
               {isPushing ? 'Pushing…' : '↑ Git'}
+            </ToolbarBtn>
+            <ToolbarBtn
+              variant="live"
+              onClick={handleGitPromote}
+              disabled={isPushing || isPromoting}
+              title="Promote develop → master (publishes to visiongraphics.eu)"
+            >
+              {isPromoting ? 'Publishing…' : '↑ Live'}
             </ToolbarBtn>
             <ToolbarBtn onClick={togglePreview}>Preview MDX</ToolbarBtn>
             <ToolbarBtn accent onClick={handleSave} disabled={isSaving}>
@@ -384,8 +439,23 @@ export function Toolbar() {
             {pushStatus && (
               <span style={{ color: '#22c55e', fontSize: 11 }}>{pushStatus}</span>
             )}
-            <ToolbarBtn onClick={handleGitPush} disabled={isPushing}>
+            {promoteStatus && (
+              <span style={{ color: '#f59e0b', fontSize: 11 }}>{promoteStatus}</span>
+            )}
+            <ToolbarBtn
+              onClick={handleGitPush}
+              disabled={isPushing || isPromoting}
+              title="Commit & push to develop branch (updates the staging URL)"
+            >
               {isPushing ? 'Pushing…' : '↑ Git'}
+            </ToolbarBtn>
+            <ToolbarBtn
+              variant="live"
+              onClick={handleGitPromote}
+              disabled={isPushing || isPromoting}
+              title="Promote develop → master (publishes to visiongraphics.eu)"
+            >
+              {isPromoting ? 'Publishing…' : '↑ Live'}
             </ToolbarBtn>
           </>
         )}

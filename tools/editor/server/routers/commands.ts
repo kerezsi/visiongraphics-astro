@@ -70,22 +70,16 @@ router.post('/generate-thumbs', (req: Request, res: Response) => {
 });
 
 // ---------------------------------------------------------------------------
-// POST /git-push — git add, commit, push
-// Body: { message?: string }
+// Helper — run a sequence of git steps, accumulating output.
+// "tolerantCommit" means commit returning code 1 (nothing to commit) is OK.
 // ---------------------------------------------------------------------------
-router.post('/git-push', async (req: Request, res: Response) => {
-  const { message } = req.body as { message?: string };
-  const commitMsg = message ?? 'editor: update content';
+type Step = { cmd: string; args: string[]; tolerantCommit?: boolean };
 
-  console.log(`[commands] git push: "${commitMsg}"`);
-
-  // Run add → commit → push sequentially
-  const steps: Array<{ cmd: string; args: string[] }> = [
-    { cmd: 'git', args: ['add', '-A'] },
-    { cmd: 'git', args: ['commit', '-m', commitMsg] },
-    { cmd: 'git', args: ['push'] },
-  ];
-
+function runSteps(
+  steps: Step[],
+  res: Response,
+  cwd: string,
+): void {
   let combinedOut = '';
   let combinedErr = '';
 
@@ -95,27 +89,97 @@ router.post('/git-push', async (req: Request, res: Response) => {
       return;
     }
 
-    const { cmd, args } = steps[i];
-    const child = spawn(cmd, args, { cwd: PROJECT_ROOT, shell: false });
+    const { cmd, args, tolerantCommit } = steps[i];
+    combinedOut += `\n$ ${cmd} ${args.join(' ')}\n`;
+    const child = spawn(cmd, args, { cwd, shell: false });
 
     child.stdout.on('data', (d: Buffer) => { combinedOut += d.toString(); });
     child.stderr.on('data', (d: Buffer) => { combinedErr += d.toString(); });
 
     child.on('close', (code) => {
-      // git commit returns 1 when there's nothing to commit — treat as ok
-      if (code === 0 || (cmd === 'git' && args[0] === 'commit' && code === 1)) {
+      // git commit returns 1 when there's nothing to commit — treat as ok if flagged
+      const ok = code === 0 || (tolerantCommit && code === 1);
+      if (ok) {
         runStep(i + 1);
       } else {
-        res.status(500).json({ ok: false, step: args.join(' '), code, stdout: combinedOut, stderr: combinedErr });
+        res.status(500).json({
+          ok: false,
+          step: `${cmd} ${args.join(' ')}`,
+          code,
+          stdout: combinedOut,
+          stderr: combinedErr,
+        });
       }
     });
 
     child.on('error', (err: Error) => {
-      res.status(500).json({ error: err.message, step: args.join(' ') });
+      res.status(500).json({ error: err.message, step: `${cmd} ${args.join(' ')}` });
     });
   }
 
   runStep(0);
+}
+
+// ---------------------------------------------------------------------------
+// POST /git-push — commit current changes and push to develop.
+// Always operates on the develop branch: switches to develop if currently
+// on a different branch (changes carry over), then commits and pushes.
+// Body: { message?: string }
+// ---------------------------------------------------------------------------
+router.post('/git-push', async (req: Request, res: Response) => {
+  const { message } = req.body as { message?: string };
+  const commitMsg = message ?? 'editor: update content';
+
+  console.log(`[commands] git push → develop: "${commitMsg}"`);
+
+  const steps: Step[] = [
+    // Make sure we're on develop. If already there, this is a no-op.
+    // If uncommitted changes don't conflict with develop's tree, they carry over.
+    { cmd: 'git', args: ['checkout', 'develop'] },
+    { cmd: 'git', args: ['add', '-A'] },
+    { cmd: 'git', args: ['commit', '-m', commitMsg], tolerantCommit: true },
+    { cmd: 'git', args: ['push', 'origin', 'develop'] },
+  ];
+
+  runSteps(steps, res, PROJECT_ROOT);
+});
+
+// ---------------------------------------------------------------------------
+// POST /git-promote — promote develop → master (publish to production).
+// 1. Ensure on develop, commit any pending changes
+// 2. Push develop to origin
+// 3. Switch to master, merge develop with --no-ff (creates a release commit)
+// 4. Push master to origin
+// 5. Switch back to develop
+// Body: { message?: string }  — used for any pending develop commit
+// ---------------------------------------------------------------------------
+router.post('/git-promote', async (req: Request, res: Response) => {
+  const { message } = req.body as { message?: string };
+  const commitMsg = message ?? 'editor: update content';
+  const releaseMsg = `release: promote develop → master (${new Date().toISOString().slice(0, 19).replace('T', ' ')})`;
+
+  console.log(`[commands] git promote develop → master`);
+
+  const steps: Step[] = [
+    // Ensure we're on develop and any pending edits are committed there
+    { cmd: 'git', args: ['checkout', 'develop'] },
+    { cmd: 'git', args: ['add', '-A'] },
+    { cmd: 'git', args: ['commit', '-m', commitMsg], tolerantCommit: true },
+    { cmd: 'git', args: ['push', 'origin', 'develop'] },
+
+    // Promote to master
+    { cmd: 'git', args: ['checkout', 'master'] },
+    // Pull master in case origin/master moved (e.g. external commits)
+    { cmd: 'git', args: ['pull', '--ff-only', 'origin', 'master'] },
+    // Merge develop with an explicit release commit
+    { cmd: 'git', args: ['merge', '--no-ff', 'develop', '-m', releaseMsg] },
+    { cmd: 'git', args: ['push', 'origin', 'master'] },
+
+    // Back to develop for continued editing
+    { cmd: 'git', args: ['checkout', 'develop'] },
+  ];
+
+  runSteps(steps, res, PROJECT_ROOT);
 });
 
 export default router;

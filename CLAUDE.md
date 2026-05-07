@@ -145,6 +145,12 @@ The palette will automatically show the new block only on page types where its A
 - **Vision-Tech** — batch toggle Published; Open button loads file into editor; ⟳ per-row thumb generation
 - **Collections** — manage reference collections (clients, designers, cities, countries, client-types, categories)
 
+**VG Editor toolbar push buttons:**
+- **↑ Git** — always commits any pending changes and pushes to the **`develop` branch** (regardless of currently checked-out branch — switches to develop first if needed). Updates the staging URL `develop.visiongraphics-astro.pages.dev` (and `staging.visiongraphics.eu` once the custom domain is wired up).
+- **↑ Live** — promotes `develop` → `master` (publish to production). Yellow-bordered button with a confirmation dialog. Sequence: commits any pending edits to develop → pushes develop → checks out master → pulls master with `--ff-only` → merges develop with `--no-ff` (creates an explicit `release: ...` merge commit) → pushes master → checks out develop. The `master` push triggers a Cloudflare Pages production deploy to `visiongraphics.eu`.
+
+The `master` branch should never be edited directly from the editor — always go through `develop` and use **↑ Live** when ready to publish.
+
 ### Collections
 
 | Collection | Path | Format | Notes |

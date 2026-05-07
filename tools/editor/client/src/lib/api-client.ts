@@ -326,6 +326,18 @@ export async function gitPush(message?: string): Promise<{ ok: boolean; stdout: 
   return json<{ ok: boolean; stdout: string; stderr: string }>(res);
 }
 
+// Promote develop → master (publish to production).
+// Server-side: commits any pending changes on develop, pushes develop,
+// then merges develop into master and pushes master.
+export async function gitPromote(message?: string): Promise<{ ok: boolean; stdout: string; stderr: string }> {
+  const res = await fetch(`${BASE}/commands/git-promote`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message }),
+  });
+  return json<{ ok: boolean; stdout: string; stderr: string }>(res);
+}
+
 // ---- Content management ----
 
 export async function patchFrontmatter(
