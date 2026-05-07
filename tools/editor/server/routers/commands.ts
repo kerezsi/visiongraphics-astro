@@ -72,6 +72,9 @@ router.post('/generate-thumbs', (req: Request, res: Response) => {
 // ---------------------------------------------------------------------------
 // Helper — run a sequence of git steps, accumulating output.
 // "tolerantCommit" means commit returning code 1 (nothing to commit) is OK.
+// "finallySteps" always run after main steps (success or failure) and their
+// outcome doesn't affect the response status. Used to always return to a
+// safe branch even if a middle step fails.
 // ---------------------------------------------------------------------------
 type Step = { cmd: string; args: string[]; tolerantCommit?: boolean };
 
@@ -79,45 +82,69 @@ function runSteps(
   steps: Step[],
   res: Response,
   cwd: string,
+  finallySteps: Step[] = [],
 ): void {
   let combinedOut = '';
   let combinedErr = '';
+  let mainOk = true;
+  let mainFailure: { step: string; code: number | null } | null = null;
 
-  function runStep(i: number): void {
-    if (i >= steps.length) {
-      res.json({ ok: true, stdout: combinedOut, stderr: combinedErr });
-      return;
-    }
-
-    const { cmd, args, tolerantCommit } = steps[i];
+  function runOne(step: Step, onClose: (ok: boolean, code: number | null) => void): void {
+    const { cmd, args, tolerantCommit } = step;
     combinedOut += `\n$ ${cmd} ${args.join(' ')}\n`;
     const child = spawn(cmd, args, { cwd, shell: false });
-
     child.stdout.on('data', (d: Buffer) => { combinedOut += d.toString(); });
     child.stderr.on('data', (d: Buffer) => { combinedErr += d.toString(); });
-
     child.on('close', (code) => {
-      // git commit returns 1 when there's nothing to commit — treat as ok if flagged
-      const ok = code === 0 || (tolerantCommit && code === 1);
-      if (ok) {
-        runStep(i + 1);
-      } else {
-        res.status(500).json({
-          ok: false,
-          step: `${cmd} ${args.join(' ')}`,
-          code,
-          stdout: combinedOut,
-          stderr: combinedErr,
-        });
-      }
+      const ok = code === 0 || (tolerantCommit === true && code === 1);
+      onClose(ok, code);
     });
-
     child.on('error', (err: Error) => {
-      res.status(500).json({ error: err.message, step: `${cmd} ${args.join(' ')}` });
+      combinedErr += `\n[spawn error] ${err.message}\n`;
+      onClose(false, null);
     });
   }
 
-  runStep(0);
+  function respond(): void {
+    if (mainOk) {
+      res.json({ ok: true, stdout: combinedOut, stderr: combinedErr });
+    } else {
+      res.status(500).json({
+        ok: false,
+        step: mainFailure?.step,
+        code: mainFailure?.code,
+        stdout: combinedOut,
+        stderr: combinedErr,
+      });
+    }
+  }
+
+  function runFinally(i: number): void {
+    if (i >= finallySteps.length) {
+      respond();
+      return;
+    }
+    runOne(finallySteps[i], () => runFinally(i + 1));
+  }
+
+  function runMain(i: number): void {
+    if (i >= steps.length) {
+      runFinally(0);
+      return;
+    }
+    const step = steps[i];
+    runOne(step, (ok, code) => {
+      if (ok) {
+        runMain(i + 1);
+      } else {
+        mainOk = false;
+        mainFailure = { step: `${step.cmd} ${step.args.join(' ')}`, code };
+        runFinally(0);
+      }
+    });
+  }
+
+  runMain(0);
 }
 
 // ---------------------------------------------------------------------------
@@ -174,12 +201,15 @@ router.post('/git-promote', async (req: Request, res: Response) => {
     // Merge develop with an explicit release commit
     { cmd: 'git', args: ['merge', '--no-ff', 'develop', '-m', releaseMsg] },
     { cmd: 'git', args: ['push', 'origin', 'master'] },
+  ];
 
-    // Back to develop for continued editing
+  // ALWAYS check out develop at the end, even if a step above failed.
+  // Prevents getting stranded on master if the merge or push has a problem.
+  const finallySteps: Step[] = [
     { cmd: 'git', args: ['checkout', 'develop'] },
   ];
 
-  runSteps(steps, res, PROJECT_ROOT);
+  runSteps(steps, res, PROJECT_ROOT, finallySteps);
 });
 
 export default router;
