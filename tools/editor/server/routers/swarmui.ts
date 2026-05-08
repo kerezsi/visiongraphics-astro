@@ -4,7 +4,7 @@ import { exec } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 import sharp from 'sharp';
-import { getConfig } from '../lib/editor-config.js';
+import { getConfig, getSwarmBases } from '../lib/editor-config.js';
 import { PROJECT_ROOT } from '../lib/fs-utils.js';
 
 const router = express.Router();
@@ -15,18 +15,24 @@ const GENERATE_TIMEOUT = 180_000; // 3 min
 const OUTPUT_DIR = path.join(PROJECT_ROOT, 'tools', 'editor', '.swarmui-output');
 fs.mkdirSync(OUTPUT_DIR, { recursive: true });
 
-function swarmBase(): string {
-  return getConfig().swarmBase;
+/** Primary backend — used for single-backend ops (gallery is local anyway). */
+function primarySwarmBase(): string {
+  const list = getSwarmBases();
+  return list[0] ?? getConfig().swarmBase ?? 'http://localhost:7801';
 }
 
-async function getSession(): Promise<string> {
-  const resp = await fetch(`${swarmBase()}/API/GetNewSession`, {
+/**
+ * Open a SwarmUI session against a specific backend URL. Returns the session_id.
+ * Throws if the backend is not reachable.
+ */
+async function getSessionFor(base: string): Promise<string> {
+  const resp = await fetch(`${base}/API/GetNewSession`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({}),
     signal: AbortSignal.timeout(REQUEST_TIMEOUT),
   });
-  if (!resp.ok) throw new Error('SwarmUI not available');
+  if (!resp.ok) throw new Error(`SwarmUI not available: ${base}`);
   const data = (await resp.json()) as { session_id: string };
   return data.session_id;
 }
@@ -48,47 +54,65 @@ async function downloadImage(url: string): Promise<string> {
 
 // ---------------------------------------------------------------------------
 // GET /status
+// Pings every configured backend in parallel. `available` is true if at least
+// one responds; `backends` reports the per-backend up/down state.
 // ---------------------------------------------------------------------------
 router.get('/status', async (_req: Request, res: Response) => {
-  try {
-    const resp = await fetch(`${swarmBase()}/API/GetNewSession`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({}),
-      signal: AbortSignal.timeout(REQUEST_TIMEOUT),
-    });
-    res.json({ available: resp.ok });
-  } catch {
-    res.json({ available: false });
+  const bases = getSwarmBases();
+  if (bases.length === 0) {
+    res.json({ available: false, backends: [] });
+    return;
   }
+
+  const results = await Promise.all(
+    bases.map(async (base) => {
+      try {
+        const resp = await fetch(`${base}/API/GetNewSession`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({}),
+          signal: AbortSignal.timeout(REQUEST_TIMEOUT),
+        });
+        return { base, available: resp.ok };
+      } catch {
+        return { base, available: false };
+      }
+    })
+  );
+
+  const available = results.some((r) => r.available);
+  res.json({ available, backends: results });
 });
 
 // ---------------------------------------------------------------------------
 // GET /models — fetch available models from SwarmUI
+// Queries the first reachable backend (assumes all backends share the model set).
 // ---------------------------------------------------------------------------
 router.get('/models', async (_req: Request, res: Response) => {
-  try {
-    const sessionId = await getSession();
-    const resp = await fetch(`${swarmBase()}/API/ListModels`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ session_id: sessionId, path: '', depth: 2 }),
-      signal: AbortSignal.timeout(REQUEST_TIMEOUT),
-    });
-    if (!resp.ok) {
-      res.json({ models: [] });
+  const bases = getSwarmBases();
+  for (const base of bases) {
+    try {
+      const sessionId = await getSessionFor(base);
+      const resp = await fetch(`${base}/API/ListModels`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ session_id: sessionId, path: '', depth: 2 }),
+        signal: AbortSignal.timeout(REQUEST_TIMEOUT),
+      });
+      if (!resp.ok) continue;
+      const data = (await resp.json()) as {
+        files?: Array<string | { name: string; title?: string }>;
+      };
+      const models = (data.files ?? []).map((f) =>
+        typeof f === 'string' ? f : f.name
+      );
+      res.json({ models });
       return;
+    } catch {
+      // try next backend
     }
-    const data = (await resp.json()) as {
-      files?: Array<string | { name: string; title?: string }>;
-    };
-    const models = (data.files ?? []).map((f) =>
-      typeof f === 'string' ? f : f.name
-    );
-    res.json({ models });
-  } catch {
-    res.json({ models: [] });
   }
+  res.json({ models: [] });
 });
 
 // ---------------------------------------------------------------------------
@@ -153,11 +177,23 @@ router.post('/generate', async (req: Request, res: Response) => {
   }
 
   try {
-    const sessionId = await getSession();
+    const bases = getSwarmBases();
+    if (bases.length === 0) {
+      res.status(503).json({ error: 'No SwarmUI backends configured', available: false });
+      return;
+    }
 
     const count = Math.max(1, Math.min(imageCount ?? 1, 8));
+
+    // Distribute the N images across the K backends round-robin so a
+    // multi-image request runs in parallel on multiple GPUs.
+    // Each task: { backend, seed }
+    const tasks = Array.from({ length: count }, (_, i) => ({
+      base: bases[i % bases.length],
+      seed: seed ?? Math.floor(Math.random() * 2_147_483_647),
+    }));
+
     const baseParams = {
-      session_id: sessionId,
       images: 1,
       prompt,
       negativeprompt: negativeprompt ?? 'blurry, ugly, bad quality, low resolution',
@@ -170,42 +206,59 @@ router.post('/generate', async (req: Request, res: Response) => {
       scheduler: scheduler ?? 'simple',
     };
 
-    // Send one request per image, each with a unique random seed
+    // For each task: open a session against its assigned backend, then
+    // generate. Sessions can't be shared across backends.
     const genResults = await Promise.all(
-      Array.from({ length: count }, () =>
-        fetch(`${swarmBase()}/API/GenerateText2Image`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            ...baseParams,
-            seed: seed ?? Math.floor(Math.random() * 2_147_483_647),
-          }),
-          signal: AbortSignal.timeout(GENERATE_TIMEOUT),
-        })
-      )
+      tasks.map(async ({ base, seed: taskSeed }) => {
+        try {
+          const sessionId = await getSessionFor(base);
+          const genResp = await fetch(`${base}/API/GenerateText2Image`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              ...baseParams,
+              session_id: sessionId,
+              seed: taskSeed,
+            }),
+            signal: AbortSignal.timeout(GENERATE_TIMEOUT),
+          });
+          return { base, ok: genResp.ok, status: genResp.status, body: genResp.ok ? await genResp.json() : await genResp.text() };
+        } catch (err: any) {
+          return { base, ok: false, status: 0, body: `Connection failed: ${err.message ?? err}` };
+        }
+      })
     );
 
-    // Collect all image URLs, surface first error if any
+    // Collect all image URLs across backends; tolerate partial failure but
+    // surface any errors that happened.
     const remoteUrls: string[] = [];
-    for (const genResp of genResults) {
-      if (!genResp.ok) {
-        const text = await genResp.text();
-        res.status(genResp.status).json({ error: `SwarmUI error: ${text}` });
-        return;
+    const errors: string[] = [];
+
+    for (const r of genResults) {
+      if (!r.ok) {
+        errors.push(`[${r.base}] ${r.status}: ${typeof r.body === 'string' ? r.body : JSON.stringify(r.body)}`);
+        continue;
       }
-      const genData = (await genResp.json()) as {
+      const genData = r.body as {
         images?: Array<string | { image: string }>;
         error_id?: string;
         error?: string;
       };
       if (genData.error_id || genData.error) {
-        res.status(400).json({ error: genData.error ?? genData.error_id });
-        return;
+        errors.push(`[${r.base}] ${genData.error ?? genData.error_id}`);
+        continue;
       }
       for (const img of genData.images ?? []) {
         const p = typeof img === 'string' ? img : img.image;
-        remoteUrls.push(p.startsWith('http') ? p : `${swarmBase()}/${p}`);
+        remoteUrls.push(p.startsWith('http') ? p : `${r.base}/${p}`);
       }
+    }
+
+    // If every backend failed, return error. If at least one image came back,
+    // continue and surface partial errors as a warning field.
+    if (remoteUrls.length === 0) {
+      res.status(500).json({ error: errors.join('\n') || 'No images returned' });
+      return;
     }
 
     // Download and save each image locally
@@ -220,7 +273,13 @@ router.post('/generate', async (req: Request, res: Response) => {
       }
     }
 
-    res.json({ status: 'complete', images: savedImages, pageType, slug });
+    res.json({
+      status: 'complete',
+      images: savedImages,
+      pageType,
+      slug,
+      ...(errors.length ? { warnings: errors } : {}),
+    });
   } catch (err: any) {
     if (err.name === 'TimeoutError' || err.code === 'ECONNREFUSED') {
       res.status(503).json({ error: 'SwarmUI not available', available: false });

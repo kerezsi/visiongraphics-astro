@@ -21,7 +21,14 @@ export interface OllamaSystemPrompt {
 
 export interface EditorConfig {
   ollamaBase: string;
+  /**
+   * @deprecated Kept for backward compatibility. Read swarmBases() for the
+   * actual list of backends — that helper falls back to [swarmBase] if the
+   * array is empty.
+   */
   swarmBase: string;
+  /** Multiple SwarmUI backend URLs for parallel generation across machines. */
+  swarmBases: string[];
   swarmModels: string[];
   swarmStyles: SwarmStyle[];
   swarmPrompts: SwarmPromptItem[];
@@ -33,6 +40,7 @@ export interface EditorConfig {
 const DEFAULTS: EditorConfig = {
   ollamaBase: 'http://localhost:11434',
   swarmBase: 'http://localhost:7801',
+  swarmBases: [],
   swarmModels: [],
   swarmStyles: [],
   swarmPrompts: [],
@@ -57,6 +65,26 @@ export function getConfig(): EditorConfig {
 export function saveConfig(updates: Partial<EditorConfig>): EditorConfig {
   const current = getConfig();
   cache = { ...current, ...updates };
+  // Keep swarmBase in sync with first entry of swarmBases so old code paths
+  // that still read swarmBase keep working (and so the legacy field reflects
+  // the user's primary backend).
+  if (updates.swarmBases !== undefined && updates.swarmBases.length > 0) {
+    cache = { ...cache, swarmBase: updates.swarmBases[0] };
+  }
   fs.writeFileSync(CONFIG_PATH, JSON.stringify(cache, null, 2), 'utf-8');
   return cache;
+}
+
+/**
+ * Returns the active list of SwarmUI backend URLs.
+ * Migration order: prefer swarmBases (new); fall back to [swarmBase] (legacy);
+ * fall back to a single entry of the default; never returns an empty list
+ * unless every URL field is empty.
+ */
+export function getSwarmBases(): string[] {
+  const cfg = getConfig();
+  const list = (cfg.swarmBases ?? []).filter((s) => typeof s === 'string' && s.trim().length > 0);
+  if (list.length > 0) return list;
+  if (cfg.swarmBase && cfg.swarmBase.trim().length > 0) return [cfg.swarmBase];
+  return [];
 }

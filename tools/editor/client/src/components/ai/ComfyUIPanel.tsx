@@ -176,14 +176,20 @@ export function ComfyUIPanel() {
 
   // (block selection state lives in UIStore — aiBlockSelectMode / aiSelectedBlockIds)
 
-  // Generation state
-  const [generating, setGenerating] = useState(false);
+  // Generation state — track concurrent in-flight generations so the user can
+  // queue more work while a previous one is still running. Each in-flight
+  // request has its own ID so the UI can show "Generating: 3" etc.
+  const [inflight, setInflight] = useState<string[]>([]);
   const [subjectLoading, setSubjectLoading] = useState(false);
   const [lastSubject, setLastSubject] = useState<string | null>(null);
   const [subjectPreview, setSubjectPreview] = useState<string | null>(null); // text being sent
   const [subjectError, setSubjectError] = useState<string | null>(null);
   const [outputImages, setOutputImages] = useState<Array<{ filename: string; url: string }>>([]);
   const [gallery, setGallery] = useState<Array<{ filename: string; url: string }>>([]);
+
+  // Lightbox state — clicking a generated image or gallery thumb opens it full-screen
+  const [lightboxUrl, setLightboxUrl] = useState<string | null>(null);
+  const generating = inflight.length > 0;
 
   const { width, height } = calcDimensions(size, format);
 
@@ -357,9 +363,10 @@ export function ComfyUIPanel() {
     : prompt.trim();
 
   async function handleGenerate() {
-    if (!effectivePrompt || generating) return;
-    setGenerating(true);
-    setOutputImages([]);
+    if (!effectivePrompt) return;
+    // Allow queuing multiple generations: track each in-flight job by id.
+    const jobId = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    setInflight((prev) => [...prev, jobId]);
     try {
       const result = await swarmGenerate({
         prompt: effectivePrompt,
@@ -374,12 +381,14 @@ export function ComfyUIPanel() {
         pageType,
         slug,
       });
-      setOutputImages(result.images ?? []);
+      // Append new images to the end so older results stay visible.
+      // (User can still click "Clear" to reset.)
+      setOutputImages((prev) => [...prev, ...(result.images ?? [])]);
       refreshGallery();
     } catch (e) {
       setError(e instanceof Error ? e.message : 'SwarmUI generation failed');
     } finally {
-      setGenerating(false);
+      setInflight((prev) => prev.filter((id) => id !== jobId));
     }
   }
 
@@ -636,7 +645,6 @@ export function ComfyUIPanel() {
             <select
               value={imageCount}
               onChange={(e) => setImageCount(Number(e.target.value))}
-              disabled={generating}
               style={{ width: 44, flexShrink: 0, fontSize: 11, textAlign: 'center' }}
               title="Number of images"
             >
@@ -644,7 +652,7 @@ export function ComfyUIPanel() {
             </select>
             <button
               onClick={handleGenerate}
-              disabled={generating || !effectivePrompt}
+              disabled={!effectivePrompt}
               style={{
                 flex: 1,
                 background: 'var(--color-accent)',
@@ -654,13 +662,23 @@ export function ComfyUIPanel() {
                 padding: '6px 0',
                 fontSize: 11,
                 fontWeight: 600,
-                cursor: generating || !effectivePrompt ? 'default' : 'pointer',
-                opacity: generating || !effectivePrompt ? 0.6 : 1,
+                cursor: !effectivePrompt ? 'default' : 'pointer',
+                opacity: !effectivePrompt ? 0.6 : 1,
               }}
+              title={generating
+                ? `${inflight.length} generation${inflight.length > 1 ? 's' : ''} in progress — click to queue another`
+                : 'Generate images'}
             >
-              {generating ? 'Generating…' : `Generate  ${width}×${height}`}
+              {generating
+                ? `Generate · ${inflight.length} running…`
+                : `Generate  ${width}×${height}`}
             </button>
           </div>
+          {generating && (
+            <div style={{ fontSize: 9, color: 'var(--color-text-faint)', marginBottom: 8, fontStyle: 'italic' }}>
+              {inflight.length} generation{inflight.length > 1 ? 's' : ''} running in background — UI is async, click Generate to queue more
+            </div>
+          )}
 
           {/* ── Output ── */}
           {outputImages.length > 0 && (
@@ -670,7 +688,15 @@ export function ComfyUIPanel() {
                   key={i}
                   src={img.url}
                   alt="Generated"
-                  style={{ width: '100%', borderRadius: 'var(--radius-sm)', display: 'block', marginBottom: 4 }}
+                  style={{
+                    width: '100%',
+                    borderRadius: 'var(--radius-sm)',
+                    display: 'block',
+                    marginBottom: 4,
+                    cursor: 'zoom-in',
+                  }}
+                  title="Click to view full size"
+                  onClick={() => setLightboxUrl(img.url)}
                 />
               ))}
               <div style={{ ...row }}>
@@ -710,21 +736,107 @@ export function ComfyUIPanel() {
                     key={img.filename}
                     src={img.url}
                     alt={img.filename}
-                    title={img.filename}
+                    title={`${img.filename} — click to view full size, shift-click to load into the panel above`}
                     style={{
                       width: 48, height: 48, objectFit: 'cover',
-                      borderRadius: 3, cursor: 'pointer',
+                      borderRadius: 3, cursor: 'zoom-in',
                       border: outputImages.some(o => o.filename === img.filename)
                         ? '2px solid var(--color-accent)' : '2px solid transparent',
                     }}
-                    onClick={() => setOutputImages([img])}
+                    onClick={(e) => {
+                      // Shift-click → keep old behaviour (load into output panel)
+                      if (e.shiftKey) {
+                        setOutputImages([img]);
+                      } else {
+                        setLightboxUrl(img.url);
+                      }
+                    }}
                   />
                 ))}
               </div>
             </div>
           )}
+
+          {/* ── Lightbox overlay ── */}
+          {lightboxUrl && (
+            <Lightbox url={lightboxUrl} onClose={() => setLightboxUrl(null)} />
+          )}
         </>
       )}
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Lightbox — full-window overlay for clicked images.
+// Click the backdrop or press ESC to close.
+// ---------------------------------------------------------------------------
+function Lightbox({ url, onClose }: { url: string; onClose: () => void }) {
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (e.key === 'Escape') onClose();
+    }
+    window.addEventListener('keydown', onKey);
+    // Prevent the page from scrolling while the lightbox is open
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [onClose]);
+
+  return (
+    <div
+      onClick={onClose}
+      style={{
+        position: 'fixed',
+        inset: 0,
+        background: 'rgba(0, 0, 0, 0.92)',
+        zIndex: 10000,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        cursor: 'zoom-out',
+        padding: 24,
+      }}
+      title="Click anywhere or press Esc to close"
+    >
+      <img
+        src={url}
+        alt="Full size"
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          maxWidth: '100%',
+          maxHeight: '100%',
+          objectFit: 'contain',
+          boxShadow: '0 8px 40px rgba(0,0,0,0.6)',
+          cursor: 'default',
+        }}
+      />
+      <button
+        onClick={onClose}
+        style={{
+          position: 'absolute',
+          top: 16,
+          right: 16,
+          background: 'rgba(0,0,0,0.5)',
+          border: '1px solid rgba(255,255,255,0.2)',
+          color: '#fff',
+          borderRadius: 'var(--radius-sm)',
+          width: 32,
+          height: 32,
+          cursor: 'pointer',
+          fontSize: 16,
+          lineHeight: 1,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+        title="Close (Esc)"
+      >
+        ✕
+      </button>
     </div>
   );
 }

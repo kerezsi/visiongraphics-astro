@@ -100,6 +100,7 @@ Handles `props.text`, `props.html` (strips tags), `props.label`, `props.title`, 
 {
   "ollamaBase": "http://localhost:11434",
   "swarmBase":  "http://192.168.x.x:7801",
+  "swarmBases": ["http://192.168.x.x:7801", "http://second-machine:7801"],
   "swarmModels":  ["modelName/file.safetensors"],
   "swarmStyles":  [{ "name": "Cinematic BW", "text": "black and white, cinematic..." }],
   "swarmPrompts": [{ "name": "Glass Tower", "text": "lone glass tower at dusk..." }],
@@ -109,11 +110,27 @@ Handles `props.text`, `props.html` (strips tags), `props.label`, `props.title`, 
 }
 ```
 
+`swarmBases` is the active list of backends (added 2026-05). `swarmBase` is kept for backward compatibility — when only `swarmBase` is set, the server treats it as a single-element list. The AI Settings panel writes both fields on save (`swarmBase` mirrors the first entry of `swarmBases`).
+
 **SwarmUI setup requirements:**
 - Host must listen on `0.0.0.0` (not `127.0.0.1`) to accept network connections.
 - Default port: 7801. Set the editor's SwarmUI address accordingly.
 - No WS bridge — generation uses SwarmUI's blocking HTTP API (`POST /API/GenerateText2Image`), so long generations simply hold the HTTP connection open (up to 3 min timeout).
 - Model identifiers must be the internal `name` field from `ListModels` (the filename path), not the display `title`.
+
+**Multi-backend SwarmUI:**
+- Multiple `swarmBases` entries are addressed round-robin per image when a multi-image request is generated. E.g. with 2 backends and 4 images, each backend gets 2 generation jobs in parallel.
+- `/api/swarmui/status` pings every backend in parallel and returns `{ available: <any-up>, backends: [{ base, available }] }`.
+- `/api/swarmui/models` walks the list and returns the first reachable backend's model list (assumes a shared model set).
+- If any backend returns an error, that backend's images are skipped and the others still complete; the response includes a `warnings` field listing per-backend failures.
+
+**Async generate in the AI panel:**
+- The Generate button is no longer disabled while a generation is in flight. Clicking again queues another concurrent generation; with multi-backend setups these run in parallel on different machines.
+- The button label flips to `Generate · N running…` while jobs are active; the count below shows how many are queued. Each completed job appends its images to the output panel (rather than replacing — click "Clear" to reset).
+
+**Lightbox in the AI panel:**
+- Clicking any output image or any thumbnail in the Recent gallery opens a full-window lightbox overlay. Click outside the image, click ✕, or press Escape to close.
+- Shift-click a gallery thumbnail to load it back into the output panel above (preserves the old click behaviour).
 
 **Ollama NDJSON quirk:** Ollama sometimes returns streaming NDJSON even with `stream: false`. All server-side Ollama calls use `ollamaGenerate()` which aggregates all chunk `response` fields when multiple lines are returned, ensuring the full response is captured regardless of streaming behaviour.
 

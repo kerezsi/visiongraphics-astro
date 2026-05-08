@@ -274,7 +274,10 @@ export interface OllamaSystemPrompt { name: string; text: string; }
 
 export interface EditorConfig {
   ollamaBase: string;
+  /** @deprecated kept for compatibility — use swarmBases */
   swarmBase: string;
+  /** Multiple SwarmUI backend URLs for parallel generation across machines. */
+  swarmBases: string[];
   swarmModels: string[];
   swarmStyles: SwarmStyle[];
   swarmPrompts: SwarmPromptItem[];
