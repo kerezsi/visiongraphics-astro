@@ -1,3 +1,5 @@
 ---
-title: "Healthcare"
+title:
+  en: Healthcare
+  hu: Egészségügy
 ---

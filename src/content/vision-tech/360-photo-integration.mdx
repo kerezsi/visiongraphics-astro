@@ -1,8 +1,10 @@
-﻿---
-title: 360 Photo Integration
-description: |
-  New elements rendered in 3ds Max with V-Ray and composited into real 360° photographs. Proposed changes to an existing space appear in their actual context — the real room, the real light, the real surroundings — with the new design elements inserted.
-  
+---
+title:
+  en: "360 Photo Integration"
+  hu: "360°-os fotóintegráció"
+description:
+  en: "New elements rendered in 3ds Max with V-Ray and composited into real 360° photographs. Proposed changes to an existing space appear in their actual context — the real room, the real light, the real surroundings — with the new design elements inserted."
+  hu: "Új elemek 3ds Maxben, V-Rayjel renderelve és valódi 360°-os fotókba illesztve. Egy meglévő tér tervezett változtatásai a valódi kontextusban jelennek meg — a valódi szobában, a valódi fényben, a valódi környezetben — az új tervezési elemek beillesztésével."
 image: /_img/vision-tech/360-photo-integration.jpg
 technique: AI-Enhanced
 cost: €€
@@ -23,12 +25,21 @@ relatedFeatures:
 published: true
 ---
 
+<Lang code="en">
 360 Photo Integration places rendered new elements inside real 360° photographs. We photograph the existing space, build 3D models only of the proposed changes, match the camera and lighting to the real photograph, and composite the render into it. The result is a panorama where the existing surroundings are real and the new elements look real within them.
 
 This is the most convincing way to visualize changes to an existing space, because the context is true — not modeled.
+</Lang>
 
-<Tour360 url="https://pano.visiongraphics.eu/KOKI_FC_KIVITELI/" title="Interior 360 photo integration — new fit-out in existing shell" coverImage="/_img/vision-tech/360-photo-integration/2159-mage-style-use-grey-colors-only-very-s-1.jpg" />
+<Lang code="hu">
+A 360°-os fotóintegráció renderelt új elemeket helyez valódi 360°-os fotókba. Lefotózzuk a meglévő teret, csak a tervezett változtatásokat modellezzük 3D-ben, a kamerát és a világítást a valódi fotóhoz illesztjük, majd a rendert kompozitáljuk bele. Az eredmény olyan panoráma, ahol a meglévő környezet valódi, és az új elemek valóságosan illeszkednek benne.
 
+Ez a legmeggyőzőbb mód egy meglévő tér változtatásainak vizualizálására, mert a kontextus valódi — nem modellezett.
+</Lang>
+
+<Tour360 url="https://pano.visiongraphics.eu/KOKI_FC_KIVITELI/" title={{ en: "Interior 360 photo integration — new fit-out in existing shell", hu: "Belső 360°-os fotóintegráció — új beépítés meglévő szerkezetben" }} coverImage="/_img/vision-tech/360-photo-integration/2159-mage-style-use-grey-colors-only-very-s-1.jpg" />
+
+<Lang code="en">
 ## The technical challenge
 
 Integrating a 3D render into a flat photograph is a camera-matching problem. Integrating into a 360 panorama is significantly harder: the camera position must match in all three axes for the full sphere, and the lighting must match the real HDR sky and interior conditions captured at the moment of the shoot.
@@ -40,9 +51,25 @@ Lighting match — we extract the lighting conditions from the 360 photograph it
 Shadow and reflection — rendered elements must cast shadows onto and receive reflections from real surfaces. This requires geometry for the existing surfaces even though they won't be rendered — only used for shadow reception and reflections.
 
 Compositing — the rendered elements are layered into the equirectangular image with matched exposure, color grade, and edge treatment.
+</Lang>
 
-<Tour360 url="https://pano.visiongraphics.eu/AVALON/" title="Aerial 360 photo integration — new development in real aerial panorama" coverImage="/_img/vision-tech/360-photo-integration/2202-mage-style-use-grey-colors-only-very-s-1.jpg" />
+<Lang code="hu">
+## A technikai kihívás
 
+Egy 3D-render beillesztése sík fotóba kamera-illesztési probléma. Egy 360°-os panorámába integrálni jelentősen nehezebb: a kamerapozíciónak mindhárom tengelyen illeszkednie kell a teljes gömbre, és a világításnak illeszkednie kell a fotózás pillanatában rögzített valódi HDR-éghez és belső viszonyokhoz.
+
+Kamera-illesztés — a 3ds Maxben V-Ray kamerát állítunk be a 360°-os kamera pontos fizikai pozíciójára a valódi térben. A méréseket helyszínen végezzük. A pozíció kis hibája olyan perspektíva-eltolódást okoz, ami a 360°-os nézegetőben azonnal látható.
+
+Fény-illesztés — a fényviszonyokat magából a 360°-os fotóból nyerjük ki (HDR környezeti térképként használva), és ezzel világítjuk meg a renderelt elemeket. Ez biztosítja, hogy az új elemek fényt vegyenek fel a valódi égből és valódi belső forrásokból.
+
+Árnyék és tükröződés — a renderelt elemeknek árnyékot kell vetniük a valódi felületekre, és tükröződést kell felvenniük róluk. Ehhez a meglévő felületek geometriája is szükséges, még ha nem is rendereljük — csak árnyékfogadásra és tükröződésre használjuk.
+
+Kompozit — a renderelt elemeket az ekvirektanguláris képbe rétegezzük illesztett expozícióval, színfokozattal és szegélykezeléssel.
+</Lang>
+
+<Tour360 url="https://pano.visiongraphics.eu/AVALON/" title={{ en: "Aerial 360 photo integration — new development in real aerial panorama", hu: "Légi 360°-os fotóintegráció — új beruházás valódi légi panorámában" }} coverImage="/_img/vision-tech/360-photo-integration/2202-mage-style-use-grey-colors-only-very-s-1.jpg" />
+
+<Lang code="en">
 ## What this is used for
 
 Renovation proposals — showing what a space will look like after changes without needing to model every unchanged element. Only the new parts are rendered.
@@ -52,18 +79,38 @@ Planning submissions — proposed buildings inserted into 360 panoramas taken fr
 Fit-out visualization — new furniture, partitions, cladding, or equipment shown in the real shell of an existing building before fit-out begins.
 
 Design alternatives — multiple versions of a proposed change can be rendered and presented as separate viewpoints in the same tour, letting clients compare options in context.
+</Lang>
 
-<Tour360 url="https://pano.visiongraphics.eu/SZERENCSEJATEK_PARKOLO/" title="Exterior 360 photo integration — new elements in the parking area " coverImage="/_img/vision-tech/360-photo-integration/2203-mage-style-use-grey-colors-only-very-s.jpg" />
+<Lang code="hu">
+## Mire használjuk
 
+Felújítási javaslatok — annak bemutatása, hogyan néz ki a tér a változtatások után, anélkül hogy minden változatlan elemet modellezni kellene. Csak az új részeket rendereljük.
+
+Engedélyezési beadványok — tervezett épületek 360°-os panorámákba illesztve, amelyeket szomszédos utcákról vagy nézőpontokból fotóztunk. A bírálók a javaslatot a valódi kontextusban, valódi álláspozícióból, minden irányban látják.
+
+Beépítés-vizualizáció — új bútor, válaszfalak, burkolat vagy berendezés a meglévő épület valódi szerkezetében, még a beépítés megkezdése előtt.
+
+Tervezési változatok — egy tervezett változtatás több verziója rendereltethető és külön nézőpontként mutatható be ugyanabban a túrában, így az ügyfél kontextusban hasonlíthatja össze az opciókat.
+</Lang>
+
+<Tour360 url="https://pano.visiongraphics.eu/SZERENCSEJATEK_PARKOLO/" title={{ en: "Exterior 360 photo integration — new elements in the parking area", hu: "Külső 360°-os fotóintegráció — új elemek a parkolóban" }} coverImage="/_img/vision-tech/360-photo-integration/2203-mage-style-use-grey-colors-only-very-s.jpg" />
+
+<Lang code="en">
 ## What we need from you
+</Lang>
+
+<Lang code="hu">
+## Mire van szükségünk Öntől
+</Lang>
 
 <SpecTable rows={[
-{ label: "Access for photography", value: "We need to photograph the real space before any integration work can begin. Coordination with the site is required." },
-{ label: "Plans of new elements", value: "CAD drawings, IFC files, or a detailed brief for what needs to be built in 3D. Only the new elements need to be modeled." },
-{ label: "Material specs", value: "For the new rendered elements. Existing surfaces are taken from the photograph." },
-{ label: "Preferred viewpoints", value: "Agreed before the shoot — viewpoint positions determine where integrations will be most effective." },
+  { label: { en: "Access for photography", hu: "Hozzáférés a fotózáshoz" }, value: { en: "We need to photograph the real space before any integration work can begin. Coordination with the site is required.",                       hu: "A valódi teret le kell fotóznunk, mielőtt bármilyen integrációs munka elkezdődhet. A helyszínnel egyeztetni kell." } },
+  { label: { en: "Plans of new elements",   hu: "Új elemek tervei" },         value: { en: "CAD drawings, IFC files, or a detailed brief for what needs to be built in 3D. Only the new elements need to be modeled.",                      hu: "CAD-rajzok, IFC-fájlok vagy részletes brief, mi épüljön 3D-ben. Csak az új elemeket kell modellezni." } },
+  { label: { en: "Material specs",          hu: "Anyagspecifikációk" },        value: { en: "For the new rendered elements. Existing surfaces are taken from the photograph.",                                                              hu: "Az új, renderelt elemekhez. A meglévő felületeket a fotóból vesszük." } },
+  { label: { en: "Preferred viewpoints",     hu: "Preferált nézőpontok" },       value: { en: "Agreed before the shoot — viewpoint positions determine where integrations will be most effective.",                                          hu: "A fotózás előtt egyeztetve — a nézőpontok határozzák meg, hol lesz a legjobb az integráció." } },
 ]} />
 
+<Lang code="en">
 ## Related techniques
 
 For documenting the existing space before changes: 360 Photography
@@ -73,3 +120,16 @@ For visualizing a completely unbuilt space in 360: 360 Renderings
 For the flat (non-360) equivalent — building composited into a street-level photograph: Photo Integration
 
 For assembling multiple viewpoints into a navigable tour: 360 Tour
+</Lang>
+
+<Lang code="hu">
+## Kapcsolódó technikák
+
+A meglévő tér változtatások előtti dokumentálásához: 360°-os fotózás
+
+Teljesen még meg nem épült tér 360°-ban való vizualizálásához: 360°-os látványtervek
+
+A sík (nem 360°-os) megfelelőhöz — épület utcaszintű fotóba illesztve: Fotóintegráció
+
+Több nézőpont bejárható túrává kapcsolásához: 360°-os túra
+</Lang>

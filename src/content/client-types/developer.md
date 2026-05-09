@@ -1,3 +1,5 @@
 ---
-title: "Developer"
+title:
+  en: Developer
+  hu: Fejlesztő
 ---

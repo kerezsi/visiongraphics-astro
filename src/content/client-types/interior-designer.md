@@ -1,3 +1,5 @@
 ---
-title: "Interior Designer"
+title:
+  en: Interior Designer
+  hu: Belsőépítész
 ---

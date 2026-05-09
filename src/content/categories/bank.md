@@ -1,3 +1,5 @@
 ---
-title: "Bank"
+title:
+  en: Bank
+  hu: Bank
 ---

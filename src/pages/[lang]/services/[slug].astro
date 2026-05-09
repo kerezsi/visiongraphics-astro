@@ -1,36 +1,48 @@
 ---
 // src/pages/services/[slug].astro
 import { getCollection } from 'astro:content';
-import { thumbUrl } from '../../lib/image-url';
-import Page from '../../layouts/Page.astro';
-import SectionBanner from '../../components/ui/SectionBanner.astro';
-import DeliverableGrid from '../../components/mdx/DeliverableGrid.astro';
-import TimelineTable from '../../components/mdx/TimelineTable.astro';
-import NotableGrid from '../../components/mdx/NotableGrid.astro';
-import ImageGallery from '../../components/mdx/ImageGallery.astro';
-import ImageCompare from '../../components/mdx/ImageCompare.astro';
-import ProcessFlow from '../../components/mdx/ProcessFlow.astro';
-import PhaseMatrix from '../../components/mdx/PhaseMatrix.astro';
-import Tour360 from '../../components/media/Tour360.astro';
-import FilmEmbed from '../../components/media/FilmEmbed.astro';
-import YouTubeEmbed from '../../components/media/YouTubeEmbed.astro';
-import SpecTable from '../../components/mdx/SpecTable.astro';
-import CompareTable from '../../components/mdx/CompareTable.astro';
-import SingleImage from '../../components/mdx/SingleImage.astro';
-import ArticleGalleryMounter from '../../components/media/ArticleGalleryMounter.tsx';
-import ArticleImageCompareMounter from '../../components/media/ArticleImageCompareMounter.tsx';
+import { thumbUrl } from '../../../lib/image-url';
+import Page from '../../../layouts/Page.astro';
+import SectionBanner from '../../../components/ui/SectionBanner.astro';
+import DeliverableGrid from '../../../components/mdx/DeliverableGrid.astro';
+import TimelineTable from '../../../components/mdx/TimelineTable.astro';
+import NotableGrid from '../../../components/mdx/NotableGrid.astro';
+import ImageGallery from '../../../components/mdx/ImageGallery.astro';
+import ImageCompare from '../../../components/mdx/ImageCompare.astro';
+import ProcessFlow from '../../../components/mdx/ProcessFlow.astro';
+import PhaseMatrix from '../../../components/mdx/PhaseMatrix.astro';
+import Tour360 from '../../../components/media/Tour360.astro';
+import FilmEmbed from '../../../components/media/FilmEmbed.astro';
+import YouTubeEmbed from '../../../components/media/YouTubeEmbed.astro';
+import SpecTable from '../../../components/mdx/SpecTable.astro';
+import CompareTable from '../../../components/mdx/CompareTable.astro';
+import SingleImage from '../../../components/mdx/SingleImage.astro';
+import ArticleGalleryMounter from '../../../components/media/ArticleGalleryMounter.tsx';
+import ArticleImageCompareMounter from '../../../components/media/ArticleImageCompareMounter.tsx';
+import Lang from '../../../components/i18n/Lang.astro';
+import { localizedPaths, localeUrl, tStr, type Locale } from '../../../lib/i18n';
 
 export async function getStaticPaths() {
   const allServices = await getCollection('services', ({ data }) => data.published);
-  return allServices.map(entry => ({ params: { slug: entry.slug } }));
+  return localizedPaths(allServices, entry => ({ slug: entry.slug }));
 }
 
-const { slug } = Astro.params;
+const { lang, slug } = Astro.params as { lang: Locale; [k: string]: string | undefined };
+Astro.locals.lang = lang;
 const allServices = await getCollection('services', ({ data }) => data.published);
 const entry = allServices.find(s => s.slug === slug);
-if (!entry) return Astro.redirect('/services/');
+if (!entry) return Astro.redirect(localeUrl('/services/', lang));
 const { data } = entry;
 const { Content } = await entry.render();
+
+// Resolve translatable frontmatter fields
+const titleStr            = tStr(data.title, lang);
+const descriptionStr      = tStr(data.description, lang);
+const taglineStr          = tStr(data.tagline, lang);
+const pricingStr          = tStr(data.pricing, lang);
+const startRequirementsStr = tStr(data.startRequirements, lang);
+const sidebarLabelStr     = tStr(data.sidebarLabel, lang);
+const sidebarContentStr   = tStr(data.sidebarContent, lang);
 
 // Related projects — those that list this service in their services array
 const allProjects = await getCollection('projects', p =>
@@ -44,49 +56,79 @@ const linkedTech = (data.techniques ?? [])
   .map(slug => allTech.find(t => t.slug === slug))
   .filter(Boolean);
 
-const hasMeta = data.pricing || data.startRequirements || (data.sidebarLabel && data.sidebarContent);
+const hasMeta = pricingStr || startRequirementsStr || (sidebarLabelStr && sidebarContentStr);
+
+const COPY = {
+  en: {
+    metaSuffix:        '— Services',
+    bannerLabel:       'Service',
+    breadcrumbServices:'Services',
+    pricingLabel:      'Pricing',
+    startRequirements: 'What you need to start',
+    techniquesUsed:    'Techniques used in this service:',
+    projectsUsing:     'Projects using this service:',
+    seeWork:           'See Our Work',
+    startProject:      'Start a Project',
+    prev:              'Previous',
+    next:              'Next',
+  },
+  hu: {
+    metaSuffix:        '— Szolgáltatások',
+    bannerLabel:       'Szolgáltatás',
+    breadcrumbServices:'Szolgáltatások',
+    pricingLabel:      'Árképzés',
+    startRequirements: 'Mire van szüksége az induláshoz',
+    techniquesUsed:    'A szolgáltatáshoz használt technikák:',
+    projectsUsing:     'Projektek, amelyek ezt a szolgáltatást használták:',
+    seeWork:           'Munkáink',
+    startProject:      'Projekt indítása',
+    prev:              'Előző',
+    next:              'Következő',
+  },
+} as const;
+const c = COPY[lang];
 ---
 
-<Page title={`${data.title} — Services`} description={data.description} fullBleed>
+<Page title={`${titleStr} ${c.metaSuffix}`} description={descriptionStr} fullBleed>
   <SectionBanner
     image={data.bannerImage ?? '/_img/banners/banner-arch-viz.jpg'}
-    label="Service"
-    title={data.title}
+    label={c.bannerLabel}
+    title={titleStr}
     size="page"
     headingLevel="h1"
   />
   <div class="service-page">
     <div class="service-breadcrumb container">
-      <a href="/services/">Services</a>
+      <a href={localeUrl('/services/', lang)}>{c.breadcrumbServices}</a>
       <span>→</span>
-      <span>{data.title}</span>
+      <span>{titleStr}</span>
     </div>
 
-    {data.tagline && (
+    {taglineStr && (
       <div class="service-tagline container">
-        <p class="service-tagline-text">{data.tagline}</p>
+        <p class="service-tagline-text">{taglineStr}</p>
       </div>
     )}
 
     {hasMeta && (
       <div class="container">
       <div class="service-meta">
-        {data.pricing && (
+        {pricingStr && (
           <div class="service-meta-item">
-            <span class="service-meta-label">Pricing</span>
-            <span class="service-meta-value">{data.pricing}</span>
+            <span class="service-meta-label">{c.pricingLabel}</span>
+            <span class="service-meta-value">{pricingStr}</span>
           </div>
         )}
-        {data.startRequirements && (
+        {startRequirementsStr && (
           <div class="service-meta-item">
-            <span class="service-meta-label">What you need to start</span>
-            <span class="service-meta-value">{data.startRequirements}</span>
+            <span class="service-meta-label">{c.startRequirements}</span>
+            <span class="service-meta-value">{startRequirementsStr}</span>
           </div>
         )}
-        {data.sidebarLabel && data.sidebarContent && (
+        {sidebarLabelStr && sidebarContentStr && (
           <div class="service-meta-item">
-            <span class="service-meta-label">{data.sidebarLabel}</span>
-            <span class="service-meta-value">{data.sidebarContent}</span>
+            <span class="service-meta-label">{sidebarLabelStr}</span>
+            <span class="service-meta-value">{sidebarContentStr}</span>
           </div>
         )}
       </div>
@@ -110,6 +152,7 @@ const hasMeta = data.pricing || data.startRequirements || (data.sidebarLabel && 
         SpecTable,
         CompareTable,
         SingleImage,
+        Lang,
       }} />
       <ArticleGalleryMounter client:load />
       <ArticleImageCompareMounter client:load />
@@ -117,10 +160,10 @@ const hasMeta = data.pricing || data.startRequirements || (data.sidebarLabel && 
 
     {linkedTech.length > 0 && (
       <div class="svc-techniques container">
-        <span class="svc-techniques-label">Techniques used in this service:</span>
+        <span class="svc-techniques-label">{c.techniquesUsed}</span>
         <div class="svc-techniques-chips">
           {linkedTech.map(t => (
-            <a href={`/vision-tech/${t!.slug}/`} class="svc-technique-chip">{t!.data.title}</a>
+            <a href={localeUrl(`/vision-tech/${t!.slug}/`, lang)} class="svc-technique-chip">{tStr(t!.data.title, lang)}</a>
           ))}
         </div>
       </div>
@@ -129,34 +172,34 @@ const hasMeta = data.pricing || data.startRequirements || (data.sidebarLabel && 
     {relatedProjects.length > 0 && (
       <section class="svc-related-section">
         <div class="container">
-          <p class="svc-related-heading">Projects using this service:</p>
+          <p class="svc-related-heading">{c.projectsUsing}</p>
           <div class="svc-carousel-wrap">
-            <button class="svc-carousel-btn svc-carousel-prev" id="svc-prev" aria-label="Previous">&#8592;</button>
+            <button class="svc-carousel-btn svc-carousel-prev" id="svc-prev" aria-label={c.prev}>&#8592;</button>
             <div class="svc-carousel" id="svc-carousel">
               {relatedProjects.map(p => (
-                <a href={`/portfolio/${p.slug}/`} class="svc-rel-card">
+                <a href={localeUrl(`/portfolio/${p.slug}/`, lang)} class="svc-rel-card">
                   <img
                     src={thumbUrl(p.data.coverImage)}
-                    alt={p.data.title}
+                    alt={tStr(p.data.title, lang)}
                     loading="lazy"
                     onerror={`this.onerror=null;this.src='${p.data.coverImage}'`}
                   />
                   <div class="svc-rel-body">
                     <span class="svc-rel-year">{p.data.year}</span>
-                    <span class="svc-rel-title">{p.data.displayTitle ?? p.data.title}</span>
+                    <span class="svc-rel-title">{tStr(p.data.displayTitle, lang) || tStr(p.data.title, lang)}</span>
                   </div>
                 </a>
               ))}
             </div>
-            <button class="svc-carousel-btn svc-carousel-next" id="svc-next" aria-label="Next">&#8594;</button>
+            <button class="svc-carousel-btn svc-carousel-next" id="svc-next" aria-label={c.next}>&#8594;</button>
           </div>
         </div>
       </section>
     )}
 
     <div class="service-cta container">
-      <a href="/portfolio/" class="btn btn-secondary">See Our Work</a>
-      <a href="/contact/" class="btn btn-primary">Start a Project</a>
+      <a href={localeUrl('/portfolio/', lang)} class="btn btn-secondary">{c.seeWork}</a>
+      <a href={localeUrl('/contact/', lang)} class="btn btn-primary">{c.startProject}</a>
     </div>
   </div>
 </Page>

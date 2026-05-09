@@ -1,3 +1,5 @@
 ---
-title: "Exhibition"
+title:
+  en: Exhibition
+  hu: Kiállítás
 ---

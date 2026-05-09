@@ -1,7 +1,10 @@
-﻿---
-title: 360 Renderings
-description: |
-  Computer-generated 360° panoramic images rendered in 3ds Max with V-Ray. A spherical camera captures the complete environment from a fixed viewpoint — look in any direction, including up and down.
+---
+title:
+  en: "360 Renderings"
+  hu: "360°-os látványtervek"
+description:
+  en: "Computer-generated 360° panoramic images rendered in 3ds Max with V-Ray. A spherical camera captures the complete environment from a fixed viewpoint — look in any direction, including up and down."
+  hu: "Számítógéppel készült 360°-os panorámaképek 3ds Maxben, V-Rayjel renderelve. A gömbi kamera egy fix nézőpontból a teljes környezetet rögzíti — bármilyen irányba nézhet, fel és le is."
 image: /_img/vision-tech/360-renderings.jpg
 technique: Traditional
 cost: €€
@@ -23,10 +26,17 @@ relatedFeatures:
 published: true
 ---
 
+<Lang code="en">
 A standard rendering shows one camera angle. A 360 rendering shows the complete sphere around a single point — you look in any direction, including straight up at the ceiling and straight down at the floor. We produce these in 3ds Max using V-Ray's panoramic camera, which renders an equirectangular image covering the full 360° × 180° field of view.
+</Lang>
 
-<Tour360 url="https://pano.visiongraphics.eu/TESTVERHEGYI/KINT/" title="Exterior 360 rendering — residential development" coverImage="/_img/vision-tech/360-renderings/2209-mage-style-use-grey-colors-only-very-s-2.jpg" />
+<Lang code="hu">
+Egy hagyományos render egyetlen kameraszöget mutat. Egy 360°-os render egy pont körüli teljes gömböt — bármilyen irányba nézhet, beleértve egyenesen felfelé a mennyezetre és lefelé a padlóra. Ezeket 3ds Maxben készítjük V-Ray panorámakamerával, amely egy ekvirektanguláris képet renderel a teljes 360° × 180°-os látótérről.
+</Lang>
 
+<Tour360 url="https://pano.visiongraphics.eu/TESTVERHEGYI/KINT/" title={{ en: "Exterior 360 rendering — residential development", hu: "Külső 360°-os render — lakóberuházás" }} coverImage="/_img/vision-tech/360-renderings/2209-mage-style-use-grey-colors-only-very-s-2.jpg" />
+
+<Lang code="en">
 ## What it takes to do this properly
 
 The main constraint of 360 rendering is that there is nowhere to hide. In a standard rendering, areas outside the camera frame don't need to be finished. In a 360, the complete model — ceiling, floor, every wall, every corner — must be complete and properly detailed. This makes 360 renderings more expensive to set up than a comparable flat render, but the same viewpoint can be revisited from any direction without additional rendering.
@@ -36,18 +46,38 @@ Model completeness — all geometry in every direction must be present and textu
 Resolution — equirectangular images need to be rendered at significantly higher resolution than flat images to maintain the same perceived quality when viewed interactively. We typically work at 8K × 4K (32 megapixels) as a base.
 
 Lighting — the lighting rig must work from all directions simultaneously. A light source visible in the frame in a flat render is hidden; in 360 it's part of the image.
+</Lang>
 
-<Tour360 url="https://pano.visiongraphics.eu/CSERJE_A01/" title="Interior 360 rendering — residential apartment" coverImage="/_img/vision-tech/360-renderings/2210-mage-style-use-grey-colors-only-very-s.jpg" />
+<Lang code="hu">
+## Mi kell ahhoz, hogy rendesen sikerüljön
 
+A 360°-os render fő korlátja, hogy nincs hová elbújni. Egy hagyományos rendernél a kameraszögön kívül eső területeket nem kell befejezni. Egy 360°-os rendernél a teljes modellnek — mennyezetnek, padlónak, minden falnak, minden saroknak — készen és megfelelően részletezve kell lennie. Ettől drágább a beállítása, mint egy hasonló sík renderé, viszont ugyanabból a nézőpontból bármelyik irányba nézhetünk újabb render nélkül.
+
+Modell-teljesség — minden geometriának minden irányban jelen kell lennie és textúrázva kell lennie. A síkrenderben kivágott, befejezetlen területek 360°-ban teljesen láthatók.
+
+Felbontás — az ekvirektanguláris képeket jelentősen nagyobb felbontásban kell renderelni, mint a sík képeket, hogy interaktív megtekintéskor ugyanazt az érzékelt minőséget adják. Jellemzően 8K × 4K (32 megapixel) az alap.
+
+Világítás — a fényrendszernek minden irányból egyszerre kell működnie. Egy fényforrás, amelyet egy sík renderben kitakarunk, 360°-ban a kép része.
+</Lang>
+
+<Tour360 url="https://pano.visiongraphics.eu/CSERJE_A01/" title={{ en: "Interior 360 rendering — residential apartment", hu: "Belső 360°-os render — lakás" }} coverImage="/_img/vision-tech/360-renderings/2210-mage-style-use-grey-colors-only-very-s.jpg" />
+
+<Lang code="en">
 ## What we need from you
+</Lang>
+
+<Lang code="hu">
+## Mire van szükségünk Öntől
+</Lang>
 
 <SpecTable rows={[
-{ label: "3D model", value: "Complete in all directions from the chosen viewpoint — no unfinished areas. CAD/IFC for us to build from, or an existing 3ds Max model." },
-{ label: "Viewpoints", value: "Eye-level positions agreed before rendering. Each viewpoint is a separate render at full cost." },
-{ label: "Material specs", value: "Same requirements as for flat renderings. More surfaces are visible, so material coverage needs to be more complete." },
-{ label: "Lighting design", value: "Interior viewpoints need a fully resolved lighting setup — everything is visible." },
+  { label: { en: "3D model",         hu: "3D-modell" },           value: { en: "Complete in all directions from the chosen viewpoint — no unfinished areas. CAD/IFC for us to build from, or an existing 3ds Max model.", hu: "A választott nézőpontból minden irányban teljes — nincsenek befejezetlen területek. CAD/IFC, amelyből építjük, vagy egy meglévő 3ds Max-modell." } },
+  { label: { en: "Viewpoints",       hu: "Nézőpontok" },           value: { en: "Eye-level positions agreed before rendering. Each viewpoint is a separate render at full cost.",                                            hu: "Szemmagasságú pozíciók, render előtt egyeztetve. Minden nézőpont külön render, teljes áron." } },
+  { label: { en: "Material specs",   hu: "Anyagspecifikációk" },   value: { en: "Same requirements as for flat renderings. More surfaces are visible, so material coverage needs to be more complete.",                       hu: "Ugyanaz a követelmény, mint a sík rendernél. Több felület látható, ezért az anyaglefedettségnek teljesebbnek kell lennie." } },
+  { label: { en: "Lighting design",  hu: "Világítási terv" },      value: { en: "Interior viewpoints need a fully resolved lighting setup — everything is visible.",                                                          hu: "Belső nézőpontokhoz teljesen kidolgozott világítás kell — minden látható." } },
 ]} />
 
+<Lang code="en">
 ## Delivery
 
 Equirectangular images viewable in any 360 browser viewer, embedded on websites, or loaded into Pano2VR for use in a full 360 Tour. VR-headset compatible via WebVR.
@@ -66,3 +96,25 @@ For capturing an existing space rather than an unbuilt one: 360 Photography
 For showing new elements inside a real photographed space: 360 Photo Integration
 
 For connecting multiple viewpoints into a navigable experience: 360 Tour
+</Lang>
+
+<Lang code="hu">
+## Átadás
+
+Ekvirektanguláris képek bármilyen 360°-os böngésző-nézegetőben megnézhetők, weboldalakon beágyazhatók, vagy Pano2VR-be tölthetők egy teljes 360°-os túrához. WebVR-en keresztül VR-headsetekkel kompatibilis.
+
+## Mikor használjon 360°-os látványtervet
+
+- Téri áttekintés — a leghatékonyabb mód annak ellenőrzésére, hogyan érződik egy helyiség, még az építés előtt. Az alaprajzi elrendezést, belmagasságokat és kilátáskapcsolatokat nehéz síkképekből megítélni.
+- Rálátások ellenőrzése — mit látni a konyhából a nappaliba? Mi a kilátás az ágyból az ablakra? A 360°-os render közvetlenül megválaszolja ezeket.
+- Ügyfél-jóváhagyás — egy ügyfelet a szobába helyezni, akár képernyőn is, meggyőzőbb, mint egy kiválasztott szöget mutatni.
+- VR-headset-használat — a 360°-os renderek a 3DOF VR-élmények forrása, amelyek egy headsettel teljes téri elmélyülést adnak.
+
+## Kapcsolódó technikák
+
+Meglévő tér rögzítéséhez (nem még meg nem épült): 360°-os fotózás
+
+Új elemek bemutatása valódi fotózott térben: 360°-os fotóintegráció
+
+Több nézőpont bejárható élménnyé kapcsolása: 360°-os túra
+</Lang>

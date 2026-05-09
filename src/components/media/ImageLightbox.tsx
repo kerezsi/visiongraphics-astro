@@ -2,8 +2,9 @@
 // React island — carousel viewer (large image + thumbnail strip) + fullscreen lightbox
 // Global CSS lives in src/styles/global.css under /* Gallery / ImageLightbox */
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { thumbUrl } from '../../lib/image-url';
+import { useSwipe, useDragScroll } from '../../lib/use-swipe';
 
 interface ImageItem {
   src: string;
@@ -19,7 +20,6 @@ export default function ImageLightbox({ images, title }: Props) {
   const [activeIndex, setActiveIndex]     = useState(0);
   const [lightboxOpen, setLightboxOpen]   = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
-  const touchStartX = useRef<number | null>(null);
 
   /* ── Carousel navigation ──────────────────────────────────────── */
   const prev = useCallback(() => {
@@ -35,6 +35,22 @@ export default function ImageLightbox({ images, title }: Props) {
   const closeLightbox = useCallback(() => setLightboxOpen(false), []);
   const lbPrev = useCallback(() => setLightboxIndex(i => (i - 1 + images.length) % images.length), [images.length]);
   const lbNext = useCallback(() => setLightboxIndex(i => (i + 1) % images.length), [images.length]);
+
+  /* Swipe handlers (touch + mouse drag) */
+  const mainSwipe = useSwipe({ onSwipeLeft: next,   onSwipeRight: prev });
+  const lbSwipe   = useSwipe({ onSwipeLeft: lbNext, onSwipeRight: lbPrev });
+  const thumbsRef = useDragScroll<HTMLDivElement>();
+
+  /* Preload neighbour images (lightbox 'large' size) so swipe feels instant */
+  useEffect(() => {
+    if (!lightboxOpen || images.length < 2) return;
+    const nextIdx = (lightboxIndex + 1) % images.length;
+    const prevIdx = (lightboxIndex - 1 + images.length) % images.length;
+    [nextIdx, prevIdx].forEach(i => {
+      const img = new Image();
+      img.src = thumbUrl(images[i].src, 'large');
+    });
+  }, [lightboxOpen, lightboxIndex, images]);
 
   /* Keyboard nav for lightbox */
   useEffect(() => {
@@ -54,16 +70,6 @@ export default function ImageLightbox({ images, title }: Props) {
     return () => { document.body.style.overflow = ''; };
   }, [lightboxOpen]);
 
-  /* Touch swipe on main image */
-  const onTouchStart = (e: React.TouchEvent) => { touchStartX.current = e.touches[0].clientX; };
-  const onTouchEnd   = (e: React.TouchEvent) => {
-    if (touchStartX.current === null) return;
-    const delta = e.changedTouches[0].clientX - touchStartX.current;
-    touchStartX.current = null;
-    if (Math.abs(delta) < 50) return;
-    if (delta < 0) next(); else prev();
-  };
-
   if (!images || images.length === 0) return null;
 
   return (
@@ -78,12 +84,11 @@ export default function ImageLightbox({ images, title }: Props) {
         <div
           className="gallery-main"
           onClick={() => openLightbox(activeIndex)}
-          onTouchStart={onTouchStart}
-          onTouchEnd={onTouchEnd}
           role="button"
           tabIndex={0}
           aria-label="Click to enlarge"
           onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(activeIndex); } }}
+          {...mainSwipe}
         >
           <img
             className="gallery-main-img"
@@ -110,7 +115,7 @@ export default function ImageLightbox({ images, title }: Props) {
 
         {/* Thumbnail strip */}
         {images.length > 1 && (
-          <div className="gallery-thumbs" role="list" aria-label="Image thumbnails">
+          <div className="gallery-thumbs" role="list" aria-label="Image thumbnails" ref={thumbsRef} style={{ cursor: 'grab' }}>
             {images.map((img, i) => (
               <button
                 key={i}
@@ -141,6 +146,7 @@ export default function ImageLightbox({ images, title }: Props) {
           role="dialog"
           aria-modal="true"
           aria-label="Image lightbox"
+          {...lbSwipe}
         >
           <button
             className="lightbox-close"
@@ -158,9 +164,12 @@ export default function ImageLightbox({ images, title }: Props) {
 
           <div className="lightbox-img-wrap" onClick={e => e.stopPropagation()}>
             <img
+              key={lightboxIndex}
               className="lightbox-img"
-              src={images[lightboxIndex].src}
+              src={thumbUrl(images[lightboxIndex].src, 'large')}
               alt={images[lightboxIndex].alt}
+              draggable={false}
+              onError={(e) => { (e.target as HTMLImageElement).src = images[lightboxIndex].src; }}
             />
           </div>
 

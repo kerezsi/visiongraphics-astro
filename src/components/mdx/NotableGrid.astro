@@ -1,17 +1,20 @@
 ---
+import { tStr, DEFAULT_LOCALE, type Localized, type Locale } from '../../lib/i18n';
+
 interface Item {
-  name: string;
+  name: Localized<string>;
   year: string;
 }
 interface Props {
   items: Item[];
 }
 const { items } = Astro.props;
+const lang: Locale = (Astro.locals as { lang?: Locale })?.lang ?? DEFAULT_LOCALE;
 ---
 <div class="notable-grid">
   {items.map(item => (
     <div class="notable-item">
-      <span class="notable-name">{item.name}</span>
+      <span class="notable-name">{tStr(item.name, lang)}</span>
       <span class="notable-year">{item.year}</span>
     </div>
   ))}

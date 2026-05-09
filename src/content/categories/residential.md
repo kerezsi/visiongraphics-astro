@@ -1,3 +1,5 @@
 ---
-title: "Residential"
+title:
+  en: Residential
+  hu: Lakó
 ---

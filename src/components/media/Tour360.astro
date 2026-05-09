@@ -3,18 +3,25 @@
 // Click-to-load Pano2VR embed
 // Never auto-loads the iframe — only on explicit user click
 
+import { tStr, DEFAULT_LOCALE, type Localized, type Locale } from '../../lib/i18n';
+
 interface Props {
   url:        string;
-  title:      string;
+  title:      Localized<string>;
   coverImage?: string;  // optional cover — falls back to styled placeholder
 }
 
 const { url, title, coverImage } = Astro.props;
+const lang: Locale = (Astro.locals as { lang?: Locale })?.lang ?? DEFAULT_LOCALE;
+const titleStr     = tStr(title, lang);
+const launchLabel  = lang === 'hu' ? '360°-os túra indítása'   : 'Launch 360° Tour';
+const previewAlt   = lang === 'hu' ? `${titleStr} — 360°-os túra előnézete` : `${titleStr} — 360° tour preview`;
+const ariaLaunch   = lang === 'hu' ? `360°-os túra indítása: ${titleStr}`   : `Launch 360° tour: ${titleStr}`;
 ---
 
 <div class="tour-wrap" data-tour-url={url}>
   {coverImage
-    ? <img src={coverImage} alt={`${title} — 360° tour preview`} class="tour-cover" loading="lazy" />
+    ? <img src={coverImage} alt={previewAlt} class="tour-cover" loading="lazy" />
     : <div class="tour-cover tour-cover--placeholder">
         <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="tour-icon-bg">
           <circle cx="40" cy="40" r="30" stroke="currentColor" stroke-width="1" opacity="0.15"/>
@@ -24,15 +31,15 @@ const { url, title, coverImage } = Astro.props;
   }
 
   <div class="tour-overlay">
-    <button class="tour-launch-btn" aria-label={`Launch 360° tour: ${title}`}>
+    <button class="tour-launch-btn" aria-label={ariaLaunch}>
       <svg class="tour-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/>
         <path d="M7 12 Q12 8 17 12 Q12 16 7 12Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
         <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
       </svg>
-      <span class="tour-btn-label">Launch 360° Tour</span>
+      <span class="tour-btn-label">{launchLabel}</span>
     </button>
-    <span class="tour-name">{title}</span>
+    <span class="tour-name">{titleStr}</span>
   </div>
 </div>
 

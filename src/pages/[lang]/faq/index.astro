@@ -1,7 +1,7 @@
 ---
 // src/pages/faq/index.astro
 
-import Page from '../../layouts/Page.astro';
+import Page from '../../../layouts/Page.astro';
 
 const sections = [
   {
@@ -13,7 +13,7 @@ const sections = [
       },
       {
         q: 'How do I get a quote?',
-        a: 'Send us your plans and a brief description of what you need. We\'ll respond with a realistic scope and price within one business day. Call +36 30 945 4179 or email info@visiongraphics.eu.',
+        a: 'Send us your plans and a brief description of what you need. We\'ll respond with a realistic scope and price within one business day. Call +36 30 945 4179 or email info@visiongraphics.hu.',
       },
       {
         q: 'Do you work in Hungarian and English?',
@@ -165,7 +165,13 @@ const sections = [
     ],
   },
 ];
-import SectionBanner from '../../components/ui/SectionBanner.astro';
+import SectionBanner from '../../../components/ui/SectionBanner.astro';
+import { staticLocalePaths, type Locale } from '../../../lib/i18n';
+
+export const getStaticPaths = staticLocalePaths;
+const { lang } = Astro.params as { lang: Locale };
+Astro.locals.lang = lang;
+
 ---
 
 <Page
@@ -204,7 +210,7 @@ import SectionBanner from '../../components/ui/SectionBanner.astro';
           <p class="faq-intro">
             Can't find what you're looking for?
             Call <a href="tel:+36309454179">+36 30 945 4179</a> or
-            email <a href="mailto:info@visiongraphics.eu">info@visiongraphics.eu</a> — we answer same day.
+            email <a href="mailto:info@visiongraphics.hu">info@visiongraphics.hu</a> — we answer same day.
           </p>
         </div>
         <div class="faq-sections">
@@ -346,7 +352,7 @@ import SectionBanner from '../../components/ui/SectionBanner.astro';
           <h2 class="cta-heading">Still have a question?</h2>
           <p class="cta-sub">
             Call <a href="tel:+36309454179">+36 30 945 4179</a> or
-            email <a href="mailto:info@visiongraphics.eu">info@visiongraphics.eu</a> — we answer same day.
+            email <a href="mailto:info@visiongraphics.hu">info@visiongraphics.hu</a> — we answer same day.
           </p>
         </div>
         <a href="/contact/" class="btn btn-primary">Talk to Us</a>

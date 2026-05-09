@@ -1,3 +1,5 @@
 ---
-title: "Urban"
+title:
+  en: Urban
+  hu: Urbanisztika
 ---

@@ -1,3 +1,5 @@
 ---
-title: "Animation"
+title:
+  en: Animation
+  hu: Animáció
 ---

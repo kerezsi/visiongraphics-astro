@@ -1,6 +1,10 @@
 ---
-title: Photorealistic Rendering
-description: The quality tier where a still image is indistinguishable from a photograph of the completed building. V-Ray production rendering combined with ComfyUI post-processing passes for surface detail, atmospheric depth, and environmental elements.
+title:
+  en: "Photorealistic Rendering"
+  hu: "Fotórealisztikus renderelés"
+description:
+  en: "The quality tier where a still image is indistinguishable from a photograph of the completed building. V-Ray production rendering combined with ComfyUI post-processing passes for surface detail, atmospheric depth, and environmental elements."
+  hu: "Az a minőségi szint, ahol az állókép megkülönböztethetetlen a kész épület fotójától. V-Ray produkciós render ComfyUI utófeldolgozó passokkal együtt — felületi részletességhez, légköri mélységhez és környezeti elemekhez."
 image: /_img/vision-tech/photorealistic-rendering.jpg
 technique: AI-Enhanced
 cost: €
@@ -21,24 +25,38 @@ relatedFeatures: []
 published: true
 ---
 
+<Lang code="en">
 Photorealistic rendering is the quality tier where a still image passes for a photograph of the completed building. We achieve this through a combination of V-Ray production rendering and AI-assisted post-processing — applying ComfyUI workflows after the raw render to add surface variation, atmospheric richness, and environmental detail that would take significantly longer to build manually in 3D.
 
 The base render defines geometry, lighting, and material identity accurately. AI handles the visual complexity layer on top.
 
 ## Standard rendering vs AI-Enhanced
+</Lang>
+
+<Lang code="hu">
+A fotórealisztikus renderelés az a minőségi szint, ahol az állókép a kész épület fotójaként hat. Ezt V-Ray produkciós render és AI-támogatott utófeldolgozás kombinációjával érjük el — a nyers render után ComfyUI munkafolyamatokat futtatunk, hogy felületi változatosságot, légköri gazdagságot és környezeti részleteket adjunk hozzá, amelyeket 3D-ben kézzel sokkal tovább tartana megépíteni.
+
+Az alaprender pontosan meghatározza a geometriát, fényt és anyagidentitást. Az AI a vizuális komplexitás rétegét adja hozzá.
+
+## Hagyományos vs. AI-támogatott render
+</Lang>
 
 <CompareTable
-  headers={["Standard render", "AI-Enhanced"]}
-  rows={[
-    { label: "Surface detail", values: ["Modelled and textured manually — every element explicit", "AI injects micro-variation, weathering, and texture richness onto base materials"] },
-    { label: "Entourage", values: ["3D people and vehicles modelled, placed, lit individually", "AI-generated figures and vehicles composited with accurate shadows and scale"] },
-    { label: "Environment", values: ["HDRI sky, basic foliage 3D models", "AI-augmented sky quality, atmospheric depth, integrated vegetation"] },
-    { label: "Production time", values: ["Higher — every visible detail is explicitly built", "Lower — AI generates the visual complexity layer from the rendered base"] },
-    { label: "Typical cost", values: ["Higher for comparable visual result", "Lower — AI makes photorealistic quality more accessible"] },
+  headers={[
+    { en: "Standard render", hu: "Hagyományos render" },
+    { en: "AI-Enhanced",     hu: "AI-támogatott" },
   ]}
-  caption="Same V-Ray base — different post-processing approach"
+  rows={[
+    { label: { en: "Surface detail",   hu: "Felületi részletesség" },  values: [{ en: "Modelled and textured manually — every element explicit",                hu: "Kézzel modellezve és textúrázva — minden elem kifejezett" },                                  { en: "AI injects micro-variation, weathering, and texture richness onto base materials", hu: "Az AI mikro-variációt, kopást és textúragazdagságot ad hozzá az alapanyagokra" }] },
+    { label: { en: "Entourage",        hu: "Entourage" },               values: [{ en: "3D people and vehicles modelled, placed, lit individually",              hu: "3D-emberek és járművek modellezve, elhelyezve, egyedileg világítva" },                        { en: "AI-generated figures and vehicles composited with accurate shadows and scale", hu: "AI által generált alakok és járművek pontos árnyékkal és léptékkel kompozitálva" }] },
+    { label: { en: "Environment",      hu: "Környezet" },                values: [{ en: "HDRI sky, basic foliage 3D models",                                       hu: "HDRI ég, alap lombozati 3D-modellek" },                                                       { en: "AI-augmented sky quality, atmospheric depth, integrated vegetation",            hu: "AI-támogatott égminőség, légköri mélység, integrált növényzet" }] },
+    { label: { en: "Production time", hu: "Készítési idő" },             values: [{ en: "Higher — every visible detail is explicitly built",                       hu: "Magasabb — minden látható részlet kifejezetten épül" },                                       { en: "Lower — AI generates the visual complexity layer from the rendered base",      hu: "Alacsonyabb — az AI a renderelt alapból generálja a vizuális komplexitást" }] },
+    { label: { en: "Typical cost",     hu: "Tipikus költség" },           values: [{ en: "Higher for comparable visual result",                                     hu: "Magasabb azonos vizuális eredményhez" },                                                      { en: "Lower — AI makes photorealistic quality more accessible",                       hu: "Alacsonyabb — az AI elérhetőbbé teszi a fotórealisztikus minőséget" }] },
+  ]}
+  caption={{ en: "Same V-Ray base — different post-processing approach", hu: "Azonos V-Ray-alap — eltérő utófeldolgozási megközelítés" }}
 />
 
+<Lang code="en">
 ## What the AI post-processing actually does
 
 The raw V-Ray render handles geometry, physically-based lighting, and base material behavior. After rendering, ComfyUI workflows add:
@@ -68,15 +86,49 @@ Photorealistic quality is warranted when the image stands on its own rather than
 For design development and iterative client review, standard rendering quality is usually faster and equally useful — photorealism is a delivery quality, not a design tool.
 
 ## What we need from you
+</Lang>
+
+<Lang code="hu">
+## Mit csinál pontosan az AI-utófeldolgozás
+
+A nyers V-Ray render adja a geometriát, a fizikai alapú világítást és az alap anyagviselkedést. Render után a ComfyUI munkafolyamatok hozzáadják:
+
+**Felületi változatosság** — finom kopás, mikrotextúra-részletesség és anyag-egyenetlenség, amelyek miatt a felületek valódinak hatnak, nem egyenletesen tökéleteseknek. A változatosság típusa és mértéke az anyagtípushoz és a projekt szándékolt korához/állapotához van kalibrálva.
+
+**Környezeti elemek** — lombozat-minőség, ég karaktere, talajsík-integráció. Egy frissen ültetett fa máshogy hat, mint egy beállt; az AI ezeket meg tudja különböztetni és alkalmazni.
+
+**Entourage** — emberek és járművek pontos árnyékkal, léptékkel és világítással elhelyezve — anélkül, hogy 3D-figurákat kellene modellezni, riggelni és animálni.
+
+**Légköri effektek** — mélységi pára, lencse-karakter és színfokozat a fényszándékkal összehangolva. Ezek a különbségek választják el a technikailag korrekt rendert egy vizuálisan meggyőző fotótól.
+
+## Mit nem csinál ez a megközelítés
+
+A kamerapozíció és a geometria az alaprender során rögzül. Az AI-fejlesztés azzal dolgozik, amit a V-Ray ad — nem talál ki geometriát, nem változtatja meg a nézőpontot és nem javít modellezési hibát. Az alapmodellnek jónak kell lennie, mielőtt az utófeldolgozás értéket adna.
+
+## Mikor megfelelő ez a minőségi szint
+
+A fotórealisztikus minőség akkor indokolt, amikor a kép önmagában áll, nem egy szemle- vagy döntési folyamatot támogat:
+
+- Hero-képek marketingbrosúrákhoz, weboldalakhoz és építkezési tablókhoz
+- Sajtóközlemények és szerkesztőségi anyagok
+- Pályázati panelek, ahol a kép hatása számít
+- Befektetői prezentációk
+- Értékesítési központi nyomtatott megjelenítések
+
+Tervezésfejlesztéshez és iteratív ügyfél-szemléhez a hagyományos render-minőség általában gyorsabb és ugyanolyan hasznos — a fotórealizmus leadási minőség, nem tervezőeszköz.
+
+## Mire van szükségünk Öntől
+</Lang>
 
 <SpecTable rows={[
-  { label: "3D model quality", value: "Base geometry must be clean and complete. AI enhancement adds visual richness — it doesn't fix modeling errors or missing elements." },
-  { label: "Material specs", value: "Product references for key surfaces. AI handles variation and weathering, but base material identity (concrete vs. stone vs. cladding) must be set correctly in V-Ray." },
-  { label: "Camera position", value: "Fixed before rendering begins. Changing the viewpoint requires a full re-render of the base image." },
-  { label: "Lighting intent", value: "Time of day, season, and weather mood. Reference photographs of comparable projects help calibrate the target atmosphere." },
-  { label: "Output use", value: "Print or digital, and at what scale. This affects resolution requirements — large-format hoarding prints need different output specs than web images." },
+  { label: { en: "3D model quality", hu: "3D-modell minősége" }, value: { en: "Base geometry must be clean and complete. AI enhancement adds visual richness — it doesn't fix modeling errors or missing elements.",                                                                  hu: "Az alapgeometriának tisztának és teljesnek kell lennie. Az AI-fejlesztés vizuális gazdagságot ad hozzá — nem javít modellezési hibát vagy hiányzó elemet." } },
+  { label: { en: "Material specs",   hu: "Anyagspecifikációk" }, value: { en: "Product references for key surfaces. AI handles variation and weathering, but base material identity (concrete vs. stone vs. cladding) must be set correctly in V-Ray.",                                hu: "Termékreferenciák a fő felületekhez. Az AI a változatosságot és kopást kezeli, de az alap anyagidentitást (beton vs. kő vs. burkolat) helyesen kell beállítani V-Rayben." } },
+  { label: { en: "Camera position", hu: "Kamerapozíció" },       value: { en: "Fixed before rendering begins. Changing the viewpoint requires a full re-render of the base image.",                                                                                                       hu: "A renderelés előtt rögzítve. A nézőpont megváltoztatása az alapkép teljes újrarenderelését igényli." } },
+  { label: { en: "Lighting intent",  hu: "Fényszándék" },         value: { en: "Time of day, season, and weather mood. Reference photographs of comparable projects help calibrate the target atmosphere.",                                                                              hu: "Napszak, évszak és időjárási hangulat. Hasonló projektek referenciafotói segítenek a céllegkör kalibrálásához." } },
+  { label: { en: "Output use",       hu: "Felhasználás" },         value: { en: "Print or digital, and at what scale. This affects resolution requirements — large-format hoarding prints need different output specs than web images.",                                                  hu: "Print vagy digitális, és milyen léptéken. Ez befolyásolja a felbontási követelményeket — a nagyméretű építkezési tabló nyomatok más kimeneti specifikációt igényelnek, mint a webes képek." } },
 ]} />
 
+<Lang code="en">
 ## Related techniques
 
 Standard exterior and interior views using the same pipeline: [Exterior](/vision-tech/exterior/), [Interior](/vision-tech/interior/)
@@ -84,3 +136,14 @@ Standard exterior and interior views using the same pipeline: [Exterior](/vision
 Rapid AI upgrade of existing renders without new 3D work: [AI Render Upgrade](/vision-tech/ai-render-upgrade/)
 
 For animated sequences at the same quality level: [3D Animation](/vision-tech/3d-animation/)
+</Lang>
+
+<Lang code="hu">
+## Kapcsolódó technikák
+
+Hagyományos külső- és belsőnézetek ugyanezzel a pipeline-nal: [Külső](/vision-tech/exterior/), [Belső](/vision-tech/interior/)
+
+Meglévő renderek gyors AI-fejlesztése új 3D-munka nélkül: [AI render-fejlesztés](/vision-tech/ai-render-upgrade/)
+
+Ugyanezen a minőségi szinten készült animált szekvenciákhoz: [3D-animáció](/vision-tech/3d-animation/)
+</Lang>

@@ -12,17 +12,26 @@ export interface ServiceItem {
 
 interface Props {
   services: ServiceItem[];
+  /** Label for the "Explore this service" link. Default: "Explore this service". */
+  exploreLabel?: string;
+  /** URL prefix for service detail links — defaults to "/services/" but should
+   *  be passed as the locale-prefixed path (e.g. "/hu/services/") so toggling
+   *  language keeps the user on the right tree. */
+  servicesUrlPrefix?: string;
 }
 
-export default function ServicesTabs({ services }: Props) {
+export default function ServicesTabs({
+  services,
+  exploreLabel = 'Explore this service',
+  servicesUrlPrefix = '/services/',
+}: Props) {
   const [active, setActive] = useState(0);
   const svc = services[active];
 
   if (!svc) return null;
 
   return (
-    <div className="st-root grid min-h-[420px] border border-line bg-surface"
-         style={{ gridTemplateColumns: '280px 1fr' }}>
+    <div className="st-root grid min-h-[420px] border border-line bg-surface">
 
       {/* Sidebar */}
       <nav className="st-sidebar flex flex-col overflow-y-auto border-r border-line"
@@ -73,11 +82,11 @@ export default function ServicesTabs({ services }: Props) {
         </p>
 
         <a
-          href={`/services/${svc.slug}/`}
+          href={`${servicesUrlPrefix}${svc.slug}/`}
           className="st-link inline-flex items-center gap-[0.6rem] font-body text-small font-medium text-accent no-underline transition-[gap,color] duration-200 pb-[0.15rem] w-fit"
           style={{ borderBottom: '1px solid rgba(218, 19, 19, 0.3)' }}
         >
-          Explore this service
+          {exploreLabel}
           <svg viewBox="0 0 20 12" fill="none" aria-hidden="true"
                className="w-[1.1rem] h-[0.7rem] shrink-0">
             <path d="M1 6h17M13 1l5 5-5 5" stroke="currentColor" strokeWidth="1.5"

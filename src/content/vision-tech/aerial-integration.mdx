@@ -1,7 +1,10 @@
 ---
-title: Aerial Integration
-description: |
-  Proposed buildings rendered in 3ds Max with V-Ray and composited into real aerial photographs. The surrounding context is real; the new building is rendered to match it precisely — lighting, perspective, shadow, and color.
+title:
+  en: "Aerial Integration"
+  hu: "Légi integráció"
+description:
+  en: "Proposed buildings rendered in 3ds Max with V-Ray and composited into real aerial photographs. The surrounding context is real; the new building is rendered to match it precisely — lighting, perspective, shadow, and color."
+  hu: "Tervezett épületek 3ds Maxben, V-Rayjel renderelve és valódi légi fotókba illesztve. A környezet valódi; az új épületet pontosan illesztjük — fény, perspektíva, árnyék és szín."
 image: /_img/vision-tech/aerial-integration.jpg
 technique: Hybrid
 cost: €€
@@ -22,14 +25,25 @@ relatedFeatures:
 published: true
 ---
 
+<Lang code="en">
 Aerial integration places a rendered building into a real aerial photograph of its site. The surrounding context — existing buildings, roads, landscape — is the actual photograph. The proposed building is rendered in V-Ray and composited in, matching the photograph's perspective, sun angle, shadow direction, and color conditions exactly.
 
 The result is the most grounded way to show how a new building will affect its surroundings: not a stylized visualization, but the real neighborhood with the building added.
 
 ## Nemetvölgyi residential development
+</Lang>
 
-<ImageCompare before="/_img/vision-tech/aerial-integration/NV_exterior_006a.jpg" after="/_img/vision-tech/aerial-integration/NV_exterior_006.jpg" label="Nemetvölgyi — view 1" />
+<Lang code="hu">
+A légi integráció egy renderelt épületet helyez egy valódi légi fotóba a telekről. A környező kontextus — meglévő épületek, utak, táj — maga a fotó. A tervezett épületet V-Rayben rendereljük és kompozitáljuk be, pontosan illesztve a fotó perspektívájához, napszögéhez, árnyékirányához és színkondícióihoz.
 
+Az eredmény a legmegalapozottabb mód annak bemutatására, hogyan érinti egy új épület a környezetét: nem stilizált látványterv, hanem a valódi környék az épülettel hozzáadva.
+
+## Németvölgyi lakóberuházás
+</Lang>
+
+<ImageCompare before="/_img/vision-tech/aerial-integration/NV_exterior_006a.jpg" after="/_img/vision-tech/aerial-integration/NV_exterior_006.jpg" label="Németvölgyi — 1. nézet" />
+
+<Lang code="en">
 ## How the composite is made
 
 Perspective matching — the virtual camera in 3ds Max is positioned at the exact location and altitude of the real camera. For drone photographs, we take GPS position, altitude, and bearing directly from the flight log. For aircraft photography, we derive it from ground reference points and camera EXIF data. Small errors in camera position cause visible perspective misalignment at building edges.
@@ -41,9 +55,25 @@ Shadow casting — a shadow catcher plane covers the ground area around the buil
 Color grading — the render is matched to the photograph's overall color, exposure, and contrast in post. Aerial photographs often have a color cast from atmospheric haze; the render is adjusted to match.
 
 ## Airport infrastructure
+</Lang>
 
-<ImageCompare before="/_img/vision-tech/aerial-integration/legi-2a.jpg" after="/_img/vision-tech/aerial-integration/legi-2.jpg" label="Airport development — view 1" />
+<Lang code="hu">
+## Hogyan készül a kompozit
 
+Perspektíva-illesztés — a 3ds Maxben a virtuális kamerát a valódi kamera pontos helyére és magasságára pozicionáljuk. Drónfotókhoz a GPS-pozíciót, magasságot és irányt közvetlenül a repülési naplóból vesszük. Repülőgépes fotókhoz földi referenciapontokból és a kamera EXIF-adataiból származtatjuk. A kamerapozíció kis hibája az épületszéleknél látható perspektíva-eltolódást okoz.
+
+Fény-illesztés — a V-Ray napot a valódi fotó napállásához állítjuk, a fotózás dátumából, időpontjából és helyéből kiszámítva. A renderelt árnyékok ugyanarra a talajsíkra esnek, mint a fotón látható valódi árnyékok.
+
+Árnyékvetés — egy shadow catcher sík fedi az épület körüli talajterületet. A render egy külön árnyékréteget ad ki, amelyet a fotóba külön passként keverünk, megőrizve alatta a valódi talajtextúrát.
+
+Színfokozás — a rendert a fotó általános színéhez, expozíciójához és kontrasztjához illesztjük utómunkában. A légi fotóknak gyakran van légköri pára okozta színhatása; a rendert ehhez igazítjuk.
+
+## Repülőtéri infrastruktúra
+</Lang>
+
+<ImageCompare before="/_img/vision-tech/aerial-integration/legi-2a.jpg" after="/_img/vision-tech/aerial-integration/legi-2.jpg" label="Repülőtéri fejlesztés — 1. nézet" />
+
+<Lang code="en">
 ## Getting the base photograph
 
 The aerial photograph is the foundation of the composite. We shoot it specifically for the integration where possible — planning the altitude, angle, and timing in advance using the 3D model to identify the most effective views. Where an existing aerial photograph is used, we assess whether the perspective, resolution, and lighting conditions are suitable before modeling begins.
@@ -55,23 +85,51 @@ Sources we use:
 - Existing aerial imagery — usable if resolution and perspective are appropriate; saves photography cost but limits angle selection
 
 ## Mixed-use urban development
+</Lang>
 
-<ImageCompare before="/_img/vision-tech/aerial-integration/04a.jpg" after="/_img/vision-tech/aerial-integration/04.jpg" label="Mixed-use — view 4" />
+<Lang code="hu">
+## Az alapfotó megszerzése
 
+A légi fotó a kompozit alapja. Lehetőség szerint kifejezetten az integrációhoz fotózzuk — a 3D-modell alapján előre tervezzük a magasságot, szöget és időzítést, hogy a leghatékonyabb nézeteket találjuk meg. Meglévő légi fotó használatakor a modellezés megkezdése előtt felmérjük, hogy a perspektíva, felbontás és fényviszonyok megfelelőek-e.
+
+Forrásaink:
+
+- Drónfotózás — a leggyakoribb; rugalmas időzítés, pontos pozicionálás, jó felbontás közepes léptékű projektekhez
+- Repülőgép / helikopter — nagy területekhez, korlátozott légtérhez, vagy a drónhatáron túli magasságokhoz
+- Meglévő légi képanyag — használható, ha a felbontás és perspektíva megfelelő; spórol a fotózási költségen, de korlátozza a szögválasztást
+
+## Vegyes funkciójú városi beruházás
+</Lang>
+
+<ImageCompare before="/_img/vision-tech/aerial-integration/04a.jpg" after="/_img/vision-tech/aerial-integration/04.jpg" label="Vegyes funkciójú — 4. nézet" />
+
+<Lang code="en">
 ## What we need from you
+</Lang>
+
+<Lang code="hu">
+## Mire van szükségünk Öntől
+</Lang>
 
 <SpecTable rows={[
-{ label: "3D model", value: "The proposed building in 3ds Max or as an IFC/CAD file we can model from. Must include the roofline and all visible elevations." },
-{ label: "Site plans", value: "Accurate positioning on the site — the building footprint must be placed precisely on the real ground." },
-{ label: "Material specs", value: "Roof materials, facade cladding, glazing. These are visible from above in aerial views — roof treatment especially." },
-{ label: "Base photograph", value: "We shoot it as part of the project, or supply an existing aerial if suitable. We assess suitability before modeling begins." },
-{ label: "Landscape", value: "Any landscaping, ground works, or site modifications that should appear alongside the building." },
+  { label: { en: "3D model",        hu: "3D-modell" },         value: { en: "The proposed building in 3ds Max or as an IFC/CAD file we can model from. Must include the roofline and all visible elevations.",            hu: "A tervezett épület 3ds Maxben vagy IFC/CAD-fájlként, amelyből építhetjük. Tartalmaznia kell a tetővonalat és az összes látható homlokzatot." } },
+  { label: { en: "Site plans",       hu: "Helyszínrajzok" },     value: { en: "Accurate positioning on the site — the building footprint must be placed precisely on the real ground.",                                       hu: "Pontos pozicionálás a telken — az épület alapterületét pontosan kell elhelyezni a valódi talajon." } },
+  { label: { en: "Material specs",  hu: "Anyagspecifikációk" },  value: { en: "Roof materials, facade cladding, glazing. These are visible from above in aerial views — roof treatment especially.",                          hu: "Tetőanyagok, homlokzati burkolat, üvegezés. Ezek felülről láthatók légi nézetben — különösen a tető kezelése." } },
+  { label: { en: "Base photograph",  hu: "Alapfotó" },           value: { en: "We shoot it as part of the project, or supply an existing aerial if suitable. We assess suitability before modeling begins.",                  hu: "A projekt részeként fotózzuk, vagy meglévő légi képet adunk, ha megfelelő. A modellezés megkezdése előtt felmérjük az alkalmasságot." } },
+  { label: { en: "Landscape",        hu: "Tájépítészet" },        value: { en: "Any landscaping, ground works, or site modifications that should appear alongside the building.",                                              hu: "Bármilyen kertépítészet, terepmunka vagy telekmódosítás, amely az épület mellett megjelenik." } },
 ]} />
 
+<Lang code="en">
 ## Sasad Liget residential complex
+</Lang>
 
-<ImageCompare before="/_img/vision-tech/aerial-integration/sasad6_v02_nappal_madar_002_016a.jpg" after="/_img/vision-tech/aerial-integration/sasad6_v02_nappal_madar_002_016.jpg" label="Sasad Liget — residential complex aerial view" />
+<Lang code="hu">
+## Sasad Liget lakóegyüttes
+</Lang>
 
+<ImageCompare before="/_img/vision-tech/aerial-integration/sasad6_v02_nappal_madar_002_016a.jpg" after="/_img/vision-tech/aerial-integration/sasad6_v02_nappal_madar_002_016.jpg" label="Sasad Liget — lakóegyüttes légi nézet" />
+
+<Lang code="en">
 ## Related techniques
 
 For ground-level integration — the same technique from street height: Photo Integration
@@ -79,3 +137,14 @@ For ground-level integration — the same technique from street height: Photo In
 For the aerial photograph base: Drone Photography or Aerial Photography
 
 For showing the site in 360° from above: 360 Photo Integration
+</Lang>
+
+<Lang code="hu">
+## Kapcsolódó technikák
+
+Földszintű integrációhoz — ugyanez a technika utcamagasságból: Fotóintegráció
+
+Az alapfotózáshoz: Drónfotózás vagy légi fotózás
+
+A telek felülről 360°-ban való bemutatásához: 360°-os fotóintegráció
+</Lang>

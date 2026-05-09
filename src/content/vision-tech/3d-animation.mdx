@@ -1,6 +1,10 @@
 ---
-title: 3D Animation
-description: Moving architectural visualization produced in 3ds Max with V-Ray — or using AI to generate motion from rendered stills. Camera flythroughs, construction sequences, and spatial narratives edited in DaVinci Resolve Studio.
+title:
+  en: "3D Animation"
+  hu: "3D-animáció"
+description:
+  en: "Moving architectural visualization produced in 3ds Max with V-Ray — or using AI to generate motion from rendered stills. Camera flythroughs, construction sequences, and spatial narratives edited in DaVinci Resolve Studio."
+  hu: "Mozgó építészeti látványterv 3ds Maxben, V-Rayjel — vagy renderelt állóképekből AI-jal generált mozgással. Kameraátrepülések, építési szekvenciák és térbeli történetmesélés DaVinci Resolve Studio utómunkával."
 image: /_img/vision-tech/3d-animation.jpg
 technique: Digital
 cost: €€€€
@@ -22,40 +26,76 @@ relatedFeatures:
 published: true
 ---
 
+<Lang code="en">
 3D animation shows architectural designs in motion — camera moving through spaces, daylight shifting across facades, construction phasing unfolding over time. We work in 3ds Max with V-Ray for traditional frame-by-frame rendering, and increasingly use AI-generated motion from rendered stills for atmospheric sequences where speed and cost matter more than geometric precision.
 
 Final editing, color grading, audio, and delivery are done in DaVinci Resolve Studio.
+</Lang>
 
-<YoutubeEmbed url="https://www.youtube.com/watch?v=PqXKCl0whBk" title="Architectural flythrough — residential development" />
+<Lang code="hu">
+A 3D-animáció mozgásban mutatja az építészeti terveket — a kamera a tereken át halad, a természetes fény végigfut a homlokzaton, az építési ütemezés időben bontakozik ki. 3ds Maxben dolgozunk V-Rayjel a hagyományos képkockánkénti renderhez, és egyre gyakrabban használunk renderelt állóképekből AI-jal generált mozgást olyan atmoszférikus szekvenciákhoz, ahol a sebesség és költség fontosabb, mint a geometriai precizitás.
 
+A végleges vágás, színfokozat, hang és átadás DaVinci Resolve Studióban történik.
+</Lang>
+
+<YoutubeEmbed url="https://www.youtube.com/watch?v=PqXKCl0whBk" title={{ en: "Architectural flythrough — residential development", hu: "Építészeti átrepülés — lakóberuházás" }} />
+
+<Lang code="en">
 ## Two production pipelines
 
 The choice between traditional V-Ray animation and AI-enhanced animation depends on what the sequence needs to do:
+</Lang>
+
+<Lang code="hu">
+## Két produkciós pipeline
+
+A hagyományos V-Ray animáció és az AI-támogatott animáció közti választás attól függ, mit kell elérnie a szekvenciának:
+</Lang>
 
 <CompareTable
-  headers={["Traditional V-Ray", "AI-Enhanced"]}
-  rows={[
-    { label: "Rendering", values: ["Every frame rendered at full V-Ray quality — precise geometry and lighting per frame", "Key frames rendered in V-Ray; AI generates smooth motion between them"] },
-    { label: "Motion accuracy", values: ["Geometrically exact — every element behaves as specified", "AI interpolation — highly convincing for atmospheric content, less suited to precise technical sequences"] },
-    { label: "Production time", values: ["Slow for complex or long sequences", "Significantly faster for comparable output length"] },
-    { label: "Cost", values: ["Higher, especially for long sequences or dense scenes", "Lower for marketing-grade atmospheric content"] },
-    { label: "Best for", values: ["Construction sequences, technical explanations, precise spatial narratives", "Flythroughs, marketing content, atmospheric real estate sequences"] },
+  headers={[
+    { en: "Traditional V-Ray", hu: "Hagyományos V-Ray" },
+    { en: "AI-Enhanced",       hu: "AI-támogatott" },
   ]}
-  caption="Choosing the right animation pipeline"
+  rows={[
+    { label: { en: "Rendering",         hu: "Render" },              values: [{ en: "Every frame rendered at full V-Ray quality — precise geometry and lighting per frame", hu: "Minden képkocka teljes V-Ray-minőségben renderelve — pontos geometria és világítás képkockánként" }, { en: "Key frames rendered in V-Ray; AI generates smooth motion between them", hu: "A kulcskockákat V-Rayben rendereljük; az AI sima mozgást generál közöttük" }] },
+    { label: { en: "Motion accuracy",   hu: "Mozgáspontosság" },     values: [{ en: "Geometrically exact — every element behaves as specified", hu: "Geometriailag pontos — minden elem a meghatározott módon viselkedik" }, { en: "AI interpolation — highly convincing for atmospheric content, less suited to precise technical sequences", hu: "AI-interpoláció — erősen meggyőző atmoszférikus tartalomhoz, kevésbé alkalmas pontos technikai szekvenciákhoz" }] },
+    { label: { en: "Production time",   hu: "Készítési idő" },        values: [{ en: "Slow for complex or long sequences", hu: "Lassú összetett vagy hosszú szekvenciáknál" }, { en: "Significantly faster for comparable output length", hu: "Jelentősen gyorsabb hasonló hosszúságú kimenetnél" }] },
+    { label: { en: "Cost",               hu: "Költség" },               values: [{ en: "Higher, especially for long sequences or dense scenes", hu: "Magasabb, főleg hosszú szekvenciáknál vagy sűrű jeleneteknél" }, { en: "Lower for marketing-grade atmospheric content", hu: "Alacsonyabb marketing-szintű atmoszférikus tartalomhoz" }] },
+    { label: { en: "Best for",           hu: "Mire a legjobb" },        values: [{ en: "Construction sequences, technical explanations, precise spatial narratives", hu: "Építési szekvenciák, műszaki magyarázatok, pontos térbeli történetek" }, { en: "Flythroughs, marketing content, atmospheric real estate sequences", hu: "Átrepülések, marketingtartalom, hangulati ingatlanos szekvenciák" }] },
+  ]}
+  caption={{ en: "Choosing the right animation pipeline", hu: "A megfelelő animációs pipeline kiválasztása" }}
 />
 
+<Lang code="en">
 ## Traditional pipeline: 3ds Max + V-Ray
 
 Every frame is a full V-Ray render. The model is built to the required level of detail for the closest camera distance in the sequence. Materials are physically based. Lighting is set up per scene — often multiple lighting setups for sequences that move from interior to exterior or cover different times of day.
 
 Camera paths are planned in the animatic stage — a low-quality preview render of the full sequence at reduced resolution, used to check timing and pacing before the production render. Revisions to camera path or timing are made in the animatic, not after full rendering.
+</Lang>
 
-<YoutubeEmbed url="https://www.youtube.com/watch?v=yOqy4AkDurM" title="DVTK Stadium — large-scale infrastructure animation" />
+<Lang code="hu">
+## Hagyományos pipeline: 3ds Max + V-Ray
 
+Minden képkocka teljes V-Ray render. A modellt a szekvencia legközelebbi kameratávolsága szerint szükséges részletességgel építjük. Az anyagok fizikai alapúak. A világítás jelenetenként van beállítva — gyakran több fényrendszer olyan szekvenciákhoz, amelyek belsőből kültérbe vagy különböző napszakokba mozognak.
+
+A kameraútvonalakat az animatic-szakaszban tervezzük — ez a teljes szekvencia alacsony minőségű, csökkentett felbontású próbarenderje, amelyet a produkciós render előtt használunk az időzítés és tempó ellenőrzésére. A kameraútvonal vagy időzítés módosításait az animaticben végezzük, nem a teljes renderelés után.
+</Lang>
+
+<YoutubeEmbed url="https://www.youtube.com/watch?v=yOqy4AkDurM" title={{ en: "DVTK Stadium — large-scale infrastructure animation", hu: "DVTK stadion — nagyléptékű infrastruktúra-animáció" }} />
+
+<Lang code="en">
 Construction sequence animations use a different setup: elements appear progressively as the build proceeds, with time-lapse-style camera movement showing the site changing. These require careful scene management since visibility states change per frame.
+</Lang>
 
-<YoutubeEmbed url="https://www.youtube.com/watch?v=ccN5VFdpiGY" title="Residential development — marketing flythrough" />
+<Lang code="hu">
+Az építési szekvencia-animációk más beállítást igényelnek: az elemek fokozatosan jelennek meg, ahogy az építkezés halad, és time-lapse-jellegű kameramozgással mutatjuk a helyszín változását. Ez gondos jelenetkezelést igényel, mert a láthatósági állapotok képkockánként változnak.
+</Lang>
 
+<YoutubeEmbed url="https://www.youtube.com/watch?v=ccN5VFdpiGY" title={{ en: "Residential development — marketing flythrough", hu: "Lakóberuházás — marketing átrepülés" }} />
+
+<Lang code="en">
 ## AI-enhanced pipeline: V-Ray stills + AI motion
 
 A set of V-Ray still renders — key positions along the camera path — are used as the input for AI video generation. The AI produces smooth motion between the stills, including camera drift, subtle atmospheric animation, and lighting variation that gives the sequence life without rendering every frame conventionally.
@@ -63,9 +103,21 @@ A set of V-Ray still renders — key positions along the camera path — are use
 This approach works best for content where the camera moves through space atmospherically rather than executing precise geometric motion. A flythrough of an apartment interior, a slow orbit around a building, a rising crane shot over a site — these translate well to AI-generated motion.
 
 The stills are rendered at 4K. The AI-generated sequence is processed at full HD for the final output.
+</Lang>
 
-<YoutubeEmbed url="https://www.youtube.com/watch?v=M85Bksymq7M" title="MVK Conference 2017 — presentation animation" />
+<Lang code="hu">
+## AI-támogatott pipeline: V-Ray állóképek + AI-mozgás
 
+V-Ray állóképek készlete — a kameraútvonal kulcspozícióiban — szolgál bemenetként az AI-videógeneráláshoz. Az AI sima mozgást készít az állóképek között, beleértve a kamera-elcsúszást, finom atmoszférikus animációt és fényváltozást, ami életet ad a szekvenciának anélkül, hogy minden képkockát hagyományosan renderelnénk.
+
+Ez a megközelítés akkor működik a legjobban, ha a kamera atmoszférikusan halad át a téren, nem pontos geometriai mozgást végez. Egy lakásbelső átrepülése, egy épület körüli lassú keringés, egy telken emelkedő daru-beállítás — ezek jól működnek AI-generált mozgással.
+
+Az állóképek 4K-ban készülnek. Az AI által generált szekvenciát Full HD-ben dolgozzuk ki a végleges kimenethez.
+</Lang>
+
+<YoutubeEmbed url="https://www.youtube.com/watch?v=M85Bksymq7M" title={{ en: "MVK Conference 2017 — presentation animation", hu: "MVK Konferencia 2017 — prezentációs animáció" }} />
+
+<Lang code="en">
 ## Post-production in DaVinci Resolve Studio
 
 All animation goes through DaVinci Resolve Studio for:
@@ -75,22 +127,51 @@ All animation goes through DaVinci Resolve Studio for:
 - **Audio** — music, ambient sound, voiceover integration
 - **Titles and graphics** — location labels, project information, animated text
 - **Output** — 4K master, full HD distribution versions, social media cuts at different aspect ratios
+</Lang>
 
-<YoutubeEmbed url="https://www.youtube.com/watch?v=RJm7AEw5TCo" title="Sasad Liget 3 — residential complex" />
+<Lang code="hu">
+## Utómunka DaVinci Resolve Studióban
 
+Minden animáció DaVinci Resolve Studión megy át a következőkhöz:
+
+- **Színfokozás** — fényhangulat illesztése a vágásokon át, vizuális egységesség a teljes szekvenciában
+- **Vágás** — tempó, vágópontok, beállító képek vs. részletbeállítások
+- **Hang** — zene, ambiens hang, narráció integrálása
+- **Feliratok és grafika** — helyszín-címkék, projektinformációk, animált szöveg
+- **Kimenet** — 4K master, Full HD terjesztési verziók, közösségi médiás vágatok különböző képarányokban
+</Lang>
+
+<YoutubeEmbed url="https://www.youtube.com/watch?v=RJm7AEw5TCo" title={{ en: "Sasad Liget 3 — residential complex", hu: "Sasad Liget 3 — lakóegyüttes" }} />
+
+<Lang code="en">
 ## What we need from you
+</Lang>
+
+<Lang code="hu">
+## Mire van szükségünk Öntől
+</Lang>
 
 <SpecTable rows={[
-  { label: "3D model", value: "Complete to the level of detail required for the closest camera distance in the sequence. Unfinished areas will appear on screen." },
-  { label: "Sequence brief", value: "What the animation should show and in what order. A narrative or shot list. The more specific, the less revision the animatic requires." },
-  { label: "Duration", value: "Target length. Longer is not better — viewer attention drops fast. Most architectural animations run 1–3 minutes." },
-  { label: "Pipeline choice", value: "Traditional V-Ray or AI-enhanced? We advise based on the content and budget." },
-  { label: "Audio", value: "Music style and mood, voiceover requirement (if any). We source licensed music and offer both human and AI voiceover." },
-  { label: "Output formats", value: "Where the animation will be used — website, presentation, social media, trade show screen. Each has different resolution and codec requirements." },
+  { label: { en: "3D model",         hu: "3D-modell" },          value: { en: "Complete to the level of detail required for the closest camera distance in the sequence. Unfinished areas will appear on screen.", hu: "A szekvencia legközelebbi kameratávolságához szükséges részletességig elkészítve. A befejezetlen területek megjelennek a vásznon." } },
+  { label: { en: "Sequence brief",   hu: "Szekvencia-brief" },    value: { en: "What the animation should show and in what order. A narrative or shot list. The more specific, the less revision the animatic requires.",  hu: "Mit mutasson az animáció és milyen sorrendben. Történet vagy beállítás-lista. Minél konkrétabb, annál kevesebb módosítást igényel az animatic." } },
+  { label: { en: "Duration",          hu: "Időtartam" },           value: { en: "Target length. Longer is not better — viewer attention drops fast. Most architectural animations run 1–3 minutes.",                       hu: "Céltartam. A hosszabb nem jobb — a néző figyelme gyorsan csökken. A legtöbb építészeti animáció 1–3 perc." } },
+  { label: { en: "Pipeline choice",   hu: "Pipeline-választás" },  value: { en: "Traditional V-Ray or AI-enhanced? We advise based on the content and budget.",                                                            hu: "Hagyományos V-Ray vagy AI-támogatott? A tartalom és büdzsé alapján adunk tanácsot." } },
+  { label: { en: "Audio",             hu: "Hang" },                value: { en: "Music style and mood, voiceover requirement (if any). We source licensed music and offer both human and AI voiceover.",                  hu: "Zenei stílus és hangulat, narráció igénye (ha van). Licencelt zenét szerzünk be, és emberi vagy AI-narrációt is kínálunk." } },
+  { label: { en: "Output formats",    hu: "Kimeneti formátumok" }, value: { en: "Where the animation will be used — website, presentation, social media, trade show screen. Each has different resolution and codec requirements.", hu: "Hol fogjuk használni az animációt — weboldal, prezentáció, közösségi média, vásári képernyő. Mindegyiknek más felbontás- és codec-követelménye van." } },
 ]} />
 
+<Lang code="en">
 ## Related techniques
 
 For the pure image-input AI animation approach — no 3D model required at all: [AI Animation](/vision-tech/ai-animation/)
 
 For combining 3D animation with real footage, narration, and full post-production: [Video Production](/vision-tech/video-production/)
+</Lang>
+
+<Lang code="hu">
+## Kapcsolódó technikák
+
+A tisztán képbemenetes AI-animációhoz — 3D-modell nélkül: [AI-animáció](/vision-tech/ai-animation/)
+
+A 3D-animáció valódi felvétellel, narrációval és teljes utómunkával való kombinálásához: [Videóprodukció](/vision-tech/video-production/)
+</Lang>

@@ -2,6 +2,7 @@
 // Auto-play full-width featured project carousel — React island
 
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { useSwipe } from '../lib/use-swipe';
 
 export interface CarouselSlide {
   slug:      string;
@@ -34,15 +35,18 @@ export default function HomeCarousel({ slides }: Props) {
     return () => { if (timer.current) clearInterval(timer.current); };
   }, [paused, next]);
 
+  const { style: _swipeStyle, ...swipe } = useSwipe({ onSwipeLeft: next, onSwipeRight: prev });
+
   if (slides.length === 0) return null;
   const slide = slides[current];
 
   return (
     <div
       className="relative w-full overflow-hidden bg-surface-2"
-      style={{ height: 'clamp(380px, 65vh, 900px)' }}
+      style={{ height: 'clamp(380px, 65vh, 900px)', touchAction: 'pan-y', userSelect: 'none' }}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
+      {...swipe}
     >
       {/* Slides — positioned/faded via components.css (.hc-slide / .hc-slide.active) */}
       {slides.map((s, i) => (

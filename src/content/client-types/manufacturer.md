@@ -1,3 +1,5 @@
 ---
-title: "Manufacturer"
+title:
+  en: Manufacturer
+  hu: Gyártó
 ---

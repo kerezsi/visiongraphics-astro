@@ -1,35 +1,46 @@
 ---
 // src/pages/portfolio/index.astro
 
-import Page from '../../layouts/Page.astro';
-import PortfolioFilter from '../../components/portfolio/PortfolioFilter';
+import Page from '../../../layouts/Page.astro';
+import PortfolioFilter from '../../../components/portfolio/PortfolioFilter';
 import { getCollection, getEntry } from 'astro:content';
-import type { ProjectMeta } from '../../components/portfolio/PortfolioFilter';
+import type { ProjectMeta } from '../../../components/portfolio/PortfolioFilter';
+import { staticLocalePaths, tStr, type Locale } from '../../../lib/i18n';
+import { ui } from '../../../i18n/strings';
 
+export const getStaticPaths = staticLocalePaths;
+
+
+const { lang } = Astro.params as { lang: Locale };
+Astro.locals.lang = lang;
+const L = ui(lang);
 const allProjects = await getCollection('projects', ({ data }) => data.published);
 const allCategories = await getCollection('categories');
-const catMap = new Map(allCategories.map(c => [c.id, c.data.title]));
+const catMap = new Map(allCategories.map(c => [c.id, tStr(c.data.title, lang)]));
 
-// Resolve a reference field to its display title
+// Resolve a reference field to its display title (locale-aware)
 async function resolveTitle(ref: { id: string; collection: string } | undefined): Promise<string | undefined> {
   if (!ref) return undefined;
   const entry = await getEntry(ref.collection as any, ref.id);
-  return entry?.data.title;
+  const v = tStr(entry?.data.title, lang);
+  return v || undefined;
 }
 
-// Serialize to plain objects for the React island
+// Serialize to plain strings for the React island — Localized<T> objects
+// must be flattened before crossing the server/client boundary, otherwise
+// React tries to render `{en, hu}` as a child and throws.
 const projectData: ProjectMeta[] = await Promise.all(allProjects.map(async p => {
   const cityTitle    = await resolveTitle(p.data.city);
   const countryTitle = await resolveTitle(p.data.country);
   return {
     slug:        p.slug,
-    title:       p.data.title,
+    title:       tStr(p.data.title, lang),
     year:        p.data.year,
     client:      await resolveTitle(p.data.client),
     designer:    await resolveTitle(p.data.designer),
     city:        cityTitle,
     country:     countryTitle,
-    description: p.data.description,
+    description: tStr(p.data.description, lang) || undefined,
     categories:  p.data.categories.map(ref => ({ id: ref.id, title: catMap.get(ref.id) ?? ref.id })),
     features:    p.data.features,
     tags:        p.data.tags,
@@ -46,17 +57,21 @@ const maxYear = Math.max(...years);
 ---
 
 <Page
-  title="Portfolio"
-  description="30 years of architectural visualization. 500+ projects across airports, residential, commercial, urban, and VR. Budapest-based, working globally."
+  title={L.nav.portfolio}
+  description={lang === 'hu'
+    ? '30 év építészeti látványtervezés. 500+ projekt repterek, lakó-, kereskedelmi, városi és VR területeken. Budapesti székhely, globális működés.'
+    : '30 years of architectural visualization. 500+ projects across airports, residential, commercial, urban, and VR. Budapest-based, working globally.'}
   fullBleed
 >
 
   <div class="portfolio-page">
     <div class="portfolio-header container">
-      <p class="section-label">Our Work</p>
-      <h2 class="display-lg">Selected Projects</h2>
+      <p class="section-label">{lang === 'hu' ? 'Munkáink' : 'Our Work'}</p>
+      <h2 class="display-lg">{lang === 'hu' ? 'Válogatott projektek' : 'Selected Projects'}</h2>
       <p class="portfolio-sub">
-        30 years. 500+ projects. A selection across sectors and scales.
+        {lang === 'hu'
+          ? '30 év. 500+ projekt. Válogatás szektorok és léptékek szerint.'
+          : '30 years. 500+ projects. A selection across sectors and scales.'}
       </p>
     </div>
 

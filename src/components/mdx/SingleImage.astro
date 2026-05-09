@@ -8,12 +8,17 @@
  *   <SingleImage src="/_img/vision-tech/slug/01.jpg" alt="Description" />
  *   <SingleImage src="/_img/..." alt="..." caption="Optional caption text" />
  */
+import { tStr, DEFAULT_LOCALE, type Localized, type Locale } from '../../lib/i18n';
+
 interface Props {
   src: string;
-  alt?: string;
-  caption?: string;
+  alt?: Localized<string>;
+  caption?: Localized<string>;
 }
-const { src, alt = '', caption } = Astro.props;
+const { src, alt, caption } = Astro.props;
+const lang: Locale = (Astro.locals as { lang?: Locale })?.lang ?? DEFAULT_LOCALE;
+const altStr     = tStr(alt, lang);
+const captionStr = tStr(caption, lang);
 // Stable unique ID for the dialog (generated at build/request time, both fine)
 const id = `si-${Math.random().toString(36).slice(2, 9)}`;
 ---
@@ -26,7 +31,7 @@ const id = `si-${Math.random().toString(36).slice(2, 9)}`;
   >
     <img
       src={src}
-      alt={alt}
+      alt={altStr}
       class="mdx-single-image-img"
       loading="lazy"
       decoding="async"
@@ -46,13 +51,13 @@ const id = `si-${Math.random().toString(36).slice(2, 9)}`;
     >✕</button>
     <img
       src={src}
-      alt={alt}
+      alt={altStr}
       class="mdx-image-dialog-img"
       onclick="event.stopPropagation()"
     />
   </dialog>
 
-  {caption && <figcaption class="mdx-single-image-caption">{caption}</figcaption>}
+  {captionStr && <figcaption class="mdx-single-image-caption">{captionStr}</figcaption>}
 </figure>
 
 <style>

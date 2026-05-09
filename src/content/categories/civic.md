@@ -1,3 +1,5 @@
 ---
-title: "Civic"
+title:
+  en: Civic
+  hu: Közintézmény
 ---

@@ -35,6 +35,10 @@
 
 .st-panel { animation: stFadeIn 250ms ease; }
 
+/* Desktop grid: fixed sidebar + flexible content panel.
+   Mobile override below collapses to a single column. */
+.st-root { grid-template-columns: 280px 1fr; }
+
 /* Link hover gap + color change */
 .st-link:hover {
   gap: 0.9rem;

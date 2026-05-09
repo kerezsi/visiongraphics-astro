@@ -1,6 +1,10 @@
 ---
-title: Architectural Details Generation
-description: Ornamental facade elements and architectural details generated using ComfyUI with Flux and Qwen vision analysis. AI produces historically-informed or entirely novel detail designs that can be visualized in context and, where required, prepared for physical production.
+title:
+  en: "Architectural Details Generation"
+  hu: "Építészeti részletek generálása"
+description:
+  en: "Ornamental facade elements and architectural details generated using ComfyUI with Flux and Qwen vision analysis. AI produces historically-informed or entirely novel detail designs that can be visualized in context and, where required, prepared for physical production."
+  hu: "Díszítő homlokzati elemek és építészeti részletek generálása ComfyUI-jal, Flux-szal és Qwen vizuális elemzéssel. Az AI történeti referenciákra építő vagy teljesen új részletterveket készít, amelyek kontextusban vizualizálhatók, és szükség esetén fizikai gyártásra is előkészíthetők."
 image: /_img/vision-tech/architectural-details-generation.jpg
 technique: AI-Only
 cost: €
@@ -20,6 +24,7 @@ relatedFeatures: []
 published: true
 ---
 
+<Lang code="en">
 Contemporary construction largely abandoned ornamental facade detail because manual craft at scale became prohibitively expensive. AI generation changes part of that equation — designing an ornamental element is now fast and explorable. Combined with the improving accessibility of CNC fabrication and 3D printing, the gap between a generated detail and a manufactured one is narrower than it has been for decades.
 
 This technique generates architectural details — cornices, window surrounds, column capitals, panel patterns, railings, decorative reliefs — using ComfyUI with Flux, informed by Qwen visual analysis of historical references. The output is a set of design options ready for review, with selected variants developable into 3D-printable geometry.
@@ -33,20 +38,38 @@ This technique generates architectural details — cornices, window surrounds, c
 **Context visualization** — generated details are composited onto the facade design to show how they read at building scale. A capital that looks striking in isolation may be lost at 15 meters; a cornice that looks heavy up close may be the right weight from the street. Scale testing is part of the workflow, not an afterthought.
 
 **Geometry extraction** — selected designs can be processed into 3D geometry suitable for CNC or 3D print production. This step moves from generated image to manufacturable model.
+</Lang>
+
+<Lang code="hu">
+A kortárs építészet nagyrészt feladta a díszítő homlokzati részleteket, mert a méretarányos kézi mesterség megfizethetetlenné vált. Az AI-generálás megváltoztatja az egyenlet egy részét — egy díszítő elem tervezése ma gyors és felfedezhető. A CNC-megmunkálás és 3D-nyomtatás javuló elérhetőségével együtt a generált és gyártott részlet közötti szakadék szűkebb, mint évtizedek óta bármikor.
+
+Ez a technika építészeti részleteket — párkányokat, ablakkáva-keretezéseket, oszlopfőket, panelmintákat, korlátokat, díszítő reliefeket — generál ComfyUI-jal és Flux-szal, történeti referenciák Qwen vizuális elemzésével támogatva. A kimenet szemlézésre kész tervopciók halmaza, a kiválasztott változatok pedig 3D-nyomtatható geometriává fejleszthetők.
+
+## A generálási pipeline
+
+**Referencia-elemzés Qwennel** — mielőtt bármit generálnánk, a Qwen vizuális képességeit használjuk, hogy elemezzük az építészeti tradíció fotóit vagy rajzait, amelyhez a részleteknek tartozniuk kell. A Qwen azonosítja a jellegzetes elemeket: a kiállás és falfelület arányát, hogy a fény és árnyék hogyan tagolja a részletet távolból, az ismétlődő motívumok geometriáját. Ez az elemzés olyan konkrétsággal egészíti ki a generálási promptot, amelyet az általános stílusleírások nem adnak.
+
+**Részlet-generálás Flux-szal** — a ComfyUI munkafolyamatok nagy felbontású képként generálják a részlettervet. Több változat készül egyszerre: ugyanazon brief eltérő értelmezései, eltérő léptékek, eltérő ornamentális sűrűség. A generálást a Qwen-elemzés vezérli, biztosítva, hogy az eredmények stilisztikailag koherensek legyenek, ne csak általában díszítőek.
+
+**Kontextus-vizualizáció** — a generált részleteket a homlokzatra kompozitáljuk, hogy lássuk, hogyan hatnak épületléptékben. Egy önmagában látványos oszlopfő 15 méteren elvész; egy közelről nehéznek tűnő párkány az utcáról épp megfelelő súlyú lehet. A léptéktesztelés a munkafolyamat része, nem utólagos meggondolás.
+
+**Geometria-kinyerés** — a kiválasztott terveket CNC- vagy 3D-nyomtatott gyártásra alkalmas 3D-geometriává dolgozzuk fel. Ez a lépés a generált képtől a gyártható modellig vezet.
+</Lang>
 
 <ProcessFlow
   steps={[
-    { label: "Reference analysis", sub: "Qwen vision model" },
-    { label: "Detail generation", sub: "Flux, batch variants" },
-    { label: "Scale testing", sub: "composited on facade" },
-    { label: "Selection", sub: "review + brief refinement" },
-    { label: "Geometry", sub: "3D model from selected design" },
-    { label: "Production", sub: "CNC / 3D print ready" },
+    { label: { en: "Reference analysis", hu: "Referencia-elemzés" }, sub: { en: "Qwen vision model",            hu: "Qwen-látómodell" } },
+    { label: { en: "Detail generation",   hu: "Részlet-generálás" },   sub: { en: "Flux, batch variants",          hu: "Flux, kötegelt változatok" } },
+    { label: { en: "Scale testing",        hu: "Lépték-tesztelés" },     sub: { en: "composited on facade",          hu: "homlokzatra kompozitálva" } },
+    { label: { en: "Selection",             hu: "Kiválasztás" },           sub: { en: "review + brief refinement",     hu: "szemle és brief-finomítás" } },
+    { label: { en: "Geometry",              hu: "Geometria" },             sub: { en: "3D model from selected design", hu: "3D-modell a kiválasztott tervből" } },
+    { label: { en: "Production",            hu: "Gyártás" },                sub: { en: "CNC / 3D print ready",          hu: "CNC- / 3D-nyomtatásra kész" } },
   ]}
-  feedback={[{ from: 3, to: 1, label: "Refine direction" }]}
-  title="From generation to geometry"
+  feedback={[{ from: 3, to: 1, label: { en: "Refine direction", hu: "Irányfinomítás" } }]}
+  title={{ en: "From generation to geometry", hu: "Generálástól a geometriáig" }}
 />
 
+<Lang code="en">
 ## What kinds of details can be generated
 
 The generation is not limited to historical styles, though historical references provide the richest training material. We can work across:
@@ -68,16 +91,51 @@ Generated designs can be prepared for physical manufacture. The path from image 
 We do not operate fabrication equipment ourselves but work with production partners and can advise on the appropriate material and process for the specific application.
 
 ## What we need from you
+</Lang>
+
+<Lang code="hu">
+## Milyen részletek generálhatók
+
+A generálás nem korlátozódik történeti stílusokra, bár a történeti referenciák adják a leggazdagabb tanulóanyagot. A következő területeken dolgozunk:
+
+- **Klasszikus eredetű** — oszloprendek, főpárkányok, fogazatok, tojás-és-nyíl, akantusz, modillonok
+- **Szecesszió / Art Deco** — organikus, áramló ornamens, geometrikus lépcsős minták, napsugár-motívumok
+- **Regionális népi** — helyi anyagi tradíciók, földrajzi kontextushoz kötött kézműves minták
+- **Kortárs ornamentális** — parametrikus minták, perforált panelek, absztrakt relief, történeti referencia nélküli, számításos geometria, ami részletként olvasható
+- **Hibrid és újító** — referenciákat kombináló vagy belőlük valóban új formai területre ekstrapoláló elemek
+
+## Fizikai gyártás
+
+A generált tervek fizikai gyártásra előkészíthetők. A képtől a tárgyig vezető út a geometria kinyerését vagy modellezését foglalja magában az AI-kimenetből, amit 3ds Maxben végzünk — vagy a generált forma átrajzolásával, vagy AI-támogatott geometria-generáló eszközökkel. Az így létrejövő 3D-fájl:
+
+- Közvetlenül 3D-nyomtatási szolgáltatáshoz küldhető gyantához vagy polimer-prototípushoz
+- CNC-marásra adaptálható kőhöz, fához vagy kompozit anyaghoz
+- Hagyományos öntőminta-készítés alapjául szolgálhat, ha a gyártási mennyiség indokolja
+
+Magunk nem üzemeltetünk gyártóberendezést, de gyártópartnerekkel dolgozunk, és tanácsot adunk a megfelelő anyaghoz és folyamathoz az adott alkalmazáshoz.
+
+## Mire van szükségünk Öntől
+</Lang>
 
 <SpecTable rows={[
-  { label: "Facade design", value: "The building design in sufficient resolution to understand scale, proportional system, and existing character." },
-  { label: "Style direction", value: "Historical references, geographic context, or a description of the character you're working toward." },
-  { label: "Element types", value: "Which specific components — cornice, capital, window surround, panel, railing — and their approximate dimensions." },
-  { label: "Production intent", value: "Visualization only, or are you also planning physical manufacture? This affects what geometry is prepared at the end." },
+  { label: { en: "Facade design",     hu: "Homlokzati terv" },     value: { en: "The building design in sufficient resolution to understand scale, proportional system, and existing character.",                                                hu: "Az épületterv olyan részletességgel, ami elég a lépték, arányrendszer és meglévő karakter megértéséhez." } },
+  { label: { en: "Style direction",   hu: "Stílusirány" },           value: { en: "Historical references, geographic context, or a description of the character you're working toward.",                                                          hu: "Történeti referenciák, földrajzi kontextus vagy a megcélzott karakter leírása." } },
+  { label: { en: "Element types",     hu: "Elemtípusok" },           value: { en: "Which specific components — cornice, capital, window surround, panel, railing — and their approximate dimensions.",                                            hu: "Melyik konkrét komponensek — párkány, oszlopfő, ablakkáva-keret, panel, korlát — és a hozzávetőleges méreteik." } },
+  { label: { en: "Production intent", hu: "Gyártási szándék" },      value: { en: "Visualization only, or are you also planning physical manufacture? This affects what geometry is prepared at the end.",                                        hu: "Csak vizualizáció, vagy fizikai gyártás is tervben van? Ez befolyásolja, milyen geometriát készítünk elő a végén." } },
 ]} />
 
+<Lang code="en">
 ## Related techniques
 
 For transforming the whole facade style, not just generating individual elements: [Architectural Styling](/vision-tech/architectural-styling/)
 
 For showing details on a fully rendered building: [Photorealistic Rendering](/vision-tech/photorealistic-rendering/)
+</Lang>
+
+<Lang code="hu">
+## Kapcsolódó technikák
+
+A teljes homlokzati stílus átalakításához (nem csak egyedi elemek generálásához): [Építészeti stílusozás](/vision-tech/architectural-styling/)
+
+A részletek teljesen renderelt épületen való bemutatásához: [Fotórealisztikus renderelés](/vision-tech/photorealistic-rendering/)
+</Lang>

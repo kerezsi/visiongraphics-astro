@@ -1,20 +1,24 @@
 ---
+import { tStr, DEFAULT_LOCALE, type Localized, type Locale } from '../../lib/i18n';
+
 interface Row {
-  label: string;
-  values: string[];
+  label: Localized<string>;
+  values: Array<Localized<string>>;
 }
 interface Props {
-  headers: string[];
+  headers: Array<Localized<string>>;
   rows: Row[];
-  caption?: string;
+  caption?: Localized<string>;
 }
 const { headers, rows, caption } = Astro.props;
+const lang: Locale = (Astro.locals as { lang?: Locale })?.lang ?? DEFAULT_LOCALE;
+const captionStr = tStr(caption, lang);
 ---
 
 <div class="my-[var(--space-6)] overflow-x-auto">
-  {caption && (
+  {captionStr && (
     <p class="text-[length:var(--fs-xs)] font-bold uppercase tracking-[0.1em] text-[var(--color-text-faint)] mb-[var(--space-4)]">
-      {caption}
+      {captionStr}
     </p>
   )}
   <table class="w-full border-collapse min-w-[360px]">
@@ -23,7 +27,7 @@ const { headers, rows, caption } = Astro.props;
         <th class="py-[var(--space-2)] pr-[var(--space-6)] text-[length:var(--fs-xs)] font-bold text-[var(--color-text-faint)] uppercase tracking-[0.08em] text-left"></th>
         {headers.map(h => (
           <th class="py-[var(--space-2)] px-[var(--space-4)] text-[length:var(--fs-xs)] font-bold text-[var(--color-accent)] uppercase tracking-[0.08em] text-left">
-            {h}
+            {tStr(h, lang)}
           </th>
         ))}
       </tr>
@@ -32,11 +36,11 @@ const { headers, rows, caption } = Astro.props;
       {rows.map(row => (
         <tr class="border-b border-[var(--color-border)] last:border-0">
           <td class="py-[var(--space-2)] pr-[var(--space-6)] align-top text-[length:var(--fs-small)] font-bold text-[var(--color-text)] whitespace-nowrap">
-            {row.label}
+            {tStr(row.label, lang)}
           </td>
           {row.values.map(v => (
             <td class="py-[var(--space-2)] px-[var(--space-4)] align-top text-[length:var(--fs-small)] text-[var(--color-text-muted)] leading-relaxed">
-              {v}
+              {tStr(v, lang)}
             </td>
           ))}
         </tr>

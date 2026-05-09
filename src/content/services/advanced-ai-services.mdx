@@ -1,39 +1,67 @@
 ---
-title: AI-Enhanced Services
-description: |
-  Practical AI integrated into real visualization production — photorealistic images and animations from sketches alone, concept variations without re-renders, batch processing at scale, and AI-assisted scene correction.
-  
-tagline: Useful AI. Not hype.
+title:
+  en: "AI-Enhanced Services"
+  hu: "AI-támogatott szolgáltatások"
+description:
+  en: "Practical AI integrated into real visualization production — photorealistic images and animations from sketches alone, concept variations without re-renders, batch processing at scale, and AI-assisted scene correction."
+  hu: "Gyakorlatban használható AI valódi látványterv-produkcióba építve — fotórealisztikus képek és animációk pusztán vázlatokból, koncepcióvariációk újrarenderelés nélkül, kötegelt feldolgozás méretarányosan, AI-támogatott jelenetjavítás."
+tagline:
+  en: "Useful AI. Not hype."
+  hu: "Hasznos AI. Nem hype."
 bannerImage: /_img/banners/banner-ai.jpg
 order: 4
 published: true
-sidebarLabel: Tools we use
-sidebarContent: |
-  ComfyUI / SwarmUI · Stable Diffusion + ControlNet · Topaz AI · Python automation · Custom MAXScript pipelines
-  
-pricing: |
-  By scope. AI-enhanced work is typically priced as an add-on to a standard project, or as a standalone batch job. Quote on request.
-  
+sidebarLabel:
+  en: "Tools we use"
+  hu: "Eszközeink"
+sidebarContent:
+  en: "ComfyUI / SwarmUI · Stable Diffusion + ControlNet · Topaz AI · Python automation · Custom MAXScript pipelines"
+  hu: "ComfyUI / SwarmUI · Stable Diffusion + ControlNet · Topaz AI · Python-automatizálás · Egyedi MAXScript pipeline-ok"
+pricing:
+  en: "By scope. AI-enhanced work is typically priced as an add-on to a standard project, or as a standalone batch job. Quote on request."
+  hu: "Terjedelem szerint. Az AI-támogatott munkát jellemzően egy standard projekt kiegészítéseként, vagy önálló kötegelt feladatként árazzuk. Árajánlat kérésre."
 ---
 
+<Lang code="en">
 We can now produce photorealistic images and animations from hand sketches, rough plans, or reference photos — without building a full 3D model first. What used to take weeks of modelling before a single render can now begin from a drawing.
+</Lang>
+
+<Lang code="hu">
+Ma már fotórealisztikus képeket és animációkat készítünk kézi vázlatokból, durva tervrajzokból vagy referenciafotókból — anélkül, hogy előbb teljes 3D-modellt kellene építeni. Ami korábban hetes modellezést igényelt egyetlen render előtt, az ma egy rajzból indulhat.
+</Lang>
 
 <ImageCompare before="/_img/services/advanced-ai-services/-definitions-15.jpg" after="/_img/services/advanced-ai-services/-definitions-4.jpg" beforeLabel="Input" afterLabel="AI-enhanced output" />
 
+<Lang code="en">
 This doesn't make 3D obsolete. For final delivery, detailed animation, and client-facing work, a proper 3D scene still produces results no AI can match. But for early-stage exploration, rapid client feedback, and concept approval — the process has fundamentally changed.
 
 ## What this enables
+</Lang>
 
-<DeliverableGrid columns={2} items={[{"title":"Renders from Sketches","desc":"Convert hand drawings, rough plans, or reference photos into photorealistic images. Present design options to clients before any 3D work begins."},{"title":"Animation from Stills","desc":"Transform existing renders or reference images into moving sequences — concept flyovers, material transitions, and lighting studies without a full animation pipeline."},{"title":"Rapid Concept Variations","desc":"Generate material, lighting, and design variations quickly using ComfyUI / SwarmUI pipelines — explore options without a full re-render for each."},{"title":"AI Render Correction","desc":"Upscaling, noise reduction, and detail enhancement on existing renders. Useful for extending the life of older project imagery."},{"title":"Batch Image Processing","desc":"Automated pipelines for large render batches: colour correction, format conversion, watermarking, and quality checks at scale."},{"title":"Style Exploration","desc":"AI-generated mood references to explore visual direction before committing to full 3D production."}]} />
+<Lang code="hu">
+Ez nem teszi feleslegessé a 3D-t. Végleges leadáshoz, részletes animációhoz és ügyfél felé bemutatandó munkához egy tisztességes 3D-jelenet még mindig olyan eredményt ad, amit semmilyen AI nem tud megközelíteni. De korai felfedezésre, gyors ügyfél-visszajelzésre és koncepció-jóváhagyásra — a folyamat alapjaiban változott meg.
+
+## Mit tesz lehetővé
+</Lang>
+
+<DeliverableGrid columns={2} items={[
+  { title: { en: "Renders from Sketches",      hu: "Render vázlatokból" },             desc: { en: "Convert hand drawings, rough plans, or reference photos into photorealistic images. Present design options to clients before any 3D work begins.", hu: "Kézi rajzok, durva tervek vagy referenciafotók fotórealisztikus képpé alakítása. Mutasson tervváltozatokat az ügyfélnek, mielőtt bármilyen 3D-munka elindulna." } },
+  { title: { en: "Animation from Stills",      hu: "Animáció állóképekből" },          desc: { en: "Transform existing renders or reference images into moving sequences — concept flyovers, material transitions, and lighting studies without a full animation pipeline.", hu: "Meglévő render vagy referenciakép mozgóképi szekvenciává alakítása — koncepció-átrepülések, anyagátmenetek és fénytanulmányok teljes animációs pipeline nélkül." } },
+  { title: { en: "Rapid Concept Variations",   hu: "Gyors koncepcióvariációk" },        desc: { en: "Generate material, lighting, and design variations quickly using ComfyUI / SwarmUI pipelines — explore options without a full re-render for each.", hu: "Gyors anyag-, fény- és tervváltozat-generálás ComfyUI / SwarmUI pipeline-okkal — opciók bejárása anélkül, hogy mindegyikhez teljes újrarender kellene." } },
+  { title: { en: "AI Render Correction",       hu: "AI render-javítás" },              desc: { en: "Upscaling, noise reduction, and detail enhancement on existing renders. Useful for extending the life of older project imagery.", hu: "Felskálázás, zajcsökkentés és részletkiemelés meglévő rendereken. Hasznos, ha régebbi projektképanyag élettartamát szeretné meghosszabbítani." } },
+  { title: { en: "Batch Image Processing",     hu: "Kötegelt képfeldolgozás" },         desc: { en: "Automated pipelines for large render batches: colour correction, format conversion, watermarking, and quality checks at scale.", hu: "Automatizált pipeline-ok nagy renderkötegekhez: színkorrekció, formátumkonverzió, watermark és minőségellenőrzés méretarányosan." } },
+  { title: { en: "Style Exploration",          hu: "Stílus-felfedezés" },              desc: { en: "AI-generated mood references to explore visual direction before committing to full 3D production.", hu: "AI által generált hangulati referenciák a vizuális irány feltérképezéséhez, mielőtt teljes 3D-produkció mellett elköteleződnénk." } },
+]} />
 
 <SectionBanner
   image="/_img/banners/banner-ai.jpg"
-  label="Sketch to Render"
-  title="From Drawing to Decision"
+  label={{ en: "Sketch to Render", hu: "Vázlatból render" }}
+  title={{ en: "From Drawing to Decision", hu: "A rajztól a döntésig" }}
 />
 
 <ImageCompare before="/_img/services/advanced-ai-services/bugyi-k-p-2-.jpg" after="/_img/services/advanced-ai-services/bugyi-k-p-2-g01-i-s01-daytime-g01-iab-s01-summer-daytime.jpg" beforeLabel="Original" afterLabel="AI-enhanced render" />
 
+<Lang code="en">
 The workflow: you send us a sketch, reference image, or rough plan. We run it through controlled AI pipelines with the right prompting and ControlNet guidance to produce a photorealistic result that actually matches your design intent — not a hallucinated approximation. Where precision matters, we add targeted 3D elements and composite them in.
 
 This is practical for:
@@ -42,15 +70,28 @@ This is practical for:
 - Design competitions where speed matters
 - Quick iteration on concept options for internal review
 - Repurposing existing renders for new contexts or seasons
+</Lang>
+
+<Lang code="hu">
+A folyamat: küld nekünk egy vázlatot, referenciaképet vagy durva tervet. Ezt szabályozott AI-pipeline-okon vezetjük át, megfelelő promptolással és ControlNet-vezetéssel, hogy fotórealisztikus eredmény szülessen, ami valóban a tervezési szándékot tükrözi — nem hallucinált közelítés. Ahol a precizitás számít, célzott 3D-elemeket adunk hozzá és kompozitáljuk.
+
+Erre érdemes használni:
+
+- Korai ügyfélprezentációk, mielőtt a 3D-modell elkészülne
+- Tervpályázatok, ahol a sebesség számít
+- Gyors iterálás koncepcióváltozatokon belső szemlézésre
+- Meglévő renderek újrahasznosítása új kontextusban vagy évszakban
+</Lang>
 
 <ImageGallery images={[{"src":"/_img/services/advanced-ai-services/bugyi-k-p-2-g01-i-s01-daytime-g01-iac-s01-summer-blue-hour.jpg","alt":"AI-enhanced exterior render — summer blue hour"},{"src":"/_img/services/advanced-ai-services/dunakert-bels-6-.jpg","alt":"AI-enhanced interior — Dunakert apartment"},{"src":"/_img/services/advanced-ai-services/dunakert-bels-3-.jpg","alt":"AI-enhanced interior — Dunakert apartment, alternate angle"},{"src":"/_img/services/advanced-ai-services/17.jpg","alt":"AI-enhanced architectural concept render"},{"src":"/_img/services/advanced-ai-services/paramweatherclo2.jpg","alt":"AI parameter exploration — weather and cloud variation"},{"src":"/_img/services/advanced-ai-services/paramweatherclo4.jpg","alt":"AI parameter exploration — alternate weather and cloud variation"}]} />
 
 <SectionBanner
   image="/_img/banners/banner-workflow.jpg"
-  label="Our Position"
-  title="AI Where It Actually Helps"
+  label={{ en: "Our Position", hu: "Az álláspontunk" }}
+  title={{ en: "AI Where It Actually Helps", hu: "AI ott, ahol valóban segít" }}
 />
 
+<Lang code="en">
 AI tools genuinely accelerate some parts of visualization work — early-stage exploration, batch processing, and image correction. They don't replace 30 years of scene-building knowledge or the precision a proper 3D render delivers at final quality. We use AI where it reduces time and cost without compromising what matters.
 
 Is AI right for your project?
@@ -59,7 +100,25 @@ Is AI right for your project?
 - Final delivery renders for marketing and planning: usually no — 3D still wins on control and precision
 - Large batches of repeat renders (variants, angles, seasons): yes, very effective
 - One-off hero images: depends on complexity — we'll tell you honestly
+</Lang>
+
+<Lang code="hu">
+Az AI-eszközök a látványterv-munka egyes részeit valóban gyorsítják — korai felfedezést, kötegelt feldolgozást és képjavítást. Nem váltják ki a 30 év jelenetépítő tudást, sem azt a precizitást, amit egy rendes 3D-render ad végminőségben. Ott használunk AI-t, ahol az idő- és költségcsökkentést hoz anélkül, hogy a lényegen kompromisszumot kötnénk.
+
+Megfelelő-e az AI a projektjéhez?
+
+- Korai koncepció-prezentációk: igen, jelentős időmegtakarítás
+- Végleges leadási renderek marketinghez és engedélyeztetéshez: általában nem — 3D vezet kontrollban és precizitásban
+- Ismétlődő render-kötegek (változatok, szögek, évszakok): igen, nagyon hatékony
+- Egyedi hero-képek: bonyolultságfüggő — őszintén megmondjuk
+</Lang>
 
 <ImageCompare before="/_img/services/advanced-ai-services/novus-liget-k-ls-15-summer-daytime.jpg" after="/_img/services/advanced-ai-services/novus-liget-k-ls-15-summer-blue-hour.jpg" beforeLabel="Daytime" afterLabel="Blue hour" />
 
+<Lang code="en">
 We don't push AI on projects where it adds more correction time than it saves. If a straightforward 3D approach is faster, we'll say so.
+</Lang>
+
+<Lang code="hu">
+Nem erőltetünk AI-t olyan projektekre, ahol több javítási időt hozna, mint amennyit megtakarítana. Ha egy egyenes 3D-megközelítés gyorsabb, megmondjuk.
+</Lang>

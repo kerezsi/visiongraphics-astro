@@ -2,12 +2,18 @@
 // src/components/ui/SectionBanner.astro
 // Mid-page section header banner — smaller variant of PageHero
 // Used to introduce major sections within a page (e.g. About sections)
+// AND inside MDX bodies (registered as the `SectionBanner` component in
+// service/vision-tech templates), so it must accept Localized<string> for
+// label/title/imageAlt to support per-locale MDX prop syntax:
+//   <SectionBanner label={{ en: "Interior", hu: "Belső" }} ... />
+
+import { tStr, DEFAULT_LOCALE, type Localized, type Locale } from '../../lib/i18n';
 
 interface Props {
   image:         string;
-  label:         string;
-  title:         string;
-  imageAlt?:     string;
+  label:         Localized<string>;
+  title:         Localized<string>;
+  imageAlt?:     Localized<string>;
   align?:        'left' | 'center';
   headingLevel?: 'h1' | 'h2';
   size?:         'page' | 'section';   // page = taller hero-like, section = compact mid-page
@@ -17,23 +23,28 @@ const {
   image,
   label,
   title,
-  imageAlt     = '',
+  imageAlt,
   align        = 'left',
   headingLevel = 'h2',
   size         = 'section',
 } = Astro.props;
+
+const lang: Locale = (Astro.locals as { lang?: Locale })?.lang ?? DEFAULT_LOCALE;
+const labelStr    = tStr(label,    lang);
+const titleStr    = tStr(title,    lang);
+const imageAltStr = tStr(imageAlt, lang);
 
 const HeadingTag = headingLevel;
 ---
 
 <div class={`section-banner section-banner--${align} section-banner--${size}`}>
   <div class="section-banner__bg">
-    <img src={image} alt={imageAlt} loading="lazy" decoding="async" />
+    <img src={image} alt={imageAltStr} loading="lazy" decoding="async" />
   </div>
   <div class="section-banner__overlay" aria-hidden="true"></div>
   <div class="section-banner__content container">
-    <p class="section-banner__label">{label}</p>
-    <HeadingTag class="section-banner__title">{title}</HeadingTag>
+    <p class="section-banner__label">{labelStr}</p>
+    <HeadingTag class="section-banner__title">{titleStr}</HeadingTag>
   </div>
 </div>
 

@@ -1,10 +1,15 @@
 ---
+import { tStr, DEFAULT_LOCALE, type Localized, type Locale } from '../../lib/i18n';
+
 interface Props {
   image?: string;
-  label?: string;
-  title: string;
+  label?: Localized<string>;
+  title: Localized<string>;
 }
 const { image, label, title } = Astro.props;
+const lang: Locale = (Astro.locals as { lang?: Locale })?.lang ?? DEFAULT_LOCALE;
+const labelStr = tStr(label, lang);
+const titleStr = tStr(title, lang);
 ---
 <div
   class="article-section-banner"
@@ -12,8 +17,8 @@ const { image, label, title } = Astro.props;
 >
   <div class="article-section-banner__overlay" aria-hidden="true"></div>
   <div class="article-section-banner__content">
-    {label && <p class="article-section-banner__label">{label}</p>}
-    <h2 class="article-section-banner__title">{title}</h2>
+    {labelStr && <p class="article-section-banner__label">{labelStr}</p>}
+    <h2 class="article-section-banner__title">{titleStr}</h2>
   </div>
 </div>
 

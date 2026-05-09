@@ -1,6 +1,10 @@
 ---
-title: Virtual Reality (VR) Experience
-description: Immersive walkthroughs of unbuilt spaces using Meta Quest headsets. Two distinct formats — 3DOF panoramic tours for exhibitions and sales events, 6DOF full-movement experiences for design review and high-end client presentations.
+title:
+  en: "Virtual Reality (VR) Experience"
+  hu: "Virtuális valóság (VR) élmény"
+description:
+  en: "Immersive walkthroughs of unbuilt spaces using Meta Quest headsets. Two distinct formats — 3DOF panoramic tours for exhibitions and sales events, 6DOF full-movement experiences for design review and high-end client presentations."
+  hu: "Magával ragadó séták még meg nem épült terekben Meta Quest headsetekkel. Két különböző formátum — 3DOF panorámatúrák kiállításokra és értékesítési eseményekre, 6DOF teljes mozgású élmények tervszemlékhez és magas igényű ügyfélprezentációkhoz."
 image: /_img/vision-tech/virtual-reality-vr-experience.jpg
 technique: Digital
 cost: €€€€
@@ -19,27 +23,41 @@ relatedFeatures:
 published: true
 ---
 
+<Lang code="en">
 VR puts a person inside an unbuilt space at real scale. No flat screen, no camera angle — just the room, at the size it will actually be, in every direction. Scale perception, spatial relationships, and the feeling of a volume are things VR communicates directly that no other visualization medium can replicate.
 
 We offer two distinct VR formats that serve different purposes and production budgets.
 
 ## 3DOF vs 6DOF
+</Lang>
+
+<Lang code="hu">
+A VR egy embert valós léptékben helyez egy még meg nem épült térbe. Nincs sík képernyő, nincs kameraszög — csak a helyiség, abban a méretben, amilyen ténylegesen lesz, minden irányban. Az aránymérlegelés, a térbeli kapcsolatok és egy térfogat érzete olyan dolgok, amelyeket a VR közvetlenül közvetít — más látványterv-eszköz nem tudja megismételni.
+
+Két különböző VR-formátumot kínálunk, amelyek eltérő célokat és produkciós büdzséket szolgálnak.
+
+## 3DOF vs. 6DOF
+</Lang>
 
 <CompareTable
-  headers={["3DOF — Panoramic Tour", "6DOF — Full Movement"]}
-  rows={[
-    { label: "Movement", values: ["Fixed viewpoints — look freely in all directions, navigate between positions", "Walk anywhere within the space — full physical movement tracked"] },
-    { label: "Hardware", values: ["Meta Quest headset, standalone", "Meta Quest or Rift, standalone or PC-connected"] },
-    { label: "Content source", values: ["High-resolution 360° renderings or photographs", "Real-time 3D environment built in Unreal Engine"] },
-    { label: "Visual quality", values: ["Pre-rendered — matches the quality of the 360 renders used", "Real-time rendering — quality limited by GPU, but fully interactive"] },
-    { label: "Interaction", values: ["Navigation between viewpoints, optional hotspots", "Pick up objects, open doors, switch materials, modify the space"] },
-    { label: "Production time", values: ["Faster — builds on existing 360 render workflow", "Longer — full Unreal Engine scene build required"] },
-    { label: "Cost", values: ["Lower", "Higher"] },
-    { label: "Best for", values: ["Sales events, exhibitions, remote visits, large-scale residential", "Design review, high-end client presentations, decision-critical projects"] },
+  headers={[
+    { en: "3DOF — Panoramic Tour", hu: "3DOF — panorámatúra" },
+    { en: "6DOF — Full Movement",   hu: "6DOF — teljes mozgás" },
   ]}
-  caption="Both formats run on Meta Quest headsets — the source content and interaction model are what differ"
+  rows={[
+    { label: { en: "Movement",          hu: "Mozgás" },              values: [{ en: "Fixed viewpoints — look freely in all directions, navigate between positions",          hu: "Fix nézőpontok — szabadon nézhet körbe, és pozíciók között navigálhat" },          { en: "Walk anywhere within the space — full physical movement tracked",                hu: "Bárhova sétálhat a téren belül — a teljes fizikai mozgás követve" }] },
+    { label: { en: "Hardware",          hu: "Hardver" },             values: [{ en: "Meta Quest headset, standalone",                                                          hu: "Meta Quest headset, önálló" },                                                       { en: "Meta Quest or Rift, standalone or PC-connected",                                  hu: "Meta Quest vagy Rift, önálló vagy PC-csatlakozású" }] },
+    { label: { en: "Content source",     hu: "Tartalomforrás" },       values: [{ en: "High-resolution 360° renderings or photographs",                                          hu: "Nagy felbontású 360°-os renderek vagy fotók" },                                       { en: "Real-time 3D environment built in Unreal Engine",                                hu: "Valós idejű 3D-környezet Unreal Engine-ben építve" }] },
+    { label: { en: "Visual quality",     hu: "Vizuális minőség" },     values: [{ en: "Pre-rendered — matches the quality of the 360 renders used",                              hu: "Előre renderelt — illeszkedik a használt 360°-os render minőségéhez" },              { en: "Real-time rendering — quality limited by GPU, but fully interactive",            hu: "Valós idejű render — a minőséget a GPU korlátozza, de teljesen interaktív" }] },
+    { label: { en: "Interaction",         hu: "Interakció" },           values: [{ en: "Navigation between viewpoints, optional hotspots",                                        hu: "Navigáció a nézőpontok között, opcionális hotspotok" },                              { en: "Pick up objects, open doors, switch materials, modify the space",                hu: "Tárgyak felvétele, ajtónyitás, anyagcsere, tér átalakítása" }] },
+    { label: { en: "Production time",     hu: "Készítési idő" },        values: [{ en: "Faster — builds on existing 360 render workflow",                                         hu: "Gyorsabb — a meglévő 360°-os render-munkafolyamatra épül" },                          { en: "Longer — full Unreal Engine scene build required",                              hu: "Hosszabb — teljes Unreal Engine jelenetépítést igényel" }] },
+    { label: { en: "Cost",                hu: "Költség" },              values: [{ en: "Lower",                                                                                   hu: "Alacsonyabb" },                                                                       { en: "Higher",                                                                          hu: "Magasabb" }] },
+    { label: { en: "Best for",            hu: "Mire a legjobb" },        values: [{ en: "Sales events, exhibitions, remote visits, large-scale residential",                       hu: "Értékesítési események, kiállítások, távoli megtekintés, nagyléptékű lakás" },        { en: "Design review, high-end client presentations, decision-critical projects",       hu: "Tervszemlék, magas igényű ügyfélprezentációk, döntéskritikus projektek" }] },
+  ]}
+  caption={{ en: "Both formats run on Meta Quest headsets — the source content and interaction model are what differ", hu: "Mindkét formátum Meta Quest headseten fut — a forrástartalom és az interakciós modell különbözik" }}
 />
 
+<Lang code="en">
 ## 3DOF: the exhibition and sales format
 
 The 3DOF experience is built from [360 Renderings](/vision-tech/360-renderings/) or [360 Photography](/vision-tech/360-photography/) loaded into a Meta Quest headset. Users look in any direction and navigate between viewpoints — room to room, floor to floor — using gaze-based or controller-based hotspot navigation.
@@ -63,17 +81,54 @@ Interactive elements possible in 6DOF:
 - Door and aperture opening — test actual clearances and spatial transitions
 
 ## What we need from you
+</Lang>
+
+<Lang code="hu">
+## 3DOF: a kiállítási és értékesítési formátum
+
+A 3DOF élmény a [360°-os látványtervekből](/vision-tech/360-renderings/) vagy a [360°-os fotózásból](/vision-tech/360-photography/) épül, amelyeket Meta Quest headsetbe töltünk. A felhasználó bármilyen irányba nézhet, és nézőpontok között navigálhat — szobáról szobára, szintről szintre — tekintet- vagy kontrollalapú hotspot-navigációval.
+
+Beállításunk megkülönböztető eleme a **headset–tablet párosítás**: minden VR-headset egy tablethez van párosítva, amelyen az értékesítési munkatárs valós időben látja, mit néz a felhasználó. A munkatárs így vezetheti az élményt, kiemelhet jellemzőket és válaszolhat kérdésekre anélkül, hogy megtörné a felhasználó elmélyülését. Több headset–tablet pár futhat egyszerre ugyanarról a helyi WiFi-hotspotról — hasznos olyan értékesítés előtti eseményeken, ahol több látogató egyszerre fedezi fel.
+
+**Off-grid működés** — a beállítás teljes egészében internet-hozzáférés nélkül fut. A tartalmat helyi hozzáférési pontról szolgáljuk ki, így megbízható helyszíni látogatásokon, mintalakásokban, vásári standokon és minden olyan helyen, ahol nincs megbízható kapcsolat.
+
+## 6DOF: teljes mozgás és interakció
+
+A 6DOF élményeket Unreal Engine-ben építjük a 3D-modellből. A felhasználó fizikailag sétál a térben — a valódi mozgások közvetlenül átvetülnek a virtuális környezetbe. Visszafordulás, közelebb lépés egy falhoz, hogy megvizsgáljon egy anyagot, lehajolás egy pult alatti rálátás ellenőrzéséhez — a 6DOF-ból kapott térbeli megértés alapvetően más, mint bármilyen fix nézőpontú formátum.
+
+Hardver-opciók:
+- **Meta Quest önálló** — kábel nélkül, teljes szobaléptékben. A teljesítményt a headset beépített processzora korlátozza; a jelenet összetettségét ennek megfelelően kell kezelni.
+- **PC-csatlakozású (Quest vagy Rift)** — link-kábellel vagy vezeték nélkül egy nagy teljesítményű munkaállomáshoz csatlakoztatva. Teljes GPU-erő, jelentősen magasabb vizuális minőség, nincs teljesítménybeli kompromisszum.
+
+6DOF-ban lehetséges interaktív elemek:
+- Anyag- és kivitelcsere — látja a lakást fehér tölgyfa padlóval, majd váltja sötét betonra
+- Bútorelhelyezés — tárgyakat mozgat a téren belül
+- Fényváltások — napszakok, mesterséges fényforgatókönyvek
+- Ajtó- és nyílás-nyitás — valódi rálátások és térátmenetek tesztelése
+
+## Mire van szükségünk Öntől
+</Lang>
 
 <SpecTable rows={[
-  { label: "3D model", value: "For 3DOF: same model used for 360 renders. For 6DOF: a clean, optimized 3ds Max model we convert to Unreal Engine — polygon count and material complexity must be managed for real-time performance." },
-  { label: "Format decision", value: "3DOF or 6DOF? We advise based on the project type, event context, and budget. A residential pre-sales exhibition and a design review for a hospital have very different requirements." },
-  { label: "Viewpoints (3DOF)", value: "Which rooms and positions should be navigable. Planned from the floor plan before 360 renders are made." },
-  { label: "Interactions (6DOF)", value: "What should the user be able to change or manipulate. Each interactive element adds development time." },
-  { label: "Event context", value: "Exhibition floor, sales office, site visit, client boardroom. The setup — number of headsets, tablets, local server — is configured for the specific deployment." },
+  { label: { en: "3D model",            hu: "3D-modell" },           value: { en: "For 3DOF: same model used for 360 renders. For 6DOF: a clean, optimized 3ds Max model we convert to Unreal Engine — polygon count and material complexity must be managed for real-time performance.",                hu: "3DOF-hoz: ugyanaz a modell, mint a 360°-os renderhez. 6DOF-hoz: tiszta, optimalizált 3ds Max-modell, amelyet Unreal Engine-be konvertálunk — a poligonszámot és anyag-összetettséget a valós idejű teljesítményhez kell szabni." } },
+  { label: { en: "Format decision",      hu: "Formátum-döntés" },     value: { en: "3DOF or 6DOF? We advise based on the project type, event context, and budget. A residential pre-sales exhibition and a design review for a hospital have very different requirements.",                                hu: "3DOF vagy 6DOF? A projekttípus, esemény-kontextus és büdzsé alapján adunk tanácsot. Egy lakás-előértékesítési kiállítás és egy kórház-tervszemle nagyon eltérő követelményekkel jár." } },
+  { label: { en: "Viewpoints (3DOF)",    hu: "Nézőpontok (3DOF)" },    value: { en: "Which rooms and positions should be navigable. Planned from the floor plan before 360 renders are made.",                                                                                                                hu: "Mely helyiségeket és pozíciókat lehessen bejárni. Az alaprajzból tervezzük a 360°-os renderek elkészítése előtt." } },
+  { label: { en: "Interactions (6DOF)",  hu: "Interakciók (6DOF)" },   value: { en: "What should the user be able to change or manipulate. Each interactive element adds development time.",                                                                                                                hu: "Mit változtathasson vagy manipulálhasson a felhasználó. Minden interaktív elem fejlesztési időt ad hozzá." } },
+  { label: { en: "Event context",         hu: "Esemény-kontextus" },   value: { en: "Exhibition floor, sales office, site visit, client boardroom. The setup — number of headsets, tablets, local server — is configured for the specific deployment.",                                                       hu: "Kiállítási tér, értékesítési iroda, helyszíni látogatás, ügyfél-tárgyaló. A beállítást — headsetek, tabletek, helyi szerver száma — az adott telepítéshez konfiguráljuk." } },
 ]} />
 
+<Lang code="en">
 ## Related techniques
 
 Source content for 3DOF experiences: [360 Renderings](/vision-tech/360-renderings/) or [360 Photography](/vision-tech/360-photography/)
 
 For non-headset navigable 360 tours — browser-based, no hardware required: [360 Tour](/vision-tech/360-tour/)
+</Lang>
+
+<Lang code="hu">
+## Kapcsolódó technikák
+
+Forrástartalom 3DOF élményekhez: [360°-os látványtervek](/vision-tech/360-renderings/) vagy [360°-os fotózás](/vision-tech/360-photography/)
+
+Headset nélkül bejárható 360°-os túrákhoz — böngészőben, hardver nélkül: [360°-os túra](/vision-tech/360-tour/)
+</Lang>

@@ -1,3 +1,5 @@
 ---
-title: "Infrastructure"
+title:
+  en: Infrastructure
+  hu: Infrastruktúra
 ---

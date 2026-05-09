@@ -73,6 +73,22 @@ const r2DevProxy = {
 
 export default defineConfig({
   site: 'https://visiongraphics.eu',
+  // ── i18n ────────────────────────────────────────────────────────────────
+  // Symmetric URLs: every page lives under /en/ or /hu/ (no bare-root content).
+  // Page templates live under src/pages/[lang]/... and use Astro.params.lang.
+  // The runtime locale is also exposed via Astro.locals.lang for MDX components
+  // (see src/components/i18n/Lang.astro). To add a locale (e.g. 'de'), append
+  // it here AND in src/lib/i18n.ts AND in src/content/config.ts localizedString().
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'hu'],
+    routing: {
+      prefixDefaultLocale: true,
+      // No automatic browser-locale redirect — visitors landing at / get a
+      // simple chooser (or a redirect to /en/, decided in src/pages/index.astro).
+      redirectToDefaultLocale: false,
+    },
+  },
   integrations: [
     react(),
     tailwind({

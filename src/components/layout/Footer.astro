@@ -2,26 +2,55 @@
 // src/components/layout/Footer.astro
 // Corrected: no newsletter widget, consistent contact info
 
+import navConfig from '../../data/nav-config.json';
+import { localeUrl, localeFromPath, type Locale } from '../../lib/i18n';
+import { ui } from '../../i18n/strings';
+
 const year = new Date().getFullYear();
 
-const services = [
-  { label: 'Architectural Visualization', href: '/services/architectural-visualization/' },
-  { label: 'Large-Scale Projects',        href: '/services/large-scale-projects/' },
-  { label: 'AI-Enhanced Services',        href: '/services/advanced-ai-services/' },
-  { label: 'Workflow Optimization',       href: '/services/workflow-optimization/' },
-  { label: '3ds Max Tools',               href: '/services/3ds-max-tools/' },
-  { label: 'Custom Rendering',            href: '/services/custom-rendering/' },
-];
+const path = Astro.url.pathname;
+const lang: Locale = (Astro.locals as { lang?: Locale })?.lang ?? localeFromPath(path);
+const L = ui(lang);
 
-const links = [
-  { label: 'Portfolio',    href: '/portfolio/' },
-  { label: 'Technologies', href: '/vision-tech/' },
-  { label: 'FAQ',          href: '/faq/' },
-  { label: 'Pricing',      href: '/pricing/' },
-  { label: 'Blog',         href: '/articles/' },
-  { label: 'About',        href: '/about/' },
-  { label: 'Contact',      href: '/contact/' },
-];
+// Service column labels are short, hardcoded HU translations (the underlying
+// service slugs are language-agnostic). When MDX service titles are translated,
+// we could fetch them from the collection instead, but for footer chrome the
+// short labels are clearer.
+const SERVICE_LABELS: Record<string, { en: string; hu: string }> = {
+  '/services/architectural-visualization/': { en: 'Architectural Visualization', hu: 'Építészeti látványterv' },
+  '/services/large-scale-projects/':        { en: 'Large-Scale Projects',        hu: 'Nagyléptékű projektek' },
+  '/services/advanced-ai-services/':        { en: 'AI-Enhanced Services',        hu: 'AI-támogatott szolgáltatások' },
+  '/services/workflow-optimization/':       { en: 'Workflow Optimization',       hu: 'Munkafolyamat-optimalizálás' },
+  '/services/3ds-max-tools/':               { en: '3ds Max Tools',               hu: '3ds Max eszközök' },
+  '/services/custom-rendering/':            { en: 'Custom Rendering',            hu: 'Egyedi renderelés' },
+};
+
+const services = Object.entries(SERVICE_LABELS).map(([href, labels]) => ({
+  label: labels[lang],
+  href:  localeUrl(href, lang),
+}));
+
+// Studio column mirrors the top-nav. Translate via the same href→key map as
+// Header (kept inline here to avoid an extra import; keep in sync).
+const NAV_LABEL_KEY: Record<string, keyof typeof L.nav> = {
+  '/portfolio/':    'portfolio',
+  '/vision-tech/':  'technologies',
+  '/about/':        'about',
+  '/contact/':      'contact',
+  '/faq/':          'faq',
+  '/pricing/':      'pricing',
+  '/articles/':     'blog',
+};
+
+const links = (navConfig as Array<{ label: string; href: string; enabled: boolean }>)
+  .filter(item => item.enabled && item.href !== '/services/')
+  .map(item => {
+    const key = NAV_LABEL_KEY[item.href];
+    return {
+      label: key ? L.nav[key] : item.label,
+      href:  localeUrl(item.href, lang),
+    };
+  });
 ---
 
 <footer class="site-footer">
@@ -31,27 +60,28 @@ const links = [
 
       <!-- Brand column -->
       <div class="footer-brand">
-        <a href="/" class="footer-logo" aria-label="Vision Graphics — Home">
+        <a href={localeUrl('/', lang)} class="footer-logo" aria-label="Vision Graphics — Home">
           <img src="/logo.png"   alt="Vision Graphics Kft." class="footer-logo-img footer-logo-dark"  width="140" height="34" />
           <img src="/logo_b.png" alt=""                      class="footer-logo-img footer-logo-light" width="140" height="34" aria-hidden="true" />
         </a>
         <p class="footer-bio">
-          Architectural visualization, Budapest.
-          Working globally since 1996.
+          {lang === 'hu'
+            ? 'Építészeti látványtervezés és több.\nBudapest, globálisan dolgozunk 1996 óta.'
+            : 'Architectural visualization & more.\nBudapest, working globally since 1996.'}
         </p>
         <address class="footer-address">
           Hollósy Simon utca 15.<br />
-          1126 Budapest, Hungary
+          {lang === 'hu' ? '1126 Budapest, Magyarország' : '1126 Budapest, Hungary'}
         </address>
         <div class="footer-contact">
           <a href="tel:+36309454179">+36 30 945 4179</a>
-          <a href="mailto:info@visiongraphics.eu">info@visiongraphics.eu</a>
+          <a href="mailto:info@visiongraphics.hu">info@visiongraphics.hu</a>
         </div>
       </div>
 
       <!-- Services column -->
       <div class="footer-col">
-        <h4 class="footer-col-title">Services</h4>
+        <h4 class="footer-col-title">{L.nav.services}</h4>
         <nav aria-label="Services links">
           {services.map(s => (
             <a href={s.href} class="footer-link">{s.label}</a>
@@ -61,7 +91,7 @@ const links = [
 
       <!-- Quick links column -->
       <div class="footer-col">
-        <h4 class="footer-col-title">Studio</h4>
+        <h4 class="footer-col-title">{lang === 'hu' ? 'Stúdió' : 'Studio'}</h4>
         <nav aria-label="Studio links">
           {links.map(l => (
             <a href={l.href} class="footer-link">{l.label}</a>

@@ -1,66 +1,100 @@
 import { defineCollection, reference, z } from 'astro:content';
 
+// ─── i18n: localized string schema helper ────────────────────────
+// A localized string accepts EITHER a plain string (treated as default-locale
+// content — fully backward-compatible with existing single-language MDX) OR
+// an object keyed by locale code, e.g. { en: "Hello", hu: "Szia" }.
+// Resolve at runtime with t(value, lang) from src/lib/i18n.ts.
+//
+// Supported locales here MUST stay in sync with LOCALES in src/lib/i18n.ts.
+// To add a locale (e.g. 'de'), append it to BOTH places.
+const localizedString = () =>
+  z.union([
+    z.string(),
+    z.object({
+      en: z.string().optional(),
+      hu: z.string().optional(),
+    }).refine((o) => Object.values(o).some((v) => v != null && v !== ''), {
+      message: 'Localized string must have at least one non-empty locale value',
+    }),
+  ]);
+
+// Optional variant — accepts undefined too
+const localizedStringOpt = () => localizedString().optional();
+
+// Localized array of strings (e.g. body paragraphs split by locale)
+const localizedStringArray = () =>
+  z.union([
+    z.array(z.string()),
+    z.object({
+      en: z.array(z.string()).optional(),
+      hu: z.array(z.string()).optional(),
+    }),
+  ]);
+
 // ─── Taxonomy collections ─────────────────────────────────────────
 const categories = defineCollection({
   type: 'content',
-  schema: z.object({ title: z.string() }),
+  schema: z.object({ title: localizedString() }),
 });
 
 const designers = defineCollection({
   type: 'content',
-  schema: z.object({ title: z.string() }),
+  schema: z.object({ title: localizedString() }),
 });
 
 const clients = defineCollection({
   type: 'content',
-  schema: z.object({ title: z.string() }),
+  schema: z.object({ title: localizedString() }),
 });
 
 const clientTypes = defineCollection({
   type: 'content',
-  schema: z.object({ title: z.string() }),
+  schema: z.object({ title: localizedString() }),
 });
 
 const cities = defineCollection({
   type: 'content',
-  schema: z.object({ title: z.string() }),
+  schema: z.object({ title: localizedString() }),
 });
 
 const countries = defineCollection({
   type: 'content',
-  schema: z.object({ title: z.string() }),
+  schema: z.object({ title: localizedString() }),
 });
 
 // ─── Content blocks ───────────────────────────────────────────────
-// Ordered array of interleaved text + media blocks for rich page body
+// Ordered array of interleaved text + media blocks for rich page body.
+// Translatable strings use localizedString() so a block can carry per-locale
+// titles/alt-text without splitting the block array per language.
 const contentBlock = z.discriminatedUnion('type', [
   z.object({
     type: z.literal('text'),
-    html: z.string(),
+    html: localizedString(),
   }),
   z.object({
     type: z.literal('tour360'),
     url: z.string(),
-    title: z.string().optional().default(''),
+    title: localizedStringOpt(),
   }),
   z.object({
     type: z.literal('gallery'),
-    title: z.string().optional().default(''),
+    title: localizedStringOpt(),
     images: z.array(z.object({
       src: z.string(),
-      alt: z.string().optional().default(''),
+      alt: localizedStringOpt(),
     })).default([]),
   }),
   z.object({
     type: z.literal('film'),
     vimeoId: z.string(),
-    title: z.string().optional().default(''),
+    title: localizedStringOpt(),
     duration: z.string().optional(),
   }),
   z.object({
     type: z.literal('youtube'),
     url: z.string(),
-    title: z.string().optional().default(''),
+    title: localizedStringOpt(),
   }),
 ]);
 
@@ -68,8 +102,8 @@ const contentBlock = z.discriminatedUnion('type', [
 const visionTech = defineCollection({
   type: 'content',
   schema: z.object({
-    title:       z.string(),
-    description: z.string(),
+    title:       localizedString(),
+    description: localizedString(),
     image:       z.string(),            // /vision-tech/<slug>.jpg
     technique:   z.enum(['Digital', 'AI-Enhanced', 'AI-Only', 'Hybrid', 'Traditional']).optional(),
     cost:        z.enum(['€', '€€', '€€€', '€€€€', '€€€€€']),
@@ -77,8 +111,8 @@ const visionTech = defineCollection({
     complexity:  z.enum(['1 - Basic', '2 - Intermediate', '3 - Advanced', '4 - Expert', '5 - Cutting-Edge']),
     reality:     z.enum(['Pure Reality', 'Conceptual Reality', 'Hybrid Reality-Vision', 'Pure Vision']),
     purpose:     z.array(z.enum(['Communication', 'Decision Support', 'Documentation', 'Design Development', 'Technical Analysis'])),
-    // Extended body paragraphs (scraped from dev site)
-    body:        z.array(z.string()).default([]),
+    // Extended body paragraphs (scraped from dev site) — locale-aware
+    body:        localizedStringArray().default([]),
     // Gallery images for detail page
     gallery:     z.array(z.string()).default([]),
     // Categories of portfolio projects that typically use this technique
@@ -95,18 +129,18 @@ const visionTech = defineCollection({
 const projects = defineCollection({
   type: 'content',
   schema: z.object({
-    title:        z.string(),
-    displayTitle: z.string().optional(), // pretty combined title e.g. "KÖKI FoodPort"
+    title:        localizedString(),
+    displayTitle: localizedStringOpt(), // pretty combined title e.g. "KÖKI FoodPort"
     year:         z.number().int().min(1990).max(2030),
     client:       reference('clients').optional(), // client company
     designer:     reference('designers').optional(), // architect / designer firm
     clientType:   reference('client-types').optional(),
     city:         reference('cities').optional(),
     country:      reference('countries').optional(),
-    description:  z.string().optional(), // short, for cards + meta (SEO only)
+    description:  localizedStringOpt(), // short, for cards + meta (SEO only)
     // Legacy fields — kept optional for pre-migration files; migration script moves them to MDX body
-    story:        z.string().optional(),
-    tasks:        z.string().optional(),
+    story:        localizedStringOpt(),
+    tasks:        localizedStringOpt(),
 
     categories: z.array(reference('categories')).min(1),
 
@@ -120,15 +154,15 @@ const projects = defineCollection({
     // Cover image path (relative to /public/)
     coverImage: z.string(),
 
-    // Gallery images shown on detail page
+    // Gallery images shown on detail page (alt text is locale-aware)
     images: z.array(z.object({
       src: z.string(),
-      alt: z.string(),
+      alt: localizedString(),
     })).default([]),
 
     // Pano2VR 360 tours (hosted on pano.visiongraphics.eu/...)
     tour360: z.array(z.object({
-      title: z.string(),
+      title: localizedString(),
       url:   z.string().url(),
     })).optional(),
 
@@ -137,7 +171,7 @@ const projects = defineCollection({
 
     // Vimeo films (structured)
     films: z.array(z.object({
-      title:    z.string(),
+      title:    localizedString(),
       vimeoId:  z.string(),
       duration: z.string().optional(), // "3:42"
     })).optional(),
@@ -162,9 +196,9 @@ const projects = defineCollection({
 const articles = defineCollection({
   type: 'content',
   schema: z.object({
-    title:       z.string(),
+    title:       localizedString(),
     date:        z.date(),
-    excerpt:     z.string(),
+    excerpt:     localizedString(),
     tags:        z.array(z.string()).default([]),
     coverImage:  z.string().optional(),
     published:   z.boolean().default(true),
@@ -175,16 +209,16 @@ const articles = defineCollection({
 const services = defineCollection({
   type: 'content',
   schema: z.object({
-    title:             z.string(),
-    description:       z.string(),
-    tagline:           z.string().optional(),
+    title:             localizedString(),
+    description:       localizedString(),
+    tagline:           localizedStringOpt(),
     bannerImage:       z.string().optional(),
     order:             z.number().optional(),
     published:         z.boolean().default(true),
-    startRequirements: z.string().optional(), // sidebar "What you need to start"
-    pricing:           z.string().optional(), // sidebar pricing info
-    sidebarLabel:      z.string().optional(), // sidebar alternative label
-    sidebarContent:    z.string().optional(), // sidebar alternative content
+    startRequirements: localizedStringOpt(), // sidebar "What you need to start"
+    pricing:           localizedStringOpt(), // sidebar pricing info
+    sidebarLabel:      localizedStringOpt(), // sidebar alternative label
+    sidebarContent:    localizedStringOpt(), // sidebar alternative content
     // Linked vision-tech technique slugs — shown as chip row above related projects
     techniques:        z.array(z.string()).optional().default([]),
     // Connected service slugs (Keystatic writes this field; accepted here to avoid schema errors)

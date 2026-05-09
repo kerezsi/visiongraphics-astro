@@ -1,3 +1,5 @@
 ---
-title: "Renovation"
+title:
+  en: Renovation
+  hu: Felújítás
 ---

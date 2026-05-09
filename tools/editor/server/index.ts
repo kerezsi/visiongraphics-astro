@@ -17,6 +17,7 @@ import configRouter from './routers/config.js';
 import importRouter from './routers/import-md.js';
 import codegenRouter from './routers/codegen.js';
 import commandsRouter from './routers/commands.js';
+import translateRouter from './routers/translate.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PORT = process.env.EDITOR_SERVER_PORT ? parseInt(process.env.EDITOR_SERVER_PORT) : 4322;
@@ -129,6 +130,7 @@ app.use('/api/config', configRouter);
 app.use('/api/import', importRouter);
 app.use('/api/codegen', codegenRouter);
 app.use('/api/commands', commandsRouter);
+app.use('/api/translate', translateRouter);
 
 // ---------------------------------------------------------------------------
 // Catch-all: serve index.html for SPA routing (when Vite is not running)

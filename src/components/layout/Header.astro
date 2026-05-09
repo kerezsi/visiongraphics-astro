@@ -3,14 +3,41 @@
 
 import navConfigRaw from '../../data/nav-config.json';
 import ThemeToggle from '../ui/ThemeToggle.astro';
-
-const navItems = (navConfigRaw as Array<{ label: string; href: string; enabled: boolean }>)
-  .filter((item) => item.enabled);
+import LangSwitcher from './LangSwitcher.astro';
+import { DEFAULT_LOCALE, localeUrl, localeFromPath, type Locale } from '../../lib/i18n';
+import { ui } from '../../i18n/strings';
 
 const path = Astro.url.pathname;
+const lang: Locale = (Astro.locals as { lang?: Locale })?.lang ?? localeFromPath(path);
+const L = ui(lang);
+
+// nav-config.json stores English labels and bare-root hrefs (e.g. "/portfolio/").
+// We translate the labels via a href→key map, and prefix hrefs with the active
+// locale. The JSON file itself stays unchanged so the editor's Pages tab keeps
+// working without modification.
+const NAV_LABEL_KEY: Record<string, keyof typeof L.nav> = {
+  '/portfolio/':    'portfolio',
+  '/services/':     'services',
+  '/vision-tech/':  'technologies',
+  '/about/':        'about',
+  '/contact/':      'contact',
+  '/faq/':          'faq',
+  '/pricing/':      'pricing',
+  '/articles/':     'blog',
+};
+
+const navItems = (navConfigRaw as Array<{ label: string; href: string; enabled: boolean }>)
+  .filter((item) => item.enabled)
+  .map((item) => {
+    const key = NAV_LABEL_KEY[item.href];
+    return {
+      label: key ? L.nav[key] : item.label,
+      href:  localeUrl(item.href, lang),
+    };
+  });
 
 function isActive(href: string): boolean {
-  if (href === '/') return path === '/';
+  if (href === `/${lang}/`) return path === `/${lang}/` || path === `/${lang}`;
   return path.startsWith(href);
 }
 ---
@@ -19,7 +46,7 @@ function isActive(href: string): boolean {
   <div class="container header-inner">
 
     <!-- Logo -->
-    <a href="/" class="logo" aria-label="Vision Graphics — Home">
+    <a href={localeUrl('/', lang)} class="logo" aria-label="Vision Graphics — Home">
       <img src="/logo.png"   alt="Vision Graphics Kft." class="logo-img logo-dark"  width="160" height="39" />
       <img src="/logo_b.png" alt=""                      class="logo-img logo-light" width="160" height="39" aria-hidden="true" />
     </a>
@@ -37,8 +64,9 @@ function isActive(href: string): boolean {
       ))}
     </nav>
 
-    <!-- Theme toggle (desktop only — also in mobile nav dropdown) -->
-    <span class="desktop-theme-toggle">
+    <!-- Language switcher + theme toggle (desktop only — both also in mobile nav dropdown) -->
+    <span class="desktop-header-controls">
+      <LangSwitcher />
       <ThemeToggle />
     </span>
 
@@ -65,9 +93,18 @@ function isActive(href: string): boolean {
         {item.label}
       </a>
     ))}
-    <div class="mobile-nav-theme">
+    <div class="mobile-nav-lang">
+      <LangSwitcher />
+    </div>
+    <div
+      class="mobile-nav-theme"
+      id="mobile-nav-theme"
+      role="button"
+      tabindex="0"
+      aria-label="Toggle light/dark mode"
+    >
       <ThemeToggle />
-      <span class="mobile-nav-theme-label">Toggle light/dark</span>
+      <span class="mobile-nav-theme-label">{lang === 'hu' ? 'Világos / sötét mód' : 'Toggle light/dark'}</span>
     </div>
   </nav>
 </header>
@@ -78,12 +115,42 @@ function isActive(href: string): boolean {
   const nav = document.getElementById('mobile-nav');
   const header = document.getElementById('site-header');
 
+  function closeMobileNav() {
+    if (!btn || !nav) return;
+    btn.setAttribute('aria-expanded', 'false');
+    nav.setAttribute('hidden', '');
+    btn.classList.remove('open');
+  }
+
   // Mobile toggle
   btn?.addEventListener('click', () => {
     const expanded = btn.getAttribute('aria-expanded') === 'true';
     btn.setAttribute('aria-expanded', String(!expanded));
     nav?.toggleAttribute('hidden');
     btn.classList.toggle('open');
+  });
+
+  // Close on nav-link selection (but NOT on the theme-toggle row)
+  nav?.querySelectorAll<HTMLAnchorElement>('.mobile-nav-link').forEach(link => {
+    link.addEventListener('click', closeMobileNav);
+  });
+
+  // Make the whole theme row clickable — forwards to the inner toggle button.
+  // (Wrapper is a div + role=button because nesting a real <button> in another
+  // <button> is invalid HTML — the browser collapses the outer one.)
+  const themeRow = document.getElementById('mobile-nav-theme');
+  function triggerThemeToggle(e: Event) {
+    const inner = themeRow?.querySelector<HTMLButtonElement>('.theme-toggle-btn');
+    if (!inner) return;
+    if (e.target instanceof Node && inner.contains(e.target)) return; // inner button handles its own click
+    inner.click();
+  }
+  themeRow?.addEventListener('click', triggerThemeToggle);
+  themeRow?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      triggerThemeToggle(e);
+    }
   });
 
   // Scroll shadow
@@ -211,7 +278,20 @@ function isActive(href: string): boolean {
     gap: var(--space-3);
     padding: var(--space-3);
     margin-top: var(--space-2);
+    border: none;
     border-top: 1px solid var(--color-border);
+    border-radius: 0;
+    background: transparent;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    color: inherit;
+    font: inherit;
+    transition: background 150ms ease;
+  }
+
+  .mobile-nav-theme:hover {
+    background: rgba(218, 19, 19, 0.06);
   }
 
   .mobile-nav-theme-label {
@@ -221,14 +301,30 @@ function isActive(href: string): boolean {
     color: var(--color-text-faint);
   }
 
+  /* Desktop header controls (lang switcher + theme toggle) */
+  .desktop-header-controls {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  /* Mobile language switcher row */
+  .mobile-nav-lang {
+    display: flex;
+    align-items: center;
+    padding: var(--space-3);
+    border-top: 1px solid var(--color-border);
+    margin-top: var(--space-2);
+  }
+
   /* Responsive */
   @media (min-width: 901px) {
     .mobile-nav { display: none !important; }
   }
 
   @media (max-width: 900px) {
-    .desktop-nav         { display: none; }
-    .desktop-theme-toggle { display: none; }
+    .desktop-nav             { display: none; }
+    .desktop-header-controls { display: none; }
     .mobile-menu-btn { display: flex; align-items: center; }
   }
 </style>

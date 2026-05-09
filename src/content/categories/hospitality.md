@@ -1,3 +1,5 @@
 ---
-title: "Hospitality"
+title:
+  en: Hospitality
+  hu: Vendéglátás
 ---

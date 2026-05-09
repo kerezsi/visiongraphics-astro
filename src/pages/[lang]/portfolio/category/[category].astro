@@ -2,18 +2,20 @@
 // src/pages/portfolio/category/[category].astro
 // Pre-built category pages for SEO
 
-import Page from '../../../layouts/Page.astro';
-import SectionBanner from '../../../components/ui/SectionBanner.astro';
+import Page from '../../../../layouts/Page.astro';
+import SectionBanner from '../../../../components/ui/SectionBanner.astro';
 import { getCollection, getEntry } from 'astro:content';
-import { thumbUrl } from '../../../lib/image-url';
+import { thumbUrl } from '../../../../lib/image-url';
+import { localizedPaths, type Locale } from '../../../../lib/i18n';
 
 export async function getStaticPaths() {
   const allProjects = await getCollection('projects', ({ data }) => data.published);
   const categoryIds = [...new Set(allProjects.flatMap(p => p.data.categories.map(c => c.id)))];
-  return categoryIds.map(categoryId => ({ params: { category: categoryId } }));
+  return localizedPaths(categoryIds, categoryId => ({ category: categoryId }));
 }
 
-const { category } = Astro.params;
+const { lang, category } = Astro.params as { lang: Locale; [k: string]: string | undefined };
+Astro.locals.lang = lang;
 const allProjects = await getCollection('projects', ({ data }) => data.published);
 const allCategories = await getCollection('categories');
 const catMap = new Map(allCategories.map(c => [c.id, c.data.title]));

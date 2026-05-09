@@ -1,3 +1,5 @@
 ---
-title: "Industrial"
+title:
+  en: Industrial
+  hu: Ipari
 ---

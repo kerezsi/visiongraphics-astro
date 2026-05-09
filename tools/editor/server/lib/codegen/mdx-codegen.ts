@@ -52,7 +52,32 @@ function toYaml(meta: Record<string, unknown>): string {
         lines.push(`${key}: ${JSON.stringify(value)}`);
       }
     } else if (typeof value === 'object') {
-      lines.push(`${key}: ${JSON.stringify(value)}`);
+      // Localized fields (`{ en: "...", hu: "..." }`) and other small objects
+      // serialize to block-style YAML for readability:
+      //   title:
+      //     en: Hotel Lycium
+      //     hu: Lycium Hotel
+      // Falls back to flow-style JSON for objects with non-string values.
+      const entries = Object.entries(value as Record<string, unknown>);
+      const allScalar = entries.every(([, v]) =>
+        v === null ||
+        typeof v === 'string' ||
+        typeof v === 'number' ||
+        typeof v === 'boolean'
+      );
+      if (allScalar && entries.length > 0) {
+        lines.push(`${key}:`);
+        for (const [k, v] of entries) {
+          if (v === null || v === undefined) continue;
+          if (typeof v === 'string') {
+            lines.push(`  ${k}: ${yamlScalar(v)}`);
+          } else {
+            lines.push(`  ${k}: ${v}`);
+          }
+        }
+      } else {
+        lines.push(`${key}: ${JSON.stringify(value)}`);
+      }
     }
   }
 

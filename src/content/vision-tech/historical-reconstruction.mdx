@@ -1,6 +1,10 @@
 ---
-title: Historical Reconstruction
-description: Digital recreations of demolished or heavily altered buildings and urban areas, built from archival sources — historical plans, photographs, engravings, and archaeological data. Rendered in V-Ray with period-appropriate materials and lighting.
+title:
+  en: "Historical Reconstruction"
+  hu: "Történeti rekonstrukció"
+description:
+  en: "Digital recreations of demolished or heavily altered buildings and urban areas, built from archival sources — historical plans, photographs, engravings, and archaeological data. Rendered in V-Ray with period-appropriate materials and lighting."
+  hu: "Lebontott vagy jelentősen átalakított épületek és városrészek digitális újraalkotása levéltári forrásokból — történeti tervek, fotók, metszetek és régészeti adatok. V-Rayben renderelve, a korszakhoz illő anyagokkal és világítással."
 image: /_img/vision-tech/historical-reconstruction.jpg
 technique: Digital
 cost: €€€
@@ -21,6 +25,7 @@ relatedFeatures:
 published: true
 ---
 
+<Lang code="en">
 Historical reconstruction builds a 3D model of a building or urban context as it existed at a specific point in the past — before demolition, alteration, or gradual deterioration changed it. The result is a rendered image, animation, or interactive experience that puts viewers inside a space that no longer exists in its original form.
 
 The technique serves renovation projects, heritage presentations, museum installations, and planning submissions for sites in historically sensitive areas. For renovation architects, showing what a building looked like before successive modifications is often as useful as showing what the design will be.
@@ -28,16 +33,28 @@ The technique serves renovation projects, heritage presentations, museum install
 ## What reconstruction is built from
 
 Historical reconstruction is evidence-based work. The quality and completeness of the output is directly proportional to the quality and completeness of the source material.
+</Lang>
+
+<Lang code="hu">
+A történeti rekonstrukció egy épület vagy városi környezet 3D-modelljét építi fel úgy, ahogyan a múlt egy adott pillanatában létezett — még a bontás, átalakítás vagy fokozatos pusztulás megváltoztatta volna. Az eredmény egy renderelt kép, animáció vagy interaktív élmény, amely olyan térbe helyezi a nézőt, amely eredeti formájában már nem létezik.
+
+A technika felújítási projekteket, örökségvédelmi prezentációkat, múzeumi installációkat és történeti szempontból érzékeny területek engedélyezési beadványait szolgálja. Felújító építészek számára gyakran ugyanolyan hasznos megmutatni, hogyan nézett ki egy épület az egymást követő módosítások előtt, mint azt, milyen lesz a terv.
+
+## Miből épül a rekonstrukció
+
+A történeti rekonstrukció bizonyítékalapú munka. A kimenet minősége és teljessége egyenes arányban áll a forrásanyag minőségével és teljességével.
+</Lang>
 
 <SpecTable rows={[
-  { label: "Primary sources", value: "Historical architectural drawings and plans, cadastral records, official permits with elevations, building regulations drawings. These are the most reliable — dimensionally accurate and formally documented." },
-  { label: "Visual evidence", value: "Period photographs, glass plate negatives, postcards, paintings, engravings. These provide material character, detail, and often capture elements not shown in plans." },
-  { label: "Written descriptions", value: "Contemporary accounts, architectural journals, travel diaries, inspection records. Useful for materials, colours, condition, and elements that weren't photographed." },
-  { label: "Comparative typology", value: "When direct documentation is incomplete, similar buildings from the same period, region, and building type fill the gaps. Documented carefully as interpretation, not record." },
-  { label: "Physical remains", value: "Where the building still partly exists — fabric analysis, probe holes, paint layer stratigraphy, stonework analysis — provides data unavailable from documents alone." },
-  { label: "Archaeological data", value: "For earlier periods, excavation records, foundation geometry, and material finds establish what above-ground reconstruction would be speculation without them." },
+  { label: { en: "Primary sources",       hu: "Elsődleges források" },     value: { en: "Historical architectural drawings and plans, cadastral records, official permits with elevations, building regulations drawings. These are the most reliable — dimensionally accurate and formally documented.",          hu: "Történeti építészeti rajzok és tervek, telekkönyvi nyilvántartások, hivatalos engedélyek homlokzatokkal, építésügyi szabályozási rajzok. Ezek a legmegbízhatóbbak — méretpontosak és formálisan dokumentáltak." } },
+  { label: { en: "Visual evidence",        hu: "Vizuális bizonyíték" },      value: { en: "Period photographs, glass plate negatives, postcards, paintings, engravings. These provide material character, detail, and often capture elements not shown in plans.",                                                hu: "Korabeli fotók, üveglemez-negatívok, képeslapok, festmények, metszetek. Ezek anyagi karaktert, részletet adnak, és gyakran rögzítenek olyan elemeket, amelyeket a tervek nem mutatnak." } },
+  { label: { en: "Written descriptions",   hu: "Írásos leírások" },         value: { en: "Contemporary accounts, architectural journals, travel diaries, inspection records. Useful for materials, colours, condition, and elements that weren't photographed.",                                       hu: "Korabeli beszámolók, építészeti folyóiratok, útinaplók, ellenőrzési jegyzőkönyvek. Hasznosak az anyagokhoz, színekhez, állapothoz és olyan elemekhez, amelyeket nem fotóztak." } },
+  { label: { en: "Comparative typology",   hu: "Összehasonlító tipológia" }, value: { en: "When direct documentation is incomplete, similar buildings from the same period, region, and building type fill the gaps. Documented carefully as interpretation, not record.",                              hu: "Amikor a közvetlen dokumentáció hiányos, ugyanabból a korszakból, régióból és épülettípusból származó hasonló épületek töltik ki a hézagokat. Gondosan értelmezésként, nem rekordként dokumentálva." } },
+  { label: { en: "Physical remains",        hu: "Fizikai maradványok" },      value: { en: "Where the building still partly exists — fabric analysis, probe holes, paint layer stratigraphy, stonework analysis — provides data unavailable from documents alone.",                                  hu: "Ha az épület részben még áll — szerkezeti elemzés, próbafurat, festékréteg-rétegtan, kőfaragás-elemzés — olyan adatot ad, ami pusztán dokumentumokból nem hozzáférhető." } },
+  { label: { en: "Archaeological data",     hu: "Régészeti adat" },           value: { en: "For earlier periods, excavation records, foundation geometry, and material finds establish what above-ground reconstruction would be speculation without them.",                                              hu: "Korábbi korszakoknál ásatási nyilvántartások, alapozási geometria és anyagleletek határozzák meg, hogy nélkülük a felszíni rekonstrukció spekuláció lenne." } },
 ]} />
 
+<Lang code="en">
 ## Certainty levels
 
 Reconstruction involves interpretation as well as documentation. Evidence is rarely complete enough to reconstruct every element with equal confidence. We distinguish between:
@@ -53,19 +70,39 @@ Clients and institutions requiring transparency — museum installations, academ
 The 3D model is built in 3ds Max from primary source drawings wherever they exist. Historical plan sets are often fragmentary — sections missing, details absent, floor plans present but elevations lost — and the reconstruction workflow involves identifying the gaps before modeling begins, not discovering them during it.
 
 Materials and textures are assembled from period references. For 19th and early 20th century Central European architecture, which forms the majority of our reconstruction work, material evidence is typically available in surviving buildings of the same type, period, and region. Render lighting is calibrated to the historical period — daylight character, absence of electric light for pre-electrification reconstructions, period street furniture and context.
+</Lang>
+
+<Lang code="hu">
+## Bizonyossági szintek
+
+A rekonstrukció dokumentáció és értelmezés kombinációja. A bizonyíték ritkán elég teljes ahhoz, hogy minden elemet azonos magabiztossággal rekonstruáljunk. Különbséget teszünk:
+
+- **Dokumentált** — közvetlenül elsődleges források támasztják alá. Tervek vannak, fotók erősítik meg a részletet, anyagok rögzítve.
+- **Következtetett** — ésszerű rekonstrukció tipológiai párhuzam, megőrzött töredék vagy közvetett bizonyíték alapján. Ítélőképesség szükséges és jelölt.
+- **Spekulatív** — a kép teljességéhez szükséges rekonstrukció a korszak konvenciói és a rendelkezésre álló bizonyíték alapján. A projektdokumentációban így jelölve.
+
+Az átláthatóságot igénylő ügyfelek és intézmények — múzeumi installációk, tudományos kontextusok, engedélyezési beadványok — forrásannotációs dokumentumot is kapnak a látványtervek mellé.
+
+## A 3D-modell felépítése
+
+A 3D-modell 3ds Maxben épül elsődleges forrásrajzokból, ahol ilyenek léteznek. A történeti tervhalmazok gyakran töredékesek — metszetek hiányoznak, részletek nincsenek, alaprajz van, de homlokzatok elvesztek —, és a rekonstrukciós munkafolyamat magában foglalja a hézagok azonosítását a modellezés megkezdése előtt, nem közben való felfedezését.
+
+Az anyagokat és textúrákat korszakreferenciákból állítjuk össze. A 19. és kora 20. századi közép-európai építészetnél, amely a rekonstrukciós munkánk nagy részét adja, az anyagi bizonyíték jellemzően elérhető ugyanazon típusú, korszakú és régió szerinti megőrzött épületekben. A render-világítást a történeti korszakhoz igazítjuk — a fény karaktere, a villany hiánya az áramosítás előtti rekonstrukcióknál, korszakhoz illő utcabútor és kontextus.
+</Lang>
 
 <ProcessFlow
   steps={[
-    { label: "Source audit", sub: "identify what exists and what must be inferred" },
-    { label: "Reference assembly", sub: "drawings, photographs, typological parallels" },
-    { label: "3D modeling", sub: "3ds Max, documented vs inferred elements tracked" },
-    { label: "Materials", sub: "period-appropriate textures, V-Ray physically-based" },
-    { label: "Rendering", sub: "V-Ray, daylight calibrated to period and season" },
-    { label: "Annotation", sub: "source map for documented vs speculative elements" },
+    { label: { en: "Source audit",        hu: "Forrás-audit" },          sub: { en: "identify what exists and what must be inferred",         hu: "azonosítani, mi áll rendelkezésre és mit kell következtetni" } },
+    { label: { en: "Reference assembly",  hu: "Referenciagyűjtés" },     sub: { en: "drawings, photographs, typological parallels",            hu: "rajzok, fotók, tipológiai párhuzamok" } },
+    { label: { en: "3D modeling",          hu: "3D-modellezés" },         sub: { en: "3ds Max, documented vs inferred elements tracked",        hu: "3ds Max, dokumentált vs. következtetett elemek nyomon követve" } },
+    { label: { en: "Materials",             hu: "Anyagok" },                sub: { en: "period-appropriate textures, V-Ray physically-based",    hu: "korszakhoz illő textúrák, fizikai alapú V-Ray" } },
+    { label: { en: "Rendering",             hu: "Render" },                  sub: { en: "V-Ray, daylight calibrated to period and season",         hu: "V-Ray, korszakhoz és évszakhoz kalibrált napfény" } },
+    { label: { en: "Annotation",            hu: "Annotáció" },               sub: { en: "source map for documented vs speculative elements",       hu: "forrástérkép a dokumentált vs. spekulatív elemekhez" } },
   ]}
-  title="Reconstruction workflow"
+  title={{ en: "Reconstruction workflow", hu: "Rekonstrukciós folyamat" }}
 />
 
+<Lang code="en">
 ## Outputs
 
 **Still images** — rendered views of the reconstructed building in context. Exterior elevations, courtyard views, interior spaces where evidence supports them.
@@ -79,15 +116,33 @@ Materials and textures are assembled from period references. For 19th and early 
 **Overlay sequences** — the reconstruction faded over a current photograph of the site, showing what stood where. Useful for public communication and planning contexts.
 
 ## What we need from you
+</Lang>
+
+<Lang code="hu">
+## Kimenetek
+
+**Állóképek** — a rekonstruált épület renderelt nézetei kontextusban. Külső homlokzatok, udvari nézetek, belső terek, ahol a bizonyíték alátámasztja.
+
+**Előtte-utána összehasonlítások** — a meglévő állapot (jelenlegi fotó vagy jelenlegi render) a történeti rekonstrukció mellett. Különösen hasznos felújítási projektekhez és örökségvédelmi értékeléshez.
+
+**Animációk** — kameramozgás a rekonstruált épületben vagy körülötte. Múzeumi installációkhoz, dokumentumfilmekhez és nyilvános kiállításokhoz használjuk.
+
+**360°-os túrák** — bejárható panorámák a rekonstruált belsőről vagy udvarról. Hasznos elmélyülő kiállítási installációkhoz.
+
+**Átfedéses sorozatok** — a rekonstrukció a telek jelenlegi fotójára áttetszően ráhelyezve, megmutatva, mi állt hol. Hasznos a nyilvános kommunikáció és tervezési kontextusok számára.
+
+## Mire van szükségünk Öntől
+</Lang>
 
 <SpecTable rows={[
-  { label: "Source material", value: "Whatever exists — plans, photographs, records. A source audit early in the project determines what can be reconstructed at what certainty level and what gaps need to be filled by interpretation." },
-  { label: "Period and scope", value: "Which date or period the reconstruction targets. If the building evolved across periods, which phase is primary. Whether context (street, neighbourhood) should be included or just the building itself." },
-  { label: "Output format", value: "Still images, animation, 360° tour, comparative overlay. Format affects how much of the interior needs to be modeled." },
-  { label: "Certainty documentation", value: "Whether source annotation is required. For museum and institutional contexts, the documentation of what is evidence and what is interpretation is as important as the images." },
-  { label: "Expert consultation", value: "For specialist periods — medieval, Renaissance, Baroque — historical consultation is often needed. We work with the project's own historians or can recommend appropriate specialists." },
+  { label: { en: "Source material",       hu: "Forrásanyag" },           value: { en: "Whatever exists — plans, photographs, records. A source audit early in the project determines what can be reconstructed at what certainty level and what gaps need to be filled by interpretation.",                                                       hu: "Bármi, ami létezik — tervek, fotók, nyilvántartások. A projekt korai szakaszában készített forrás-audit határozza meg, mi rekonstruálható milyen bizonyossági szinten, és mely hézagokat kell értelmezéssel kitölteni." } },
+  { label: { en: "Period and scope",      hu: "Korszak és terjedelem" }, value: { en: "Which date or period the reconstruction targets. If the building evolved across periods, which phase is primary. Whether context (street, neighbourhood) should be included or just the building itself.",                                              hu: "Melyik dátumra vagy korszakra céloz a rekonstrukció. Ha az épület több korszakon át fejlődött, melyik fázis az elsődleges. Tartalmazza-e a kontextust (utca, környék), vagy csak magát az épületet." } },
+  { label: { en: "Output format",          hu: "Kimeneti formátum" },     value: { en: "Still images, animation, 360° tour, comparative overlay. Format affects how much of the interior needs to be modeled.",                                                                                                                                hu: "Állóképek, animáció, 360°-os túra, összehasonlító átfedés. A formátum befolyásolja, mennyit kell a belsőből modellezni." } },
+  { label: { en: "Certainty documentation", hu: "Bizonyosság-dokumentáció" }, value: { en: "Whether source annotation is required. For museum and institutional contexts, the documentation of what is evidence and what is interpretation is as important as the images.",                                                                  hu: "Szükséges-e forrás-annotáció. Múzeumi és intézményi kontextusokban a bizonyíték és értelmezés dokumentálása ugyanolyan fontos, mint a képek." } },
+  { label: { en: "Expert consultation",    hu: "Szakértői konzultáció" }, value: { en: "For specialist periods — medieval, Renaissance, Baroque — historical consultation is often needed. We work with the project's own historians or can recommend appropriate specialists.",                                                                  hu: "Speciális korszakoknál — középkor, reneszánsz, barokk — gyakran szükséges történeti konzultáció. A projekt saját történészeivel dolgozunk, vagy megfelelő szakértőket ajánlunk." } },
 ]} />
 
+<Lang code="en">
 ## Related techniques
 
 For showing the proposed future of a historically significant building: [Photorealistic Rendering](/vision-tech/photorealistic-rendering/)
@@ -95,3 +150,14 @@ For showing the proposed future of a historically significant building: [Photore
 For before/after comparisons integrating photographs: [Photo Integration](/vision-tech/photo-integration/)
 
 For immersive walkthrough of a reconstructed space: [Virtual Reality (VR) Experience](/vision-tech/virtual-reality-vr-experience/)
+</Lang>
+
+<Lang code="hu">
+## Kapcsolódó technikák
+
+Történeti jelentőségű épület tervezett jövőjének bemutatásához: [Fotórealisztikus renderelés](/vision-tech/photorealistic-rendering/)
+
+Fotókat integráló előtte-utána összehasonlításokhoz: [Fotóintegráció](/vision-tech/photo-integration/)
+
+Egy rekonstruált tér elmélyülő bejárásához: [Virtuális valóság (VR) élmény](/vision-tech/virtual-reality-vr-experience/)
+</Lang>

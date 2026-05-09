@@ -1,3 +1,5 @@
 ---
-title: "Commercial"
+title:
+  en: Commercial
+  hu: Kereskedelmi
 ---

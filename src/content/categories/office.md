@@ -1,3 +1,5 @@
 ---
-title: "Office"
+title:
+  en: Office
+  hu: Iroda
 ---

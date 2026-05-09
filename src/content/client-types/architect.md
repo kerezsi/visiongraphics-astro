@@ -1,3 +1,5 @@
 ---
-title: "Architect"
+title:
+  en: Architect
+  hu: Építész
 ---

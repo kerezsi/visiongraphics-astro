@@ -1,8 +1,10 @@
 ---
-title: AI Animation
-description: |
-  Cinematic video generated from architectural still images — no 3D model required. Camera moves, atmospheric transitions, and dynamic lighting effects produced from existing renders or photographs. Available via the AI platform at ai.visiongraphics.eu.
-  
+title:
+  en: "AI Animation"
+  hu: "AI-animáció"
+description:
+  en: "Cinematic video generated from architectural still images — no 3D model required. Camera moves, atmospheric transitions, and dynamic lighting effects produced from existing renders or photographs. Available via the AI platform at ai.visiongraphics.eu."
+  hu: "Filmszerű videó építészeti állóképekből — 3D-modell nélkül. Kameramozgás, atmoszférikus átmenetek és dinamikus fényhatások meglévő renderekből vagy fotókból. Elérhető az ai.visiongraphics.eu AI-platformon."
 image: /_img/vision-tech/ai-animation/2026-04-06-19-16-48-955.jpg
 technique: AI-Only
 cost: €€
@@ -21,6 +23,7 @@ relatedFeatures:
 published: true
 ---
 
+<Lang code="en">
 AI animation generates motion from still images. A rendered exterior view, a photorealistic interior, an existing architectural photograph — any of these can be turned into a short cinematic video with camera movement, atmospheric effects, and dynamic lighting, without building a 3D scene or rendering individual frames.
 
 The technique is available via the dedicated AI platform: ai.visiongraphics.eu
@@ -40,20 +43,47 @@ Lighting transitions — from daylight to dusk, from overcast to golden hour, or
 AI-generated animation produces convincing motion for atmospheric and marketing content. It doesn't produce geometrically precise camera paths, and it doesn't guarantee that architectural elements remain exactly static while the camera moves — minor wavering in building edges can occur, depending on the image and the movement type.
 
 For animation that requires geometric precision — construction sequences, technical camera paths, exact spatial measurement — the 3D Animation (traditional V-Ray pipeline) is the right format.
+</Lang>
+
+<Lang code="hu">
+Az AI-animáció állóképekből generál mozgást. Egy renderelt külső nézet, egy fotórealisztikus belső, egy meglévő építészeti fotó — bármelyik átalakítható rövid, filmszerű videóvá kameramozgással, atmoszférikus effektekkel és dinamikus világítással, anélkül, hogy 3D-jelenetet építenénk vagy egyenként rendereljük a képkockákat.
+
+A technika a dedikált AI-platformon érhető el: ai.visiongraphics.eu
+
+## Mit ad
+
+A kimenet egy videóklip, amelyben a kép életre kel. Hogy mi mozog, az attól függ, mi van értelme a képen:
+
+Kameramozgás — a virtuális kamera előre halad a jeleneten, oldalra siklik, felemelkedik vagy visszahúzódik. Az AI értelmezi a kép térbeli mélységét, és hihető parallaxist generál. A különböző távolságokban lévő tárgyak eltérő sebességgel mozognak, így háromdimenziós tér benyomását kelti — 3D-modell nélkül is.
+
+Atmoszférikus effektek — fák mozognak, felhők siklanak, víz fodrozódik, fény változik. Az AI olyan mozgást generál a természeti elemekben, amely összhangban van a kép fényviszonyaival és hangulatával.
+
+Fényátmenetek — nappalból alkonyatba, borúsból aranyórába, vagy egy adott légköri állapoton belül. Az átmenetet úgy generáljuk, hogy összhangban legyen a kép meglévő fényirányával és minőségével.
+
+## Mit nem csinál
+
+Az AI által generált animáció meggyőző mozgást ad atmoszférikus és marketingtartalomhoz. Nem ad geometriailag pontos kameraútvonalat, és nem garantálja, hogy az építészeti elemek pontosan statikusak maradjanak a kamera mozgása közben — az épületélek finom rezgése előfordulhat a képtől és a mozgástípustól függően.
+
+A geometriai precizitást igénylő animációkhoz — építési szekvenciák, műszaki kameraútvonalak, pontos térbeli mérés — a 3D-animáció (hagyományos V-Ray pipeline) a megfelelő formátum.
+</Lang>
 
 <CompareTable
-headers={["AI Animation", "3D Animation (V-Ray)"]}
-rows={[
-{ label: "Input required", values: ["Still image — existing render or photograph", "3D model at full render quality"] },
-{ label: "3D model needed", values: ["No", "Yes"] },
-{ label: "Motion type", values: ["Camera drift, atmospheric, parallax, lighting shift", "Precise camera path, construction phasing, exact spatial movement"] },
-{ label: "Geometric accuracy", values: ["High confidence for atmospheric content; minor edge instability possible", "Geometrically exact per frame"] },
-{ label: "Production time", values: ["Hours to one day", "Days to weeks depending on length and complexity"] },
-{ label: "Best for", values: ["Marketing content, social media, quick campaign material, re-animating existing renders", "Technical sequences, construction phasing, design review presentations"] },
-]}
-caption="AI animation vs. traditional V-Ray pipeline"
+  headers={[
+    { en: "AI Animation",          hu: "AI-animáció" },
+    { en: "3D Animation (V-Ray)",  hu: "3D-animáció (V-Ray)" },
+  ]}
+  rows={[
+    { label: { en: "Input required",      hu: "Bemenet" },              values: [{ en: "Still image — existing render or photograph",                                                              hu: "Állókép — meglévő render vagy fotó" },                                                                                      { en: "3D model at full render quality",                                                  hu: "3D-modell teljes render-minőségben" }] },
+    { label: { en: "3D model needed",     hu: "3D-modell szükséges-e" }, values: [{ en: "No",                                                                                                       hu: "Nem" },                                                                                                                       { en: "Yes",                                                                                hu: "Igen" }] },
+    { label: { en: "Motion type",          hu: "Mozgástípus" },           values: [{ en: "Camera drift, atmospheric, parallax, lighting shift",                                                       hu: "Kamera-elcsúszás, atmoszférikus, parallaxis, fényváltás" },                                                                  { en: "Precise camera path, construction phasing, exact spatial movement",                  hu: "Pontos kameraútvonal, építési ütemezés, pontos térbeli mozgás" }] },
+    { label: { en: "Geometric accuracy",  hu: "Geometriai pontosság" },   values: [{ en: "High confidence for atmospheric content; minor edge instability possible",                                hu: "Magas megbízhatóság atmoszférikus tartalomhoz; finom élinstabilitás előfordulhat" },                                          { en: "Geometrically exact per frame",                                                       hu: "Geometriailag pontos képkockánként" }] },
+    { label: { en: "Production time",     hu: "Készítési idő" },           values: [{ en: "Hours to one day",                                                                                          hu: "Órák egy napig" },                                                                                                            { en: "Days to weeks depending on length and complexity",                                  hu: "Napok-hetek a hossztól és komplexitástól függően" }] },
+    { label: { en: "Best for",             hu: "Mire a legjobb" },          values: [{ en: "Marketing content, social media, quick campaign material, re-animating existing renders",                  hu: "Marketingtartalom, közösségi média, gyors kampányanyag, meglévő renderek újraanimálása" },                                    { en: "Technical sequences, construction phasing, design review presentations",            hu: "Műszaki szekvenciák, építési ütemezés, tervszemle-prezentációk" }] },
+  ]}
+  caption={{ en: "AI animation vs. traditional V-Ray pipeline", hu: "AI-animáció vs. hagyományos V-Ray pipeline" }}
 />
 
+<Lang code="en">
 ## Input formats accepted
 
 - Photorealistic renders from 3ds Max, V-Ray, Lumion, Twinmotion, Enscape
@@ -80,3 +110,33 @@ For AI-generated motion combined with traditional V-Ray rendering: 3D Animation
 For full video production with real footage, narration, and post-production: Video Production
 
 For AI-enhanced variations from an existing render: AI Render Upgrade
+</Lang>
+
+<Lang code="hu">
+## Elfogadott bemeneti formátumok
+
+- Fotórealisztikus renderek 3ds Maxből, V-Rayből, Lumionból, Twinmotionból, Enscape-ből
+- Közvetlen exportok ArchiCAD-ből, Revitből vagy SketchUpből — előzetes retusálás nélkül
+- Meglévő építészeti fotók
+- AI-generált képek
+
+A platform koncepció-szintű képanyagot és csiszolt végleges renderet egyaránt elfogad. Az AI nem igényel magas minőségű bemenetet a használható kimenethez, de a jobb bemeneti képek jobb eredményt adnak.
+
+## Kimeneti formátumok
+
+A videókat fekvő (16:9), álló (9:16) vagy négyzetes (1:1) formátumban adjuk át, a felhasználási helytől függően. A minimális hossz 30 másodperc kliponként. Több tájolásban készült változat (pl. egy 16:9-es master plusz egy 9:16-os közösségimédia-vágat) kiegészítőként rendelhető.
+
+## Hogyan rendelheti meg
+
+Az AI-animáció közvetlenül elérhető az ai.visiongraphics.eu platformon. Töltse fel a meglévő képet, adja meg a mozgás típusát és a hangulatot, és teljes látványterv-brief nélkül megkapja a generált videót.
+
+Olyan projekteknél, ahol az AI-animáció egy szélesebb látványterv-csomag része — új renderek, 360°-os túrák vagy videóprodukció mellett —, a fő projekt részeként koordinálható.
+
+## Kapcsolódó technikák
+
+AI által generált mozgás hagyományos V-Ray-renderrel kombinálva: 3D-animáció
+
+Teljes videóprodukcióhoz valódi felvétellel, narrációval és utómunkával: Videóprodukció
+
+Meglévő renderből készülő AI-fejlesztett változatokhoz: AI render-fejlesztés
+</Lang>

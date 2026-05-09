@@ -1,11 +1,17 @@
 ---
 // src/pages/articles/index.astro
 
-import Page from '../../layouts/Page.astro';
-import SectionBanner from '../../components/ui/SectionBanner.astro';
+import Page from '../../../layouts/Page.astro';
+import SectionBanner from '../../../components/ui/SectionBanner.astro';
 import { getCollection } from 'astro:content';
-import { thumbUrl } from '../../lib/image-url';
+import { thumbUrl } from '../../../lib/image-url';
+import { staticLocalePaths, type Locale } from '../../../lib/i18n';
 
+export const getStaticPaths = staticLocalePaths;
+
+
+const { lang } = Astro.params as { lang: Locale };
+Astro.locals.lang = lang;
 const allArticles = await getCollection('articles', ({ data }) => data.published);
 const articles = allArticles.sort((a, b) =>
   new Date(b.data.date).getTime() - new Date(a.data.date).getTime()

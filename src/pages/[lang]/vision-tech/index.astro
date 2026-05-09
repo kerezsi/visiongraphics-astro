@@ -1,12 +1,18 @@
 ---
 // src/pages/vision-tech/index.astro
 import { getCollection } from 'astro:content';
-import Page from '../../layouts/Page.astro';
-import SectionBanner from '../../components/ui/SectionBanner.astro';
-import { thumbUrl } from '../../lib/image-url';
+import Page from '../../../layouts/Page.astro';
+import SectionBanner from '../../../components/ui/SectionBanner.astro';
+import { thumbUrl } from '../../../lib/image-url';
+import { staticLocalePaths, localeUrl, tStr, type Locale } from '../../../lib/i18n';
 
+export const getStaticPaths = staticLocalePaths;
+
+
+const { lang } = Astro.params as { lang: Locale };
+Astro.locals.lang = lang;
 const allTech = await getCollection('vision-tech', e => e.data.published !== false);
-const techniques = allTech.sort((a, b) => a.data.title.localeCompare(b.data.title));
+const techniques = allTech.sort((a, b) => tStr(a.data.title, lang).localeCompare(tStr(b.data.title, lang)));
 
 const techniques_vals = [...new Set(techniques.map(t => t.data.technique).filter(Boolean))].sort();
 const costs_vals      = ['€','€€','€€€','€€€€','€€€€€'];
@@ -14,18 +20,105 @@ const model3d_vals    = [...new Set(techniques.map(t => t.data.model3d))].sort()
 const complexity_vals = ['1 - Basic','2 - Intermediate','3 - Advanced','4 - Expert','5 - Cutting-Edge'];
 const reality_vals    = ['Pure Reality','Enhanced Reality','Hybrid Reality-Vision','Conceptual Reality','Pure Vision'];
 const purpose_vals    = [...new Set(techniques.flatMap(t => t.data.purpose))].sort();
+
+const COPY = {
+  en: {
+    metaTitle:        'Technologies | Vision Graphics',
+    metaDescription:  '26 visualization techniques — photorealistic rendering, VR, 360° tours, AI workflows and more.',
+    bannerLabel:      'See Your Ideas',
+    bannerTitle:      'Tech Gets It Done',
+    filtersBtn:       'Filters',
+    showingAll:       (n: number) => `Showing all ${n} techniques`,
+    showingSome:      (v: number, n: number) => `Showing ${v} of ${n} techniques`,
+    reset:            'Reset filters',
+    fTechnique:       'Technique',
+    fCost:            'Cost',
+    fModel3d:         '3D Model',
+    fComplexity:      'Complexity',
+    fReality:         'Reality spectrum',
+    fPurpose:         'Purpose',
+    emptyMsg:         'No techniques match those filters.',
+    toolsLabel:       'Tools We Use',
+    toolsHeading:     'Our Tech Stack',
+    ctaText:          'Not sure which approach fits your project?',
+    talkToUs:         'Talk to Us',
+    toolNotes: {
+      v1:           'Since version 1',
+      years15:      '15+ years',
+      vrRealtime:   'VR & real-time',
+      secondaryMod: 'Secondary modelling',
+      tours360:     '360° tours',
+      aiWorkflows:  'AI workflows',
+      automation:   'Automation',
+      customTools:  'Custom tools',
+      videoPost:    'Video post',
+      hostingCDN:   'Hosting & CDN',
+      thisSite:     'This site',
+    },
+  },
+  hu: {
+    metaTitle:        'Technológiák | Vision Graphics',
+    metaDescription:  '26 látványterv-technika — fotórealisztikus renderelés, VR, 360°-os túrák, AI-munkafolyamatok és még sok más.',
+    bannerLabel:      'Tegye láthatóvá az ötleteit',
+    bannerTitle:      'A technológia elvégzi',
+    filtersBtn:       'Szűrők',
+    showingAll:       (n: number) => `Mind a ${n} technika látható`,
+    showingSome:      (v: number, n: number) => `${v} / ${n} technika látható`,
+    reset:            'Szűrők törlése',
+    fTechnique:       'Technika',
+    fCost:            'Költség',
+    fModel3d:         '3D-modell',
+    fComplexity:      'Összetettség',
+    fReality:         'Valóság-spektrum',
+    fPurpose:         'Cél',
+    emptyMsg:         'Nincs olyan technika, amely ezeknek a szűrőknek megfelel.',
+    toolsLabel:       'Eszközeink',
+    toolsHeading:     'A technológiai paletta',
+    ctaText:          'Nem biztos benne, melyik megközelítés illik a projektjéhez?',
+    talkToUs:         'Beszéljünk',
+    toolNotes: {
+      v1:           'Az 1-es verzió óta',
+      years15:      '15+ év',
+      vrRealtime:   'VR és valós idejű',
+      secondaryMod: 'Másodlagos modellezés',
+      tours360:     '360°-os túrák',
+      aiWorkflows:  'AI-munkafolyamatok',
+      automation:   'Automatizálás',
+      customTools:  'Egyedi eszközök',
+      videoPost:    'Videó-utómunka',
+      hostingCDN:   'Hosting és CDN',
+      thisSite:     'Ez az oldal',
+    },
+  },
+} as const;
+const c = COPY[lang];
+
+const tools = [
+  { name: '3ds Max',         note: c.toolNotes.v1 },
+  { name: 'V-Ray',           note: c.toolNotes.years15 },
+  { name: 'Unreal Engine',   note: c.toolNotes.vrRealtime },
+  { name: 'Blender',         note: c.toolNotes.secondaryMod },
+  { name: 'Pano2VR',         note: c.toolNotes.tours360 },
+  { name: 'ComfyUI',         note: c.toolNotes.aiWorkflows },
+  { name: 'SwarmUI',         note: c.toolNotes.aiWorkflows },
+  { name: 'Python',          note: c.toolNotes.automation },
+  { name: 'MAXScript',       note: c.toolNotes.customTools },
+  { name: 'DaVinci Resolve', note: c.toolNotes.videoPost },
+  { name: 'Cloudflare',      note: c.toolNotes.hostingCDN },
+  { name: 'Astro',           note: c.toolNotes.thisSite },
+];
 ---
 
 <Page
-  title="Technologies | Vision Graphics"
-  description="26 visualization techniques — photorealistic rendering, VR, 360° tours, AI workflows and more."
+  title={c.metaTitle}
+  description={c.metaDescription}
   fullBleed
 >
 
   <SectionBanner
     image="/_img/banners/banner-tech.jpg"
-    label="See Your Ideas"
-    title="Tech Gets It Done"
+    label={c.bannerLabel}
+    title={c.bannerTitle}
     size="page"
     headingLevel="h1"
   />
@@ -34,55 +127,55 @@ const purpose_vals    = [...new Set(techniques.flatMap(t => t.data.purpose))].so
     <div class="container">
       <div class="vt-filters-bar">
         <button id="vt-filter-toggle" class="vt-filter-toggle" aria-expanded="false">
-          Filters
+          {c.filtersBtn}
           <span id="vt-filter-dot" class="vt-filter-dot" hidden></span>
           <svg class="vt-toggle-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true">
             <path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
           </svg>
         </button>
-        <span id="vt-count" class="vt-count-inline">Showing all {techniques.length} techniques</span>
-        <button class="vt-reset" id="vt-reset" hidden>Reset filters</button>
+        <span id="vt-count" class="vt-count-inline" data-tmpl-all={c.showingAll(techniques.length)} data-tmpl-some={lang === 'hu' ? '__V__ / __N__ technika látható' : 'Showing __V__ of __N__ techniques'}>{c.showingAll(techniques.length)}</span>
+        <button class="vt-reset" id="vt-reset" hidden>{c.reset}</button>
       </div>
 
       <div class="vt-filters" id="vt-filters-body" hidden>
 
         <div class="vt-filter-group">
-          <span class="vt-filter-label">Technique</span>
+          <span class="vt-filter-label">{c.fTechnique}</span>
           <div class="vt-pills" data-filter="technique">
             {techniques_vals.map(v => <button class="vt-pill" data-val={v}>{v}</button>)}
           </div>
         </div>
 
         <div class="vt-filter-group">
-          <span class="vt-filter-label">Cost</span>
+          <span class="vt-filter-label">{c.fCost}</span>
           <div class="vt-pills" data-filter="cost">
             {costs_vals.map(v => <button class="vt-pill" data-val={v}>{v}</button>)}
           </div>
         </div>
 
         <div class="vt-filter-group">
-          <span class="vt-filter-label">3D Model</span>
+          <span class="vt-filter-label">{c.fModel3d}</span>
           <div class="vt-pills" data-filter="model3d">
             {model3d_vals.map(v => <button class="vt-pill" data-val={v}>{v}</button>)}
           </div>
         </div>
 
         <div class="vt-filter-group">
-          <span class="vt-filter-label">Complexity</span>
+          <span class="vt-filter-label">{c.fComplexity}</span>
           <div class="vt-pills" data-filter="complexity">
             {complexity_vals.map(v => <button class="vt-pill" data-val={v}>{v}</button>)}
           </div>
         </div>
 
         <div class="vt-filter-group">
-          <span class="vt-filter-label">Reality spectrum</span>
+          <span class="vt-filter-label">{c.fReality}</span>
           <div class="vt-pills" data-filter="reality">
             {reality_vals.map(v => <button class="vt-pill" data-val={v}>{v}</button>)}
           </div>
         </div>
 
         <div class="vt-filter-group">
-          <span class="vt-filter-label">Purpose</span>
+          <span class="vt-filter-label">{c.fPurpose}</span>
           <div class="vt-pills" data-filter="purpose">
             {purpose_vals.map(v => <button class="vt-pill" data-val={v}>{v}</button>)}
           </div>
@@ -95,55 +188,52 @@ const purpose_vals    = [...new Set(techniques.flatMap(t => t.data.purpose))].so
   <section class="section vt-grid-section">
     <div class="container">
       <div class="vt-grid" id="vt-grid">
-        {techniques.map(t => (
-          <a
-            href={`/vision-tech/${t.slug}/`}
-            class="vt-card"
-            data-technique={t.data.technique}
-            data-cost={t.data.cost}
-            data-model3d={t.data.model3d}
-            data-complexity={t.data.complexity}
-            data-reality={t.data.reality}
-            data-purpose={t.data.purpose.join('|')}
-          >
-            <div class="vt-card-img">
-              <img src={thumbUrl(t.data.image)} alt={t.data.title} loading="lazy" />
-            </div>
-            <div class="vt-card-body">
-              <div class="vt-card-meta">
-                {t.data.technique && <span class="vt-badge">{t.data.technique}</span>}
-                <span class="vt-cost">{t.data.cost}</span>
+        {techniques.map(t => {
+          const titleStr = tStr(t.data.title, lang);
+          const descStr  = tStr(t.data.description, lang);
+          return (
+            <a
+              href={localeUrl(`/vision-tech/${t.slug}/`, lang)}
+              class="vt-card"
+              data-technique={t.data.technique}
+              data-cost={t.data.cost}
+              data-model3d={t.data.model3d}
+              data-complexity={t.data.complexity}
+              data-reality={t.data.reality}
+              data-purpose={t.data.purpose.join('|')}
+            >
+              <div class="vt-card-img">
+                <img src={thumbUrl(t.data.image)} alt={titleStr} loading="lazy" />
               </div>
-              <h3 class="vt-card-title">{t.data.title}</h3>
-              <p class="vt-card-desc">{t.data.description.substring(0, 100)}…</p>
-              <div class="vt-card-tags">
-                <span class="vt-tag-small">{t.data.complexity}</span>
-                <span class="vt-tag-small">{t.data.reality}</span>
+              <div class="vt-card-body">
+                <div class="vt-card-meta">
+                  {t.data.technique && <span class="vt-badge">{t.data.technique}</span>}
+                  <span class="vt-cost">{t.data.cost}</span>
+                </div>
+                <h3 class="vt-card-title">{titleStr}</h3>
+                <p class="vt-card-desc">{descStr.substring(0, 100)}…</p>
+                <div class="vt-card-tags">
+                  <span class="vt-tag-small">{t.data.complexity}</span>
+                  <span class="vt-tag-small">{t.data.reality}</span>
+                </div>
               </div>
-            </div>
-          </a>
-        ))}
+            </a>
+          );
+        })}
       </div>
       <div class="vt-empty" id="vt-empty" hidden>
-        <p>No techniques match those filters.</p>
-        <button class="btn btn-secondary" id="vt-reset-2">Reset filters</button>
+        <p>{c.emptyMsg}</p>
+        <button class="btn btn-secondary" id="vt-reset-2">{c.reset}</button>
       </div>
     </div>
   </section>
 
   <section class="section vt-tools-section">
     <div class="container">
-      <p class="section-label">Tools We Use</p>
-      <h2 class="display-md">Our Tech Stack</h2>
+      <p class="section-label">{c.toolsLabel}</p>
+      <h2 class="display-md">{c.toolsHeading}</h2>
       <div class="vt-tools-grid">
-        {[
-          {name:'3ds Max',note:'Since version 1'},{name:'V-Ray',note:'15+ years'},
-          {name:'Unreal Engine',note:'VR & real-time'},{name:'Blender',note:'Secondary modelling'},
-          {name:'Pano2VR',note:'360\u00b0 tours'},{name:'ComfyUI',note:'AI workflows'},
-          {name:'SwarmUI',note:'AI workflows'},{name:'Python',note:'Automation'},
-          {name:'MAXScript',note:'Custom tools'},{name:'DaVinci Resolve',note:'Video post'},
-          {name:'Cloudflare',note:'Hosting & CDN'},{name:'Astro',note:'This site'},
-        ].map(tool => (
+        {tools.map(tool => (
           <div class="vt-tool">
             <span class="vt-tool-name">{tool.name}</span>
             <span class="vt-tool-note">{tool.note}</span>
@@ -155,12 +245,13 @@ const purpose_vals    = [...new Set(techniques.flatMap(t => t.data.purpose))].so
 
   <section class="section-sm vt-cta">
     <div class="container vt-cta-inner">
-      <p class="vt-cta-text">Not sure which approach fits your project?</p>
-      <a href="/contact/" class="btn btn-primary">Talk to Us</a>
+      <p class="vt-cta-text">{c.ctaText}</p>
+      <a href={localeUrl('/contact/', lang)} class="btn btn-primary">{c.talkToUs}</a>
     </div>
   </section>
 
 </Page>
+
 
 <script>
   const grid       = document.getElementById('vt-grid')!;
@@ -193,9 +284,13 @@ const purpose_vals    = [...new Set(techniques.flatMap(t => t.data.purpose))].so
       if (show) visible++;
     });
     const hasFilter = Object.keys(active).length > 0;
+    // Templates are server-rendered into data attributes so this script stays
+    // locale-agnostic. `__V__`/`__N__` are placeholders for visible/total counts.
+    const allTmpl  = countEl.dataset.tmplAll  || `Showing all ${total} techniques`;
+    const someTmpl = countEl.dataset.tmplSome || 'Showing __V__ of __N__ techniques';
     countEl.textContent = hasFilter
-      ? `Showing ${visible} of ${total} techniques`
-      : `Showing all ${total} techniques`;
+      ? someTmpl.replace('__V__', String(visible)).replace('__N__', String(total))
+      : allTmpl;
     dotEl.hidden = !hasFilter;
     empty.hidden = visible > 0;
     resetBtns.forEach(b => { if (b) b.hidden = !hasFilter; });

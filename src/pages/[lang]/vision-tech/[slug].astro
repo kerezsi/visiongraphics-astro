@@ -1,38 +1,43 @@
 ---
 // src/pages/vision-tech/[slug].astro
 import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
-import Page from '../../layouts/Page.astro';
-import SectionBanner from '../../components/ui/SectionBanner.astro';
-import { thumbUrl } from '../../lib/image-url';
-import Tour360 from '../../components/media/Tour360.astro';
-import FilmEmbed from '../../components/media/FilmEmbed.astro';
-import YouTubeEmbed from '../../components/media/YouTubeEmbed.astro';
-import ImageLightbox from '../../components/media/ImageLightbox.tsx';
-import MdxImageCompare from '../../components/mdx/ImageCompare.astro';
-import MdxImageGallery from '../../components/mdx/ImageGallery.astro';
-import MdxSectionBanner from '../../components/mdx/SectionBanner.astro';
-import SingleImage from '../../components/mdx/SingleImage.astro';
-import NotableGrid from '../../components/mdx/NotableGrid.astro';
-import DeliverableGrid from '../../components/mdx/DeliverableGrid.astro';
-import TimelineTable from '../../components/mdx/TimelineTable.astro';
-import PhaseMatrix from '../../components/mdx/PhaseMatrix.astro';
-import ArticleImageCompareMounter from '../../components/media/ArticleImageCompareMounter.tsx';
-import ArticleGalleryMounter from '../../components/media/ArticleGalleryMounter.tsx';
-import ProcessFlow from '../../components/mdx/ProcessFlow.astro';
-import SpecTable from '../../components/mdx/SpecTable.astro';
-import CompareTable from '../../components/mdx/CompareTable.astro';
+import Page from '../../../layouts/Page.astro';
+import SectionBanner from '../../../components/ui/SectionBanner.astro';
+import { thumbUrl } from '../../../lib/image-url';
+import Tour360 from '../../../components/media/Tour360.astro';
+import FilmEmbed from '../../../components/media/FilmEmbed.astro';
+import YouTubeEmbed from '../../../components/media/YouTubeEmbed.astro';
+import ImageLightbox from '../../../components/media/ImageLightbox.tsx';
+import MdxImageCompare from '../../../components/mdx/ImageCompare.astro';
+import MdxImageGallery from '../../../components/mdx/ImageGallery.astro';
+import MdxSectionBanner from '../../../components/mdx/SectionBanner.astro';
+import SingleImage from '../../../components/mdx/SingleImage.astro';
+import NotableGrid from '../../../components/mdx/NotableGrid.astro';
+import DeliverableGrid from '../../../components/mdx/DeliverableGrid.astro';
+import TimelineTable from '../../../components/mdx/TimelineTable.astro';
+import PhaseMatrix from '../../../components/mdx/PhaseMatrix.astro';
+import ArticleImageCompareMounter from '../../../components/media/ArticleImageCompareMounter.tsx';
+import ArticleGalleryMounter from '../../../components/media/ArticleGalleryMounter.tsx';
+import ProcessFlow from '../../../components/mdx/ProcessFlow.astro';
+import SpecTable from '../../../components/mdx/SpecTable.astro';
+import CompareTable from '../../../components/mdx/CompareTable.astro';
+import Lang from '../../../components/i18n/Lang.astro';
+import { localizedPaths, localeUrl, tStr, type Locale } from '../../../lib/i18n';
 
 export async function getStaticPaths() {
   const all = await getCollection('vision-tech', e => e.data.published !== false);
-  return all.map(entry => ({ params: { slug: entry.slug } }));
+  return localizedPaths(all, entry => ({ slug: entry.slug }));
 }
 
-const { slug } = Astro.params;
+const { lang, slug } = Astro.params as { lang: Locale; [k: string]: string | undefined };
+Astro.locals.lang = lang;
 const all = await getCollection('vision-tech');
 const entry = all.find(e => e.slug === slug);
-if (!entry || entry.data.published === false) return Astro.redirect('/vision-tech/');
+if (!entry || entry.data.published === false) return Astro.redirect(localeUrl('/vision-tech/', lang));
 const { data } = entry;
 const { Content } = await entry.render();
+const titleStr       = tStr(data.title, lang);
+const descriptionStr = tStr(data.description, lang);
 
 // Related portfolio projects
 const allProjects = await getCollection('projects', p => p.data.published && !!p.data.coverImage);
@@ -76,63 +81,105 @@ const relatedClientNames = await Promise.all(
   related.map(async p => {
     if (!p.data.client) return undefined;
     const entry = await getEntry('clients', p.data.client.id);
-    return entry?.data.title;
+    return tStr(entry?.data.title, lang) || undefined;
   })
 );
+
+const COPY = {
+  en: {
+    metaSuffix:        '| Vision Graphics Technologies',
+    technique:         'Technique',
+    allTechniques:     '← All Techniques',
+    techLabel:         'The technology:',
+    purpose:           'Purpose:',
+    technicalApproach: 'Technical Approach:',
+    reality:           'Reality:',
+    complexity:        'Complexity:',
+    cost:              'Cost:',
+    model3d:           '3D Model:',
+    discussProject:    'Discuss Your Project',
+    examples:          'Examples',
+    relatedHeading:    'Related projects:',
+    prevAria:          'Previous projects',
+    nextAria:          'Next projects',
+    goToProject:       (i: number) => `Go to project ${i}`,
+    talkToUs:          'Talk to Us',
+  },
+  hu: {
+    metaSuffix:        '| Vision Graphics technológiák',
+    technique:         'Technika',
+    allTechniques:     '← Összes technika',
+    techLabel:         'A technológia:',
+    purpose:           'Cél:',
+    technicalApproach: 'Műszaki megközelítés:',
+    reality:           'Valóság:',
+    complexity:        'Összetettség:',
+    cost:              'Költség:',
+    model3d:           '3D-modell:',
+    discussProject:    'Beszéljük át a projektjét',
+    examples:          'Példák',
+    relatedHeading:    'Kapcsolódó projektek:',
+    prevAria:          'Előző projektek',
+    nextAria:          'Következő projektek',
+    goToProject:       (i: number) => `Ugrás a(z) ${i}. projekthez`,
+    talkToUs:          'Beszéljünk',
+  },
+} as const;
+const c = COPY[lang];
 ---
 
 <Page
-  title={`${data.title} | Vision Graphics Technologies`}
-  description={data.description}
+  title={`${titleStr} ${c.metaSuffix}`}
+  description={descriptionStr}
   fullBleed
 >
 
   <!-- ─── Hero ─────────────────────────────────────────────── -->
   <SectionBanner
     image={data.image}
-    label={data.technique ?? 'Technique'}
-    title={data.title}
+    label={data.technique ?? c.technique}
+    title={titleStr}
     size="page"
     headingLevel="h1"
   />
   <div class="vt-breadcrumb container">
-    <a href="/vision-tech/" class="vt-back">&larr; All Techniques</a>
+    <a href={localeUrl('/vision-tech/', lang)} class="vt-back">{c.allTechniques}</a>
   </div>
 
   <!-- ─── Description + inline fields ─────────────────────── -->
   <section class="section vt-desc-section">
     <div class="container">
-      <p class="vt-tech-label">The technology:</p>
-      <p class="vt-desc-body">{data.description}</p>
+      <p class="vt-tech-label">{c.techLabel}</p>
+      <p class="vt-desc-body">{descriptionStr}</p>
 
       <div class="vt-fields-row">
         <span class="vt-field">
-          <span class="vt-field-label">Purpose:</span>
+          <span class="vt-field-label">{c.purpose}</span>
           <span class="vt-field-val">{data.purpose.join(' | ')}</span>
         </span>
         {data.technique && (
           <span class="vt-field">
-            <span class="vt-field-label">Technical Approach:</span>
+            <span class="vt-field-label">{c.technicalApproach}</span>
             <span class="vt-field-val">{data.technique}</span>
           </span>
         )}
         <span class="vt-field">
-          <span class="vt-field-label">Reality:</span>
+          <span class="vt-field-label">{c.reality}</span>
           <span class="vt-field-val">{data.reality}</span>
         </span>
       </div>
 
       <div class="vt-fields-row">
         <span class="vt-field">
-          <span class="vt-field-label">Complexity:</span>
+          <span class="vt-field-label">{c.complexity}</span>
           <span class="vt-field-val">{data.complexity}</span>
         </span>
         <span class="vt-field">
-          <span class="vt-field-label">Cost:</span>
+          <span class="vt-field-label">{c.cost}</span>
           <span class="vt-field-val">{data.cost}</span>
         </span>
         <span class="vt-field">
-          <span class="vt-field-label">3D Model:</span>
+          <span class="vt-field-label">{c.model3d}</span>
           <span class="vt-field-val">{data.model3d}</span>
         </span>
       </div>
@@ -142,7 +189,7 @@ const relatedClientNames = await Promise.all(
   <section class="vt-block-section">
     <div class="container">
       <div class="vt-body-content">
-        <Content components={{ Tour360, FilmEmbed, YouTubeEmbed, YoutubeEmbed: YouTubeEmbed, ImageCompare: MdxImageCompare, ImageGallery: MdxImageGallery, SectionBanner: MdxSectionBanner, SingleImage, ProcessFlow, SpecTable, CompareTable, NotableGrid, DeliverableGrid, TimelineTable, PhaseMatrix }} />
+        <Content components={{ Tour360, FilmEmbed, YouTubeEmbed, YoutubeEmbed: YouTubeEmbed, ImageCompare: MdxImageCompare, ImageGallery: MdxImageGallery, SectionBanner: MdxSectionBanner, SingleImage, ProcessFlow, SpecTable, CompareTable, NotableGrid, DeliverableGrid, TimelineTable, PhaseMatrix, Lang }} />
         <ArticleImageCompareMounter client:load />
         <ArticleGalleryMounter client:load />
       </div>
@@ -152,7 +199,7 @@ const relatedClientNames = await Promise.all(
   <!-- CTA after all blocks -->
   <section class="vt-block-section">
     <div class="container">
-      <a href="/contact/" class="btn btn-primary">Discuss Your Project</a>
+      <a href={localeUrl('/contact/', lang)} class="btn btn-primary">{c.discussProject}</a>
     </div>
   </section>
 
@@ -160,8 +207,8 @@ const relatedClientNames = await Promise.all(
   {data.gallery && data.gallery.length > 0 && (
     <section class="vt-gallery-section">
       <div class="container">
-        <p class="section-label">Examples</p>
-        <ImageLightbox images={data.gallery} title="Examples" client:load />
+        <p class="section-label">{c.examples}</p>
+        <ImageLightbox images={data.gallery} title={c.examples} client:load />
       </div>
     </section>
   )}
@@ -170,31 +217,31 @@ const relatedClientNames = await Promise.all(
   {related.length > 0 && (
     <section class="vt-related-section">
       <div class="container">
-        <p class="vt-related-heading">Related projects:</p>
+        <p class="vt-related-heading">{c.relatedHeading}</p>
         <div class="vt-carousel-wrap">
-          <button class="vt-carousel-btn vt-carousel-prev" id="vt-prev" aria-label="Previous projects">&#8592;</button>
+          <button class="vt-carousel-btn vt-carousel-prev" id="vt-prev" aria-label={c.prevAria}>&#8592;</button>
           <div class="vt-carousel" id="vt-carousel">
             {related.map(p => (
-              <a href={`/portfolio/${p.slug}/`} class="vt-related-card">
+              <a href={localeUrl(`/portfolio/${p.slug}/`, lang)} class="vt-related-card">
                 <div class="vt-card-img">
                   <img
                     src={thumbUrl(p.data.coverImage)}
-                    alt={p.data.title}
+                    alt={tStr(p.data.title, lang)}
                     loading="lazy"
                     onerror={`this.onerror=null;this.src='${p.data.coverImage}'`}
                   />
                 </div>
                 <div class="vt-card-body">
-                  <span class="vt-card-title">{p.data.title}</span>
+                  <span class="vt-card-title">{tStr(p.data.title, lang)}</span>
                 </div>
               </a>
             ))}
           </div>
-          <button class="vt-carousel-btn vt-carousel-next" id="vt-next" aria-label="Next projects">&#8594;</button>
+          <button class="vt-carousel-btn vt-carousel-next" id="vt-next" aria-label={c.nextAria}>&#8594;</button>
         </div>
         <div class="vt-dots" id="vt-dots">
           {related.map((_, i) => (
-            <button class={`vt-dot${i === 0 ? ' vt-dot--active' : ''}`} aria-label={`Go to project ${i + 1}`}></button>
+            <button class={`vt-dot${i === 0 ? ' vt-dot--active' : ''}`} aria-label={c.goToProject(i + 1)}></button>
           ))}
         </div>
       </div>
@@ -204,8 +251,8 @@ const relatedClientNames = await Promise.all(
   <!-- ─── Nav to other techniques ──────────────────────────── -->
   <section class="section-sm vt-nav-section">
     <div class="container vt-nav-inner">
-      <a href="/vision-tech/" class="btn btn-ghost">&larr; All Techniques</a>
-      <a href="/contact/" class="btn btn-primary">Talk to Us</a>
+      <a href={localeUrl('/vision-tech/', lang)} class="btn btn-ghost">{c.allTechniques}</a>
+      <a href={localeUrl('/contact/', lang)} class="btn btn-primary">{c.talkToUs}</a>
     </div>
   </section>
 

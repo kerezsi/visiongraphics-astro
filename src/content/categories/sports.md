@@ -1,3 +1,5 @@
 ---
-title: "Sports"
+title:
+  en: Sports
+  hu: Sport
 ---

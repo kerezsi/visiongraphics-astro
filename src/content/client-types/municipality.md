@@ -1,3 +1,5 @@
 ---
-title: "Municipality"
+title:
+  en: Municipality
+  hu: Önkormányzat
 ---

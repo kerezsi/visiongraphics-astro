@@ -1,9 +1,15 @@
 ---
 // src/pages/contact/index.astro
 
-import Page from '../../layouts/Page.astro';
-import SectionBanner from '../../components/ui/SectionBanner.astro';
-import Icon from '../../components/ui/Icon.astro';
+import Page from '../../../layouts/Page.astro';
+import SectionBanner from '../../../components/ui/SectionBanner.astro';
+import Icon from '../../../components/ui/Icon.astro';
+import { staticLocalePaths, type Locale } from '../../../lib/i18n';
+
+export const getStaticPaths = staticLocalePaths;
+const { lang } = Astro.params as { lang: Locale };
+Astro.locals.lang = lang;
+
 ---
 
 <Page
@@ -37,11 +43,11 @@ import Icon from '../../components/ui/Icon.astro';
                 <span class="info-item-value">+36 30 945 4179</span>
               </div>
             </a>
-            <a href="mailto:info@visiongraphics.eu" class="info-item">
+            <a href="mailto:info@visiongraphics.hu" class="info-item">
               <Icon name="mail" size={18} class="info-icon" />
               <div>
                 <span class="info-item-label">Email</span>
-                <span class="info-item-value">info@visiongraphics.eu</span>
+                <span class="info-item-value">info@visiongraphics.hu</span>
               </div>
             </a>
           </div>
@@ -210,7 +216,7 @@ import Icon from '../../components/ui/Icon.astro';
       }
     } catch {
       if (status) {
-        status.textContent = 'Something went wrong. Please email us directly at info@visiongraphics.eu';
+        status.textContent = 'Something went wrong. Please email us directly at info@visiongraphics.hu';
         status.classList.add('form-status--err');
       }
       if (submitBtn) submitBtn.disabled = false;

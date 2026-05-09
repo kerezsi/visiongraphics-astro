@@ -1,3 +1,5 @@
 ---
-title: "Airport"
+title:
+  en: Airport
+  hu: Repülőtér
 ---

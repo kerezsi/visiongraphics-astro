@@ -1,0 +1,67 @@
+---
+/**
+ * Language switcher — toggles between locales while preserving the current page.
+ *
+ * Renders one chip per locale; the active locale is highlighted. Clicking an
+ * inactive locale navigates to the same path under that locale's prefix.
+ *
+ * Server-side: builds correct hrefs from `Astro.url.pathname` via swapLocale().
+ * No client-side JS — pure links, works with prerendered pages.
+ */
+import { LOCALES, LOCALE_SHORT, swapLocale, localeFromPath, type Locale } from '../../lib/i18n';
+
+const path = Astro.url.pathname;
+const active: Locale = (Astro.locals as { lang?: Locale })?.lang ?? localeFromPath(path);
+---
+
+<div class="lang-switcher" role="group" aria-label="Language">
+  {LOCALES.map((code) => (
+    <a
+      href={swapLocale(path, code)}
+      class:list={['lang-chip', { active: code === active }]}
+      aria-current={code === active ? 'true' : undefined}
+      hreflang={code}
+    >
+      {LOCALE_SHORT[code]}
+    </a>
+  ))}
+</div>
+
+<style>
+  .lang-switcher {
+    display: inline-flex;
+    align-items: center;
+    gap: 0;
+    border: 1px solid var(--color-border);
+    border-radius: 2px;
+    overflow: hidden;
+    height: 2rem;
+  }
+
+  .lang-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2rem;
+    padding: 0 var(--space-2);
+    height: 100%;
+    font-family: var(--font-body);
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    color: var(--color-text-faint);
+    text-decoration: none;
+    transition: color 150ms ease, background 150ms ease;
+    border-right: 1px solid var(--color-border);
+  }
+  .lang-chip:last-child { border-right: none; }
+
+  .lang-chip:hover {
+    color: var(--color-text);
+  }
+
+  .lang-chip.active {
+    color: var(--color-accent);
+    background: color-mix(in srgb, var(--color-accent) 10%, transparent);
+  }
+</style>

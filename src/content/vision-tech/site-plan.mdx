@@ -1,6 +1,10 @@
 ---
-title: Site Plan
-description: Overhead visualizations showing a building's relationship to its site — footprint, landscape, access, parking, and surrounding context. Ranges from diagrammatic colored plans to fully rendered V-Ray orthographic views.
+title:
+  en: "Site Plan"
+  hu: "Helyszínrajz"
+description:
+  en: "Overhead visualizations showing a building's relationship to its site — footprint, landscape, access, parking, and surrounding context. Ranges from diagrammatic colored plans to fully rendered V-Ray orthographic views."
+  hu: "Felülnézeti látványtervek, amelyek bemutatják az épület és a telek viszonyát — alapterület, tájépítészet, megközelítés, parkolás és környezet. Sematikus, színes ábráktól a teljesen renderelt V-Ray ortografikus nézetekig."
 image: /_img/vision-tech/site-plan.jpg
 technique: Digital
 cost: €€
@@ -19,23 +23,35 @@ relatedFeatures: []
 published: true
 ---
 
+<Lang code="en">
 A site plan shows what no elevation or interior view can: how a building relates to its site, how people arrive and circulate, where parking and service access sit, and how the landscape is organized. We produce site plan visualizations from technical drawings and 3D models — the level of visual detail scaled to the purpose, from simple colored diagrams for planning submissions to fully rendered orthographic views for marketing and master planning presentations.
 
 ## Diagrammatic vs rendered
+</Lang>
+
+<Lang code="hu">
+A helyszínrajz azt mutatja, amit egyetlen homlokzat- vagy belsőnézet sem: hogyan viszonyul az épület a telekhez, hogyan érkeznek és közlekednek az emberek, hol van a parkolás és a szervizmegközelítés, és hogyan szerveződik a tájépítészet. Helyszínrajz-látványterveket műszaki rajzokból és 3D-modellekből készítünk — a vizuális részletesség szintjét a célhoz igazítva, az engedélyeztetéshez használt egyszerű színezett diagramoktól a marketing- és masterplan-prezentációkhoz készülő, teljesen renderelt ortografikus nézetekig.
+
+## Sematikus vs. renderelt
+</Lang>
 
 <CompareTable
-  headers={["Diagrammatic plan", "Rendered orthographic"]}
-  rows={[
-    { label: "Visual style", values: ["Flat color fills, simplified geometry", "V-Ray orthographic render with materials, shadows, planting"] },
-    { label: "Information clarity", values: ["High — zones, labels, annotations read easily", "Moderate — visual richness can compete with information"] },
-    { label: "Production time", values: ["Faster", "Slower — full 3D model and materials required"] },
-    { label: "Typical use", values: ["Planning applications, master plan diagrams, phasing", "Marketing, competition panels, high-profile planning submissions"] },
-    { label: "Shadow accuracy", values: ["Schematic — indicative sun direction", "Real sun angle from site coordinates and time of day"] },
-    { label: "Scale range", values: ["Works at any scale, including very large sites", "Most effective at mid-scale — single building to small district"] },
+  headers={[
+    { en: "Diagrammatic plan",      hu: "Sematikus ábra" },
+    { en: "Rendered orthographic",  hu: "Renderelt ortografikus" },
   ]}
-  caption="Choosing the right approach depends on audience and purpose"
+  rows={[
+    { label: { en: "Visual style",         hu: "Vizuális stílus" },        values: [{ en: "Flat color fills, simplified geometry",                   hu: "Sík színkitöltés, egyszerűsített geometria" },                                  { en: "V-Ray orthographic render with materials, shadows, planting", hu: "V-Ray ortografikus render anyagokkal, árnyékokkal, növényzettel" }] },
+    { label: { en: "Information clarity", hu: "Információ tisztasága" },   values: [{ en: "High — zones, labels, annotations read easily",            hu: "Magas — zónák, címkék, feliratok jól olvashatók" },                            { en: "Moderate — visual richness can compete with information",   hu: "Mérsékelt — a vizuális gazdagság versenyezhet az információval" }] },
+    { label: { en: "Production time",      hu: "Készítési idő" },           values: [{ en: "Faster",                                                   hu: "Gyorsabb" },                                                                    { en: "Slower — full 3D model and materials required",            hu: "Lassabb — teljes 3D-modell és anyagok kellenek" }] },
+    { label: { en: "Typical use",          hu: "Tipikus felhasználás" },    values: [{ en: "Planning applications, master plan diagrams, phasing",     hu: "Engedélykérelmek, masterplan-ábrák, ütemezés" },                                { en: "Marketing, competition panels, high-profile planning submissions", hu: "Marketing, pályázati panelek, kiemelt engedélyezési beadványok" }] },
+    { label: { en: "Shadow accuracy",      hu: "Árnyékpontosság" },         values: [{ en: "Schematic — indicative sun direction",                     hu: "Sematikus — irányadó napirány" },                                              { en: "Real sun angle from site coordinates and time of day",     hu: "Valódi napszög a telek koordinátáiból és a napszakból" }] },
+    { label: { en: "Scale range",          hu: "Lépték-tartomány" },        values: [{ en: "Works at any scale, including very large sites",           hu: "Bármilyen léptéken működik, akár nagyon nagy területen is" },                  { en: "Most effective at mid-scale — single building to small district", hu: "Közepes léptéken a leghatékonyabb — egy épülettől egy kis kerületig" }] },
+  ]}
+  caption={{ en: "Choosing the right approach depends on audience and purpose", hu: "A megfelelő megközelítés a közönségtől és a céltól függ" }}
 />
 
+<Lang code="en">
 ## What a site plan communicates
 
 **Building footprint and height** — the plan shows the outline of buildings, and shadow length indicates relative height. For multi-building schemes, the massing relationships between structures read clearly.
@@ -57,15 +73,41 @@ Site plans work at very different scales — a single-building site plan might c
 - **Master plan / urban scale** — largely diagrammatic, zones and phases the primary content, individual buildings represented as simple footprints
 
 ## What we need from you
+</Lang>
+
+<Lang code="hu">
+## Mit kommunikál egy helyszínrajz
+
+**Épület alapterülete és magassága** — az ábra mutatja az épületek körvonalát, és az árnyékhossz jelzi a relatív magasságot. Több épületes terveknél a tömegek közötti viszonyok tisztán olvashatók.
+
+**Megközelítés és közlekedés** — a gyalogos útvonalak, járműmegközelítési pontok, mentőjármű-útvonalak és kerékpáros infrastruktúra a környező utcahálózat kontextusában jelennek meg.
+
+**Tájépítészet** — növényzet, burkolt felületek, vízfelületek és nyílt terek. Különösen lakóberuházásoknál a kültér minősége jelentős értékesítési érv, és olvashatónak kell lennie.
+
+**Ütemezés** — a szakaszosan épülő beruházásoknál az egyes szakaszokat külön-külön bemutató helyszínrajz-sorozat az engedélyezési beadvány szabványos eleme.
+
+**Kontextus** — környező épületek, közterek és tájékozódási pontok megfelelően egyszerűsítve. A kontextus részletességét úgy kalibráljuk, hogy ne nyomja el a tervezett beruházást.
+
+## Léptékkérdések
+
+A helyszínrajzok nagyon eltérő léptékben működnek — egy egyetlen épület helyszínrajza 50 × 50 méteres lehet; egy masterplan több négyzetkilométeres. A grafikai rendszert a projekt léptékére állítjuk be:
+
+- **Egyetlen épület** — teljes tájépítészeti részletesség, olvasható anyagok, utcaszintű léptékben mutatott emberek
+- **Tömb vagy kerület** — egyszerűsített épülettömegek, olvasható útvonalhierarchia, azonosítható kulcsfontosságú közterek
+- **Masterplan / városi lépték** — nagyrészt sematikus, a fő tartalom a zónák és szakaszok, az egyes épületek egyszerű alapterületként ábrázolva
+
+## Mire van szükségünk Öntől
+</Lang>
 
 <SpecTable rows={[
-  { label: "Site plan drawings", value: "CAD layout plan with building footprints, landscape, access, and site boundary. Geo-referenced if available." },
-  { label: "Building heights", value: "Floor count or height in meters — used to calculate shadow lengths for the chosen sun position." },
-  { label: "Landscape design", value: "Planting plans, hard landscape drawings, or indicative species if the landscape design is not yet resolved." },
-  { label: "Context data", value: "Surrounding buildings and streets. We use OS mapping or OpenStreetMap as a base for context if not supplied." },
-  { label: "Purpose and scale", value: "Planning submission, marketing, or master plan? The intended use determines the appropriate level of detail and graphic approach." },
+  { label: { en: "Site plan drawings", hu: "Helyszínrajzok" },          value: { en: "CAD layout plan with building footprints, landscape, access, and site boundary. Geo-referenced if available.",                hu: "CAD elrendezési terv épület-alapterületekkel, tájépítészettel, megközelítéssel és telekhatárral. Ha lehet, geo-referenciával." } },
+  { label: { en: "Building heights",    hu: "Épületmagasság" },          value: { en: "Floor count or height in meters — used to calculate shadow lengths for the chosen sun position.",                              hu: "Szintszám vagy magasság méterben — a választott napálláshoz tartozó árnyékhossz kiszámításához." } },
+  { label: { en: "Landscape design",     hu: "Tájépítészeti terv" },      value: { en: "Planting plans, hard landscape drawings, or indicative species if the landscape design is not yet resolved.",                  hu: "Növényültetési tervek, burkolatok rajzai, vagy javasolt fajok, ha a tájépítészeti terv még nem véglegesedett." } },
+  { label: { en: "Context data",         hu: "Kontextusadatok" },         value: { en: "Surrounding buildings and streets. We use OS mapping or OpenStreetMap as a base for context if not supplied.",                  hu: "Környező épületek és utcák. Ha nem kapunk, az OS-térképet vagy OpenStreetMap-et használjuk kontextus-alapként." } },
+  { label: { en: "Purpose and scale",    hu: "Cél és lépték" },           value: { en: "Planning submission, marketing, or master plan? The intended use determines the appropriate level of detail and graphic approach.", hu: "Engedélyezési beadvány, marketing vagy masterplan? A tervezett felhasználás határozza meg a megfelelő részletességet és a grafikai megközelítést." } },
 ]} />
 
+<Lang code="en">
 ## Related techniques
 
 For a real aerial photograph of the site rather than a drawn plan: [Aerial Photography](/vision-tech/aerial-photography/)
@@ -73,3 +115,14 @@ For a real aerial photograph of the site rather than a drawn plan: [Aerial Photo
 For showing the building composited into a real aerial photograph: [Aerial Integration](/vision-tech/aerial-integration/)
 
 For showing individual unit layouts within the building: [Marketing Level Plan](/vision-tech/marketing-level-plan/)
+</Lang>
+
+<Lang code="hu">
+## Kapcsolódó technikák
+
+Rajzolt terv helyett valódi légi fotóhoz: [Légi fotózás](/vision-tech/aerial-photography/)
+
+Az épület valódi légi fotóba illesztéséhez: [Légi integráció](/vision-tech/aerial-integration/)
+
+Az egyes lakáselrendezések bemutatásához az épületen belül: [Marketing szintrajz](/vision-tech/marketing-level-plan/)
+</Lang>

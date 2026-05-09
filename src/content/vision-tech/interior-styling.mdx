@@ -1,6 +1,10 @@
 ---
-title: Interior Styling
-description: An existing room — photographed or rendered — transformed into different interior design styles using ComfyUI with Flux. Works from a real photograph without needing a 3D model. Multiple style variants generated in parallel for comparison.
+title:
+  en: "Interior Styling"
+  hu: "Belsőépítészeti stílusozás"
+description:
+  en: "An existing room — photographed or rendered — transformed into different interior design styles using ComfyUI with Flux. Works from a real photograph without needing a 3D model. Multiple style variants generated in parallel for comparison."
+  hu: "Egy meglévő helyiség — fotózva vagy renderelve — átalakítása különböző belsőépítészeti stílusokká ComfyUI-jal és Flux-szal. Valódi fotóból dolgozik, 3D-modell nélkül. Több stílusváltozat párhuzamos generálása az összehasonlításhoz."
 image: /_img/vision-tech/interior-styling.jpg
 technique: AI-Enhanced
 cost: €€
@@ -19,6 +23,7 @@ relatedFeatures: []
 published: true
 ---
 
+<Lang code="en">
 Interior styling transforms a real photograph or a basic 3D render of a room into multiple interior design interpretations — different furniture styles, material palettes, lighting moods, and spatial character — without rebuilding the room in 3D. The room geometry stays fixed; everything inside it can change.
 
 This is primarily a decision-support tool. It answers the question "what could this space become?" before any design work is commissioned.
@@ -67,14 +72,67 @@ Generated interior images show the character, color palette, material mood, and 
 The value is alignment and direction — confirming that a client and designer are imagining the same kind of space before proceeding to detailed design.
 
 ## What we need from you
+</Lang>
+
+<Lang code="hu">
+A belsőépítészeti stílusozás egy valódi fotót vagy egy alap 3D-rendert alakít több belsőépítészeti értelmezéssé — eltérő bútorstílusok, anyagpaletták, fényhangulatok és térkarakterek — anélkül, hogy a helyiséget 3D-ben újra fel kellene építeni. A helyiség geometriája fix marad; minden, ami benne van, változhat.
+
+Elsősorban döntéstámogató eszköz. A „mivé válhatna ez a tér?" kérdésre válaszol, mielőtt bármilyen tervezési munkát megrendelnének.
+
+## Hogyan működik
+
+A forrás egy fotó a meglévő helyiségről vagy egy 3ds Maxből származó alaprender. Ezt egy ComfyUI munkafolyamaton vezetjük át:
+
+**Szerkezet-megőrzés** — a ControlNet a forrásképből kivonja a mélységet és a szerkezeti vonalakat, így a generálás a helyiség valódi geometriájához van rögzítve. A falak falak maradnak. Az ablak ott marad, ahol van. A padlósík egyenes marad. A bútor, anyagok és világítás szabadon változhat.
+
+**Stílusgenerálás Flux-szal** — a belsőépítészeti irányt strukturált promptként írjuk le: bútorstílus kora és eredete, anyagpaletta, fénykarakter, textúrasűrűség, légkör. A Flux ezen a nyelven hozza létre a helyiség fotórealisztikus változatát, miközben a ControlNet biztosítja, hogy ugyanaz a fizikai tér maradjon felismerhető.
+
+**Kötegelt összehasonlítás** — egy munkamenetben több stílust generálunk. Az ügyfél össze tudja hasonlítani a Japandi, meleg ipari, francia kortárs és maximalista verziókat, és nem szavakra, hanem képekre tud reagálni.
+
+**Szelektív finomítás** — a kép területeit maszkolni lehet és önállóan finomítani. Az általános skandináv karakter megmarad; a konyhabútort más anyaggal újrafuttatjuk. A kanapét lecseréljük az egész helyiség újragenerálása nélkül.
+
+## Fotóból dolgozva
+
+Nincs szükség 3D-modellre. Egy jó minőségű fotó a térről — vagy akár egy elfogadható, konzisztens fényű telefonkép — elegendő forrásanyag. Ettől nagyon korai szakaszban is elérhetővé válik a belsőépítészeti stílusozás, még a tervezési dokumentáció előtt:
+
+- Fotó egy üres lakásmagról a beépítés előtt
+- Meglévő tér, amelyet felújítás céljából vizsgálnak
+- Egy ügyfél-találkozón készült helyszíni fotó
+- Egy ingatlanhirdetés fotója
+
+Az AI azzal dolgozik, ami a fotón van. Az alacsony képminőség, szélsőséges objektívtorzítás vagy nagyon rossz fényviszony korlátozza a végeredményt.
+
+## Stílusválaszték
+
+A technika a belső tradíciók széles körét kezeli:
+
+- **Skandináv / északi** — világos fa, len, fegyelmezett minimalizmus
+- **Japandi** — a japán-skandináv hibrid: természetes anyagok, üres terek, visszafogottság
+- **Meleg ipari** — látszó szerkezet, sötét fém, meleg mesterséges fény
+- **Mid-Century Modern** — organikus formák, dió, hangsúlyos világítás
+- **Kortárs luxus** — kő, lakk, integrált világítás, tonális paletta
+- **Francia lakás** — halszálka padló, vakolt falak, antik és modern keverve
+- **Maximalista / eklektikus** — rétegelt minta, erős szín, gyűjtött tárgyak
+
+Történelmi korszak-stílusok (Art Deco, viktoriánus, barokk) szintén lehetségesek, de inkább illusztratív, mint kortárs belső karakterű eredményt adnak.
+
+## Mit ad és mit nem
+
+A generált belső képek megmutatják a karaktert, színpalettát, anyaghangulatot és bútorarányt. Nem határoznak meg termékeket, nem készítenek bútorlistát és nem generálnak méretpontos információt. A bemutatott kanapé lehet, hogy nem létezik; a padlóminta lehet, hogy nem valós termék.
+
+Az érték a közös irány — annak megerősítése, hogy az ügyfél és a tervező ugyanolyan teret képzel el, mielőtt a részletes tervezésre térnének.
+
+## Mire van szükségünk Öntől
+</Lang>
 
 <SpecTable rows={[
-  { label: "Source image", value: "Photograph or render of the room. Reasonable quality and lighting. Wide-angle or standard lens preferred — extreme fisheye distortion degrades ControlNet conditioning." },
-  { label: "What to keep", value: "Any fixed elements that should not change — structural columns, an existing fireplace, a window the client wants preserved. We mask these from the generation." },
-  { label: "Style directions", value: "Which styles to explore. References are welcome — a Pinterest board, a hotel lobby, a magazine image. The more specific, the more targeted the generation." },
-  { label: "Output use", value: "Client presentation, social media, print? This affects the resolution and number of variants we produce." },
+  { label: { en: "Source image",     hu: "Forráskép" },             value: { en: "Photograph or render of the room. Reasonable quality and lighting. Wide-angle or standard lens preferred — extreme fisheye distortion degrades ControlNet conditioning.", hu: "A helyiség fotója vagy rendere. Elfogadható minőség és világítás. Nagylátószögű vagy standard objektív preferált — a szélsőséges halszemtorzítás rontja a ControlNet kondicionálását." } },
+  { label: { en: "What to keep",      hu: "Mit kell megőrizni" },     value: { en: "Any fixed elements that should not change — structural columns, an existing fireplace, a window the client wants preserved. We mask these from the generation.",         hu: "Minden olyan rögzített elem, amit nem szabad módosítani — szerkezeti oszlop, meglévő kandalló, megőrzendő ablak. Ezeket maszkoljuk a generálás alól." } },
+  { label: { en: "Style directions", hu: "Stílusirányok" },           value: { en: "Which styles to explore. References are welcome — a Pinterest board, a hotel lobby, a magazine image. The more specific, the more targeted the generation.",            hu: "Milyen stílusokat vizsgáljunk. Referenciákat örömmel — Pinterest-tábla, szállodai lobby, magazinkép. Minél konkrétabb, annál célzottabb a generálás." } },
+  { label: { en: "Output use",        hu: "Felhasználás" },           value: { en: "Client presentation, social media, print? This affects the resolution and number of variants we produce.",                                                                  hu: "Ügyfélprezentáció, közösségi média, print? Ez befolyásolja a felbontást és a variánsok számát." } },
 ]} />
 
+<Lang code="en">
 ## Related techniques
 
 For transforming facade and exterior styles: [Architectural Styling](/vision-tech/architectural-styling/)
@@ -82,3 +140,14 @@ For transforming facade and exterior styles: [Architectural Styling](/vision-tec
 For a fully modeled and rendered interior: [Interior](/vision-tech/interior/)
 
 For showing how a space looks in 360° after styling: [360 Renderings](/vision-tech/360-renderings/)
+</Lang>
+
+<Lang code="hu">
+## Kapcsolódó technikák
+
+Homlokzat- és külső stílusok átalakításához: [Építészeti stílusozás](/vision-tech/architectural-styling/)
+
+Teljesen modellezett és renderelt belsőhöz: [Belső](/vision-tech/interior/)
+
+Stílusozás után 360°-ban: [360°-os látványtervek](/vision-tech/360-renderings/)
+</Lang>

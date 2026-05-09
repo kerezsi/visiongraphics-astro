@@ -2,12 +2,16 @@
 // src/components/media/YouTubeEmbed.astro
 // YouTube facade pattern — thumbnail at build time, iframe only on click
 
+import { tStr, DEFAULT_LOCALE, type Localized, type Locale } from '../../lib/i18n';
+
 interface Props {
   url:    string;
-  title?: string;
+  title?: Localized<string>;
 }
 
-const { url, title = 'Video' } = Astro.props;
+const { url, title } = Astro.props;
+const lang: Locale = (Astro.locals as { lang?: Locale })?.lang ?? DEFAULT_LOCALE;
+const titleStr = tStr(title, lang) || (lang === 'hu' ? 'Videó' : 'Video');
 
 // Extract YouTube video ID from multiple URL patterns
 function extractYouTubeId(rawUrl: string): string | null {
@@ -42,12 +46,12 @@ const thumbnailUrl = videoId
     data-yt-id={videoId}
     role="button"
     tabindex="0"
-    aria-label={`Play video: ${title}`}
+    aria-label={lang === 'hu' ? `Videó lejátszása: ${titleStr}` : `Play video: ${titleStr}`}
   >
     {thumbnailUrl
       ? <img
           src={thumbnailUrl}
-          alt={`${title} — video thumbnail`}
+          alt={lang === 'hu' ? `${titleStr} — videó miniatűr` : `${titleStr} — video thumbnail`}
           class="yt-thumb"
           loading="lazy"
           onerror={`this.onerror=function(){this.onerror=null;this.src='https://img.youtube.com/vi/${videoId}/sddefault.jpg'};this.src='https://img.youtube.com/vi/${videoId}/hqdefault.jpg'`}
@@ -56,13 +60,13 @@ const thumbnailUrl = videoId
     }
 
     <div class="yt-overlay">
-      <button class="yt-play-btn" aria-label="Play">
+      <button class="yt-play-btn" aria-label={lang === 'hu' ? 'Lejátszás' : 'Play'}>
         <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <circle cx="30" cy="30" r="29" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
           <path d="M24 20L44 30L24 40V20Z" fill="currentColor"/>
         </svg>
       </button>
-      <span class="yt-title">{title}</span>
+      <span class="yt-title">{titleStr}</span>
     </div>
   </div>
 )}

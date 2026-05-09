@@ -28,6 +28,10 @@ export function AISettingsPanel() {
 
   const [ollamaBase, setOllamaBase] = useState('');
   const [swarmBases, setSwarmBases] = useState<string[]>(['']);
+  const [translationEngine, setTranslationEngine] = useState<'ollama' | 'claude'>('ollama');
+  const [translationOllamaModel, setTranslationOllamaModel] = useState('');
+  const [translationClaudeModel, setTranslationClaudeModel] = useState('claude-sonnet-4-5');
+  const [translationPrompt, setTranslationPrompt] = useState('');
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [open, setOpen] = useState(false);
@@ -42,6 +46,10 @@ export function AISettingsPanel() {
         const list = (cfg.swarmBases ?? []).filter((s) => typeof s === 'string');
         if (list.length > 0) setSwarmBases(list);
         else setSwarmBases(cfg.swarmBase ? [cfg.swarmBase] : ['']);
+        setTranslationEngine((cfg as any).translationEngine ?? 'ollama');
+        setTranslationOllamaModel((cfg as any).translationOllamaModel ?? '');
+        setTranslationClaudeModel((cfg as any).translationClaudeModel ?? 'claude-sonnet-4-5');
+        setTranslationPrompt((cfg as any).translationPrompt ?? '');
       })
       .catch(() => {});
   }, [open]);
@@ -62,7 +70,14 @@ export function AISettingsPanel() {
     try {
       // Trim and drop empty entries before persisting
       const cleaned = swarmBases.map((b) => b.trim()).filter((b) => b.length > 0);
-      await saveEditorConfig({ ollamaBase, swarmBases: cleaned });
+      await saveEditorConfig({
+        ollamaBase,
+        swarmBases: cleaned,
+        translationEngine,
+        translationOllamaModel: translationOllamaModel.trim() || undefined,
+        translationClaudeModel: translationClaudeModel.trim() || undefined,
+        translationPrompt: translationPrompt.trim() || undefined,
+      } as any);
       setSaved(true);
       await checkServices();
       setTimeout(() => setSaved(false), 2000);
@@ -144,6 +159,68 @@ export function AISettingsPanel() {
             <div style={{ fontSize: 9, color: 'var(--color-text-faint)', marginTop: 4, lineHeight: 1.5 }}>
               When generating multiple images, requests are split across backends in
               parallel (round-robin). Useful if you have a second GPU machine running SwarmUI.
+            </div>
+          </div>
+
+          <div style={{ borderTop: '1px solid var(--color-border)', paddingTop: 10, marginBottom: 10 }}>
+            <div style={{ ...lbl, color: 'var(--color-text-muted)', marginBottom: 6 }}>Translation (✦ buttons)</div>
+
+            <div style={{ marginBottom: 8 }}>
+              <label style={lbl}>Engine</label>
+              <select
+                value={translationEngine}
+                onChange={(e) => setTranslationEngine(e.target.value as 'ollama' | 'claude')}
+                style={{ width: '100%', background: 'var(--color-surface-2)', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-sm)', color: 'var(--color-text)', padding: '4px 8px', fontSize: 11 }}
+              >
+                <option value="ollama">Ollama (local)</option>
+                <option value="claude">Claude (Anthropic API)</option>
+              </select>
+            </div>
+
+            {translationEngine === 'ollama' && (
+              <div style={{ marginBottom: 8 }}>
+                <label style={lbl}>Ollama model (optional override)</label>
+                <input
+                  type="text"
+                  value={translationOllamaModel}
+                  onChange={(e) => setTranslationOllamaModel(e.target.value)}
+                  placeholder="auto-pick (llama3 or first available)"
+                  style={{ width: '100%' }}
+                />
+              </div>
+            )}
+
+            {translationEngine === 'claude' && (
+              <>
+                <div style={{ marginBottom: 8 }}>
+                  <label style={lbl}>Claude model</label>
+                  <input
+                    type="text"
+                    value={translationClaudeModel}
+                    onChange={(e) => setTranslationClaudeModel(e.target.value)}
+                    placeholder="claude-sonnet-4-5"
+                    style={{ width: '100%' }}
+                  />
+                </div>
+                <div style={{ fontSize: 9, color: 'var(--color-text-faint)', marginBottom: 8, lineHeight: 1.5 }}>
+                  Set <code>ANTHROPIC_API_KEY</code> in your shell or a <code>.env</code> file
+                  read by the editor server. Not stored in <code>editor-config.json</code>.
+                </div>
+              </>
+            )}
+
+            <div style={{ marginBottom: 8 }}>
+              <label style={lbl}>System prompt (optional)</label>
+              <textarea
+                value={translationPrompt}
+                onChange={(e) => setTranslationPrompt(e.target.value)}
+                placeholder={`Default: "You are a professional translator… Translate from {{from}} to {{to}}…"`}
+                rows={3}
+                style={{ width: '100%', resize: 'vertical', fontFamily: 'inherit', fontSize: 11 }}
+              />
+              <div style={{ fontSize: 9, color: 'var(--color-text-faint)', marginTop: 2 }}>
+                <code>{'{{from}}'}</code> / <code>{'{{to}}'}</code> are replaced with the locale names.
+              </div>
             </div>
           </div>
 

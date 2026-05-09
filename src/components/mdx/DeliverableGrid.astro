@@ -1,7 +1,9 @@
 ---
+import { tStr, DEFAULT_LOCALE, type Localized, type Locale } from '../../lib/i18n';
+
 interface Item {
-  title: string;
-  desc: string;
+  title: Localized<string>;
+  desc: Localized<string>;
   href?: string;
 }
 interface Props {
@@ -9,17 +11,22 @@ interface Props {
   items: Item[];
 }
 const { columns = 3, items } = Astro.props;
+const lang: Locale = (Astro.locals as { lang?: Locale })?.lang ?? DEFAULT_LOCALE;
 ---
 <div class:list={['deliverable-grid', columns === 3 ? 'grid-3' : 'grid-2']}>
-  {items.map(item => (
-    <div class="deliverable-card">
-      {item.href
-        ? <a href={item.href} class="deliverable-title deliverable-title-link">{item.title}</a>
-        : <h4 class="deliverable-title">{item.title}</h4>
-      }
-      <p class="deliverable-desc">{item.desc}</p>
-    </div>
-  ))}
+  {items.map(item => {
+    const title = tStr(item.title, lang);
+    const desc  = tStr(item.desc,  lang);
+    return (
+      <div class="deliverable-card">
+        {item.href
+          ? <a href={item.href} class="deliverable-title deliverable-title-link">{title}</a>
+          : <h4 class="deliverable-title">{title}</h4>
+        }
+        <p class="deliverable-desc">{desc}</p>
+      </div>
+    );
+  })}
 </div>
 
 <style>

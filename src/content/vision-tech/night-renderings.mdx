@@ -1,6 +1,10 @@
 ---
-title: Night Renderings
-description: Photorealistic night views produced in 3ds Max with V-Ray. Each light source — facade luminaires, interior spill through glazing, street lighting — is individually set up with accurate photometric data. A distinct lighting rig, not a variant of a daytime render.
+title:
+  en: "Night Renderings"
+  hu: "Éjszakai látványtervek"
+description:
+  en: "Photorealistic night views produced in 3ds Max with V-Ray. Each light source — facade luminaires, interior spill through glazing, street lighting — is individually set up with accurate photometric data. A distinct lighting rig, not a variant of a daytime render."
+  hu: "Fotórealisztikus éjszakai nézetek 3ds Maxben, V-Rayjel. Minden fényforrást — homlokzati lámpákat, üvegen át kiszűrődő belső fényt, utcai világítást — külön állítunk be, pontos fotometrikus adatokkal. Önálló fényrendszer, nem egy nappali render változata."
 image: /_img/vision-tech/night-renderings.jpg
 technique: Digital
 cost: €€
@@ -19,6 +23,7 @@ relatedFeatures: []
 published: true
 ---
 
+<Lang code="en">
 Night renderings are not a checkbox variant added to an exterior order. They require a separate lighting rig, different material setup, and an exposure calibration that treats the scene like a long-exposure photograph. Every light source visible in the frame — facade luminaires, interior spill through glazing, street lighting — needs to be individually defined with realistic intensities and photometric profiles.
 
 The payoff is visual: many buildings read more powerfully after dark, when architectural lighting becomes the dominant design element.
@@ -50,15 +55,51 @@ Night renderings are worth the additional setup when lighting is an intentional 
 For projects without a developed lighting design, a basic night render is possible but limited. The result depends entirely on what there is to light.
 
 ## What we need from you
+</Lang>
+
+<Lang code="hu">
+Az éjszakai render nem egy egyszerűen bekattintható változat egy külső rendelés mellé. Külön fényrendszert, eltérő anyagbeállítást és egy olyan expozíció-kalibrálást igényel, amely a jelenetet hosszú expozíciójú fotóként kezeli. Minden képkockán látható fényforrást — homlokzati lámpát, üvegen át kiszűrődő belső fényt, utcai világítást — egyenként, valós intenzitással és fotometrikus profilokkal kell meghatározni.
+
+A megtérülés vizuális: sok épület hatásosabban érvényesül sötétedés után, amikor az építészeti világítás válik a domináns tervezési elemmé.
+
+## Miért különleges technikailag az éjszakai render
+
+Egy nappali külsőnél a napfény végzi a munka nagy részét. Éjszaka a jelenet sok független forrásból áll össze:
+
+**Homlokzati világítás** — minden lámpához típus (spot, flood, lineáris, wash) és intenzitás kell. A világítástervezőtől származó IES fotometrikus fájlok adják a pontos sugárformát és lecsengést. Nélkülük a típus alapján becsülünk, ami hihető, de pontatlan eredményt hoz.
+
+**Belső kiszűrődés** — az üvegen át áradó meleg fény gyakran egy éjszakai render sikerét vagy bukását dönti el. Ehhez a belső világítást rendesen be kell állítani, legalább az üvegen át látható zónákban. Egy padlóig megvilágított, sötét belső egészen másképp néz ki, mint egy mennyezeti downlightos.
+
+**Utcai és környezeti világítás** — a környező épületek, utcalámpák és égbolt-fényesség adják az ambiens expozíció alapját. A városi és külvárosi helyszínek nagyon eltérő ambiens szintekkel rendelkeznek; mindkettő befolyásolja, hogyan jelenik meg az épület a képkockán.
+
+**Emisszív anyagok** — háttérvilágítású cégtáblák, élvilágított üvegezés, megvilágított hézagok és minden olyan homlokzati elem, ami világít, V-Ray-ben emisszív anyagtulajdonságot kapjon, ne külső fényforrást.
+
+**Expozíció-kalibrálás** — a virtuális kamerabeállítások egy valódi éjszakai fotót tükröznek: hosszabb expozíció, eltérő ISO-válasz, színhőmérséklet-eltolódás. Ennek elrontása olyan képet ad, ami szürke nappali jelenet hozzáadott fényekkel, nem éjszakai fotó.
+
+## Mikor adnak igazi értéket az éjszakai nézetek
+
+Az éjszakai render akkor éri meg a többletmunkát, ha a világítás szándékos tervezési elem, nem utólagos kiegészítés:
+
+- **Az építészeti világítás** része a projekt-briefnek — van mit megmutatni
+- Az épületnek megvilágított homlokzati elemei vannak (megvilágított bordák, hézagok, perforált árnyékolók, hátulról világított burkolat)
+- **Vendéglátó-, kereskedelmi vagy kulturális épületek**, ahol az éjszakai jelenlét befolyásolja a kereskedelmi teljesítményt
+- **Városi tájékozódási pontok**, ahol az épület a város éjszakai sziluettjének felismerhető eleme lesz
+- **Pályázati beadványok és publikációk**, ahol egy jellegzetes, erős grafikai minőségű kép számít
+
+A kidolgozott világítási terv nélküli projekteknél egy alap éjszakai render lehetséges, de korlátozott. Az eredmény teljesen attól függ, mit lehet egyáltalán megvilágítani.
+
+## Mire van szükségünk Öntől
+</Lang>
 
 <SpecTable rows={[
-  { label: "Lighting design", value: "IES profiles or luminaire product specs preferred. Without them, results are estimated from fixture type and general intent." },
-  { label: "Interior lighting", value: "At least indicative — we need to know what the spill through glazing should look like. Fully dark interiors are also a valid brief." },
-  { label: "Facade elements", value: "Any backlit, emissive, or externally lit cladding components need to be specified — material, color temperature, intensity direction." },
-  { label: "3D model", value: "The same model used for daytime exterior renders. Night and day views should be planned together to avoid duplicate modeling." },
-  { label: "Reference mood", value: "Dusk or full night? Warm or cool atmosphere? Reference photographs of comparable projects are useful here." },
+  { label: { en: "Lighting design",   hu: "Világítási terv" },        value: { en: "IES profiles or luminaire product specs preferred. Without them, results are estimated from fixture type and general intent.",        hu: "IES-profilok vagy lámpa-termékspecifikációk preferáltak. Nélkülük az eredményt típus és általános szándék alapján becsüljük." } },
+  { label: { en: "Interior lighting", hu: "Belső világítás" },         value: { en: "At least indicative — we need to know what the spill through glazing should look like. Fully dark interiors are also a valid brief.", hu: "Legalább irányadó szinten — tudnunk kell, hogyan nézzen ki az üvegen átszűrődő fény. A teljesen sötét belső is érvényes brief." } },
+  { label: { en: "Facade elements",   hu: "Homlokzati elemek" },       value: { en: "Any backlit, emissive, or externally lit cladding components need to be specified — material, color temperature, intensity direction.", hu: "Minden hátulról világított, emisszív vagy külsőleg megvilágított burkolatot meg kell adni — anyag, színhőmérséklet, intenzitás iránya." } },
+  { label: { en: "3D model",          hu: "3D-modell" },                value: { en: "The same model used for daytime exterior renders. Night and day views should be planned together to avoid duplicate modeling.",       hu: "Ugyanaz a modell, mint a nappali külső rendernél. Az éjszakai és nappali nézeteket együtt érdemes tervezni a duplikált modellezés elkerüléséért." } },
+  { label: { en: "Reference mood",    hu: "Referenciahangulat" },       value: { en: "Dusk or full night? Warm or cool atmosphere? Reference photographs of comparable projects are useful here.",                            hu: "Alkonyat vagy teljes éjszaka? Meleg vagy hideg hangulat? Hasonló projektek referenciafotói itt hasznosak." } },
 ]} />
 
+<Lang code="en">
 ## Delivery
 
 4K stills matching the daytime exterior views. Twilight (blue hour) and full night are different setups — agree which before work starts. Both can be produced from the same model but require separate rendering time.
@@ -70,3 +111,18 @@ For daytime counterpart — same model: [Exterior](/vision-tech/exterior/)
 For interior lighting validation: [Interior](/vision-tech/interior/)
 
 For animated lighting transitions (day to dusk to night): [3D Animation](/vision-tech/3d-animation/)
+</Lang>
+
+<Lang code="hu">
+## Átadás
+
+4K állóképek, illeszkedve a nappali külső nézetekhez. Az alkonyat (kék óra) és a teljes éjszaka külön beállítás — a munka megkezdése előtt egyezzünk meg, melyik kell. Mindkettő ugyanabból a modellből készülhet, de külön renderidőt igényel.
+
+## Kapcsolódó technikák
+
+Nappali változatért — ugyanaz a modell: [Külső](/vision-tech/exterior/)
+
+A belső világítás ellenőrzéséhez: [Belső tér](/vision-tech/interior/)
+
+Animált fényátmenetekhez (nappaltól alkonyaton át éjszakáig): [3D-animáció](/vision-tech/3d-animation/)
+</Lang>

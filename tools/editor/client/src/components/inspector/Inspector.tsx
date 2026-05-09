@@ -6,6 +6,8 @@ import { TextareaField } from './fields/TextareaField.tsx';
 import { SelectField } from './fields/SelectField.tsx';
 import { ImagePickerField } from './fields/ImagePickerField.tsx';
 import { ArrayField } from './fields/ArrayField.tsx';
+import { LocalizedTextField } from './fields/LocalizedTextField.tsx';
+import type { LocalizedValue } from '../../lib/localized.ts';
 
 interface Props {
   block: BlockData;
@@ -25,9 +27,9 @@ export function Inspector({ block }: Props) {
       return (
         <div style={{ padding: 12, display: 'flex', flexDirection: 'column', gap: 10 }}>
           <ImagePickerField label="Image" value={p.image as string} onChange={(v) => update('image', v)} />
-          <TextField label="Label" value={p.label as string} onChange={(v) => update('label', v)} />
-          <TextField label="Title" value={p.title as string} onChange={(v) => update('title', v)} />
-          <TextField label="Image Alt" value={(p.imageAlt as string) ?? ''} onChange={(v) => update('imageAlt', v)} />
+          <LocalizedTextField label="Label" value={p.label as LocalizedValue | undefined} onChange={(v) => update('label', v)} />
+          <LocalizedTextField label="Title" value={p.title as LocalizedValue | undefined} onChange={(v) => update('title', v)} />
+          <LocalizedTextField label="Image Alt" value={p.imageAlt as LocalizedValue | undefined} onChange={(v) => update('imageAlt', v)} />
           <SelectField
             label="Size"
             value={(p.size as string) ?? 'section'}
@@ -167,8 +169,8 @@ export function Inspector({ block }: Props) {
       return (
         <div style={{ padding: 12, display: 'flex', flexDirection: 'column', gap: 10 }}>
           <ImagePickerField label="Image" value={p.src as string} onChange={(v) => update('src', v)} />
-          <TextField label="Alt Text" value={p.alt as string} onChange={(v) => update('alt', v)} />
-          <TextField label="Caption" value={(p.caption as string) ?? ''} onChange={(v) => update('caption', v)} />
+          <LocalizedTextField label="Alt Text" value={p.alt as LocalizedValue | undefined} onChange={(v) => update('alt', v)} />
+          <LocalizedTextField label="Caption" value={p.caption as LocalizedValue | undefined} onChange={(v) => update('caption', v)} />
         </div>
       );
 
@@ -176,7 +178,7 @@ export function Inspector({ block }: Props) {
       const images = (p.images as Array<{ src: string; alt: string }>) ?? [];
       return (
         <div style={{ padding: 12, display: 'flex', flexDirection: 'column', gap: 10 }}>
-          <TextField label="Title" value={(p.title as string) ?? ''} onChange={(v) => update('title', v)} />
+          <LocalizedTextField label="Title" value={p.title as LocalizedValue | undefined} onChange={(v) => update('title', v)} />
           <ArrayField
             label="Images"
             items={images}
@@ -230,7 +232,7 @@ export function Inspector({ block }: Props) {
       return (
         <div style={{ padding: 12, display: 'flex', flexDirection: 'column', gap: 10 }}>
           <TextField label="Vimeo ID" value={p.vimeoId as string} onChange={(v) => update('vimeoId', v)} />
-          <TextField label="Title" value={p.title as string} onChange={(v) => update('title', v)} />
+          <LocalizedTextField label="Title" value={p.title as LocalizedValue | undefined} onChange={(v) => update('title', v)} />
         </div>
       );
 
@@ -238,7 +240,7 @@ export function Inspector({ block }: Props) {
       return (
         <div style={{ padding: 12, display: 'flex', flexDirection: 'column', gap: 10 }}>
           <TextField label="URL" value={p.url as string} onChange={(v) => update('url', v)} />
-          <TextField label="Title" value={p.title as string} onChange={(v) => update('title', v)} />
+          <LocalizedTextField label="Title" value={p.title as LocalizedValue | undefined} onChange={(v) => update('title', v)} />
           <ImagePickerField label="Cover Image" value={(p.coverImage as string) ?? ''} onChange={(v) => update('coverImage', v)} />
         </div>
       );
@@ -247,7 +249,7 @@ export function Inspector({ block }: Props) {
       return (
         <div style={{ padding: 12, display: 'flex', flexDirection: 'column', gap: 10 }}>
           <TextField label="URL" value={p.url as string} onChange={(v) => update('url', v)} />
-          <TextField label="Title" value={(p.title as string) ?? ''} onChange={(v) => update('title', v)} />
+          <LocalizedTextField label="Title" value={p.title as LocalizedValue | undefined} onChange={(v) => update('title', v)} />
         </div>
       );
 

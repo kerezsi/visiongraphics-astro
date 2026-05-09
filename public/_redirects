@@ -1,3 +1,17 @@
+# ── Legacy non-prefixed URLs → /en/ ───────────────────────────────────────
+# After the i18n migration, all real content lives under /en/ and /hu/.
+# Old bookmarks pointing at /portfolio/foo/ etc. land here and 308 over to
+# the English version (preserves method + tells crawlers the move is permanent).
+# Order matters: more specific paths first, root last.
+/portfolio/*        /en/portfolio/:splat   308
+/services/*         /en/services/:splat    308
+/vision-tech/*      /en/vision-tech/:splat 308
+/articles/*         /en/articles/:splat    308
+/about/*            /en/about/:splat       308
+/contact/*          /en/contact/:splat     308
+/faq/*              /en/faq/:splat         308
+/pricing/*          /en/pricing/:splat     308
+
 # PANO tours — served from tarhely (subdomain pano.visiongraphics.eu maps to /PANO/)
 # Backward compatibility for old visiongraphics.eu/PANO/X/ links shared externally.
 /PANO/*             https://pano.visiongraphics.eu/:splat                                    301

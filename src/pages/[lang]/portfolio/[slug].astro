@@ -1,54 +1,65 @@
 ---
 // src/pages/portfolio/[slug].astro
 
-import Page from '../../layouts/Page.astro';
-import FilmEmbed from '../../components/media/FilmEmbed.astro';
-import Tour360 from '../../components/media/Tour360.astro';
-import YouTubeEmbed from '../../components/media/YouTubeEmbed.astro';
-import ImageLightbox from '../../components/media/ImageLightbox';
-import ImageGallery from '../../components/mdx/ImageGallery.astro';
-import ImageCompare from '../../components/mdx/ImageCompare.astro';
-import MdxSectionBanner from '../../components/mdx/SectionBanner.astro';
-import ProjectDescription from '../../components/mdx/ProjectDescription.astro';
-import ProjectStory from '../../components/mdx/ProjectStory.astro';
-import ProjectTasks from '../../components/mdx/ProjectTasks.astro';
-import ArticleGalleryMounter from '../../components/media/ArticleGalleryMounter.tsx';
-import ArticleImageCompareMounter from '../../components/media/ArticleImageCompareMounter.tsx';
-import ProcessFlow from '../../components/mdx/ProcessFlow.astro';
-import SpecTable from '../../components/mdx/SpecTable.astro';
-import CompareTable from '../../components/mdx/CompareTable.astro';
-import NotableGrid from '../../components/mdx/NotableGrid.astro';
-import DeliverableGrid from '../../components/mdx/DeliverableGrid.astro';
-import TimelineTable from '../../components/mdx/TimelineTable.astro';
-import PhaseMatrix from '../../components/mdx/PhaseMatrix.astro';
-import SingleImage from '../../components/mdx/SingleImage.astro';
+import Page from '../../../layouts/Page.astro';
+import FilmEmbed from '../../../components/media/FilmEmbed.astro';
+import Tour360 from '../../../components/media/Tour360.astro';
+import YouTubeEmbed from '../../../components/media/YouTubeEmbed.astro';
+import ImageLightbox from '../../../components/media/ImageLightbox';
+import ImageGallery from '../../../components/mdx/ImageGallery.astro';
+import ImageCompare from '../../../components/mdx/ImageCompare.astro';
+import MdxSectionBanner from '../../../components/mdx/SectionBanner.astro';
+import ProjectDescription from '../../../components/mdx/ProjectDescription.astro';
+import ProjectStory from '../../../components/mdx/ProjectStory.astro';
+import ProjectTasks from '../../../components/mdx/ProjectTasks.astro';
+import ArticleGalleryMounter from '../../../components/media/ArticleGalleryMounter.tsx';
+import ArticleImageCompareMounter from '../../../components/media/ArticleImageCompareMounter.tsx';
+import ProcessFlow from '../../../components/mdx/ProcessFlow.astro';
+import SpecTable from '../../../components/mdx/SpecTable.astro';
+import CompareTable from '../../../components/mdx/CompareTable.astro';
+import NotableGrid from '../../../components/mdx/NotableGrid.astro';
+import DeliverableGrid from '../../../components/mdx/DeliverableGrid.astro';
+import TimelineTable from '../../../components/mdx/TimelineTable.astro';
+import PhaseMatrix from '../../../components/mdx/PhaseMatrix.astro';
+import SingleImage from '../../../components/mdx/SingleImage.astro';
+import Lang from '../../../components/i18n/Lang.astro';
 import { getCollection, getEntry } from 'astro:content';
+import { localizedPaths, localeUrl, t, tStr, type Locale } from '../../../lib/i18n';
+import { ui } from '../../../i18n/strings';
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects', ({ data }) => data.published);
-  return projects.map(project => ({ params: { slug: project.slug } }));
+  return localizedPaths(projects, project => ({ slug: project.slug }));
 }
 
-const { slug } = Astro.params;
+const { lang, slug } = Astro.params as { lang: Locale; [k: string]: string | undefined };
+Astro.locals.lang = lang;
+const L = ui(lang);
 const allProjects = await getCollection('projects', ({ data }) => data.published);
 const project = allProjects.find(p => p.slug === slug);
-if (!project) return Astro.redirect('/portfolio/');
+if (!project) return Astro.redirect(localeUrl('/portfolio/', lang));
 const { data } = project;
 const { Content } = await project.render();
 
-// Resolve category references to { id, title } objects
+// Resolve translated text fields. data.title / data.description may be a plain
+// string (single-language file) or { en, hu, ... } (translated file). t() handles both.
+const titleStr       = tStr(data.title, lang);
+const displayTitle   = tStr(data.displayTitle, lang) || titleStr;
+const descriptionStr = tStr(data.description, lang);
+
+// Resolve category references — title is also localized
 const resolvedCategories = await Promise.all(
   data.categories.map(async ref => {
     const entry = await getEntry('categories', ref.id);
-    return { id: ref.id, title: entry?.data.title ?? ref.id };
+    return { id: ref.id, title: tStr(entry?.data.title, lang) || ref.id };
   })
 );
 
 // Resolve optional client/designer/location references to display strings
-const clientTitle   = data.client   ? (await getEntry('clients',   data.client.id))?.data.title   : undefined;
-const designerTitle = data.designer ? (await getEntry('designers', data.designer.id))?.data.title : undefined;
-const cityTitle     = data.city     ? (await getEntry('cities',    data.city.id))?.data.title     : undefined;
-const countryTitle  = data.country  ? (await getEntry('countries', data.country.id))?.data.title  : undefined;
+const clientTitle   = data.client   ? tStr((await getEntry('clients',   data.client.id))?.data.title,   lang) || undefined : undefined;
+const designerTitle = data.designer ? tStr((await getEntry('designers', data.designer.id))?.data.title, lang) || undefined : undefined;
+const cityTitle     = data.city     ? tStr((await getEntry('cities',    data.city.id))?.data.title,     lang) || undefined : undefined;
+const countryTitle  = data.country  ? tStr((await getEntry('countries', data.country.id))?.data.title,  lang) || undefined : undefined;
 const locationStr   = [cityTitle, countryTitle].filter(Boolean).join(', ') || undefined;
 
 // Adjacent projects for prev/next navigation
@@ -70,8 +81,8 @@ const relatedServices = allServices.filter(s => (data.services ?? []).includes(s
 ---
 
 <Page
-  title={data.title}
-  description={data.description ?? `${data.title} — architectural visualization by Vision Graphics Kft.`}
+  title={titleStr}
+  description={descriptionStr || `${titleStr} — architectural visualization by Vision Graphics Kft.`}
   image={data.coverImage}
   fullBleed
 >
@@ -79,23 +90,23 @@ const relatedServices = allServices.filter(s => (data.services ?? []).includes(s
   <div class="project-hero">
     <img
       src={data.coverImage}
-      alt={data.title}
+      alt={titleStr}
       class="project-hero-img"
       loading="eager"
     />
     <div class="project-hero-overlay">
       <div class="container">
         <div class="project-hero-meta">
-          <a href="/portfolio/" class="back-link">← Portfolio</a>
+          <a href={localeUrl('/portfolio/', lang)} class="back-link">{L.cta.backToPortfolio}</a>
           <div class="project-cats">
             {resolvedCategories.map(cat => (
-              <a href={`/portfolio/category/${cat.id}/`} class="project-cat-tag">
+              <a href={localeUrl(`/portfolio/category/${cat.id}/`, lang)} class="project-cat-tag">
                 {cat.title}
               </a>
             ))}
           </div>
         </div>
-        <h1 class="project-title">{data.title}</h1>
+        <h1 class="project-title">{displayTitle}</h1>
         <div class="project-subtitle-row">
           <span class="project-year">{data.year}</span>
           {clientTitle  && <span class="project-client">{clientTitle}</span>}
@@ -110,36 +121,36 @@ const relatedServices = allServices.filter(s => (data.services ?? []).includes(s
 
     <!-- "The Project:" section -->
     <div class="project-intro">
-      <h2 class="project-red-heading">The Project:</h2>
-      {data.description && (
-        <p class="project-description">{data.description}</p>
+      <h2 class="project-red-heading">{L.project.theProject}</h2>
+      {descriptionStr && (
+        <p class="project-description">{descriptionStr}</p>
       )}
       <div class="project-data-line">
         {resolvedCategories.length > 0 && (
           <span class="data-item">
-            <span class="data-label">Field:</span>
+            <span class="data-label">{L.project.field}</span>
             <span class="data-value">{resolvedCategories.map(c => c.title).join(' | ')}</span>
           </span>
         )}
         <span class="data-item">
-          <span class="data-label">Date:</span>
+          <span class="data-label">{L.project.date}</span>
           <span class="data-value">{data.year}</span>
         </span>
         {locationStr && (
           <span class="data-item">
-            <span class="data-label">Location:</span>
+            <span class="data-label">{L.project.location}</span>
             <span class="data-value">{locationStr}</span>
           </span>
         )}
         {clientTitle && (
           <span class="data-item">
-            <span class="data-label">Client:</span>
+            <span class="data-label">{L.project.client}</span>
             <span class="data-value">{clientTitle}</span>
           </span>
         )}
         {designerTitle && (
           <span class="data-item">
-            <span class="data-label">Architect | Designer:</span>
+            <span class="data-label">{L.project.architectDesigner}</span>
             <span class="data-value">{designerTitle}</span>
           </span>
         )}
@@ -148,24 +159,24 @@ const relatedServices = allServices.filter(s => (data.services ?? []).includes(s
 
     <!-- "The Task:" section header + techniques + services -->
     <div class="project-task-header">
-      <h2 class="project-red-heading">The Task:</h2>
+      <h2 class="project-red-heading">{L.project.theTask}</h2>
       {data.techniques && data.techniques.length > 0 && (
         <div class="techniques-bar">
-          {data.techniques.map((t: string, i: number) => (
+          {data.techniques.map((tech: string, i: number) => (
             <>
               {i > 0 && <span class="tech-sep"> | </span>}
-              <a href={`/vision-tech/${t}/`} class="tech-item">{formatTech(t)}</a>
+              <a href={localeUrl(`/vision-tech/${tech}/`, lang)} class="tech-item">{formatTech(tech)}</a>
             </>
           ))}
         </div>
       )}
       {relatedServices.length > 0 && (
         <div class="services-bar">
-          <span class="services-bar-label">Services:</span>
+          <span class="services-bar-label">{L.project.services}</span>
           {relatedServices.map((svc, i) => (
             <>
               {i > 0 && <span class="tech-sep"> · </span>}
-              <a href={`/services/${svc.slug}/`} class="service-item">{svc.data.title}</a>
+              <a href={localeUrl(`/services/${svc.slug}/`, lang)} class="service-item">{tStr(svc.data.title, lang)}</a>
             </>
           ))}
         </div>
@@ -174,30 +185,30 @@ const relatedServices = allServices.filter(s => (data.services ?? []).includes(s
 
     <!-- MDX body: ProjectTasks text → media → ProjectStory -->
     <div class="project-content">
-      <Content components={{ ImageGallery, ImageCompare, SingleImage, Tour360, FilmEmbed, YouTubeEmbed, YoutubeEmbed: YouTubeEmbed, SectionBanner: MdxSectionBanner, ProjectDescription, ProjectStory, ProjectTasks, ProcessFlow, SpecTable, CompareTable, NotableGrid, DeliverableGrid, TimelineTable, PhaseMatrix }} />
+      <Content components={{ ImageGallery, ImageCompare, SingleImage, Tour360, FilmEmbed, YouTubeEmbed, YoutubeEmbed: YouTubeEmbed, SectionBanner: MdxSectionBanner, ProjectDescription, ProjectStory, ProjectTasks, ProcessFlow, SpecTable, CompareTable, NotableGrid, DeliverableGrid, TimelineTable, PhaseMatrix, Lang }} />
       <ArticleGalleryMounter client:load />
       <ArticleImageCompareMounter client:load />
     </div>
 
     <!-- CTA block -->
     <div class="project-cta">
-      <p>Similar project in mind?</p>
-      <a href="/contact/" class="btn btn-primary">Talk to Us</a>
+      <p>{L.cta.similarProject}</p>
+      <a href={localeUrl('/contact/', lang)} class="btn btn-primary">{L.cta.talkToUs}</a>
     </div>
 
     <!-- Project navigation -->
     <nav class="project-nav" aria-label="Project navigation">
       {prevProject && (
-        <a href={`/portfolio/${prevProject.slug}/`} class="project-nav-link project-nav-link--prev">
-          <span class="nav-dir">← Previous</span>
-          <span class="nav-title">{prevProject.data.title}</span>
+        <a href={localeUrl(`/portfolio/${prevProject.slug}/`, lang)} class="project-nav-link project-nav-link--prev">
+          <span class="nav-dir">{L.cta.previous}</span>
+          <span class="nav-title">{tStr(prevProject.data.title, lang)}</span>
         </a>
       )}
-      <a href="/portfolio/" class="project-nav-link project-nav-link--all">All Projects</a>
+      <a href={localeUrl('/portfolio/', lang)} class="project-nav-link project-nav-link--all">{L.cta.allProjects}</a>
       {nextProject && (
-        <a href={`/portfolio/${nextProject.slug}/`} class="project-nav-link project-nav-link--next">
-          <span class="nav-dir">Next →</span>
-          <span class="nav-title">{nextProject.data.title}</span>
+        <a href={localeUrl(`/portfolio/${nextProject.slug}/`, lang)} class="project-nav-link project-nav-link--next">
+          <span class="nav-dir">{L.cta.next}</span>
+          <span class="nav-title">{tStr(nextProject.data.title, lang)}</span>
         </a>
       )}
     </nav>

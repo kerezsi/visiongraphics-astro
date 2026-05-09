@@ -220,6 +220,38 @@ export async function generateSummary(
   return data.text;
 }
 
+// ---- Translation ----
+
+export async function translate(
+  text: string,
+  from: string,
+  to: string,
+  opts?: { engine?: 'ollama' | 'claude'; model?: string }
+): Promise<string> {
+  const res = await fetch(`${BASE}/translate`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text, from, to, engine: opts?.engine, model: opts?.model }),
+  });
+  const data = await json<{ translation: string }>(res);
+  return data.translation;
+}
+
+export async function translateBatch(
+  texts: string[],
+  from: string,
+  to: string,
+  opts?: { engine?: 'ollama' | 'claude'; model?: string }
+): Promise<string[]> {
+  const res = await fetch(`${BASE}/translate/batch`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ texts, from, to, engine: opts?.engine, model: opts?.model }),
+  });
+  const data = await json<{ translations: string[] }>(res);
+  return data.translations;
+}
+
 // ---- SwarmUI ----
 
 export async function getSwarmStatus(): Promise<SwarmStatusResponse> {
@@ -284,6 +316,11 @@ export interface EditorConfig {
   ollamaSystemPrompts: OllamaSystemPrompt[];
   activeSystemPromptName: string;
   ollamaTaskPrompts: Partial<Record<string, string>>;
+  /** ✦ Translate buttons — engine selection. */
+  translationEngine?: 'ollama' | 'claude';
+  translationOllamaModel?: string;
+  translationClaudeModel?: string;
+  translationPrompt?: string;
 }
 
 export async function getEditorConfig(): Promise<EditorConfig> {

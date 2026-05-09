@@ -1,18 +1,21 @@
 ---
+import { tStr, DEFAULT_LOCALE, type Localized, type Locale } from '../../lib/i18n';
+
 interface Row {
-  scope: string;
-  deliverables: string;
+  scope: Localized<string>;
+  deliverables: Localized<string>;
 }
 interface Props {
   rows: Row[];
 }
 const { rows } = Astro.props;
+const lang: Locale = (Astro.locals as { lang?: Locale })?.lang ?? DEFAULT_LOCALE;
 ---
 <div class="timeline-table">
   {rows.map(row => (
     <div class="timeline-row">
-      <span class="timeline-scope">{row.scope}</span>
-      <span class="timeline-deliverables">{row.deliverables}</span>
+      <span class="timeline-scope">{tStr(row.scope, lang)}</span>
+      <span class="timeline-deliverables">{tStr(row.deliverables, lang)}</span>
     </div>
   ))}
 </div>

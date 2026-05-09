@@ -1,0 +1,758 @@
+---
+// src/pages/index.astro
+
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/layout/Header.astro';
+import Footer from '../../components/layout/Footer.astro';
+import Icon from '../../components/ui/Icon.astro';
+import HomeCarousel from '../../components/HomeCarousel';
+import { getCollection, getEntry } from 'astro:content';
+import { staticLocalePaths, localeUrl, tStr, type Locale } from '../../lib/i18n';
+
+export const getStaticPaths = staticLocalePaths;
+
+
+const { lang } = Astro.params as { lang: Locale };
+Astro.locals.lang = lang;
+// Featured projects for homepage carousel — flatten Localized<T> to plain
+// strings before crossing into the React island (otherwise React renders
+// `[object Object]` and throws).
+const allProjects = await getCollection('projects', ({ data }) =>
+  data.published && data.featured && !!data.coverImage
+);
+const featuredProjects = allProjects.sort((a, b) => b.data.year - a.data.year);
+
+const carouselSlides = await Promise.all(
+  featuredProjects.map(async p => {
+    const city    = p.data.city    ? tStr((await getEntry('cities',    p.data.city.id))?.data.title,    lang) : undefined;
+    const country = p.data.country ? tStr((await getEntry('countries', p.data.country.id))?.data.title, lang) : undefined;
+    return {
+      slug:       p.slug,
+      title:      tStr(p.data.title, lang),
+      year:       p.data.year,
+      coverImage: p.data.coverImage,
+      location:   [city, country].filter(Boolean).join(', ') || undefined,
+    };
+  })
+);
+
+// Services teaser — first 4 by order
+const allServices = await getCollection('services', ({ data }) => data.published);
+const teaserServices = allServices
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 4);
+
+// ── Per-locale homepage copy ─────────────────────────────────────────────
+// All hero/section copy lives here. Picked by `lang`. Keeping the structure
+// identical between locales (TypeScript checks shape) makes adding `de`
+// later mechanical.
+const COPY = {
+  en: {
+    metaTitle:       'Vision Graphics',
+    metaDescription: 'Expert 3D architectural visualization. 30 years, 500+ projects. Budapest-based, working globally. Stills, animation, VR, AI-enhanced workflows.',
+    heroLabel:       '30 Years · 500+ Projects · Budapest',
+    heroH1Lines:     ['Architecture', 'Deserves Better', 'Visuals'],
+    heroSub:         'We turn complex architectural plans into visuals that get projects approved, properties sold, and stakeholders aligned. Budapest-based. Working globally since 1996.',
+    seeWork:         'See Our Work',
+    talkToUs:        'Talk to Us',
+    selectedWork:    'Selected Work',
+    yearsOfProjects: '30 Years of Projects',
+    fullPortfolio:   'Full Portfolio',
+    stats: [
+      { number: '30+',  label: 'Years of experience' },
+      { number: '500+', label: 'Projects delivered' },
+      { number: '4',    label: 'Continents' },
+      { number: '1996', label: 'Founded' },
+    ],
+    studioLabel:     'The Studio',
+    studioName:      'Vision Graphics',
+    laszloAlt:       'The studio mascot keeping watch. László is somewhere in the background — that\'s intentional.',
+    studioBody:      'László Kerezsi has been doing this for 30 years. He works directly on your project — no account managers, no handoffs to juniors. When your project needs more firepower, he brings in a tested network of specialists. You get one point of contact and the output of a full studio.',
+    studioCallout:   '"We catch problems in your plans before they become expensive construction mistakes. That\'s 30 years of pattern recognition working for you."',
+    aboutStudio:     'About the studio',
+    differentiators: [
+      { n: '01', title: 'Direct Access',                 body: 'You work with László, not a project coordinator. He\'s been doing this since 3ds Max was version 1.' },
+      { n: '02', title: 'Scalable Without the Overhead', body: 'Small project? Just us. Airport terminal? We bring in the right specialists. You pay for what the project needs.' },
+      { n: '03', title: 'AI Where It Helps',             body: 'AI integrated into the workflow — not as a gimmick, but to deliver faster drafts, more variations, and better QC on large file sets.' },
+    ],
+    whatWeDo:        'What We Do',
+    services:        'Services',
+    allServices:     'All Services',
+    howItWorksLabel: 'How It Works',
+    howItWorksH2:    'Three Steps to Finished Visuals',
+    processSteps: [
+      { step: '1', title: 'Quick Start',      time: '2–3 days',
+        items: ['Send your plans — we take it from there', 'Clear timing and costs before we begin', 'No lengthy briefing forms'] },
+      { step: '2', title: 'Working Together', time: '1–2 weeks',
+        items: ['First drafts within days', 'Regular check-ins, no surprises', 'Fix things as we go'] },
+      { step: '3', title: 'Ready to Present', time: 'Final week',
+        items: ['Visuals prepared for your format: pitch, planning, or marketing', 'Files delivered in formats your team can use', 'VR upgrade available at any stage'] },
+    ],
+    ctaH2:           "Let's Talk About Your Project",
+    ctaSub:          '30-minute consultation. No charge. No obligation.',
+    getInTouch:      'Get in Touch',
+  },
+  hu: {
+    metaTitle:       'Vision Graphics',
+    metaDescription: 'Profi 3D építészeti látványtervezés. 30 év, 500+ projekt. Budapesti székhellyel, globális ügyfélkörrel. Statikus képek, animáció, VR, AI-támogatott munkafolyamatok.',
+    heroLabel:       '30 év · 500+ projekt · Budapest',
+    heroH1Lines:     ['Az építészet', 'jobb látványt', 'érdemel'],
+    heroSub:         'Az összetett építészeti terveket olyan látványtervekké alakítjuk, amelyek elnyerik a jóváhagyást, eladják az ingatlant és összehangolják a szereplőket. Budapesti székhely. 1996 óta dolgozunk a világ minden táján.',
+    seeWork:         'Munkáink',
+    talkToUs:        'Beszéljünk',
+    selectedWork:    'Válogatott munkák',
+    yearsOfProjects: '30 év projektjei',
+    fullPortfolio:   'Teljes portfólió',
+    stats: [
+      { number: '30+',  label: 'Év tapasztalat' },
+      { number: '500+', label: 'Megvalósított projekt' },
+      { number: '4',    label: 'Kontinens' },
+      { number: '1996', label: 'Alapítva' },
+    ],
+    studioLabel:     'A stúdió',
+    studioName:      'Vision Graphics',
+    laszloAlt:       'A stúdió őrzője. László valahol a háttérben van — ez szándékos.',
+    studioBody:      'Kerezsi László 30 éve csinálja ezt. Közvetlenül a saját projektjén dolgozik — nincs ügyfélmenedzser, nincsenek juniorok, akiknek átadná a feladatot. Amikor a projekt nagyobb tűzerőt igényel, beemeli a kipróbált szakembereket. Egy kapcsolattartó, egy teljes stúdió teljesítménye.',
+    studioCallout:   '„A terveiben még azelőtt felismerjük a problémákat, hogy drága kivitelezési hibákká válnának. 30 év mintafelismerése dolgozik Önnek."',
+    aboutStudio:     'A stúdióról',
+    differentiators: [
+      { n: '01', title: 'Közvetlen elérhetőség',           body: 'Lászlóval dolgozik, nem egy projektkoordinátorral. Azóta csinálja, amióta a 3ds Max még az 1-es verziónál tartott.' },
+      { n: '02', title: 'Skálázható, többletköltség nélkül', body: 'Kis projekt? Csak mi. Repülőtéri terminál? Bevonjuk a megfelelő szakembereket. Csak azt fizeti, amire a projektnek szüksége van.' },
+      { n: '03', title: 'AI ott, ahol valóban segít',       body: 'AI a munkafolyamatba integrálva — nem trükkként, hanem azért, hogy gyorsabb vázlatokat, több variációt és jobb minőségellenőrzést adjunk nagyobb fájlmennyiségen.' },
+    ],
+    whatWeDo:        'Amit csinálunk',
+    services:        'Szolgáltatások',
+    allServices:     'Összes szolgáltatás',
+    howItWorksLabel: 'Hogyan működik',
+    howItWorksH2:    'Három lépés a kész látványtervekig',
+    processSteps: [
+      { step: '1', title: 'Gyors indulás',     time: '2–3 nap',
+        items: ['Küldje el a terveket — mi átvesszük onnantól', 'Egyértelmű határidő és költség, mielőtt elkezdjük', 'Nincsenek hosszú briefing űrlapok'] },
+      { step: '2', title: 'Együttműködés',     time: '1–2 hét',
+        items: ['Első vázlatok napokon belül', 'Rendszeres egyeztetés, semmi meglepetés', 'Menet közben javítjuk a részleteket'] },
+      { step: '3', title: 'Bemutatásra kész',  time: 'Utolsó hét',
+        items: ['Az igényeinek megfelelő formátumban: pályázat, engedélyezés vagy marketing', 'A csapata által használható fájlformátumokban', 'VR-bővítés bármelyik szakaszban kérhető'] },
+    ],
+    ctaH2:           'Beszéljünk a projektjéről',
+    ctaSub:          '30 perces konzultáció. Ingyenes. Kötelezettség nélkül.',
+    getInTouch:      'Lépjen kapcsolatba',
+  },
+} as const;
+
+const c = COPY[lang];
+---
+
+<Base
+  title={c.metaTitle}
+  description={c.metaDescription}
+>
+  <Header />
+
+  <main id="content">
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- HERO                                                        -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <section class="hero">
+      <div class="container hero-inner">
+        <div class="hero-content">
+          <p class="section-label hero-label">{c.heroLabel}</p>
+          <h1 class="hero-h1">
+            {c.heroH1Lines[0]}<br />
+            {c.heroH1Lines[1]}<br />
+            <em>{c.heroH1Lines[2]}</em>
+          </h1>
+          <p class="hero-sub">{c.heroSub}</p>
+          <div class="hero-ctas">
+            <a href={localeUrl('/portfolio/', lang)} class="btn btn-primary">{c.seeWork}</a>
+            <a href={localeUrl('/contact/', lang)}   class="btn btn-secondary">{c.talkToUs}</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-bg" aria-hidden="true">
+        <div class="hero-bg-overlay"></div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- FEATURED WORK — carousel immediately below the fold        -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    {carouselSlides.length > 0 && (
+      <section class="featured-section">
+        <div class="featured-carousel-header container">
+          <div>
+            <p class="section-label">{c.selectedWork}</p>
+            <h2 class="display-md">{c.yearsOfProjects}</h2>
+          </div>
+          <a href={localeUrl('/portfolio/', lang)} class="btn btn-secondary">{c.fullPortfolio}</a>
+        </div>
+        <HomeCarousel slides={carouselSlides} client:load />
+      </section>
+    )}
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- STATS                                                       -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <section class="stats-bar section-sm">
+      <div class="container">
+        <div class="stats-grid">
+          {c.stats.map(s => (
+            <div class="stat">
+              <span class="stat-number">{s.number}</span>
+              <span class="stat-label">{s.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <hr class="container-rule" />
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- THE STUDIO                                                  -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <section class="section solution-section">
+      <div class="container solution-inner">
+        <div class="solution-text">
+          <p class="section-label">{c.studioLabel}</p>
+          <h2 class="display-md">{c.studioName}</h2>
+
+          <div class="laszlo-portrait">
+            <img
+              src="/laszlo.jpg"
+              alt={c.laszloAlt}
+              class="laszlo-img"
+              loading="lazy"
+            />
+          </div>
+
+          <p class="solution-body">{c.studioBody}</p>
+          <blockquote class="solution-callout">{c.studioCallout}</blockquote>
+          <a href={localeUrl('/about/', lang)} class="btn btn-ghost">{c.aboutStudio}</a>
+        </div>
+
+        <div class="differentiators">
+          {c.differentiators.map(d => (
+            <div class="diff-card">
+              <span class="diff-n">{d.n}</span>
+              <h3 class="diff-title">{d.title}</h3>
+              <p class="diff-body">{d.body}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- SERVICES TEASER                                             -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <section class="section services-teaser-section">
+      <div class="container">
+        <div class="services-teaser-header">
+          <div>
+            <p class="section-label">{c.whatWeDo}</p>
+            <h2 class="display-md">{c.services}</h2>
+          </div>
+          <a href={localeUrl('/services/', lang)} class="btn btn-secondary">{c.allServices}</a>
+        </div>
+        <div class="services-teaser-grid">
+          {teaserServices.map((svc, i) => (
+            <a href={localeUrl(`/services/${svc.slug}/`, lang)} class="svc-card">
+              <span class="svc-n">0{i + 1}</span>
+              <h3 class="svc-title">{tStr(svc.data.title, lang)}</h3>
+              <p class="svc-tagline">{tStr(svc.data.tagline, lang)}</p>
+              <span class="svc-arrow" aria-hidden="true">→</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- HOW IT WORKS                                                -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <section class="section process-section">
+      <div class="container">
+        <p class="section-label">{c.howItWorksLabel}</p>
+        <h2 class="display-md">{c.howItWorksH2}</h2>
+        <div class="process-steps">
+          {c.processSteps.map(s => (
+            <div class="process-step">
+              <div class="process-step-header">
+                <span class="process-n">{s.step}</span>
+                <div>
+                  <h3 class="process-title">{s.title}</h3>
+                  <span class="process-time">{s.time}</span>
+                </div>
+              </div>
+              <ul class="process-list">
+                {s.items.map(item => <li>{item}</li>)}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- CTA BANNER                                                  -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <section class="cta-banner">
+      <div class="container cta-banner-inner">
+        <div>
+          <h2 class="cta-h2">{c.ctaH2}</h2>
+          <p class="cta-sub">{c.ctaSub}</p>
+        </div>
+        <a href={localeUrl('/contact/', lang)} class="btn btn-primary">{c.getInTouch}</a>
+      </div>
+    </section>
+
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  /* ── Hero ─────────────────────────────────────────────────── */
+  .hero {
+    position: relative;
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .hero-inner {
+    position: relative;
+    z-index: 2;
+    padding-block: var(--space-20) var(--space-12);
+  }
+
+  .hero-content { max-width: 700px; }
+
+  .hero-label {
+    margin-bottom: var(--space-6);
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.2s forwards;
+  }
+
+  .hero-h1 {
+    font-family: var(--font-display);
+    font-size: var(--fs-h1);
+    font-weight: 300;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    color: var(--color-text);
+    margin-bottom: var(--space-8);
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.35s forwards;
+  }
+
+  .hero-h1 em {
+    font-style: italic;
+    color: var(--color-accent);
+  }
+
+  .hero-sub {
+    font-size: var(--fs-body);
+    font-weight: 300;
+    color: var(--color-text-muted);
+    max-width: 48ch;
+    line-height: 1.7;
+    margin-bottom: var(--space-10);
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.5s forwards;
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.65s forwards;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background:
+      url('/hero-bg.jpg') center/cover no-repeat,
+      linear-gradient(135deg, var(--color-surface-2) 0%, var(--color-surface) 50%, var(--color-surface-2) 100%);
+  }
+
+  .hero-bg-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      105deg,
+      rgba(0, 0, 0, 0.92) 0%,
+      rgba(0, 0, 0, 0.70) 50%,
+      rgba(0, 0, 0, 0.40) 100%
+    );
+  }
+  :global([data-theme="light"]) .hero-bg-overlay {
+    background: linear-gradient(
+      105deg,
+      rgba(247, 245, 242, 0.92) 0%,
+      rgba(247, 245, 242, 0.70) 50%,
+      rgba(247, 245, 242, 0.35) 100%
+    );
+  }
+
+  /* ── Featured / Carousel ──────────────────────────────────── */
+  .featured-carousel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-block: var(--space-8) var(--space-6);
+  }
+
+  /* ── Logos ────────────────────────────────────────────────── */
+  .logos-label { margin-bottom: var(--space-5); }
+
+  .logos-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-8);
+    align-items: center;
+  }
+
+  .logo-name-text {
+    font-family: var(--font-body);
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    color: var(--color-text-faint);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: color 200ms ease;
+  }
+
+  .logo-name-text:hover { color: var(--color-text-muted); }
+
+  /* ── Stats ────────────────────────────────────────────────── */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--color-border);
+    border: 1px solid var(--color-border);
+  }
+
+  .stat {
+    background: var(--color-surface);
+    padding: var(--space-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .stat-number {
+    font-family: var(--font-display);
+    font-size: var(--fs-h3);
+    font-weight: 300;
+    color: var(--color-accent);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-family: var(--font-body);
+    font-size: var(--fs-xs);
+    color: var(--color-text-muted);
+    font-weight: 300;
+  }
+
+  .container-rule {
+    border-color: var(--color-border);
+    margin-inline: auto;
+    max-width: 1320px;
+    padding-inline: clamp(1.5rem, 5vw, 4rem);
+  }
+
+  /* ── Studio / Solution ────────────────────────────────────── */
+  .solution-section { background: var(--color-surface); border-block: 1px solid var(--color-border); }
+
+  .solution-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-20);
+    align-items: start;
+  }
+
+  /* László — editorial rectangle, no circle */
+  .laszlo-portrait {
+    margin: var(--space-6) 0 var(--space-5);
+  }
+
+  .laszlo-img {
+    display: block;
+    width: 100%;
+    max-width: 360px;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    object-position: center;
+    border: 1px solid var(--color-border);
+    border-left: 3px solid var(--color-accent);
+  }
+
+  .solution-body {
+    margin: 0 0 var(--space-6);
+    font-size: var(--fs-small);
+    max-width: 52ch;
+  }
+
+  .solution-callout {
+    border-left: 2px solid var(--color-accent);
+    padding-left: var(--space-5);
+    margin: var(--space-6) 0 var(--space-8);
+    font-family: var(--font-display);
+    font-size: var(--fs-body);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+
+  .differentiators {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 1px solid var(--color-border);
+  }
+
+  .diff-card {
+    padding: var(--space-7) var(--space-8);
+    border-bottom: 1px solid var(--color-border);
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto;
+    column-gap: var(--space-5);
+    row-gap: var(--space-1);
+  }
+
+  .diff-card:last-child { border-bottom: none; }
+
+  .diff-n {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    color: var(--color-accent);
+    grid-row: 1;
+    grid-column: 1;
+    padding-top: 0.1rem;
+  }
+
+  .diff-title {
+    font-family: var(--font-body);
+    font-size: var(--fs-small);
+    font-weight: 500;
+    color: var(--color-text);
+    grid-row: 1;
+    grid-column: 2;
+  }
+
+  .diff-body {
+    font-size: var(--fs-xs);
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    grid-row: 2;
+    grid-column: 2;
+    margin: 0;
+    max-width: none;
+  }
+
+  /* ── Services Teaser ──────────────────────────────────────── */
+  .services-teaser-section { border-top: 1px solid var(--color-border); }
+
+  .services-teaser-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: var(--space-10);
+  }
+
+  .services-teaser-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--color-border);
+    border: 1px solid var(--color-border);
+  }
+
+  .svc-card {
+    background: var(--color-surface);
+    padding: var(--space-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    text-decoration: none;
+    position: relative;
+    transition: background 200ms ease;
+    border-top: 2px solid transparent;
+  }
+
+  .svc-card:hover {
+    background: var(--color-surface-2);
+    border-top-color: var(--color-accent);
+  }
+
+  .svc-n {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    color: var(--color-accent);
+  }
+
+  .svc-title {
+    font-family: var(--font-body);
+    font-size: var(--fs-small);
+    font-weight: 600;
+    color: var(--color-text);
+    line-height: 1.3;
+  }
+
+  .svc-tagline {
+    font-size: var(--fs-xs);
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    flex: 1;
+    margin: 0;
+  }
+
+  .svc-arrow {
+    font-size: var(--fs-small);
+    color: var(--color-text-faint);
+    transition: color 200ms ease, transform 200ms ease;
+    display: inline-block;
+    align-self: flex-start;
+  }
+
+  .svc-card:hover .svc-arrow {
+    color: var(--color-accent);
+    transform: translateX(4px);
+  }
+
+  /* ── Process ──────────────────────────────────────────────── */
+  .process-steps {
+    margin-top: var(--space-10);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--color-border);
+    border: 1px solid var(--color-border);
+  }
+
+  .process-step {
+    background: var(--color-surface);
+    padding: var(--space-10) var(--space-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  .process-step-header {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-4);
+  }
+
+  .process-n {
+    font-family: var(--font-display);
+    font-size: var(--fs-h1);
+    font-weight: 300;
+    color: var(--color-border);
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    flex-shrink: 0;
+  }
+
+  .process-title {
+    font-family: var(--font-body);
+    font-size: var(--fs-body);
+    font-weight: 500;
+    color: var(--color-text);
+    margin-bottom: var(--space-1);
+  }
+
+  .process-time {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    color: var(--color-accent);
+  }
+
+  .process-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: 0;
+  }
+
+  .process-list li {
+    font-size: var(--fs-xs);
+    color: var(--color-text-muted);
+    padding-left: var(--space-4);
+    position: relative;
+    line-height: 1.5;
+  }
+
+  .process-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--color-border);
+    font-size: var(--fs-xs);
+  }
+
+  /* ── CTA Banner ───────────────────────────────────────────── */
+  .cta-banner {
+    background: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+    padding-block: var(--space-16);
+    margin-top: var(--space-24);
+  }
+
+  .cta-banner-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-8);
+    flex-wrap: wrap;
+  }
+
+  .cta-h2 {
+    font-family: var(--font-display);
+    font-size: var(--fs-h5);
+    font-weight: 300;
+    color: var(--color-text);
+    margin-bottom: var(--space-2);
+  }
+
+  .cta-sub {
+    font-size: var(--fs-small);
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  /* ── Animations ───────────────────────────────────────────── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Responsive ───────────────────────────────────────────── */
+  @media (max-width: 1024px) {
+    .solution-inner         { grid-template-columns: 1fr; gap: var(--space-12); }
+    .services-teaser-grid   { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 768px) {
+    .stats-grid             { grid-template-columns: repeat(2, 1fr); }
+    .services-teaser-grid   { grid-template-columns: 1fr; }
+    .process-steps          { grid-template-columns: 1fr; }
+    .cta-banner-inner       { flex-direction: column; text-align: center; }
+    .services-teaser-header { flex-direction: column; align-items: flex-start; gap: var(--space-4); }
+    .featured-carousel-header { flex-direction: column; align-items: flex-start; gap: var(--space-3); }
+    .laszlo-img             { max-width: 100%; }
+  }
+</style>

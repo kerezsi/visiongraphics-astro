@@ -1,7 +1,10 @@
 ---
-title: AI Render Upgrade
-description: |
-  Existing architectural renders or direct software exports transformed into photorealistic variations using AI — different seasons, lighting conditions, weather states, and times of day. No original 3D model required. Available via ai.visiongraphics.eu.
+title:
+  en: "AI Render Upgrade"
+  hu: "AI render-fejlesztés"
+description:
+  en: "Existing architectural renders or direct software exports transformed into photorealistic variations using AI — different seasons, lighting conditions, weather states, and times of day. No original 3D model required. Available via ai.visiongraphics.eu."
+  hu: "Meglévő építészeti renderek vagy közvetlen szoftverexportok átalakítása fotórealisztikus változatokká AI-jal — eltérő évszakok, fényviszonyok, időjárási állapotok és napszakok. Nem kell az eredeti 3D-modell. Elérhető az ai.visiongraphics.eu-n."
 image: /_img/vision-tech/ai-render-upgrade/2026-04-06-19-44-41-278.jpg
 technique: AI-Only
 cost: €
@@ -20,6 +23,7 @@ relatedFeatures: []
 published: true
 ---
 
+<Lang code="en">
 AI Render Upgrade takes an existing architectural image and generates photorealistic variations from it. The geometry, proportions, and spatial relationships stay fixed — what changes is the lighting, atmosphere, season, and surface quality of the output.
 
 This solves a specific problem: a project has renders that were produced early in the design process, or directly exported from ArchiCAD, Revit, or SketchUp without post-processing. The design is correct but the images don't communicate quality. The AI upgrade produces finished, photorealistic output from those existing images without rebuilding the scene in 3D.
@@ -56,14 +60,55 @@ Each input image produces up to 10 variations. Variations can explore:
 Multiple variations allow comparison without the cost of producing multiple photorealistic renders from scratch.
 
 ## Input requirements
+</Lang>
+
+<Lang code="hu">
+Az AI render-fejlesztés egy meglévő építészeti képet vesz alapul, és fotórealisztikus változatokat generál belőle. A geometria, arányok és térbeli viszonyok rögzítettek maradnak — a kimenet világítása, légköre, évszaka és felületi minősége változik.
+
+Ez egy konkrét problémát old meg: a projektnek olyan renderei vannak, amelyek a tervezés korai szakaszában készültek, vagy közvetlenül exportálódtak ArchiCAD-ből, Revitből vagy SketchUpből, utófeldolgozás nélkül. A tervezés helyes, de a képek nem közvetítenek minőséget. Az AI-fejlesztés kész, fotórealisztikus kimenetet ad ezekből a meglévő képekből, anélkül, hogy a jelenetet 3D-ben újra fel kellene építeni.
+
+A szolgáltatás a dedikált platformon érhető el: ai.visiongraphics.eu
+
+## Mi változik és mi marad
+
+Az AI a bemeneti képet szerkezeti és kompozíciós irányadóként használja. A ControlNet-kondicionálás kinyeri a kép mélységét, élszerkezetét és térbeli szerveződését, és ezzel rögzíti a generálást — így az épület ott marad, ahol van, a kameraszög rögzített, és a tömeg helyes. Amit az AI generál, az a felületi minőség, fény, légkör és anyagi karakter.
+
+Ami rögzített marad:
+
+- Az épület geometriája és tömege
+- Kameraszög és kompozíció
+- Az elemek térbeli viszonyai
+
+Amit az AI generál:
+
+- Fotórealisztikus anyagfelületek (kő, üveg, fém, beton, fa)
+- Fényviszonyok (nappali fényirány, ég minősége, árnyékmélység)
+- Évszaki állapot (nyári zöld, őszi szín, téli hó)
+- Időjárás és légkör (tiszta, borult, eső, alkonyat, aranyóra)
+- Kontextus (emberek, járművek, légkörhöz illő tájépítészet)
+
+## Változatok képenként
+
+Minden bemeneti kép legfeljebb 10 változatot ad. A változatok vizsgálhatják:
+
+- Eltérő évszakok (ugyanaz az épület tavasszal, nyáron, ősszel, télen)
+- Eltérő napszakok (reggel, dél, aranyóra, kék óra)
+- Eltérő időjárási állapotok (tiszta, borult, drámai ég)
+- Eltérő anyagi értelmezések (a bemenet szerkezeti korlátain belül)
+
+A több változat lehetővé teszi az összehasonlítást anélkül, hogy több fotórealisztikus rendert kellene a nulláról elkészíteni.
+
+## Bemeneti követelmények
+</Lang>
 
 <SpecTable rows={[
-{ label: "Accepted inputs", value: "Rendered images from any software — 3ds Max, V-Ray, Lumion, Twinmotion, Enscape, Revit, ArchiCAD, SketchUp. Direct software exports without retouching are accepted." },
-{ label: "Image quality", value: "Higher-quality input produces higher-quality output. Noisy, very low-resolution, or heavily compressed input images limit the AI's ability to extract useful structural information." },
-{ label: "Output resolution", value: "6 megapixels per image. Approximately 3000 × 2000 pixels at standard landscape ratio." },
-{ label: "Minimum order", value: "5 images with up to 10 AI variations each. Available at ai.visiongraphics.eu." },
+  { label: { en: "Accepted inputs",   hu: "Elfogadott bemenetek" }, value: { en: "Rendered images from any software — 3ds Max, V-Ray, Lumion, Twinmotion, Enscape, Revit, ArchiCAD, SketchUp. Direct software exports without retouching are accepted.",                                                hu: "Bármely szoftverrel készült render — 3ds Max, V-Ray, Lumion, Twinmotion, Enscape, Revit, ArchiCAD, SketchUp. Közvetlen szoftverexportokat retusálás nélkül is elfogadunk." } },
+  { label: { en: "Image quality",     hu: "Képminőség" },            value: { en: "Higher-quality input produces higher-quality output. Noisy, very low-resolution, or heavily compressed input images limit the AI's ability to extract useful structural information.",                              hu: "Magasabb minőségű bemenet magasabb minőségű kimenetet ad. A zajos, nagyon alacsony felbontású vagy erősen tömörített bemeneti képek korlátozzák, mennyi hasznos szerkezeti információt tud kinyerni az AI." } },
+  { label: { en: "Output resolution", hu: "Kimeneti felbontás" },     value: { en: "6 megapixels per image. Approximately 3000 × 2000 pixels at standard landscape ratio.",                                                                                                                              hu: "6 megapixel képenként. Körülbelül 3000 × 2000 pixel szabványos fekvő arányban." } },
+  { label: { en: "Minimum order",     hu: "Minimum rendelés" },       value: { en: "5 images with up to 10 AI variations each. Available at ai.visiongraphics.eu.",                                                                                                                                          hu: "5 kép, mindegyikből legfeljebb 10 AI-változat. Elérhető az ai.visiongraphics.eu-n." } },
 ]} />
 
+<Lang code="en">
 ## When this is useful
 
 Concept-phase renders — the design is still developing, but you need compelling images for a presentation or funding round. A fast AI upgrade produces images that communicate intent and quality without committing to a full photorealistic render production.
@@ -93,3 +138,36 @@ For AI-generated motion from the upgraded images: AI Animation
 For a fully controlled photorealistic render from the 3D model: Photorealistic Rendering
 
 For transforming the stylistic character of a facade: Architectural Styling
+</Lang>
+
+<Lang code="hu">
+## Mikor hasznos
+
+Koncepció-fázisú renderek — a tervezés még alakulóban, de meggyőző képekre van szüksége egy prezentációhoz vagy finanszírozási körhöz. Egy gyors AI-fejlesztés olyan képeket ad, amelyek szándékot és minőséget közvetítenek, anélkül hogy teljes fotórealisztikus render-produkció mellett kötelezné el magát.
+
+Szoftverexportok — az ArchiCAD-, Revit- és SketchUp-exportok jellemzően laposak, megvilágítatlanok és textúra nélküliek a V-Ray-renderhez képest. Az AI-fejlesztés bezárja ezt a rést anélkül, hogy más szoftverben újra renderelni kellene.
+
+Évszaki és időjárási változatok — egyetlen render négy évszakra vagy több időjárási állapotra fejlesztve, olyan projektekhez, ahol a kontextusra való válasz része a tervezési érvelésnek.
+
+Meglévő render-könyvtár — egy korábbi fázisból származó régebbi renderek, amelyek a geometriát még helyesen mutatják, de új prezentációhoz légkör- vagy anyagminőség-frissítést igényelnek.
+
+## Mit nem csinál
+
+Az AI render-fejlesztés nem ugyanaz, mint új fotórealisztikus render készítése egy teljesen kidolgozott 3D-jelenetből. Az anyagvezérlés a bemenet által irányított, de nem elemenként meghatározott. A felületi minőség valószínűségi alapon generált — az eredmény fotórealisztikus karakterű, de nem garantáltan illeszkedik a pontosan megadott anyagokhoz. Anyagpontos kimenethez teljes V-Ray-render szükséges a 3D-modellből.
+
+Az AI nem generál belső tartalmat külső bemenetekből, és nem ad hozzá olyan szerkezeti elemeket, amelyek az eredeti képen nem szerepelnek.
+
+## Hogyan rendelheti meg
+
+Az AI render-fejlesztés közvetlenül az ai.visiongraphics.eu-n érhető el. Töltse fel a meglévő képeit, adja meg a kívánt változatokat, és megkapja a fotórealisztikus kimeneteket.
+
+AI-fejlesztést új látványterv-munkával kombináló projektekhez — friss renderek, animációk vagy 360°-os túrák — közvetlenül egyeztessen velünk az összevont terjedelemről.
+
+## Kapcsolódó technikák
+
+A fejlesztett képekből AI által generált mozgáshoz: AI-animáció
+
+Teljes mértékben szabályozott fotórealisztikus renderhez a 3D-modellből: Fotórealisztikus renderelés
+
+Egy homlokzat stílusi karakterének átalakításához: Építészeti stílusozás
+</Lang>

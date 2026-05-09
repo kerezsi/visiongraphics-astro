@@ -35,6 +35,18 @@ export interface EditorConfig {
   ollamaSystemPrompts: OllamaSystemPrompt[];
   activeSystemPromptName: string;
   ollamaTaskPrompts: Partial<Record<string, string>>;
+
+  /** Translation engine for the editor's ✦ Translate buttons. */
+  translationEngine?: 'ollama' | 'claude';
+  /** Ollama model used for translation (overrides task-prompt resolveModel). */
+  translationOllamaModel?: string;
+  /** Claude model identifier (e.g. "claude-sonnet-4-5"). */
+  translationClaudeModel?: string;
+  /** Custom translation system prompt (overrides the built-in default). */
+  translationPrompt?: string;
+  // Note: ANTHROPIC_API_KEY is read from process.env, NOT stored in this JSON
+  // file (editor-config.json is checked into the repo). Set it in your shell
+  // environment or in a .env file consumed by the editor's start script.
 }
 
 const DEFAULTS: EditorConfig = {
@@ -47,6 +59,8 @@ const DEFAULTS: EditorConfig = {
   ollamaSystemPrompts: [],
   activeSystemPromptName: '',
   ollamaTaskPrompts: {},
+  translationEngine: 'ollama',
+  translationClaudeModel: 'claude-sonnet-4-5',
 };
 
 let cache: EditorConfig | null = null;

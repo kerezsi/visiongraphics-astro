@@ -1,3 +1,5 @@
 ---
-title: "Designer"
+title:
+  en: Designer
+  hu: Tervező
 ---

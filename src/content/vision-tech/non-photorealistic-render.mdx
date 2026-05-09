@@ -1,6 +1,10 @@
 ---
-title: Non-Photorealistic Rendering
-description: Stylized architectural images that deliberately move away from photorealism — hand-drawn appearance, ink and wash, pencil sketch, watercolour, and hybrid artistic styles. Produced from 3ds Max geometry with V-Ray render passes and post-processing in Photoshop or DaVinci Resolve.
+title:
+  en: "Non-Photorealistic Rendering"
+  hu: "Nem fotórealisztikus renderelés"
+description:
+  en: "Stylized architectural images that deliberately move away from photorealism — hand-drawn appearance, ink and wash, pencil sketch, watercolour, and hybrid artistic styles. Produced from 3ds Max geometry with V-Ray render passes and post-processing in Photoshop or DaVinci Resolve."
+  hu: "Stilizált építészeti képek, amelyek szándékosan eltávolodnak a fotórealizmustól — kézi rajz, tus és lavírozás, ceruzavázlat, akvarell és hibrid művészi stílusok. 3ds Max-geometriából, V-Ray render-passokból és Photoshop vagy DaVinci Resolve utófeldolgozásból."
 image: /_img/vision-tech/non-photorealistic-render.jpg
 technique: Digital
 cost: €
@@ -18,6 +22,7 @@ relatedFeatures: []
 published: true
 ---
 
+<Lang code="en">
 Non-photorealistic rendering (NPR) is architectural visualization in a deliberately artistic register. The building and its geometry are still modeled in 3ds Max — the shapes are correct, proportions are accurate, spatial relationships hold — but the final image looks like a hand drawing, a watercolour study, or an ink sketch rather than a photograph.
 
 The technique is chosen when photorealism would send the wrong signal. Early-stage competition entries, conceptual masterplan presentations, and projects where the design intent matters more than the material detail benefit from images that read as ideas rather than finished products.
@@ -25,20 +30,35 @@ The technique is chosen when photorealism would send the wrong signal. Early-sta
 ## When NPR fits and when it doesn't
 
 The choice between photorealistic and non-photorealistic output is a communication decision, not an aesthetic preference.
+</Lang>
+
+<Lang code="hu">
+A nem fotórealisztikus renderelés (NPR) tudatosan művészi regiszterű építészeti látványterv. Az épületet és geometriáját továbbra is 3ds Maxben modellezzük — a formák helyesek, az arányok pontosak, a térbeli kapcsolatok stabilak —, de a végső kép kézi rajzra, akvarell-tanulmányra vagy tusvázlatra hasonlít, nem fotóra.
+
+A technikát akkor választjuk, ha a fotórealizmus rossz jelzést adna. Korai pályázati beadványok, koncepcionális masterplan-prezentációk és olyan projektek, ahol a tervezési szándék fontosabb az anyagrészletnél, profitálnak az ötletként ható, nem kész termékként ható képekből.
+
+## Mikor illik az NPR és mikor nem
+
+A fotórealisztikus és nem fotórealisztikus kimenet közötti választás kommunikációs döntés, nem esztétikai preferencia.
+</Lang>
 
 <CompareTable
-  headers={["Photorealistic", "Non-Photorealistic"]}
-  rows={[
-    { label: "Signal to viewer", values: ["This is what it will look like", "This is the idea and spatial concept"] },
-    { label: "Detail level", values: ["Every material, fixture, and finish visible", "Structural and spatial emphasis; detail suppressed"] },
-    { label: "Design stage", values: ["Developed or final design", "Concept, schematic, competition entry"] },
-    { label: "Client expectation risk", values: ["High — clients may read the render as a contract", "Low — artistic register signals proposal, not commitment"] },
-    { label: "Competition entry use", values: ["Can feel corporate or generic at smaller budget", "Distinctive character; sets scheme apart from photorealistic entries"] },
-    { label: "Post-processing time", values: ["Standard V-Ray post", "Additional stylization layer, but faster per image than full photorealism"] },
+  headers={[
+    { en: "Photorealistic",      hu: "Fotórealisztikus" },
+    { en: "Non-Photorealistic",  hu: "Nem fotórealisztikus" },
   ]}
-  caption="Choosing the rendering register"
+  rows={[
+    { label: { en: "Signal to viewer",         hu: "Üzenet a nézőnek" },        values: [{ en: "This is what it will look like",                                                hu: "Így fog kinézni" },                                                                  { en: "This is the idea and spatial concept",                            hu: "Ez az ötlet és a térbeli koncepció" }] },
+    { label: { en: "Detail level",              hu: "Részletesség szintje" },     values: [{ en: "Every material, fixture, and finish visible",                                  hu: "Minden anyag, szerelvény és kivitel látható" },                                       { en: "Structural and spatial emphasis; detail suppressed",              hu: "Szerkezeti és térbeli hangsúly; a részlet visszafogva" }] },
+    { label: { en: "Design stage",               hu: "Tervezési fázis" },          values: [{ en: "Developed or final design",                                                     hu: "Kidolgozott vagy végleges terv" },                                                    { en: "Concept, schematic, competition entry",                            hu: "Koncepció, vázlat, pályázati beadvány" }] },
+    { label: { en: "Client expectation risk",   hu: "Ügyfél-elvárás kockázata" },  values: [{ en: "High — clients may read the render as a contract",                              hu: "Magas — az ügyfél a rendert szerződésként olvashatja" },                              { en: "Low — artistic register signals proposal, not commitment",         hu: "Alacsony — a művészi regiszter javaslatot jelez, nem elköteleződést" }] },
+    { label: { en: "Competition entry use",     hu: "Pályázati felhasználás" },   values: [{ en: "Can feel corporate or generic at smaller budget",                               hu: "Kisebb büdzsénél vállalati vagy generikus érzetet kelthet" },                          { en: "Distinctive character; sets scheme apart from photorealistic entries", hu: "Megkülönböztető karakter; kiemelkedik a fotórealisztikus beadványok közül" }] },
+    { label: { en: "Post-processing time",       hu: "Utófeldolgozási idő" },       values: [{ en: "Standard V-Ray post",                                                            hu: "Szabványos V-Ray utómunka" },                                                         { en: "Additional stylization layer, but faster per image than full photorealism", hu: "Plusz stilizációs réteg, de képenként gyorsabb, mint a teljes fotórealizmus" }] },
+  ]}
+  caption={{ en: "Choosing the rendering register", hu: "A render-regiszter megválasztása" }}
 />
 
+<Lang code="en">
 ## Style range
 
 **Hand-drawn / ink line** — wireframe-adjacent, clean linework with selective hatching. Communicates precision and craft. Useful for technical presentations and competition boards where geometric clarity matters.
@@ -62,14 +82,42 @@ The 3D model is built and positioned in 3ds Max in the same way as a photorealis
 **Consistency across views** — for a series (multiple elevations, interior views, site context), a single style template is established on the first image and applied consistently across the set.
 
 ## What we need from you
+</Lang>
+
+<Lang code="hu">
+## Stílusválaszték
+
+**Kézi rajz / tusvonal** — wireframe-szerű, tiszta vonalrajz, szelektív satírozással. Precizitást és kézművességet közvetít. Hasznos műszaki prezentációkhoz és pályázati tablókhoz, ahol a geometriai tisztaság számít.
+
+**Ceruzavázlat** — lágy, textúrás, kissé lazább. Egy gondolkodó rajz benyomását kelti, nem prezentációs rajzét. Jól működik korai szakaszú lakás- és felújítási munkákhoz.
+
+**Tus és lavírozás** — vonalrajz lapos vagy átmenetes tónusú területekkel. Klasszikus építészeti prezentációs technika. Kis méretekben is olvasható, jól skálázódik prezentációs tablókra.
+
+**Akvarell** — lágy színes lavírok vonal felett. Különösen jól működik tájba illeszkedő projekteknél, örökségvédelmi kontextusoknál és kulturális épületeknél, ahol a meleg, emberi minőség megfelelő.
+
+**Vegyes technika** — NPR-elemek fotó-textúrákkal kombinálva. Realisztikus ég egy vázlatos render-épület mögött; fotórealisztikus anyagok egy vonalrajzos szerkezeten. Ez a hibrid megközelítés megőrzi a művészi karaktert, miközben fizikai kontextusba ágyazza a képet.
+
+## Hogyan készül
+
+A 3D-modellt ugyanúgy építjük és pozicionáljuk 3ds Maxben, mint egy fotórealisztikus rendernél. A különbség abban van, mi jön ki V-Rayből és hogyan dolgozzuk fel:
+
+**Render-passok** — a V-Ray külön passokat ad: wireframe vonalak, ambient occlusion, mélység, felületi normálisok, anyag-ID. Ezek a stilizálás nyersanyagai, nem maga a kész kép.
+
+**Utófeldolgozás** — a passokat Photoshopban vagy DaVinci Resolve Fusionben kompozitáljuk és stilizáljuk. Papír-textúrákat fektetünk rá. Vonalvastagságot állítunk. Színt lavír-rétegekkel adunk hozzá. A stilizálás szintjét a választott stílushoz és prezentációs kontextushoz igazítjuk.
+
+**Egységesség nézetek között** — egy sorozathoz (több homlokzat, belsőnézet, helyszínkontextus) egyetlen stílussablont állítunk fel az első képen, és következetesen alkalmazzuk a teljes szettre.
+
+## Mire van szükségünk Öntől
+</Lang>
 
 <SpecTable rows={[
-  { label: "3D model", value: "The same model used for standard rendering. NPR is a post-processing style — the underlying geometry still needs to be correct." },
-  { label: "Style references", value: "Examples of the visual register you're targeting. An architectural drawing you admire, a competition entry, a magazine illustration. Style without a reference is harder to calibrate than style with one." },
-  { label: "Intended use", value: "Competition board, client presentation, social media, print publication. This affects resolution, colour profile, and how much fine detail the stylization needs to carry." },
-  { label: "Viewpoints", value: "Same as standard rendering — plan, elevation, perspective view, aerial. NPR can be applied to any camera position." },
+  { label: { en: "3D model",         hu: "3D-modell" },        value: { en: "The same model used for standard rendering. NPR is a post-processing style — the underlying geometry still needs to be correct.",                                                                                                                                                              hu: "Ugyanaz a modell, mint a hagyományos rendernél. Az NPR utófeldolgozási stílus — a geometriának továbbra is helyesnek kell lennie." } },
+  { label: { en: "Style references", hu: "Stílusreferenciák" }, value: { en: "Examples of the visual register you're targeting. An architectural drawing you admire, a competition entry, a magazine illustration. Style without a reference is harder to calibrate than style with one.",                                                                                  hu: "Példák a megcélzott vizuális regiszterre. Egy építészeti rajz, amit kedvel, egy pályázati beadvány, egy magazinillusztráció. Referencia nélküli stílust nehezebb kalibrálni, mint referenciással." } },
+  { label: { en: "Intended use",     hu: "Tervezett felhasználás" }, value: { en: "Competition board, client presentation, social media, print publication. This affects resolution, colour profile, and how much fine detail the stylization needs to carry.",                                                                                                              hu: "Pályázati tabló, ügyfélprezentáció, közösségi média, nyomtatott publikáció. Ez befolyásolja a felbontást, színprofilt és azt, mennyi finom részletet kell a stilizálásnak hordoznia." } },
+  { label: { en: "Viewpoints",        hu: "Nézőpontok" },         value: { en: "Same as standard rendering — plan, elevation, perspective view, aerial. NPR can be applied to any camera position.",                                                                                                                                                                          hu: "Ugyanaz, mint a hagyományos rendernél — alaprajz, homlokzat, perspektíva, légi. Az NPR bármilyen kamerapozícióra alkalmazható." } },
 ]} />
 
+<Lang code="en">
 ## Related techniques
 
 For photorealistic output from the same model: [Photorealistic Rendering](/vision-tech/photorealistic-rendering/)
@@ -77,3 +125,14 @@ For photorealistic output from the same model: [Photorealistic Rendering](/visio
 For exterior views: [Exterior](/vision-tech/exterior/)
 
 For architectural styling exploration using AI: [Architectural Styling](/vision-tech/architectural-styling/)
+</Lang>
+
+<Lang code="hu">
+## Kapcsolódó technikák
+
+Fotórealisztikus kimenethez ugyanabból a modellből: [Fotórealisztikus renderelés](/vision-tech/photorealistic-rendering/)
+
+Külső nézetekhez: [Külső](/vision-tech/exterior/)
+
+Építészeti stílus-felfedezéshez AI-jal: [Építészeti stílusozás](/vision-tech/architectural-styling/)
+</Lang>

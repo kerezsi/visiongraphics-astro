@@ -1,18 +1,22 @@
 ---
-title: Product Visualization
-description: |
-  Campaign-quality product imagery from CAD files alone — months before the first unit ships. Hero shots, exploded views, interactive 3D configurators, and launch materials that don't require a photo shoot.
-  
-tagline: Market before you manufacture.
+title:
+  en: "Product Visualization"
+  hu: "Termékvizualizáció"
+description:
+  en: "Campaign-quality product imagery from CAD files alone — months before the first unit ships. Hero shots, exploded views, interactive 3D configurators, and launch materials that don't require a photo shoot."
+  hu: "Kampányminőségű termékképek pusztán CAD-fájlokból — hónapokkal az első darab leszállítása előtt. Hero-képek, robbantott nézetek, interaktív 3D-konfigurátorok és piaci bevezetést támogató anyagok fotózás nélkül."
+tagline:
+  en: "Market before you manufacture."
+  hu: "Marketingeljen, mielőtt gyártana."
 bannerImage: /_img/banners/banner-product-viz.jpg
 order: 2
 published: true
-startRequirements: |
-  CAD files or technical drawings · Material / colour references · Target use (print, web, video)
-  
-pricing: |
-  from €3,000. Depends on complexity and number of variants. Quote within one business day.
-  
+startRequirements:
+  en: "CAD files or technical drawings · Material / colour references · Target use (print, web, video)"
+  hu: "CAD-fájlok vagy műszaki rajzok · Anyag- és színreferenciák · Felhasználási cél (print, web, videó)"
+pricing:
+  en: "from €3,000. Depends on complexity and number of variants. Quote within one business day."
+  hu: "3 000 €-tól. Bonyolultság és variánsszám függvénye. Egy munkanapon belüli árajánlat."
 techniques:
   - photorealistic-rendering
   - 3d-animation
@@ -20,10 +24,17 @@ techniques:
   - photo-integration
 ---
 
+<Lang code="en">
 Photo shoots happen after production. By then your design is locked, your marketing timeline is squeezed, and every variant — colour, material, size — means another shoot. We flip the sequence: final-quality imagery from your CAD files, ready before the first unit ships, with every variant at the same cost as the first.
+</Lang>
 
-<YoutubeEmbed url="https://www.youtube.com/watch?v=aiQ8tUT2xFk" title="Steel frame industrial hall assembly" />
+<Lang code="hu">
+A fotózás a gyártás után jön. Akkorra a tervek már be vannak fagyasztva, a marketing-ütemterv szűk, és minden változat — szín, anyag, méret — újabb fotózást jelent. Mi felcseréljük a sorrendet: végminőségű képanyag a CAD-fájljaiból, készen az első darab leszállítása előtt, és minden változat ugyanannyiba kerül, mint az első.
+</Lang>
 
+<YoutubeEmbed url="https://www.youtube.com/watch?v=aiQ8tUT2xFk" title={{ en: "Steel frame industrial hall assembly", hu: "Acélvázas ipari csarnok összeszerelése" }} />
+
+<Lang code="en">
 ## What you get
 
 - Hero shots for e-commerce, advertising, and print — any angle, any background
@@ -32,52 +43,90 @@ Photo shoots happen after production. By then your design is locked, your market
 - Exploded views for technical documentation and pitches
 - Interactive 3D configurators for web — buyers pick their own spec
 - Campaign materials delivered before production begins
+</Lang>
+
+<Lang code="hu">
+## Mit kap
+
+- Hero-képek e-kereskedelemhez, hirdetésekhez és printhez — bármilyen szögből, bármilyen háttéren
+- Szín- és anyagváltozatok ismételt fotózás nélkül
+- Funkció-animációk, amelyek megmutatják a termék működését
+- Robbantott nézetek műszaki dokumentációhoz és pitch-ekhez
+- Interaktív 3D-konfigurátor weboldalra — a vevő saját maga állítja össze a specifikációt
+- Kampánykész anyagok, mielőtt a gyártás elkezdődne
+</Lang>
 
 <ProcessFlow
-title="From CAD file to campaign asset"
-steps={[
-{ label: "Brief", sub: "Files, refs, use cases" },
-{ label: "3D Model", sub: "Geometry & materials" },
-{ label: "Lighting", sub: "Studio or context scene" },
-{ label: "Review", sub: "Client approval round" },
-{ label: "Variants", sub: "Colours, configs, angles" },
-{ label: "Delivery", sub: "All formats + source" },
-]}
-feedback={[
-{ from: 3, to: 1, label: "Revision — back to materials or geometry" },
-]}
+  title={{ en: "From CAD file to campaign asset", hu: "A CAD-fájltól a kampányanyagig" }}
+  steps={[
+    { label: { en: "Brief",     hu: "Brief" },           sub: { en: "Files, refs, use cases",         hu: "Fájlok, referenciák, felhasználási esetek" } },
+    { label: { en: "3D Model",  hu: "3D-modell" },        sub: { en: "Geometry & materials",            hu: "Geometria és anyagok" } },
+    { label: { en: "Lighting",  hu: "Világítás" },        sub: { en: "Studio or context scene",         hu: "Stúdió- vagy kontextus-jelenet" } },
+    { label: { en: "Review",    hu: "Szemle" },           sub: { en: "Client approval round",           hu: "Ügyfél-jóváhagyási kör" } },
+    { label: { en: "Variants",  hu: "Változatok" },       sub: { en: "Colours, configs, angles",        hu: "Színek, konfigurációk, szögek" } },
+    { label: { en: "Delivery",  hu: "Átadás" },           sub: { en: "All formats + source",            hu: "Minden formátum és forrásfájl" } },
+  ]}
+  feedback={[
+    { from: 3, to: 1, label: { en: "Revision — back to materials or geometry", hu: "Módosítás — vissza az anyagokhoz vagy geometriához" } },
+  ]}
 />
 
 <SectionBanner
   image="/_img/banners/banner-product-viz.jpg"
-  label="Hero Imagery"
-  title="Shots That Sell"
+  label={{ en: "Hero Imagery", hu: "Hero-képanyag" }}
+  title={{ en: "Shots That Sell", hu: "Felvételek, amelyek eladnak" }}
 />
 
-<DeliverableGrid columns={3} items={[{"title":"Hero Product Shots","desc":"Studio-quality renders on white, contextual lifestyle settings, or branded backdrops. Any angle. Output at print resolution."},{"title":"Colour & Material Variants","desc":"Generate a full range of colourways, surface finishes, and material options from a single 3D model — at a fraction of re-shoot costs."},{"title":"Lifestyle Scenes","desc":"Your product placed in realistic interior or exterior settings — without logistics, lighting rigs, or location fees.","href":"/vision-tech/photo-integration/"}]} />
+<DeliverableGrid columns={3} items={[
+  { title: { en: "Hero Product Shots",          hu: "Hero termékfelvételek" },         desc: { en: "Studio-quality renders on white, contextual lifestyle settings, or branded backdrops. Any angle. Output at print resolution.", hu: "Stúdióminőségű renderek fehér háttéren, kontextusos lifestyle-szettben vagy márkás háttérrel. Bármilyen szögből. Print-felbontásban." } },
+  { title: { en: "Colour & Material Variants",  hu: "Szín- és anyagváltozatok" },      desc: { en: "Generate a full range of colourways, surface finishes, and material options from a single 3D model — at a fraction of re-shoot costs.", hu: "Egy 3D-modellből teljes színpaletta, felületi kivitelek és anyagopciók — egy újrafotózás töredékének költségén." } },
+  { title: { en: "Lifestyle Scenes",            hu: "Lifestyle-jelenetek" },           desc: { en: "Your product placed in realistic interior or exterior settings — without logistics, lighting rigs, or location fees.", hu: "A terméke valósághű belső vagy külső környezetben — logisztika, fényrigek és helyszínbérleti díjak nélkül." }, href: "/vision-tech/photo-integration/" },
+]} />
 
 <ImageGallery images={[{"src":"/_img/services/product-visualization/nagykep-copy.jpg","alt":"CIB application screen"},{"src":"/_img/services/product-visualization/rajz-1.jpg","alt":"Furniture design"},{"src":"/_img/services/product-visualization/uj-010000.jpg","alt":"Shelving design for Danone"},{"src":"/_img/services/product-visualization/aprily-stand-0030000.jpg","alt":"Booth design"},{"src":"/_img/services/product-visualization/gold-elol-006-x0000.jpg","alt":"Plexi piano design"}]} />
 
 <SectionBanner
   image="/_img/banners/banner-general.jpg"
-  label="Motion"
-  title="Show How It Works"
+  label={{ en: "Motion", hu: "Mozgás" }}
+  title={{ en: "Show How It Works", hu: "Mutassa meg, hogyan működik" }}
 />
 
-<DeliverableGrid columns={3} items={[{"title":"Feature Animations","desc":"Animated sequences showing mechanisms, assembly, or key selling points — used for launch videos, trade show loops, and e-commerce.","href":"/vision-tech/3d-animation/"},{"title":"Exploded Views","desc":"Component-level breakdowns showing internal structure, assembly order, and key parts — for pitches, manuals, and investor decks.","href":"/vision-tech/non-photorealistic-render/"},{"title":"360° Product Spins","desc":"Fully rotatable web embeds that let buyers examine every angle on your product page — no plugin required.","href":"/vision-tech/360-renderings/"}]} />
+<DeliverableGrid columns={3} items={[
+  { title: { en: "Feature Animations",  hu: "Funkció-animációk" }, desc: { en: "Animated sequences showing mechanisms, assembly, or key selling points — used for launch videos, trade show loops, and e-commerce.", hu: "Animált szekvenciák, amelyek bemutatják a mechanizmusokat, az összeszerelést vagy a fő érveket — bevezető videókhoz, vásári loophoz és e-kereskedelemhez." }, href: "/vision-tech/3d-animation/" },
+  { title: { en: "Exploded Views",      hu: "Robbantott nézetek" }, desc: { en: "Component-level breakdowns showing internal structure, assembly order, and key parts — for pitches, manuals, and investor decks.", hu: "Komponens szintű bontások, amelyek bemutatják a belső szerkezetet, összeszerelési sorrendet és kulcs alkatrészeket — pitch-ekhez, használati útmutatókhoz és befektetői prezentációkhoz." }, href: "/vision-tech/non-photorealistic-render/" },
+  { title: { en: "360° Product Spins",  hu: "360°-os termékforgatás" }, desc: { en: "Fully rotatable web embeds that let buyers examine every angle on your product page — no plugin required.", hu: "Teljesen forgatható webes beágyazások, hogy a vevők minden szögből megnézhessék a termékét — plugin nélkül." }, href: "/vision-tech/360-renderings/" },
+]} />
 
 <SectionBanner
   image="/_img/banners/banner-workflow.jpg"
-  label="Configure"
-  title="Let Buyers Choose Their Spec"
+  label={{ en: "Configure", hu: "Konfigurálás" }}
+  title={{ en: "Let Buyers Choose Their Spec", hu: "Engedje, hogy a vevők saját maguk állítsák össze" }}
 />
 
+<Lang code="en">
 An interactive 3D configurator turns your product range into a self-service sales tool. Buyers pick colour, material, and options; they see the result immediately in photorealistic quality — on your website, on any device. No separate renders per variant. One model, infinite combinations.
+</Lang>
 
-<YoutubeEmbed url="https://www.youtube.com/watch?v=SZDejBVAV_c" title="3D Concrete Reinforcement system" />
+<Lang code="hu">
+Egy interaktív 3D-konfigurátor önkiszolgáló értékesítési eszközzé alakítja a termékkínálatát. A vevő kiválasztja a színt, anyagot és opciókat; az eredményt azonnal fotórealisztikus minőségben látja — a weboldalon, bármilyen eszközön. Nincs külön render minden változathoz. Egy modell, végtelen kombináció.
+</Lang>
 
+<YoutubeEmbed url="https://www.youtube.com/watch?v=SZDejBVAV_c" title={{ en: "3D Concrete Reinforcement system", hu: "3D vasbeton-erősítési rendszer" }} />
+
+<Lang code="en">
 This works particularly well for furniture, fixtures, consumer electronics, and industrial equipment with multiple configuration options.
+</Lang>
 
-<YoutubeEmbed url="https://www.youtube.com/watch?v=w3FA-emHwUA" title="Moko wall" />
+<Lang code="hu">
+Ez különösen jól működik bútorok, beépített elemek, fogyasztói elektronika és többféle konfigurációs lehetőséggel rendelkező ipari berendezések esetén.
+</Lang>
 
+<YoutubeEmbed url="https://www.youtube.com/watch?v=w3FA-emHwUA" title={{ en: "Moko wall", hu: "Moko fal" }} />
+
+<Lang code="en">
 A typical single-product hero package — 8 angles, 4 colour variants, print-resolution output — runs €3,000–5,000. Multi-product suites, animation sequences, and configurator builds are scoped individually.
+</Lang>
+
+<Lang code="hu">
+Egy tipikus egyetlen termékre szóló hero-csomag — 8 szög, 4 színváltozat, print-felbontású kimenet — 3 000–5 000 €. Több terméket átfogó csomagok, animációs szekvenciák és konfigurátor-építések egyedi árazással.
+</Lang>

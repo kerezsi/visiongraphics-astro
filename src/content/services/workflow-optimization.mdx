@@ -1,14 +1,25 @@
 ---
-title: "Workflow Optimization"
-description: "Pipeline audits, bottleneck analysis, and custom automation that finds and fixes what's actually slowing your studio down. Starts with a written report — quick wins first, then lasting improvements your team will actually use."
-tagline: "Your pipeline is probably slower than it needs to be."
+title:
+  en: "Workflow Optimization"
+  hu: "Munkafolyamat-optimalizálás"
+description:
+  en: "Pipeline audits, bottleneck analysis, and custom automation that finds and fixes what's actually slowing your studio down. Starts with a written report — quick wins first, then lasting improvements your team will actually use."
+  hu: "Pipeline-auditok, szűk keresztmetszet elemzés és egyedi automatizálás, amely megtalálja és javítja, ami valójában lassítja a stúdióját. Írásos jelentéssel kezdődik — előbb a gyors nyereségek, aztán a tartós javítások, amelyeket a csapat valóban használni fog."
+tagline:
+  en: "Your pipeline is probably slower than it needs to be."
+  hu: "A pipeline-ja valószínűleg lassabb, mint amilyen lehetne."
 bannerImage: "/_img/banners/banner-workflow.jpg"
 order: 5
 published: true
-startRequirements: "30-minute discovery call · Access to describe your current pipeline · No software or file access needed upfront"
-pricing: "from €1,500. Pipeline audit + written report. Implementation quoted separately."
+startRequirements:
+  en: "30-minute discovery call · Access to describe your current pipeline · No software or file access needed upfront"
+  hu: "30 perces felmérőhívás · Rálátás a jelenlegi pipeline-ra · Előre nem szükséges szoftverhez vagy fájlokhoz hozzáférés"
+pricing:
+  en: "from €1,500. Pipeline audit + written report. Implementation quoted separately."
+  hu: "1 500 €-tól. Pipeline-audit és írásos jelentés. A bevezetés külön árazás."
 ---
 
+<Lang code="en">
 Studios rarely lose jobs to bad work. They lose time to bad process — the ten-minute task that takes an hour, the file that breaks on delivery, the step everyone's worked around for two years. We find those problems, quantify them, and fix them in order of impact.
 
 ## Who this is for
@@ -19,36 +30,62 @@ Studios rarely lose jobs to bad work. They lose time to bad process — the ten-
 - Anyone who's said "we need to sort out our file system" more than twice this year
 
 ## What's slowing you down?
+</Lang>
+
+<Lang code="hu">
+A stúdiók ritkán veszítenek megbízást rossz munka miatt. A rossz folyamatra veszítenek időt — a tízperces feladat, ami egy órát vesz igénybe, a leadáskor megtörő fájl, az a lépés, amit mindenki két éve kerülgetni próbál. Mi megtaláljuk ezeket a problémákat, számszerűsítjük őket, és a hatásuk sorrendjében javítjuk ki őket.
+
+## Kinek szól
+
+- Látványtervező stúdiók, amelyek túl sok időt fordítanak koordinációra ahelyett, hogy alkotnának
+- Építészek és tervezők, akiknek a render-pipeline-ja nem illik ahhoz, ahogyan a csapatuk valójában dolgozik
+- Növekvő stúdiók, amelyek olyan szűk keresztmetszetekbe ütköznek, amelyek kisebb csapatnál nem számítottak
+- Bárki, aki idén már többször is elmondta, hogy „ki kéne találnunk a fájlrendszerünket"
+
+## Mi lassítja Önt?
+</Lang>
 
 <DeliverableGrid columns={2} items={[
-  { title: "Handoff problems", desc: "Files that aren't ready when they reach the next person. Missing assets, wrong formats, unclear naming — each one costs 20 minutes you can't see on a timesheet." },
-  { title: "Repeat manual work", desc: "Tasks done the same way by hand every project because no-one's had time to automate them. We measure how much time they actually cost, then fix them." },
-  { title: "Version confusion", desc: "Multiple copies of files, unclear which is current, decisions made on outdated material. A consistent file structure costs almost nothing to set up and saves it every week." },
-  { title: "Tool friction", desc: "Software that doesn't talk to each other, exports that need re-importing, approval workflows that happen outside the tools. Integration work that pays for itself in a month." },
+  { title: { en: "Handoff problems",   hu: "Átadási problémák" },          desc: { en: "Files that aren't ready when they reach the next person. Missing assets, wrong formats, unclear naming — each one costs 20 minutes you can't see on a timesheet.", hu: "Olyan fájlok, amelyek nem készek, mikor a következő emberhez érnek. Hiányzó asset-ek, rossz formátumok, érthetetlen elnevezések — mind 20 percet visz el, ami a timesheeten sem látszik." } },
+  { title: { en: "Repeat manual work", hu: "Ismétlődő kézi munka" },        desc: { en: "Tasks done the same way by hand every project because no-one's had time to automate them. We measure how much time they actually cost, then fix them.", hu: "Feladatok, amelyeket minden projektben ugyanúgy kézzel csinálnak, mert senkinek nem jutott ideje automatizálni. Megmérjük, mennyi időt visznek, majd javítjuk őket." } },
+  { title: { en: "Version confusion",  hu: "Verziókáosz" },                 desc: { en: "Multiple copies of files, unclear which is current, decisions made on outdated material. A consistent file structure costs almost nothing to set up and saves it every week.", hu: "Több fájlmásolat, nem világos, melyik az aktuális, elavult anyag alapján született döntések. Egy egységes fájlstruktúra felállítása szinte semmibe sem kerül, és heti szinten megtérül." } },
+  { title: { en: "Tool friction",      hu: "Eszköz-súrlódás" },             desc: { en: "Software that doesn't talk to each other, exports that need re-importing, approval workflows that happen outside the tools. Integration work that pays for itself in a month.", hu: "Egymással nem beszélő szoftverek, ismételt importálást igénylő exportok, az eszközökön kívül lefolyó jóváhagyási folyamatok. Olyan integrációs munka, amely egy hónap alatt megtérül." } },
 ]} />
 
 <ProcessFlow
-  title="How a workflow audit works"
+  title={{ en: "How a workflow audit works", hu: "Hogyan zajlik egy munkafolyamat-audit" }}
   steps={[
-    { label: "Discovery Call", sub: "30 min — understand your setup" },
-    { label: "Audit", sub: "Remote or on-site observation" },
-    { label: "Written Report", sub: "Specific fixes + time estimates" },
-    { label: "Quick Wins", sub: "Implement highest-impact changes first" },
-    { label: "Build & Train", sub: "Lasting fixes + team documentation" },
+    { label: { en: "Discovery Call", hu: "Felmérőhívás" },     sub: { en: "30 min — understand your setup",        hu: "30 perc — megértjük a felállást" } },
+    { label: { en: "Audit",          hu: "Audit" },             sub: { en: "Remote or on-site observation",         hu: "Távoli vagy helyszíni megfigyelés" } },
+    { label: { en: "Written Report", hu: "Írásos jelentés" },   sub: { en: "Specific fixes + time estimates",       hu: "Konkrét javítások és időbecslések" } },
+    { label: { en: "Quick Wins",     hu: "Gyors nyereségek" },  sub: { en: "Implement highest-impact changes first", hu: "Először a legnagyobb hatású változtatások" } },
+    { label: { en: "Build & Train",  hu: "Építés és képzés" },  sub: { en: "Lasting fixes + team documentation",    hu: "Tartós javítások és csapatdokumentáció" } },
   ]}
 />
 
-<SectionBanner image="/_img/banners/banner-general.jpg" label="Quick Wins" title="Start Saving Time This Week" />
+<SectionBanner image="/_img/banners/banner-general.jpg" label={{ en: "Quick Wins", hu: "Gyors nyereségek" }} title={{ en: "Start Saving Time This Week", hu: "Kezdjen időt spórolni már a héten" }} />
 
+<Lang code="en">
 Most audits surface three or four changes that can be made immediately — no new software, no retraining. A consistent file naming convention. An export script instead of a manual step. A shared asset library instead of per-project copies. These alone often recover more than the cost of the audit in the first month.
 
 - Connect tools that should talk to each other
 - Cut duplicate work and unnecessary handoff steps
 - Automate repetitive tasks that waste hours per week
 - Fix broken processes everyone has learned to work around
+</Lang>
 
-<SectionBanner image="/_img/banners/banner-tech.jpg" label="Long-Term Gains" title="Built to Scale With You" />
+<Lang code="hu">
+A legtöbb audit három-négy olyan változtatást hoz felszínre, amelyek azonnal elvégezhetők — új szoftver, átképzés nélkül. Egységes fájlnévkonvenció. Manuális lépés helyett egy export-szkript. Projektenkénti másolatok helyett közös asset-könyvtár. Ezek önmagukban gyakran már az első hónapban behozzák az audit költségét.
 
+- Olyan eszközök összekapcsolása, amelyeknek beszélniük kellene egymással
+- Duplikált munka és felesleges átadási lépések kiszűrése
+- Hetente órákat felemésztő ismétlődő feladatok automatizálása
+- Olyan elromlott folyamatok javítása, amelyeket mindenki megtanult kerülgetni
+</Lang>
+
+<SectionBanner image="/_img/banners/banner-tech.jpg" label={{ en: "Long-Term Gains", hu: "Hosszú távú nyereségek" }} title={{ en: "Built to Scale With You", hu: "Önnel együtt skálázódik" }} />
+
+<Lang code="en">
 Short-term fixes help, but the real value is a pipeline that holds up as the team grows. We build on tools you already use and document everything so the improvements don't live in one person's head.
 
 - File management and version control that actually works
@@ -57,3 +94,15 @@ Short-term fixes help, but the real value is a pipeline that holds up as the tea
 - For studios: project handoff protocols that prevent the "where's the final?" conversation
 
 The audit report is yours to keep and implement yourself, or we can handle implementation. Either way you get a written record of what was found, what it costs you in time, and what fixing it looks like.
+</Lang>
+
+<Lang code="hu">
+A rövid távú javítások segítenek, de az igazi érték az a pipeline, amely a csapat növekedésével is állja az iramot. A már használt eszközeire építünk, és mindent dokumentálunk, hogy a javítások ne egy ember fejében éljenek.
+
+- Fájlkezelés és verziókezelés, ami tényleg működik
+- Leadási csomagolás automatizálása — minden alkalommal helyes formátumok és nevek
+- Ügyfél-visszajelzések és jóváhagyások követése e-mail-régészet nélkül
+- Stúdióknak: projekt-átadási protokollok, amelyek megelőzik a „hol van a végleges?" beszélgetést
+
+Az audit-jelentés az Öné: maga is bevezetheti, vagy mi is elvégezhetjük. Bármelyik utat választja, írásos rekordot kap arról, mit találtunk, mennyi időt visz Önnek, és hogyan néz ki a javítása.
+</Lang>

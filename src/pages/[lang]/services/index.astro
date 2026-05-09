@@ -1,0 +1,178 @@
+---
+// src/pages/services/index.astro
+
+import { getCollection } from 'astro:content';
+import Page from '../../../layouts/Page.astro';
+import SectionBanner from '../../../components/ui/SectionBanner.astro';
+import ServicesTabs from '../../../components/services/ServicesTabs';
+import { staticLocalePaths, localeUrl, tStr, type Locale } from '../../../lib/i18n';
+
+export const getStaticPaths = staticLocalePaths;
+
+
+const { lang } = Astro.params as { lang: Locale };
+Astro.locals.lang = lang;
+const allServices = await getCollection('services', ({ data }) => data.published);
+allServices.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+
+// Flatten Localized<T> to plain strings before passing to the React island —
+// React throws on rendering `{en, hu}` objects as children.
+const serviceItems = allServices.map(s => ({
+  slug:        s.slug,
+  title:       tStr(s.data.title, lang),
+  tagline:     tStr(s.data.tagline, lang) || undefined,
+  description: tStr(s.data.description, lang),
+}));
+
+const COPY = {
+  en: {
+    metaTitle:        'Services',
+    metaDescription:  'Architectural visualization, product visualization, large-scale projects, AI-enhanced workflows, 3ds Max scripting, workflow optimization, custom rendering. Working globally since 1996.',
+    bannerLabel:      'Visuals & Solutions',
+    bannerTitle:      'Show It, Scale It, Build It.',
+    intro:            'From single architectural renders to airport-scale animation sequences. From photorealistic product shots to custom MAXScript tools, pipeline audits, and AI-enhanced workflows. Seven services — scoped and priced to your actual project, not a package tier.',
+    pricingLabel:     'Pricing',
+    pricingHeading:   'Transparent from the Start',
+    pricingBody:      'Essential from €5,000 · Professional from €15,000 · Enterprise custom. We quote based on actual scope, not package tiers.',
+    seePricing:       'See Pricing',
+    getQuote:         'Get a Quote',
+    pricingNote:      '"Not sure which fits?\n30-minute consultation, no charge."',
+    exploreService:   'Explore this service',
+  },
+  hu: {
+    metaTitle:        'Szolgáltatások',
+    metaDescription:  'Építészeti látványterv, termékvizualizáció, nagyléptékű projektek, AI-támogatott munkafolyamatok, 3ds Max szkriptek, munkafolyamat-optimalizálás, egyedi renderelés. 1996 óta globálisan dolgozunk.',
+    bannerLabel:      'Látvány és megoldások',
+    bannerTitle:      'Láttassa, méretezze, építse fel.',
+    intro:            'Egyetlen építészeti rendertől repülőtéri méretű animációs szekvenciákig. Fotorealisztikus termékfotóktól egyedi MAXScript eszközökig, munkafolyamat-auditokig és AI-támogatott folyamatokig. Hét szolgáltatás — a tényleges projektre szabott terjedelem és ár, nem csomagsávok.',
+    pricingLabel:     'Árképzés',
+    pricingHeading:   'Átlátható az első perctől',
+    pricingBody:      'Essential 5 000 €-tól · Professional 15 000 €-tól · Enterprise egyedi árazással. A tényleges terjedelem alapján adunk árajánlatot, nem csomagsávok szerint.',
+    seePricing:       'Árlista',
+    getQuote:         'Árajánlat',
+    pricingNote:      '„Nem biztos benne, melyik illik Önhöz?\n30 perces konzultáció, ingyenesen."',
+    exploreService:   'Részletek',
+  },
+} as const;
+const c = COPY[lang];
+---
+
+<Page
+  title={c.metaTitle}
+  description={c.metaDescription}
+  fullBleed
+>
+
+  <SectionBanner
+    image="/_img/banners/banner-services.jpg"
+    label={c.bannerLabel}
+    title={c.bannerTitle}
+    size="page"
+    headingLevel="h1"
+  />
+
+  <div class="services-page">
+
+    <div class="services-intro section-sm">
+      <div class="container">
+        <p class="services-sub">{c.intro}</p>
+      </div>
+    </div>
+
+    <section class="services-tabs-section section-sm">
+      <div class="container">
+        <ServicesTabs services={serviceItems} exploreLabel={c.exploreService} servicesUrlPrefix={localeUrl('/services/', lang)} client:load />
+      </div>
+    </section>
+
+    <hr class="page-rule" />
+
+    <!-- Pricing teaser -->
+    <section class="section">
+      <div class="container pricing-teaser">
+        <div>
+          <p class="section-label">{c.pricingLabel}</p>
+          <h2 class="display-md pricing-heading">{c.pricingHeading}</h2>
+          <p class="pricing-body">{c.pricingBody}</p>
+          <div class="pricing-ctas">
+            <a href={localeUrl('/pricing/', lang)} class="btn btn-secondary">{c.seePricing}</a>
+            <a href={localeUrl('/contact/', lang)} class="btn btn-primary">{c.getQuote}</a>
+          </div>
+        </div>
+        <div class="pricing-note">
+          <p set:html={c.pricingNote.replace(/\n/g, '<br />')} />
+        </div>
+      </div>
+    </section>
+
+  </div>
+</Page>
+
+<style>
+  .services-page { width: 100%; }
+
+  .services-intro {
+    padding-block: clamp(1.5rem, 3vw, 2rem);
+  }
+
+  .services-sub {
+    font-size: var(--fs-body);
+    color: var(--color-text-muted);
+    max-width: 52ch;
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  .services-tabs-section {
+    padding-block: clamp(1rem, 2vw, 2rem) clamp(2rem, 4vw, 3.5rem);
+  }
+
+  .page-rule {
+    border-color: var(--color-border);
+    margin-inline: auto;
+    max-width: 1320px;
+  }
+
+  /* Pricing teaser */
+  .pricing-teaser {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .pricing-heading { margin: var(--space-3) 0 var(--space-4); }
+
+  .pricing-body {
+    font-size: var(--fs-small);
+    color: var(--color-text-muted);
+    max-width: 52ch;
+    line-height: 1.7;
+    margin-bottom: var(--space-6);
+  }
+
+  .pricing-ctas { display: flex; gap: var(--space-3); flex-wrap: wrap; }
+
+  .pricing-note {
+    border: 1px solid var(--color-border);
+    padding: 2rem;
+    border-radius: var(--radius-sm);
+    background: var(--color-surface);
+  }
+
+  .pricing-note p {
+    font-family: var(--font-display);
+    font-size: var(--fs-body);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+    margin: 0;
+    max-width: none;
+  }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .pricing-teaser { grid-template-columns: 1fr; gap: 2rem; }
+  }
+</style>

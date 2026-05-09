@@ -1,3 +1,5 @@
 ---
-title: "Artist"
+title:
+  en: Artist
+  hu: Művész
 ---

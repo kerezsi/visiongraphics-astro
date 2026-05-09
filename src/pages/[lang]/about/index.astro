@@ -1,10 +1,16 @@
 ---
 // src/pages/about/index.astro
 
-import Page          from '../../layouts/Page.astro';
-import SectionBanner from '../../components/ui/SectionBanner.astro';
-import timeline      from '../../data/about-timeline.json';
+import Page          from '../../../layouts/Page.astro';
+import SectionBanner from '../../../components/ui/SectionBanner.astro';
+import timeline      from '../../../data/about-timeline.json';
+import { staticLocalePaths, type Locale } from '../../../lib/i18n';
 
+export const getStaticPaths = staticLocalePaths;
+
+
+const { lang } = Astro.params as { lang: Locale };
+Astro.locals.lang = lang;
 const specialists = [
   { role: '3D Scanning Specialist',      desc: 'Detailed digital copies of buildings and objects using scanning equipment.' },
   { role: 'Architecture Photographer',   desc: 'High-quality site photography matched to real-world detail in 3D work.' },
@@ -109,9 +115,9 @@ const specialists = [
               <span class="contact-link-label">Phone</span>
               <span class="contact-link-value">+36 30 945 4179</span>
             </a>
-            <a href="mailto:info@visiongraphics.eu" class="contact-link">
+            <a href="mailto:info@visiongraphics.hu" class="contact-link">
               <span class="contact-link-label">Email</span>
-              <span class="contact-link-value">info@visiongraphics.eu</span>
+              <span class="contact-link-value">info@visiongraphics.hu</span>
             </a>
           </div>
         </div>

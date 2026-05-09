@@ -1,33 +1,41 @@
 ---
 // PhaseMatrix — shows which deliverable types fit which project phases
 // Values: "primary" = filled dot, "secondary" = half dot, "none" = empty dot
+import { tStr, DEFAULT_LOCALE, type Localized, type Locale } from '../../lib/i18n';
+
 interface Row {
-  label: string;
-  sub?: string;
+  label: Localized<string>;
+  sub?: Localized<string>;
   values: Array<'primary' | 'secondary' | 'none'>;
 }
 interface Props {
-  columns: string[];
+  columns: Array<Localized<string>>;
   rows: Row[];
-  title?: string;
+  title?: Localized<string>;
 }
 const { columns, rows, title } = Astro.props;
+const lang: Locale = (Astro.locals as { lang?: Locale })?.lang ?? DEFAULT_LOCALE;
+const titleStr = tStr(title, lang);
+
+const LEGEND = lang === 'hu'
+  ? { primary: 'Elsődleges használat', secondary: 'Alkalmankénti', none: 'Ritkán szükséges' }
+  : { primary: 'Primary use',          secondary: 'Occasional',     none: 'Rarely needed' };
 ---
 
 <div class="phase-matrix">
-  {title && <p class="phase-matrix-title">{title}</p>}
+  {titleStr && <p class="phase-matrix-title">{titleStr}</p>}
   <div class="phase-matrix-table" style={`--cols: ${columns.length + 1};`}>
     {/* Header row */}
     <div class="pm-cell pm-header pm-row-label"></div>
     {columns.map(col => (
-      <div class="pm-cell pm-header pm-col-label">{col}</div>
+      <div class="pm-cell pm-header pm-col-label">{tStr(col, lang)}</div>
     ))}
     {/* Data rows */}
     {rows.map(row => (
       <>
         <div class="pm-cell pm-row-label">
-          <span class="pm-phase">{row.label}</span>
-          {row.sub && <span class="pm-phase-sub">{row.sub}</span>}
+          <span class="pm-phase">{tStr(row.label, lang)}</span>
+          {row.sub && <span class="pm-phase-sub">{tStr(row.sub, lang)}</span>}
         </div>
         {row.values.map(v => (
           <div class="pm-cell pm-dot-cell">
@@ -38,9 +46,9 @@ const { columns, rows, title } = Astro.props;
     ))}
   </div>
   <div class="pm-legend">
-    <span class="pm-legend-item"><span class="pm-dot pm-dot-primary"></span> Primary use</span>
-    <span class="pm-legend-item"><span class="pm-dot pm-dot-secondary"></span> Occasional</span>
-    <span class="pm-legend-item"><span class="pm-dot pm-dot-none"></span> Rarely needed</span>
+    <span class="pm-legend-item"><span class="pm-dot pm-dot-primary"></span> {LEGEND.primary}</span>
+    <span class="pm-legend-item"><span class="pm-dot pm-dot-secondary"></span> {LEGEND.secondary}</span>
+    <span class="pm-legend-item"><span class="pm-dot pm-dot-none"></span> {LEGEND.none}</span>
   </div>
 </div>
 

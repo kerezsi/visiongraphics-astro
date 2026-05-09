@@ -1,3 +1,5 @@
 ---
-title: "Telecommunication"
+title:
+  en: Telecom
+  hu: Telekommunikáció
 ---

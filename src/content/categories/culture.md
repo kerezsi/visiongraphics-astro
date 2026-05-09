@@ -1,3 +1,5 @@
 ---
-title: "Culture"
+title:
+  en: Culture
+  hu: Kultúra
 ---

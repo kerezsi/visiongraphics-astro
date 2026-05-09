@@ -305,6 +305,200 @@ Use the dev site to count images per section.
 
 ---
 
+## Internationalization (i18n)
+
+Site supports **English (default)** and **Hungarian** with symmetric URL prefixes
+(`/en/...` and `/hu/...`). Designed so adding `de` later is a 3-file change.
+
+### Locale list — single source of truth in 3 places
+
+To add or remove a locale, update **all three** in lockstep:
+1. `src/lib/i18n.ts` — `LOCALES` constant + `Locale` type
+2. `src/content/config.ts` — the `localizedString()` helper's object branch
+3. `tools/editor/client/src/lib/localized.ts` — `LOCALES` constant
+4. `astro.config.mjs` — `i18n.locales` array
+
+### Routing
+
+All page templates live under `src/pages/[lang]/...`. The bare-root
+`src/pages/index.astro` redirects 308 → `/en/`. Legacy non-prefixed URLs
+(`/portfolio/foo/`, `/services/x/`, etc.) are 308-redirected to `/en/...`
+in `public/_redirects` (Cloudflare Pages only).
+
+### Polymorphic content schema
+
+Translatable fields accept **either** a plain string (legacy / single-language
+content) **or** a `{ en, hu }` object:
+
+```yaml
+title: Hotel Lycium                    # plain string — treated as default-locale
+title:                                 # localized object — both locales
+  en: Hotel Lycium
+  hu: Lycium Hotel
+```
+
+This means **all existing single-language MDX still validates unchanged**.
+New translated content uses the object form. The `localizedString()` helper
+in `src/content/config.ts` accepts both.
+
+Translatable fields by collection:
+- **Projects** — title, displayTitle, description, story, tasks, tour360.title, films.title, images.alt
+- **Services** — title, description, tagline, startRequirements, pricing, sidebarLabel, sidebarContent
+- **Articles** — title, excerpt
+- **Vision-Tech** — title, description, body[]
+- **Reference collections** (categories, client-types, clients, designers, cities, countries) — title
+
+Per-block (MDX components) translatable props:
+- `SectionBanner` — label, title, imageAlt
+- `SingleImage` — alt, caption
+- `ImageGallery` — title (gallery title only; per-image alt is per-block-mapper TBD)
+- `Tour360`, `YoutubeEmbed`, `FilmEmbed` — title
+
+### Site runtime — `src/lib/i18n.ts`
+
+```ts
+LOCALES                               // ['en', 'hu']
+DEFAULT_LOCALE                        // 'en'
+t(value, lang)                        // resolve Localized<T> → T | undefined (falls back to default locale)
+tStr(value, lang)                     // same as t() but returns '' instead of undefined
+localeUrl(path, lang)                 // '/portfolio/foo' + 'hu' → '/hu/portfolio/foo/'
+swapLocale(pathname, lang)            // change locale segment in current URL
+localeFromPath(pathname)              // parse first segment, default to DEFAULT_LOCALE
+staticLocalePaths()                   // getStaticPaths() helper for pages with no other dynamic params
+localizedPaths(items, paramsOf)       // cartesian product locales × items, for [slug] etc.
+```
+
+### `<Lang>` component for prose blocks in MDX
+
+`src/components/i18n/Lang.astro` — slot-based component that renders only when its
+`code` prop matches the active locale. Used inside MDX bodies for prose that needs
+per-locale variants:
+
+```mdx
+<ProjectStory>
+  <Lang code="en">
+  Background paragraph in English.
+  </Lang>
+  <Lang code="hu">
+  Háttér bekezdés magyarul.
+  </Lang>
+</ProjectStory>
+```
+
+Page templates must register `Lang` in the `<Content components={{ ... }}>` prop
+to make it available inside MDX. Already wired into the portfolio template.
+
+### Page templates — required boilerplate
+
+Every page under `src/pages/[lang]/` does:
+
+```ts
+const { lang, slug } = Astro.params as { lang: Locale; ... };
+Astro.locals.lang = lang;
+const L = ui(lang);                          // UI strings for this locale
+const titleStr = tStr(data.title, lang);     // resolve any localized field
+const refTitle = tStr(refEntry?.data.title, lang);  // resolve refs
+```
+
+All internal links use `localeUrl('/portfolio/foo', lang)` — never bare `/portfolio/foo`.
+React islands MUST receive plain strings (use `tStr()` to flatten before crossing
+the server/client boundary; React throws on object children).
+
+### UI strings — `src/i18n/strings.ts`
+
+Hardcoded labels (nav, CTAs, section headings, footer columns) live here keyed by
+locale. EN and HU objects are TypeScript-checked for structural equality so a
+missing key in HU is a compile error. Use `ui(lang).nav.portfolio` etc.
+
+Content from MDX frontmatter is resolved via `t()` separately — that's a
+different path (per-document data, not chrome).
+
+### Language switcher
+
+`src/components/layout/LangSwitcher.astro` — chip toggle (EN | HU) in the header
+desktop controls and mobile nav. Pure HTML, no JS, server-renders correct hrefs
+via `swapLocale(currentPath, targetLocale)`.
+
+### VG Editor — localized fields
+
+The editor inspector renders fields marked translatable as a **`LocalizedTextField`**:
+two stacked inputs (EN | HU), with a per-locale **✦ Translate** button on non-default
+locales. Currently localized in the editor UI:
+
+- **MetaPanel (frontmatter)** — title, displayTitle, description, story, tasks,
+  tagline, sidebarLabel, sidebarContent, startRequirements, pricing (all collection types)
+- **Block inspector** — SectionBanner (label, title, imageAlt), SingleImage (alt, caption),
+  ImageGallery (title), Tour360/YoutubeEmbed/FilmEmbed (title)
+
+When you write to a non-default locale on a previously-scalar field, the value is
+auto-promoted to a `{ en, hu }` object preserving the existing string under `en`.
+When all non-default-locale entries become empty again, the value collapses back
+to a plain string. This keeps untranslated content simple in the YAML/MDX.
+
+The codegen emits localized props as JSX object literals:
+```mdx
+<SectionBanner label={{"en":"Interior","hu":"Belső"}} title={{"en":"Lobby","hu":"Lobby"}} />
+```
+And localized frontmatter as block-style YAML:
+```yaml
+title:
+  en: Hotel Lycium
+  hu: Lycium Hotel
+```
+
+The block-mapper round-trips both back into `{ en, hu }` JS objects via the existing
+`new Function()` JSX-expression evaluator (no parser changes required).
+
+### Translation engine — editor server `/api/translate`
+
+`POST /api/translate` body: `{ text, from, to, engine?, model? }` →
+`{ translation, engine, model }`.
+
+`POST /api/translate/batch` for multiple strings in one request (sequential
+internally).
+
+Engine selection (set in **AI Settings → Translation**):
+- **`ollama`** (default) — uses `ollamaBase` URL + `translationOllamaModel`
+  (auto-picks llama3 if unset). Free, local, fast; quality on Hungarian is mediocre
+  unless you run a 70B+ model.
+- **`claude`** — uses Anthropic Messages API. **API key MUST be in
+  `process.env.ANTHROPIC_API_KEY`** — NOT stored in `editor-config.json` (that file
+  is checked into git). Set it in your shell or a `.env` file consumed by the editor
+  server start script. Quality is excellent for Hungarian; cost is negligible for a
+  small site (~$0.01 per page).
+
+The system prompt template is editable in **AI Settings → Translation → System prompt**.
+Placeholders `{{from}}` and `{{to}}` are substituted with locale display names.
+
+### Reference collections translation
+
+Curated Hungarian translations for `categories` and `client-types` collections
+applied via `scripts/translate-reference-collections.mjs`. These collections
+have small fixed vocabularies; running the script once populates `title:
+{en, hu}` objects in every YAML file. Cities, countries, clients, designers
+stay as-is (proper nouns).
+
+### Adding a new locale (e.g. `de`)
+
+1. **`src/lib/i18n.ts`** — append `'de'` to `LOCALES`; add display name to
+   `LOCALE_NAMES`/`LOCALE_SHORT`.
+2. **`src/content/config.ts`** — add `de: z.string().optional()` to the
+   `localizedString()` object branch.
+3. **`tools/editor/client/src/lib/localized.ts`** — append `'de'` to `LOCALES`.
+4. **`astro.config.mjs`** — append `'de'` to `i18n.locales`.
+5. **`src/i18n/strings.ts`** — add a sibling `de` object mirroring the EN shape.
+6. **`scripts/translate-reference-collections.mjs`** — add `de` translations
+   for category/client-type titles, regenerate.
+7. **`tools/editor/server/routers/translate.ts`** — add `de: 'German'` to
+   `LOCALE_NAMES` for the system prompt substitution.
+8. Translate UI labels in `src/components/layout/Header.astro`,
+   `Footer.astro`, and any home-page hardcoded copy.
+
+The schema, codegen, block-mapper, and editor inspector all auto-pick up the
+new locale — no further structural changes required.
+
+---
+
 ## Deployment
 
 - Platform: Cloudflare Pages

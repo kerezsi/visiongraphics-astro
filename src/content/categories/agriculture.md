@@ -1,3 +1,5 @@
 ---
-title: "Agriculture"
+title:
+  en: Agriculture
+  hu: Mezőgazdaság
 ---

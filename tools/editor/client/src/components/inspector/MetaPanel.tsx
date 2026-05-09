@@ -6,6 +6,8 @@ import { ImagePickerField } from './fields/ImagePickerField.tsx';
 import { ArrayField } from './fields/ArrayField.tsx';
 import { ReferenceField } from './fields/ReferenceField.tsx';
 import { MultiReferenceField } from './fields/MultiReferenceField.tsx';
+import { LocalizedTextField } from './fields/LocalizedTextField.tsx';
+import type { LocalizedValue } from '../../lib/localized.ts';
 import * as api from '../../lib/api-client.ts';
 
 const sectionStyle: React.CSSProperties = {
@@ -166,8 +168,8 @@ function ProjectMetaForm() {
   return (
     <>
       <Section label="Identity">
-        <TextField label="Title" value={(meta.title as string) ?? ''} onChange={(v) => set('title', v)} />
-        <TextField label="Display Title" value={(meta.displayTitle as string) ?? ''} onChange={(v) => set('displayTitle', v || undefined)} />
+        <LocalizedTextField label="Title" value={meta.title as LocalizedValue | undefined} onChange={(v) => set('title', v)} />
+        <LocalizedTextField label="Display Title" value={meta.displayTitle as LocalizedValue | undefined} onChange={(v) => set('displayTitle', v)} />
         <TextField label="Year" value={String(meta.year ?? '')} onChange={(v) => set('year', Number(v) || meta.year)} />
         <ImagePickerField label="Cover Image" value={(meta.coverImage as string) ?? ''} onChange={(v) => set('coverImage', v)} />
       </Section>
@@ -181,9 +183,9 @@ function ProjectMetaForm() {
       </Section>
 
       <Section label="Description">
-        <TextareaField label="Short description" value={(meta.description as string) ?? ''} onChange={(v) => set('description', v || undefined)} rows={2} />
-        <TextareaField label="Story / Background" value={(meta.story as string) ?? ''} onChange={(v) => set('story', v || undefined)} rows={3} />
-        <TextareaField label="Tasks (what VG did)" value={(meta.tasks as string) ?? ''} onChange={(v) => set('tasks', v || undefined)} rows={3} />
+        <LocalizedTextField label="Short description" textarea rows={2} value={meta.description as LocalizedValue | undefined} onChange={(v) => set('description', v)} />
+        <LocalizedTextField label="Story / Background" textarea rows={3} value={meta.story as LocalizedValue | undefined} onChange={(v) => set('story', v)} />
+        <LocalizedTextField label="Tasks (what VG did)" textarea rows={3} value={meta.tasks as LocalizedValue | undefined} onChange={(v) => set('tasks', v)} />
       </Section>
 
       <Section label="Taxonomy">
@@ -285,13 +287,13 @@ function ArticleMetaForm() {
   return (
     <>
       <Section label="Identity">
-        <TextField label="Title" value={(meta.title as string) ?? ''} onChange={(v) => set('title', v)} />
+        <LocalizedTextField label="Title" value={meta.title as LocalizedValue | undefined} onChange={(v) => set('title', v)} />
         <TextField label="Date (YYYY-MM-DD)" value={(meta.date as string) ?? ''} onChange={(v) => set('date', v)} />
         <ImagePickerField label="Cover Image" value={(meta.coverImage as string) ?? ''} onChange={(v) => set('coverImage', v)} />
       </Section>
 
       <Section label="Content">
-        <TextareaField label="Excerpt" value={(meta.excerpt as string) ?? ''} onChange={(v) => set('excerpt', v)} rows={3} />
+        <LocalizedTextField label="Excerpt" textarea rows={3} value={meta.excerpt as LocalizedValue | undefined} onChange={(v) => set('excerpt', v)} />
         <ArrayField label="Tags" items={tags} onChange={(items) => set('tags', items)}
           renderItem={(item, onChange) => <TextField label="" value={item as string} onChange={onChange} />}
           defaultItem=""
@@ -320,21 +322,21 @@ function ServiceMetaForm() {
   return (
     <>
       <Section label="Identity">
-        <TextField label="Title" value={(meta.title as string) ?? ''} onChange={(v) => set('title', v)} />
-        <TextField label="Tagline" value={(meta.tagline as string) ?? ''} onChange={(v) => set('tagline', v || undefined)} />
+        <LocalizedTextField label="Title" value={meta.title as LocalizedValue | undefined} onChange={(v) => set('title', v)} />
+        <LocalizedTextField label="Tagline" value={meta.tagline as LocalizedValue | undefined} onChange={(v) => set('tagline', v)} />
         <TextField label="Order" value={String(meta.order ?? '')} onChange={(v) => set('order', v ? Number(v) : undefined)} />
         <ImagePickerField label="Banner Image" value={(meta.bannerImage as string) ?? ''} onChange={(v) => set('bannerImage', v || undefined)} />
       </Section>
 
       <Section label="Content">
-        <TextareaField label="Description" value={(meta.description as string) ?? ''} onChange={(v) => set('description', v)} rows={3} />
+        <LocalizedTextField label="Description" textarea rows={3} value={meta.description as LocalizedValue | undefined} onChange={(v) => set('description', v)} />
       </Section>
 
       <Section label="Sidebar">
-        <TextField label="Sidebar Label" value={(meta.sidebarLabel as string) ?? ''} onChange={(v) => set('sidebarLabel', v || undefined)} />
-        <TextareaField label="Sidebar Content" value={(meta.sidebarContent as string) ?? ''} onChange={(v) => set('sidebarContent', v || undefined)} rows={2} />
-        <TextareaField label="Start Requirements" value={(meta.startRequirements as string) ?? ''} onChange={(v) => set('startRequirements', v || undefined)} rows={2} />
-        <TextareaField label="Pricing" value={(meta.pricing as string) ?? ''} onChange={(v) => set('pricing', v || undefined)} rows={2} />
+        <LocalizedTextField label="Sidebar Label" value={meta.sidebarLabel as LocalizedValue | undefined} onChange={(v) => set('sidebarLabel', v)} />
+        <LocalizedTextField label="Sidebar Content" textarea rows={2} value={meta.sidebarContent as LocalizedValue | undefined} onChange={(v) => set('sidebarContent', v)} />
+        <LocalizedTextField label="Start Requirements" textarea rows={2} value={meta.startRequirements as LocalizedValue | undefined} onChange={(v) => set('startRequirements', v)} />
+        <LocalizedTextField label="Pricing" textarea rows={2} value={meta.pricing as LocalizedValue | undefined} onChange={(v) => set('pricing', v)} />
       </Section>
 
       <Section label="Flags">
@@ -377,8 +379,8 @@ function VisionTechMetaForm() {
   return (
     <>
       <Section label="Identity">
-        <TextField label="Title" value={(meta.title as string) ?? ''} onChange={(v) => set('title', v)} />
-        <TextareaField label="Description" value={(meta.description as string) ?? ''} onChange={(v) => set('description', v)} rows={2} />
+        <LocalizedTextField label="Title" value={meta.title as LocalizedValue | undefined} onChange={(v) => set('title', v)} />
+        <LocalizedTextField label="Description" textarea rows={2} value={meta.description as LocalizedValue | undefined} onChange={(v) => set('description', v)} />
         <ImagePickerField label="Hero Image" value={(meta.image as string) ?? ''} onChange={(v) => set('image', v)} />
       </Section>
 

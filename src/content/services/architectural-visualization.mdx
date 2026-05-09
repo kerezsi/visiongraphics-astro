@@ -1,16 +1,22 @@
-﻿---
-title: Architectural Visualization
-description: |
-  We turn architectural plans into photorealistic stills, walkthroughs, 360° tours, and VR experiences — helping architects, developers, and planners communicate designs before anything is built. From single concept images to full animation productions.
-  
-tagline: Turn plans into decisions.
+---
+title:
+  en: "Architectural Visualization"
+  hu: "Építészeti látványterv"
+description:
+  en: "We turn architectural plans into photorealistic stills, walkthroughs, 360° tours, and VR experiences — helping architects, developers, and planners communicate designs before anything is built. From single concept images to full animation productions."
+  hu: "Az építészeti terveket fotórealisztikus állóképekké, séta-animációkká, 360°-os túrákká és VR-élményekké alakítjuk — segítve építészeket, fejlesztőket és tervezőket abban, hogy a terveket még az építkezés előtt kommunikálják. Egyetlen koncepcióképtől teljes animációs produkciókig."
+tagline:
+  en: "Turn plans into decisions."
+  hu: "A tervekből döntés legyen."
 bannerImage: /_img/banners/banner-arch-viz.jpg
 order: 1
 published: true
-startRequirements: |
-  Plans (CAD, PDF, or sketch) · Style references you like · Your deadline. Nothing polished required. We guide the rest.
-  
-pricing: "from €5,000. Final price based on scope. Quote within one business day."
+startRequirements:
+  en: "Plans (CAD, PDF, or sketch) · Style references you like · Your deadline. Nothing polished required. We guide the rest."
+  hu: "Tervek (CAD, PDF vagy vázlat) · Stílus-referenciák, amelyeket szeret · A határidő. Csiszolt anyag nem kell. A többit mi végigvezetjük."
+pricing:
+  en: "from €5,000. Final price based on scope. Quote within one business day."
+  hu: "5 000 €-tól. Végleges ár a terjedelem alapján. Egy munkanapon belüli árajánlat."
 techniques:
   - exterior
   - interior
@@ -27,6 +33,7 @@ services:
   - architectural-visualization
 ---
 
+<Lang code="en">
 Design decisions made on paper cost almost nothing to change. Made after construction starts, they cost everything. We help you see exactly what you're getting before work begins — turning plans into photorealistic images, animations, and interactive tools that make the right decision obvious.
 
 ## What we do
@@ -38,70 +45,108 @@ Design decisions made on paper cost almost nothing to change. Made after constru
 - Market properties before a single brick is laid
 
 We offer three types of visualization — stills, animations, and interactive tools — each suited to a different kind of decision. Many projects use a mix of all three.
+</Lang>
+
+<Lang code="hu">
+A papíron megszületett tervezési döntések módosítása szinte semmibe sem kerül. Ha az építkezés elkezdődése után születnek, mindenbe kerülnek. Segítünk Önnek pontosan látni, mit kap, még a munka megkezdése előtt — a terveket fotórealisztikus képekké, animációkká és interaktív eszközökké alakítjuk, amelyek nyilvánvalóvá teszik a helyes döntést.
+
+## Mit csinálunk
+
+- Korai felismerés tervezési problémákra, amíg olcsón javíthatók
+- Pontos képet adunk az ügyfeleknek és befektetőknek arról, amit kapnak
+- Gyorsabb engedélyek a tervezőbizottságoktól
+- Segítünk a csapatának összehangolódni a részletekben, mielőtt problémává válnának
+- Az ingatlanok marketingje, mielőtt az első tégla is helyére kerülne
+
+Háromféle látványtervet kínálunk — állóképek, animációk és interaktív eszközök —, mindegyik más típusú döntéshez illik. Sok projektben a háromnak a keveréke szerepel.
+</Lang>
 
 <ProcessFlow
-title="How a project moves from brief to delivery"
-steps={[
-{ label: "Brief", sub: "Plans, references, deadline" },
-{ label: "3D Model", sub: "Geometry & context" },
-{ label: "Lighting & Materials", sub: "Atmosphere dialled in" },
-{ label: "Test Renders", sub: "Client review round" },
-{ label: "Final Render", sub: "Full resolution output" },
-{ label: "Post-Production", sub: "Colour, comp, format" },
-{ label: "Delivery", sub: "Files + web-ready exports" },
-]}
-feedback={[
-{ from: 3, to: 1, label: "Revision round — back to modelling or materials" },
-]}
+  title={{ en: "How a project moves from brief to delivery", hu: "Hogyan jut el egy projekt brieftől a leadásig" }}
+  steps={[
+    { label: { en: "Brief",                   hu: "Brief" },                       sub: { en: "Plans, references, deadline",      hu: "Tervek, referenciák, határidő" } },
+    { label: { en: "3D Model",                hu: "3D-modell" },                   sub: { en: "Geometry & context",                hu: "Geometria és kontextus" } },
+    { label: { en: "Lighting & Materials",    hu: "Világítás és anyagok" },         sub: { en: "Atmosphere dialled in",             hu: "Hangulat beállítva" } },
+    { label: { en: "Test Renders",            hu: "Próbarenderek" },                sub: { en: "Client review round",               hu: "Ügyfél-szemle kör" } },
+    { label: { en: "Final Render",            hu: "Végleges render" },              sub: { en: "Full resolution output",            hu: "Teljes felbontású kimenet" } },
+    { label: { en: "Post-Production",         hu: "Utómunka" },                     sub: { en: "Colour, comp, format",              hu: "Szín, kompozit, formátum" } },
+    { label: { en: "Delivery",                hu: "Átadás" },                       sub: { en: "Files + web-ready exports",         hu: "Fájlok és webre kész exportok" } },
+  ]}
+  feedback={[
+    { from: 3, to: 1, label: { en: "Revision round — back to modelling or materials", hu: "Módosítási kör — vissza a modellezéshez vagy az anyagokhoz" } },
+  ]}
 />
 
 <SectionBanner
   image="/_img/banners/banner-arch-viz.jpg"
-  label="Still Images"
-  title="Stills That Inform Decisions"
+  label={{ en: "Still Images", hu: "Állóképek" }}
+  title={{ en: "Stills That Inform Decisions", hu: "Állóképek, amelyek megalapozzák a döntést" }}
   headingLevel="h2"
   size="section"
 />
 
-<DeliverableGrid columns={3} items={[{"title":"Exterior Views","desc":"Photorealistic images showing how your building sits in its surroundings — street level, elevated, or aerial. 1–2 weeks per view.","href":"/vision-tech/exterior/"},{"title":"Interior Views","desc":"Spaces that feel real — materials, lighting, and atmosphere matched to your brief. Used for layout checks, client sign-off, and tenant marketing. 1–2 weeks.","href":"/vision-tech/interior/"},{"title":"Aerial Views","desc":"Your building in context, combining 3D modelling with real drone photography or map data for accurate site placement. 1–2 weeks.","href":"/vision-tech/aerial-integration/"}]} />
+<DeliverableGrid columns={3} items={[
+  { title: { en: "Exterior Views",  hu: "Külső nézetek" },  desc: { en: "Photorealistic images showing how your building sits in its surroundings — street level, elevated, or aerial. 1–2 weeks per view.", hu: "Fotórealisztikus képek, amelyek megmutatják, hogyan illeszkedik az épülete a környezetbe — utcaszintről, magasból vagy a levegőből. 1–2 hét nézetenként." }, href: "/vision-tech/exterior/" },
+  { title: { en: "Interior Views",  hu: "Belső nézetek" },  desc: { en: "Spaces that feel real — materials, lighting, and atmosphere matched to your brief. Used for layout checks, client sign-off, and tenant marketing. 1–2 weeks.", hu: "Valósnak ható terek — anyagok, világítás és hangulat a briefhez igazítva. Elrendezés-ellenőrzéshez, ügyfél-jóváhagyáshoz és bérlőmarketinghez. 1–2 hét." }, href: "/vision-tech/interior/" },
+  { title: { en: "Aerial Views",    hu: "Légi nézetek" },   desc: { en: "Your building in context, combining 3D modelling with real drone photography or map data for accurate site placement. 1–2 weeks.", hu: "Az épülete kontextusban: 3D-modellezés valódi drónfelvétellel vagy térképi adattal kombinálva, pontos helyszínre illesztéshez. 1–2 hét." }, href: "/vision-tech/aerial-integration/" },
+]} />
 
 <ImageGallery images={[{"src":"/_img/services/architectural-visualization/01.jpg","alt":"01"},{"src":"/_img/services/architectural-visualization/03.jpg","alt":"03"},{"src":"/_img/services/architectural-visualization/08.jpg","alt":"08"},{"src":"/_img/services/architectural-visualization/23.jpg","alt":"23"}]} />
 
 <SectionBanner
   image="/_img/banners/banner-general.jpg"
-  label="Animations"
-  title="Motion That Explains"
+  label={{ en: "Animations", hu: "Animációk" }}
+  title={{ en: "Motion That Explains", hu: "Mozgás, ami magyaráz" }}
 />
 
-<YoutubeEmbed url="https://youtu.be/xkMAVF3Z4aM" title="Building walkthrough animation — sample" />
+<YoutubeEmbed url="https://youtu.be/xkMAVF3Z4aM" title={{ en: "Building walkthrough animation — sample", hu: "Épület-séta animáció — minta" }} />
 
-<DeliverableGrid columns={3} items={[{"title":"Building Walkthroughs","desc":"A continuous animated journey through the building — spaces, daylighting, and scale in a way stills can't convey. 3–4 weeks.","href":"/vision-tech/3d-animation/"},{"title":"Exterior Flyby","desc":"Your building from every angle, landing at the key elevations that matter for marketing and approvals. 2–3 weeks."},{"title":"Construction Sequences","desc":"Frame-by-frame animation showing how the building goes together — phased construction, structural elements, MEP coordination. 2–3 weeks."}]} />
+<DeliverableGrid columns={3} items={[
+  { title: { en: "Building Walkthroughs",   hu: "Épület-séták" },         desc: { en: "A continuous animated journey through the building — spaces, daylighting, and scale in a way stills can't convey. 3–4 weeks.", hu: "Folyamatos animált utazás az épületen át — terek, természetes fény és lépték olyan módon, ahogy az állóképek nem tudják közvetíteni. 3–4 hét." }, href: "/vision-tech/3d-animation/" },
+  { title: { en: "Exterior Flyby",          hu: "Külső átrepülés" },      desc: { en: "Your building from every angle, landing at the key elevations that matter for marketing and approvals. 2–3 weeks.", hu: "Az épülete minden szögből, befejezéskor a marketing és engedélyezés szempontjából fontos homlokzatokra állva. 2–3 hét." } },
+  { title: { en: "Construction Sequences",  hu: "Építési szekvenciák" }, desc: { en: "Frame-by-frame animation showing how the building goes together — phased construction, structural elements, MEP coordination. 2–3 weeks.", hu: "Képkockáról képkockára animáció, ami megmutatja, hogyan áll össze az épület — fázisos építés, szerkezeti elemek, gépészeti-villamos koordináció. 2–3 hét." } },
+]} />
 
 <SectionBanner
   image="/_img/banners/banner-tech.jpg"
-  label="Interactive Tools"
-  title="Experiences People Remember"
+  label={{ en: "Interactive Tools", hu: "Interaktív eszközök" }}
+  title={{ en: "Experiences People Remember", hu: "Élmények, amelyekre emlékeznek" }}
 />
 
-<Tour360 url="https://pano.visiongraphics.eu/CSERJE_A01" title="360° tour — sample project" coverImage="/_img/services/architectural-visualization/10.jpg" />
+<Tour360 url="https://pano.visiongraphics.eu/CSERJE_A01" title={{ en: "360° tour — sample project", hu: "360°-os túra — mintaprojekt" }} coverImage="/_img/services/architectural-visualization/10.jpg" />
 
-<DeliverableGrid columns={3} items={[{"title":"360° Tours","desc":"Web-based panoramic tours that work on any device — phone, tablet, or desktop. Used for virtual viewings, design reviews, and public consultations. 2–3 weeks.","href":"/vision-tech/360-tour/"},{"title":"Virtual Reality","desc":"Fully navigable environments in Unreal Engine — clients walk through spaces at 1:1 scale before construction starts. Most effective for high-value residential and commercial schemes. 4–6 weeks.","href":"/vision-tech/virtual-reality-vr-experience/"},{"title":"Interactive Presentations","desc":"Custom applications for desktop, kiosk, or AR viewing — with material switching, view comparisons, and measurement tools. Built to specification. 3–4 weeks."}]} />
+<DeliverableGrid columns={3} items={[
+  { title: { en: "360° Tours",                hu: "360°-os túrák" },              desc: { en: "Web-based panoramic tours that work on any device — phone, tablet, or desktop. Used for virtual viewings, design reviews, and public consultations. 2–3 weeks.", hu: "Webes panorámatúrák, amelyek bármilyen eszközön működnek — telefon, tablet, asztali gép. Virtuális megtekintéshez, tervszemlékhez és közmeghallgatáshoz. 2–3 hét." }, href: "/vision-tech/360-tour/" },
+  { title: { en: "Virtual Reality",            hu: "Virtuális valóság" },          desc: { en: "Fully navigable environments in Unreal Engine — clients walk through spaces at 1:1 scale before construction starts. Most effective for high-value residential and commercial schemes. 4–6 weeks.", hu: "Teljesen bejárható környezetek Unreal Engine-ben — az ügyfél 1:1 léptékben sétál át a terekben az építkezés előtt. Leghatékonyabb magas értékű lakó- és kereskedelmi projekteknél. 4–6 hét." }, href: "/vision-tech/virtual-reality-vr-experience/" },
+  { title: { en: "Interactive Presentations", hu: "Interaktív prezentációk" },     desc: { en: "Custom applications for desktop, kiosk, or AR viewing — with material switching, view comparisons, and measurement tools. Built to specification. 3–4 weeks.", hu: "Egyedi alkalmazások asztali gépre, kioszkra vagy AR-megtekintéshez — anyagváltás, nézet-összehasonlítás és mérőeszközök. Specifikációra építve. 3–4 hét." } },
+]} />
 
 <SectionBanner
   image="/_img/banners/banner-workflow.jpg"
-  label="When You Need It"
-  title="Support Through Every Phase"
+  label={{ en: "When You Need It", hu: "Amikor szüksége van rá" }}
+  title={{ en: "Support Through Every Phase", hu: "Támogatás minden fázisban" }}
 />
 
 <PhaseMatrix
-title="Which deliverable fits which project phase"
-columns={["Stills", "Animations", "360° Tours", "VR"]}
-rows={[
-{ label: "Concept Design", sub: "2–4 weeks turnaround", values: ["primary", "none", "none", "none"] },
-{ label: "Permit Design", sub: "3–5 weeks turnaround", values: ["primary", "secondary", "secondary", "none"] },
-{ label: "Detailed Design", sub: "3–6 weeks turnaround", values: ["primary", "primary", "secondary", "secondary"] },
-{ label: "Marketing & Sales", sub: "Ongoing", values: ["primary", "primary", "primary", "primary"] },
-]}
+  title={{ en: "Which deliverable fits which project phase", hu: "Melyik leadás melyik projektfázishoz illik" }}
+  columns={[
+    { en: "Stills",      hu: "Állóképek" },
+    { en: "Animations",  hu: "Animációk" },
+    { en: "360° Tours",  hu: "360°-os túrák" },
+    { en: "VR",          hu: "VR" },
+  ]}
+  rows={[
+    { label: { en: "Concept Design",     hu: "Koncepció" },           sub: { en: "2–4 weeks turnaround", hu: "2–4 hét átfutás" }, values: ["primary",   "none",      "none",      "none"] },
+    { label: { en: "Permit Design",      hu: "Engedélyezési terv" },  sub: { en: "3–5 weeks turnaround", hu: "3–5 hét átfutás" }, values: ["primary",   "secondary", "secondary", "none"] },
+    { label: { en: "Detailed Design",    hu: "Részletes terv" },      sub: { en: "3–6 weeks turnaround", hu: "3–6 hét átfutás" }, values: ["primary",   "primary",   "secondary", "secondary"] },
+    { label: { en: "Marketing & Sales",  hu: "Marketing és értékesítés" }, sub: { en: "Ongoing",         hu: "Folyamatos" },       values: ["primary",   "primary",   "primary",   "primary"] },
+  ]}
 />
 
+<Lang code="en">
 A typical 5-view exterior package for a mid-size residential block runs €5,000–8,000. A full interior suite of 5 rooms is similar. Multi-apartment schemes, animation productions, and VR projects are scoped individually — send us your brief and we'll quote within one business day.
+</Lang>
+
+<Lang code="hu">
+Egy tipikus, 5 nézetből álló külső csomag egy közepes méretű lakóépületre 5 000–8 000 €. Egy teljes, 5 helyiségből álló belső csomag hasonló. Többlakásos beruházások, animációs produkciók és VR-projektek egyedi árazással — küldje el a briefet, egy munkanapon belül árajánlatot adunk.
+</Lang>

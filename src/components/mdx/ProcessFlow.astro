@@ -1,19 +1,24 @@
 ---
+import { tStr, DEFAULT_LOCALE, type Localized, type Locale } from '../../lib/i18n';
+
 interface Step {
-  label: string;
-  sub?: string;
+  label: Localized<string>;
+  sub?: Localized<string>;
 }
 interface Feedback {
   from: number; // 0-based step index (origin of the arrow)
   to: number;   // 0-based step index (destination of the arrow)
-  label?: string;
+  label?: Localized<string>;
 }
 interface Props {
   steps: Step[];
   feedback?: Feedback[];
-  title?: string;
+  title?: Localized<string>;
 }
 const { steps, feedback = [], title } = Astro.props;
+const lang: Locale = (Astro.locals as { lang?: Locale })?.lang ?? DEFAULT_LOCALE;
+const titleStr = tStr(title, lang);
+const fbDefault = lang === 'hu' ? 'Javítási kör' : 'Revision round';
 
 // Grid: odd columns = steps, even columns = connectors
 // Step i → grid column 2*i + 1 (1-indexed)
@@ -21,19 +26,23 @@ const gridCols = steps.length * 2 - 1;
 ---
 
 <div class="process-flow">
-  {title && <p class="process-flow-title">{title}</p>}
+  {titleStr && <p class="process-flow-title">{titleStr}</p>}
 
   <div class="process-grid" style={`--grid-cols: ${gridCols};`}>
 
     {/* Step nodes */}
-    {steps.map((step, i) => (
-      <div class="process-step" style={`grid-column: ${2 * i + 1};`}>
-        <div class="process-dot"></div>
-        <div class="process-step-num">{String(i + 1).padStart(2, '0')}</div>
-        <div class="process-step-label">{step.label}</div>
-        {step.sub && <div class="process-step-sub">{step.sub}</div>}
-      </div>
-    ))}
+    {steps.map((step, i) => {
+      const stepLabel = tStr(step.label, lang);
+      const stepSub   = tStr(step.sub,   lang);
+      return (
+        <div class="process-step" style={`grid-column: ${2 * i + 1};`}>
+          <div class="process-dot"></div>
+          <div class="process-step-num">{String(i + 1).padStart(2, '0')}</div>
+          <div class="process-step-label">{stepLabel}</div>
+          {stepSub && <div class="process-step-sub">{stepSub}</div>}
+        </div>
+      );
+    })}
 
     {/* Connector lines between steps */}
     {steps.slice(0, -1).map((_, i) => (
@@ -44,13 +53,14 @@ const gridCols = steps.length * 2 - 1;
     {feedback.map(fb => {
       const colStart = 2 * fb.to + 1;
       const colEnd   = 2 * fb.from + 2; // +2 to include the full "from" cell
+      const fbLabel  = tStr(fb.label, lang) || fbDefault;
       return (
         <div class="process-feedback"
              style={`grid-column: ${colStart} / ${colEnd};`}>
           <div class="pf-bracket">
             <span class="pf-label">
               <span class="pf-arrow">↩</span>
-              {fb.label ?? 'Revision round'}
+              {fbLabel}
             </span>
           </div>
         </div>

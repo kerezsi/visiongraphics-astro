@@ -1,10 +1,16 @@
 ---
 // src/pages/pricing/index.astro
 
-import Page from '../../layouts/Page.astro';
-import SectionBanner from '../../components/ui/SectionBanner.astro';
-import packages from '../../data/pricing-packages.json';
-import reference from '../../data/pricing-reference.json';
+import Page from '../../../layouts/Page.astro';
+import SectionBanner from '../../../components/ui/SectionBanner.astro';
+import packages from '../../../data/pricing-packages.json';
+import reference from '../../../data/pricing-reference.json';
+import { staticLocalePaths, type Locale } from '../../../lib/i18n';
+
+export const getStaticPaths = staticLocalePaths;
+const { lang } = Astro.params as { lang: Locale };
+Astro.locals.lang = lang;
+
 ---
 
 <Page

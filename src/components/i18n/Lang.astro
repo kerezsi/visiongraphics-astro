@@ -1,0 +1,27 @@
+---
+/**
+ * <Lang code="hu"> ... </Lang>
+ *
+ * Renders its children only when the active locale matches `code`.
+ *
+ * Used inside MDX bodies for prose blocks that have per-locale variants:
+ *
+ *   <ProjectStory>
+ *     <Lang code="en">English paragraph.</Lang>
+ *     <Lang code="hu">Magyar bekezdés.</Lang>
+ *   </ProjectStory>
+ *
+ * The active locale is read from `Astro.locals.lang`, which page templates
+ * set from `Astro.params.lang` before rendering MDX content.
+ */
+import { DEFAULT_LOCALE, type Locale } from '../../lib/i18n';
+
+interface Props {
+  code: Locale;
+}
+
+const { code } = Astro.props;
+const active = (Astro.locals as { lang?: Locale })?.lang ?? DEFAULT_LOCALE;
+---
+
+{active === code && <slot />}

@@ -1,3 +1,5 @@
 ---
-title: "Transportation"
+title:
+  en: Transportation
+  hu: Közlekedés
 ---

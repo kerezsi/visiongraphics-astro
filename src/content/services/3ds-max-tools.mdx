@@ -1,15 +1,28 @@
 ---
-title: "3ds Max Tools & Scripting"
-description: "30 years with 3ds Max — since version 1. Custom MAXScript and Python tools built for your specific workflow: batch render submission, scene cleanup, asset management, material processing, and connections to external systems. Not generic plugins."
-tagline: "Custom tools for MAX users who've hit the ceiling."
+title:
+  en: "3ds Max Tools & Scripting"
+  hu: "3ds Max eszközök és szkriptek"
+description:
+  en: "30 years with 3ds Max — since version 1. Custom MAXScript and Python tools built for your specific workflow: batch render submission, scene cleanup, asset management, material processing, and connections to external systems. Not generic plugins."
+  hu: "30 év 3ds Maxszel — az 1-es verzió óta. Egyedi MAXScript és Python eszközök a saját munkafolyamatára építve: kötegelt render-feladás, jelenettisztítás, asset-kezelés, anyagfeldolgozás, külső rendszerek integrációja. Nem általános pluginok."
+tagline:
+  en: "Custom tools for MAX users who've hit the ceiling."
+  hu: "Egyedi eszközök azoknak a MAX-felhasználóknak, akik elérték a határt."
 bannerImage: "/_img/banners/banner-3dsmax.jpg"
 order: 6
 published: true
-sidebarLabel: "Experience"
-sidebarContent: "3ds Max since version 1 · MAXScript: 25+ years · Python: 10+ years"
-pricing: "By scope. Simple scripts from €500. Complex automation tools quoted on scope. Maintenance retainers available."
+sidebarLabel:
+  en: "Experience"
+  hu: "Tapasztalat"
+sidebarContent:
+  en: "3ds Max since version 1 · MAXScript: 25+ years · Python: 10+ years"
+  hu: "3ds Max az 1-es verzió óta · MAXScript: 25+ év · Python: 10+ év"
+pricing:
+  en: "By scope. Simple scripts from €500. Complex automation tools quoted on scope. Maintenance retainers available."
+  hu: "Terjedelem szerint. Egyszerű szkriptek 500 €-tól. Összetett automatizálási eszközök egyedi árazással. Karbantartási megbízás is elérhető."
 ---
 
+<Lang code="en">
 We've been using 3ds Max since version 1 — longer than most of its current users have been in the industry. That history means we know exactly what breaks, why it breaks, and how to stop it from breaking again. MAXScript and Python tools built for your specific production problems, not generic plugins that almost do what you need.
 
 ## Who we work with
@@ -18,9 +31,22 @@ We've been using 3ds Max since version 1 — longer than most of its current use
 - Architects with 3ds Max pipelines that haven't kept pace with project size
 - Studios with legacy scene libraries causing crashes or compatibility problems
 - Anyone maintaining a large 3D asset collection without a proper management system
+</Lang>
 
-<SectionBanner image="/_img/banners/banner-general.jpg" label="Scene Repair" title="Files That Won't Cooperate" />
+<Lang code="hu">
+A 3ds Maxet az 1-es verzió óta használjuk — hosszabb ideje, mint amióta a mai felhasználóinak többsége egyáltalán a szakmában van. Ez azt jelenti, hogy pontosan tudjuk, mi szokott elromlani, miért romlik el és hogyan akadályozható meg, hogy újra elromoljon. MAXScript és Python eszközök az Ön konkrét produkciós problémáira szabva, nem általános pluginok, amelyek majdnem azt csinálják, amire szüksége van.
 
+## Akikkel együtt dolgozunk
+
+- Látványtervező stúdiók, amelyek minden projektben ugyanazokba a manuális lépésekbe ütköznek
+- Építészek, akiknek a 3ds Max pipeline-ja nem tartott lépést a projekt méretével
+- Stúdiók, amelyek régi jelenetkönyvtárai összeomlásokat vagy kompatibilitási gondokat okoznak
+- Bárki, aki nagyméretű 3D asset-gyűjteményt kezel rendes asset-management nélkül
+</Lang>
+
+<SectionBanner image="/_img/banners/banner-general.jpg" label={{ en: "Scene Repair", hu: "Jelenetjavítás" }} title={{ en: "Files That Won't Cooperate", hu: "Fájlok, amelyek nem akarnak együttműködni" }} />
+
+<Lang code="en">
 Complex MAX files accumulate problems over time — corrupt objects, broken material references, geometry that renders differently than it looks in viewport, scenes that crash only on deadline. We specialize in diagnosing and resolving these issues in files other people give up on.
 
 - Trace and fix crashes in complex, RAM-intensive scenes
@@ -30,29 +56,48 @@ Complex MAX files accumulate problems over time — corrupt objects, broken mate
 - Convert legacy scenes to current MAX and V-Ray standards
 
 **Example:** A studio came to us with a 4GB airport terminal file that crashed consistently during final render. The scene had accumulated three years of changes from multiple artists. We identified a chain of corrupt proxy objects causing memory overflow, cleaned the scene without losing any geometry or materials, and delivered a stable file in 48 hours.
+</Lang>
 
-<SectionBanner image="/_img/banners/banner-tech.jpg" label="Scripting" title="Automate the Repetitive" />
+<Lang code="hu">
+Az összetett MAX-fájlok idővel hibákat halmoznak: sérült objektumok, törött anyaghivatkozások, olyan geometria, amely másképp renderel, mint ahogy a viewportban kinéz, jelenetek, amelyek csak a határidő előtt omlanak össze. Mi olyan fájlok diagnosztizálására és javítására specializálódtunk, amelyeken mások már feladták.
+
+- Összeomlások felderítése és javítása összetett, memóriaigényes jelenetekben
+- Viewport és render közötti eltérések megoldása (anyagok, geometria, árnyékok)
+- Render-hibákat vagy instabilitást okozó geometria takarítása
+- Hiányzó vagy törött külső asset-ek újrahivatkozása és összevonása
+- Régi jelenetek konvertálása a jelenlegi MAX és V-Ray szabványokra
+
+**Példa:** Egy stúdió 4 GB-os repülőtéri terminál fájllal jött hozzánk, amely a végső render alatt rendszeresen összeomlott. A jelenet három év változásait halmozta több művésztől. Azonosítottuk a memória-túlcsordulást okozó, sérült proxy-objektumok láncát, geometria és anyagok elvesztése nélkül kitakarítottuk a jelenetet, és 48 órán belül stabil fájlt szállítottunk.
+</Lang>
+
+<SectionBanner image="/_img/banners/banner-tech.jpg" label={{ en: "Scripting", hu: "Szkriptelés" }} title={{ en: "Automate the Repetitive", hu: "Automatizálja az ismétlődőt" }} />
 
 <DeliverableGrid columns={2} items={[
-  { title: "Batch Processing", desc: "Process hundreds of files without clicking a thing — render submission, camera switching, output naming, V-Ray preset switching, all automated via MAXScript or Python." },
-  { title: "Scene Cleanup Scripts", desc: "Fix common geometry problems automatically: remove duplicates, purge unused assets, standardize naming conventions across an entire folder of files." },
-  { title: "Asset Management Tools", desc: "Track, relink, and consolidate external assets across complex scenes. Prevent the missing-texture problem before it hits production. Batch replace and export materials." },
-  { title: "Custom UI Panels", desc: "Rollout panels and toolbars putting your most-used operations one click away — built for how your team actually works, not for a generic MAX user." },
-  { title: "Material Processing", desc: "Batch replace, update, or export materials across a project series. Particularly useful for large BIM imports where standardization matters." },
-  { title: "Python Integration", desc: "Connect 3ds Max to external systems — file servers, project management tools, render farm APIs, and AI services — via Python scripts that run from within MAX." },
+  { title: { en: "Batch Processing",       hu: "Kötegelt feldolgozás" },          desc: { en: "Process hundreds of files without clicking a thing — render submission, camera switching, output naming, V-Ray preset switching, all automated via MAXScript or Python.", hu: "Több száz fájl feldolgozása egyetlen kattintás nélkül — render-feladás, kameraváltás, kimenet-elnevezés, V-Ray preset-váltás, mind MAXScripttel vagy Python-nal automatizálva." } },
+  { title: { en: "Scene Cleanup Scripts",  hu: "Jelenettisztító szkriptek" },     desc: { en: "Fix common geometry problems automatically: remove duplicates, purge unused assets, standardize naming conventions across an entire folder of files.", hu: "Gyakori geometriai problémák automatikus javítása: duplikátumok eltávolítása, használatlan asset-ek tisztítása, egységes elnevezési konvenciók egy teljes fájlmappára." } },
+  { title: { en: "Asset Management Tools", hu: "Asset-kezelő eszközök" },         desc: { en: "Track, relink, and consolidate external assets across complex scenes. Prevent the missing-texture problem before it hits production. Batch replace and export materials.", hu: "Külső asset-ek nyomon követése, újrahivatkozása és összevonása összetett jeleneteken keresztül. Előzze meg a hiányzó-textúra problémát, mielőtt produkcióba kerülne. Anyagok kötegelt cseréje és exportja." } },
+  { title: { en: "Custom UI Panels",       hu: "Egyedi UI-panelek" },             desc: { en: "Rollout panels and toolbars putting your most-used operations one click away — built for how your team actually works, not for a generic MAX user.", hu: "Rollout-panelek és eszköztárak, amelyek a leggyakoribb műveleteket egy kattintásnyira hozzák — arra szabva, ahogyan a csapata ténylegesen dolgozik, nem egy általános MAX-felhasználóra." } },
+  { title: { en: "Material Processing",    hu: "Anyagfeldolgozás" },              desc: { en: "Batch replace, update, or export materials across a project series. Particularly useful for large BIM imports where standardization matters.", hu: "Anyagok kötegelt cseréje, frissítése vagy exportja egy projektsorozaton. Különösen hasznos nagy BIM-importoknál, ahol az egységesítés számít." } },
+  { title: { en: "Python Integration",     hu: "Python-integráció" },             desc: { en: "Connect 3ds Max to external systems — file servers, project management tools, render farm APIs, and AI services — via Python scripts that run from within MAX.", hu: "Kösse a 3ds Maxet külső rendszerekhez — fájlszerverekhez, projektmenedzsment-eszközökhöz, render farm API-khoz és AI-szolgáltatásokhoz — a MAX-en belülről futó Python-szkriptekkel." } },
 ]} />
 
-<SectionBanner image="/_img/banners/banner-workflow.jpg" label="Process" title="How Scripting Work Goes" />
+<SectionBanner image="/_img/banners/banner-workflow.jpg" label={{ en: "Process", hu: "Folyamat" }} title={{ en: "How Scripting Work Goes", hu: "Hogyan zajlik a szkriptelési munka" }} />
 
 <ProcessFlow
-  title="From problem to working tool"
+  title={{ en: "From problem to working tool", hu: "A problémától a működő eszközig" }}
   steps={[
-    { label: "Listen", sub: "Understand your workflow" },
-    { label: "Analyse", sub: "Find root causes" },
-    { label: "Prototype", sub: "Test solution in your scene" },
-    { label: "Refine", sub: "Edge cases + error handling" },
-    { label: "Deliver", sub: "Script + documentation" },
+    { label: { en: "Listen",    hu: "Meghallgatás" }, sub: { en: "Understand your workflow",        hu: "Megértjük a munkafolyamatát" } },
+    { label: { en: "Analyse",   hu: "Elemzés" },      sub: { en: "Find root causes",                hu: "Megtaláljuk a gyökérokokat" } },
+    { label: { en: "Prototype", hu: "Prototípus" },   sub: { en: "Test solution in your scene",     hu: "Megoldás tesztelése a jelenetében" } },
+    { label: { en: "Refine",    hu: "Finomítás" },    sub: { en: "Edge cases + error handling",     hu: "Élhelyzetek és hibakezelés" } },
+    { label: { en: "Deliver",   hu: "Átadás" },       sub: { en: "Script + documentation",          hu: "Szkript és dokumentáció" } },
   ]}
 />
 
+<Lang code="en">
 Scripts are built against your actual files and workflow, tested in your environment, and documented so your team can use and maintain them. We can teach you to extend them, or we can handle maintenance on a retainer. Pricing is by scope — simple scene-cleanup scripts start at €500, complex multi-tool automation systems are quoted on the brief.
+</Lang>
+
+<Lang code="hu">
+A szkripteket az Ön valódi fájljaira és munkafolyamatára építjük, az Ön környezetében teszteljük és úgy dokumentáljuk, hogy a csapata használni és karbantartani tudja őket. Megtaníthatjuk Önt a bővítésükre, vagy átvállalhatjuk a karbantartást havidíjas megbízással. Az árazás terjedelem szerint történik — egyszerű jelenettisztító szkriptek 500 €-tól indulnak, az összetett, többtagú automatizálási rendszerek a brief alapján kapnak árajánlatot.
+</Lang>

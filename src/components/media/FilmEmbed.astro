@@ -3,12 +3,16 @@
 // Vimeo facade pattern — thumbnail shown, iframe only loads on click
 // Fetches thumbnail at BUILD TIME (no runtime API calls)
 
+import { tStr, DEFAULT_LOCALE, type Localized, type Locale } from '../../lib/i18n';
+
 interface Props {
   vimeoId: string;
-  title:   string;
+  title:   Localized<string>;
 }
 
 const { vimeoId, title } = Astro.props;
+const lang: Locale = (Astro.locals as { lang?: Locale })?.lang ?? DEFAULT_LOCALE;
+const titleStr = tStr(title, lang);
 
 // Fetch Vimeo thumbnail at build time
 let thumbnailUrl = '';
@@ -28,21 +32,21 @@ try {
   data-vimeo-id={vimeoId}
   role="button"
   tabindex="0"
-  aria-label={`Play film: ${title}`}
+  aria-label={lang === 'hu' ? `Film lejátszása: ${titleStr}` : `Play film: ${titleStr}`}
 >
   {thumbnailUrl
-    ? <img src={thumbnailUrl} alt={`${title} — film thumbnail`} class="film-thumb" loading="lazy" />
+    ? <img src={thumbnailUrl} alt={lang === 'hu' ? `${titleStr} — film miniatűr` : `${titleStr} — film thumbnail`} class="film-thumb" loading="lazy" />
     : <div class="film-thumb film-thumb--placeholder"></div>
   }
 
   <div class="film-overlay">
-    <button class="film-play-btn" aria-label="Play">
+    <button class="film-play-btn" aria-label={lang === 'hu' ? 'Lejátszás' : 'Play'}>
       <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <circle cx="30" cy="30" r="29" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
         <path d="M24 20L44 30L24 40V20Z" fill="currentColor"/>
       </svg>
     </button>
-    <span class="film-title">{title}</span>
+    <span class="film-title">{titleStr}</span>
   </div>
 </div>
 
