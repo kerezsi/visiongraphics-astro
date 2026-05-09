@@ -805,13 +805,12 @@ function Lightbox({ url, onClose }: { url: string; onClose: () => void }) {
       <img
         src={url}
         alt="Full size"
-        onClick={(e) => e.stopPropagation()}
         style={{
           maxWidth: '100%',
           maxHeight: '100%',
           objectFit: 'contain',
           boxShadow: '0 8px 40px rgba(0,0,0,0.6)',
-          cursor: 'default',
+          cursor: 'zoom-out',
         }}
       />
       <button
