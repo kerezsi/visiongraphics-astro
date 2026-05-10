@@ -1,38 +1,23 @@
 ---
-// src/pages/about/index.astro
+// src/pages/[lang]/about/index.astro
 
 import Page          from '../../../layouts/Page.astro';
 import SectionBanner from '../../../components/ui/SectionBanner.astro';
 import timeline      from '../../../data/about-timeline.json';
-import { staticLocalePaths, type Locale } from '../../../lib/i18n';
+import { staticLocalePaths, type Locale, tStr, localeUrl } from '../../../lib/i18n';
+import { ui } from '../../../i18n/strings';
 
 export const getStaticPaths = staticLocalePaths;
 
 
 const { lang } = Astro.params as { lang: Locale };
 Astro.locals.lang = lang;
-const specialists = [
-  { role: '3D Scanning Specialist',      desc: 'Detailed digital copies of buildings and objects using scanning equipment.' },
-  { role: 'Architecture Photographer',   desc: 'High-quality site photography matched to real-world detail in 3D work.' },
-  { role: 'Character Animator',          desc: 'Natural movement for digital people that make spaces feel lived-in.' },
-  { role: 'Character Artist',            desc: 'Digital people — from casual passersby to office workers.' },
-  { role: 'Environment Artist',          desc: 'Rich digital worlds: parks, gardens, cityscapes at any scale.' },
-  { role: 'UI/UX Designer',              desc: 'Interaction design for interactive projects and VR experiences.' },
-  { role: 'Graphic Designer',            desc: '2D elements that complement 3D: logos, layouts, infographics.' },
-  { role: 'Interior Designer',           desc: 'Furniture, materials and spatial feel for interior projects.' },
-  { role: 'Web Developer',               desc: 'Websites and platforms for presenting embedded 3D work online.' },
-  { role: 'Photogrammetry Expert',       desc: 'Site photos turned into accurate 3D models — the digital twin approach.' },
-  { role: '3D Generalist',               desc: 'All-round modelling, texturing and rendering across any brief.' },
-  { role: 'Unreal Engine Developer',     desc: 'Real-time 3D experiences: VR walkthroughs, interactive kiosks.' },
-  { role: 'Drone Pilot',                 desc: 'Aerial photography and video showing how projects fit surroundings.' },
-  { role: 'BIM Specialist',              desc: 'Visual accuracy cross-checked against technical building data.' },
-  { role: 'Crowd Simulator',             desc: 'Realistic crowd behaviour for large public spaces and transit hubs.' },
-];
+const L = ui(lang);
 ---
 
 <Page
-  title="About"
-  description="Vision Graphics Kft. — Budapest-based architectural visualization studio founded 1996 by László Kerezsi. 30 years, 500+ projects across four continents."
+  title={L.about.metaTitle}
+  description={L.about.metaDescription}
   fullBleed
   >
   <div class="about-page">
@@ -42,8 +27,8 @@ const specialists = [
     <!-- ═══════════════════════════════════════════════════════ -->
     <SectionBanner
       image="/_img/banners/banner-large-scale.jpg"
-      label="Vision Graphics"
-      title="About the Studio"
+      label={L.about.bannerLabel}
+      title={L.about.bannerTitle}
       headingLevel="h1"
       size="page"
     />
@@ -52,23 +37,13 @@ const specialists = [
       <div class="container two-col">
 
         <div class="col-left">
-          <p class="body-lead">
-            We've been bringing architectural ideas to life through 3D visualization
-            for over 30 years. What started as a small Budapest studio has grown
-            into a globally active practice — airport terminals, urban masterplans,
-            VR experiences, and retail rollouts across four continents.
-          </p>
+          <p class="body-lead">{L.about.introLead}</p>
         </div>
 
         <div class="col-right">
           <div class="diff-block">
-            <p class="diff-label">What makes us different</p>
-            <p class="body-text">
-              We solve communication problems, not just render problems.
-              Whether you need to win investor approval, succeed in a design
-              competition, or show a neighbourhood what's coming — we build
-              the visual argument that makes it happen.
-            </p>
+            <p class="diff-label">{L.about.diffLabel}</p>
+            <p class="body-text">{L.about.diffBody}</p>
           </div>
         </div>
 
@@ -80,8 +55,8 @@ const specialists = [
     <!-- ═══════════════════════════════════════════════════════ -->
     <SectionBanner
       image="/_img/banners/banner-general.jpg"
-      label="Founder"
-      title="Meet the Expert"
+      label={L.about.founderLabel}
+      title={L.about.founderTitle}
     />
 
     <section class="founder-section section">
@@ -90,33 +65,19 @@ const specialists = [
         <!-- Text column -->
         <div class="founder-text">
           <p class="founder-name-label">László Kerezsi</p>
-          <p class="founder-role">Visualization Director</p>
+          <p class="founder-role">{L.about.founderRole}</p>
 
-          <p class="body-text">
-            László started Vision Graphics in 1996. Before AI was a buzzword,
-            he was writing custom MAXScript tools to solve production problems.
-            Before VR was mainstream, he was building walkthrough experiences
-            for real estate clients.
-          </p>
-          <p class="body-text">
-            He works directly on every client project — from initial brief through
-            final delivery. No layers of project managers between you and the
-            person making decisions about your visuals.
-          </p>
-          <p class="body-text">
-            Currently: integrating AI tools into production workflows,
-            building custom desktop utilities for visualization pipelines,
-            and preparing a presentation on AI-driven disruption in
-            architectural visualization for the Ybl Conference 2026.
-          </p>
+          <p class="body-text">{L.about.founderBio1}</p>
+          <p class="body-text">{L.about.founderBio2}</p>
+          <p class="body-text">{L.about.founderBio3}</p>
 
           <div class="founder-contact">
             <a href="tel:+36309454179" class="contact-link">
-              <span class="contact-link-label">Phone</span>
+              <span class="contact-link-label">{L.about.founderPhoneLabel}</span>
               <span class="contact-link-value">+36 30 945 4179</span>
             </a>
             <a href="mailto:info@visiongraphics.hu" class="contact-link">
-              <span class="contact-link-label">Email</span>
+              <span class="contact-link-label">{L.about.founderEmailLabel}</span>
               <span class="contact-link-value">info@visiongraphics.hu</span>
             </a>
           </div>
@@ -127,7 +88,7 @@ const specialists = [
           <div class="founder-photo-wrap">
             <img
               src="/laszlo.jpg"
-              alt="László Kerezsi — Founder, Vision Graphics"
+              alt={L.about.founderPhotoAlt}
               class="founder-photo"
               width="400"
               height="520"
@@ -136,10 +97,10 @@ const specialists = [
           </div>
           <div class="founder-stats">
             {[
-              { n: '30+',  l: 'Years in 3ds Max' },
-              { n: '15+',  l: 'Years with V-Ray' },
-              { n: '500+', l: 'Projects delivered' },
-              { n: '4',    l: 'Continents' },
+              { n: '30+',  l: L.about.statYears3dsMax },
+              { n: '15+',  l: L.about.statYearsVRay },
+              { n: '500+', l: L.about.statProjects },
+              { n: '4',    l: L.about.statContinents },
             ].map(s => (
               <div class="stat-block">
                 <span class="stat-n">{s.n}</span>
@@ -157,8 +118,8 @@ const specialists = [
     <!-- ═══════════════════════════════════════════════════════ -->
     <SectionBanner
       image="/_img/banners/banner-workflow.jpg"
-      label="Structure"
-      title="How We Work"
+      label={L.about.structureLabel}
+      title={L.about.structureTitle}
     />
 
     <section class="how-section section">
@@ -166,40 +127,30 @@ const specialists = [
 
         <div class="two-col how-intro">
           <div class="col-left">
-            <h3 class="section-sub-heading">Small Team, Big Results</h3>
-            <p class="body-lead">
-              Think of us as the conductors of an orchestra — we bring in the
-              right experts at the right time to make your project work.
-            </p>
+            <h3 class="section-sub-heading">{L.about.smallTeamHeading}</h3>
+            <p class="body-lead">{L.about.smallTeamLead}</p>
           </div>
           <div class="col-right">
-            <p class="body-text">
-              We're a small core team that can tackle large-scale commissions
-              through our network of tested specialists. You always work with
-              László directly. The team scales around the project, not around overhead.
-            </p>
-            <p class="inhouse-label">We keep the most critical parts in-house:</p>
+            <p class="body-text">{L.about.smallTeamBody}</p>
+            <p class="inhouse-label">{L.about.inhouseLabel}</p>
             <ul class="how-list">
-              <li>Project management — one point of contact, start to finish</li>
-              <li>Render farm operation and quality control before every delivery</li>
-              <li>Core 3D work requiring 30 years of judgement to get right</li>
-              <li>Final output in the formats your team can actually use</li>
+              <li>{L.about.inhouseItem1}</li>
+              <li>{L.about.inhouseItem2}</li>
+              <li>{L.about.inhouseItem3}</li>
+              <li>{L.about.inhouseItem4}</li>
             </ul>
-            <a href="/contact/" class="btn btn-primary">Start a Conversation</a>
+            <a href={localeUrl('/contact/', lang)} class="btn btn-primary">{L.about.startConvBtn}</a>
           </div>
         </div>
 
         <!-- Specialist network -->
         <div class="specialists-block">
           <div class="specialists-header">
-            <p class="block-label">Our Network of Experts</p>
-            <p class="body-text specialists-intro">
-              When your project needs something special, we bring in the right expert.
-              Every specialist below has been tested on real commissions.
-            </p>
+            <p class="block-label">{L.about.networkLabel}</p>
+            <p class="body-text specialists-intro">{L.about.networkIntro}</p>
           </div>
           <div class="specialists-grid">
-            {specialists.map(s => (
+            {L.about.specialists.map(s => (
               <div class="specialist-card">
                 <p class="specialist-role">{s.role}</p>
                 <p class="specialist-desc">{s.desc}</p>
@@ -210,13 +161,13 @@ const specialists = [
 
         <!-- Why it works -->
         <div class="benefits-block">
-          <p class="block-label">Why This Works So Well</p>
+          <p class="block-label">{L.about.whyLabel}</p>
           <div class="benefits-grid">
             {[
-              { t: 'Move quickly',        b: 'Small core means fast decisions. No committee approvals for scope changes.' },
-              { t: 'Right talent',         b: 'The right specialists brought in when needed — not carried as overhead.' },
-              { t: 'Quality stays high',   b: 'László reviews everything before it leaves the studio. No exceptions.' },
-              { t: 'Precise scope',        b: 'You get exactly what your project needs, not a one-size-fits-all solution.' },
+              { t: L.about.benefit1Title, b: L.about.benefit1Body },
+              { t: L.about.benefit2Title, b: L.about.benefit2Body },
+              { t: L.about.benefit3Title, b: L.about.benefit3Body },
+              { t: L.about.benefit4Title, b: L.about.benefit4Body },
             ].map(b => (
               <div class="benefit-item">
                 <h4 class="benefit-title">{b.t}</h4>
@@ -234,16 +185,14 @@ const specialists = [
     <!-- ═══════════════════════════════════════════════════════ -->
     <SectionBanner
       image="/_img/banners/banner-arch-viz.jpg"
-      label="History"
-      title="Our Story"
+      label={L.about.historyLabel}
+      title={L.about.historyTitle}
     />
 
     <section class="timeline-section section">
       <div class="container">
 
-        <p class="body-text timeline-intro">
-          30 years. 10 eras. A record of how the studio grew, adapted, and kept delivering.
-        </p>
+        <p class="body-text timeline-intro">{L.about.timelineIntro}</p>
 
         <div class="tl-timeline" id="about-timeline">
           <div class="tl-line" id="tl-line"></div>
@@ -251,8 +200,8 @@ const specialists = [
             <div class="tl-item" data-index={i} style={`transition-delay: ${i * 80}ms`}>
               <span class="tl-years">{era.years}</span>
               <div class="tl-content">
-                <h3 class="tl-title">{era.title}</h3>
-                <p class="tl-text">{era.summary}</p>
+                <h3 class="tl-title">{tStr(era.title, lang)}</h3>
+                <p class="tl-text">{tStr(era.summary, lang)}</p>
                 <ul class="tl-projects">
                   {era.projects.map(p => <li>{p}</li>)}
                 </ul>
@@ -270,10 +219,10 @@ const specialists = [
     <section class="about-cta">
       <div class="container about-cta-inner">
         <div>
-          <h2 class="cta-heading">Ready to Work Together?</h2>
-          <p class="cta-sub">30-minute consultation. No charge. No obligation.</p>
+          <h2 class="cta-heading">{L.about.ctaHeading}</h2>
+          <p class="cta-sub">{L.about.ctaSub}</p>
         </div>
-        <a href="/contact/" class="btn btn-primary">Get in Touch</a>
+        <a href={localeUrl('/contact/', lang)} class="btn btn-primary">{L.about.ctaBtn}</a>
       </div>
     </section>
 

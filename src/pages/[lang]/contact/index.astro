@@ -1,28 +1,29 @@
 ---
-// src/pages/contact/index.astro
+// src/pages/[lang]/contact/index.astro
 
 import Page from '../../../layouts/Page.astro';
 import SectionBanner from '../../../components/ui/SectionBanner.astro';
 import Icon from '../../../components/ui/Icon.astro';
 import { staticLocalePaths, type Locale } from '../../../lib/i18n';
+import { ui } from '../../../i18n/strings';
 
 export const getStaticPaths = staticLocalePaths;
 const { lang } = Astro.params as { lang: Locale };
 Astro.locals.lang = lang;
-
+const L = ui(lang);
 ---
 
 <Page
-  title="Contact"
-  description="Start a conversation about your visualization project. 30-minute consultation, no charge. Vision Graphics Kft., Budapest."
+  title={L.contact.metaTitle}
+  description={L.contact.metaDescription}
   fullBleed
   >
   <div class="contact-page">
 
     <SectionBanner
       image="/_img/banners/banner-services.jpg"
-      label="Let's Talk"
-      title="About Your Project"
+      label={L.contact.bannerLabel}
+      title={L.contact.bannerTitle}
       size="page"
       headingLevel="h1"
     />
@@ -34,19 +35,19 @@ Astro.locals.lang = lang;
       <div class="contact-info">
 
         <div class="info-block">
-          <h3 class="info-label">Direct contact</h3>
+          <h3 class="info-label">{L.contact.directLabel}</h3>
           <div class="info-items">
             <a href="tel:+36309454179" class="info-item">
               <Icon name="phone" size={18} class="info-icon" />
               <div>
-                <span class="info-item-label">Phone</span>
+                <span class="info-item-label">{L.contact.phoneLabel}</span>
                 <span class="info-item-value">+36 30 945 4179</span>
               </div>
             </a>
             <a href="mailto:info@visiongraphics.hu" class="info-item">
               <Icon name="mail" size={18} class="info-icon" />
               <div>
-                <span class="info-item-label">Email</span>
+                <span class="info-item-label">{L.contact.emailLabel}</span>
                 <span class="info-item-value">info@visiongraphics.hu</span>
               </div>
             </a>
@@ -54,48 +55,50 @@ Astro.locals.lang = lang;
         </div>
 
         <div class="info-block">
-          <h3 class="info-label">Studio</h3>
+          <h3 class="info-label">{L.contact.studioLabel}</h3>
           <address class="studio-address">
-            Vision Graphics Kft.<br />
-            Hollósy Simon utca 15.<br />
-            1126 Budapest, Hungary
+            {L.contact.studioName}<br />
+            {L.contact.studioStreet}<br />
+            {L.contact.studioCity}
           </address>
         </div>
 
         <div class="info-block">
-          <h3 class="info-label">Useful to have ready</h3>
+          <h3 class="info-label">{L.contact.prepLabel}</h3>
           <ul class="prep-list">
-            <li>Project type and rough scope</li>
-            <li>Plans or reference materials (any format)</li>
-            <li>Your deadline</li>
-            <li>Budget range, if known</li>
+            <li>{L.contact.prepItem1}</li>
+            <li>{L.contact.prepItem2}</li>
+            <li>{L.contact.prepItem3}</li>
+            <li>{L.contact.prepItem4}</li>
           </ul>
-          <p class="prep-note">
-            None of these are required — we can work out details together.
-          </p>
+          <p class="prep-note">{L.contact.prepNote}</p>
         </div>
 
       </div>
 
       <!-- Form -->
       <div class="contact-form-wrap">
-        <h2 class="form-title">Send a Message</h2>
+        <h2 class="form-title">{L.contact.formTitle}</h2>
 
         <!--
           Submitted to a Cloudflare Pages Function at /api/contact
           (see functions/api/contact.ts). The function forwards the
           payload to info@visiongraphics.hu via Resend.
+          Localized status strings are read from data-status-* attributes.
         -->
         <form
           class="contact-form"
           action="/api/contact"
           method="POST"
           id="contact-form"
+          data-status-sending={L.contact.statusSending}
+          data-status-ok={L.contact.statusOk}
+          data-status-err={L.contact.statusErr}
           novalidate
         >
           <div class="form-row">
             <div class="form-field">
-              <label for="name" class="form-label">Name *</label>
+              <label for="name" class="form-label">{L.contact.fName}</label>
               <input
                 type="text"
                 id="name"
@@ -103,11 +106,11 @@ Astro.locals.lang = lang;
                 class="form-input"
                 required
                 autocomplete="name"
-                placeholder="Your name"
+                placeholder={L.contact.fNamePh}
               />
             </div>
             <div class="form-field">
-              <label for="email" class="form-label">Email *</label>
+              <label for="email" class="form-label">{L.contact.fEmail}</label>
               <input
                 type="email"
                 id="email"
@@ -115,58 +118,58 @@ Astro.locals.lang = lang;
                 class="form-input"
                 required
                 autocomplete="email"
-                placeholder="you@company.com"
+                placeholder={L.contact.fEmailPh}
               />
             </div>
           </div>
 
           <div class="form-field">
-            <label for="company" class="form-label">Company / Organisation</label>
+            <label for="company" class="form-label">{L.contact.fCompany}</label>
             <input
               type="text"
               id="company"
               name="company"
               class="form-input"
               autocomplete="organization"
-              placeholder="Optional"
+              placeholder={L.contact.fCompanyPh}
             />
           </div>
 
           <div class="form-field">
-            <label for="project-type" class="form-label">Project type</label>
+            <label for="project-type" class="form-label">{L.contact.fProjectType}</label>
             <select id="project-type" name="project_type" class="form-select">
-              <option value="">Select…</option>
-              <option value="architectural-visualization">Architectural Visualization</option>
-              <option value="large-scale">Large-Scale / Infrastructure</option>
-              <option value="product">Product Visualization</option>
-              <option value="vr">VR / Real-time Experience</option>
-              <option value="animation">Animation</option>
-              <option value="ai-services">AI-Enhanced Services</option>
-              <option value="workflow">Workflow Optimization / 3ds Max Tools</option>
-              <option value="other">Other</option>
+              <option value="">{L.contact.fProjectTypeDef}</option>
+              <option value="architectural-visualization">{L.contact.fProjArchViz}</option>
+              <option value="large-scale">{L.contact.fProjLargeScale}</option>
+              <option value="product">{L.contact.fProjProduct}</option>
+              <option value="vr">{L.contact.fProjVR}</option>
+              <option value="animation">{L.contact.fProjAnimation}</option>
+              <option value="ai-services">{L.contact.fProjAI}</option>
+              <option value="workflow">{L.contact.fProjWorkflow}</option>
+              <option value="other">{L.contact.fProjOther}</option>
             </select>
           </div>
 
           <div class="form-field">
-            <label for="message" class="form-label">Brief description *</label>
+            <label for="message" class="form-label">{L.contact.fMessage}</label>
             <textarea
               id="message"
               name="message"
               class="form-textarea"
               required
               rows="5"
-              placeholder="Tell us about your project — what you're building, who the audience is, and what outcome you need from the visuals."
+              placeholder={L.contact.fMessagePh}
             ></textarea>
           </div>
 
           <div class="form-field">
-            <label for="deadline" class="form-label">Deadline</label>
+            <label for="deadline" class="form-label">{L.contact.fDeadline}</label>
             <input
               type="text"
               id="deadline"
               name="deadline"
               class="form-input"
-              placeholder="e.g. End of March, or flexible"
+              placeholder={L.contact.fDeadlinePh}
             />
           </div>
 
@@ -174,7 +177,7 @@ Astro.locals.lang = lang;
           <input type="text" name="_gotcha" style="display:none" tabindex="-1" />
 
           <button type="submit" class="btn btn-primary form-submit">
-            Send →
+            {L.contact.fSubmit}
           </button>
 
           <p id="form-status" class="form-status" aria-live="polite"></p>
@@ -187,16 +190,20 @@ Astro.locals.lang = lang;
 </Page>
 
 <script>
-  // Progressive enhancement: handle Formspree submission with fetch
+  // Progressive enhancement: handle submission with fetch.
+  // Localized status messages are read from data-status-* on the form.
   const form = document.getElementById('contact-form') as HTMLFormElement | null;
   const status = document.getElementById('form-status');
+  const msgSending = form?.dataset.statusSending ?? 'Sending…';
+  const msgOk      = form?.dataset.statusOk      ?? "Message sent — we'll be in touch within one business day.";
+  const msgErr     = form?.dataset.statusErr     ?? 'Something went wrong. Please email us directly at info@visiongraphics.hu';
 
   form?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const data = new FormData(form);
     const submitBtn = form.querySelector<HTMLButtonElement>('[type="submit"]');
     if (submitBtn) submitBtn.disabled = true;
-    if (status) status.textContent = 'Sending…';
+    if (status) status.textContent = msgSending;
 
     try {
       const res = await fetch(form.action, {
@@ -207,7 +214,7 @@ Astro.locals.lang = lang;
 
       if (res.ok) {
         if (status) {
-          status.textContent = 'Message sent — we\'ll be in touch within one business day.';
+          status.textContent = msgOk;
           status.classList.add('form-status--ok');
         }
         form.reset();
@@ -216,7 +223,7 @@ Astro.locals.lang = lang;
       }
     } catch {
       if (status) {
-        status.textContent = 'Something went wrong. Please email us directly at info@visiongraphics.hu';
+        status.textContent = msgErr;
         status.classList.add('form-status--err');
       }
       if (submitBtn) submitBtn.disabled = false;
