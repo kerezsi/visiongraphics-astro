@@ -1,5 +1,6 @@
 import React from 'react';
 import type { BlockData, ButtonGroupProps } from '../../types/blocks.ts';
+import { readLocale, DEFAULT_LOCALE } from '../../lib/localized.ts';
 
 const variantStyles: Record<string, React.CSSProperties> = {
   'btn-primary': {
@@ -42,7 +43,7 @@ export default function ButtonGroupBlock({ block }: { block: BlockData & { type:
             letterSpacing: '0.02em',
           }}
         >
-          {btn.label}
+          {readLocale(btn.label as any, DEFAULT_LOCALE)}
         </a>
       ))}
     </div>

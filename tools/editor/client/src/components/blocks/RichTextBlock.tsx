@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import type { BlockData } from '../../types/blocks.ts';
 import { useDocumentStore } from '../../store/document.ts';
+import { readLocale, DEFAULT_LOCALE } from '../../lib/localized.ts';
 
 export default function RichTextBlock({ block }: { block: BlockData & { type: 'rich-text'; props: { html: string } } }) {
-  const { html } = block.props;
+  const html = readLocale(block.props.html as any, DEFAULT_LOCALE);
   const updateBlock = useDocumentStore((s) => s.updateBlock);
   const [isEditing, setIsEditing] = useState(false);
   const [draft, setDraft] = useState(html);

@@ -31,6 +31,7 @@ export async function getStaticPaths() {
 
 const { lang, slug } = Astro.params as { lang: Locale; [k: string]: string | undefined };
 Astro.locals.lang = lang;
+Astro.locals.pageType = 'vision-tech';
 const all = await getCollection('vision-tech');
 const entry = all.find(e => e.slug === slug);
 if (!entry || entry.data.published === false) return Astro.redirect(localeUrl('/vision-tech/', lang));

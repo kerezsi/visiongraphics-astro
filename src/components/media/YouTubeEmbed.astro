@@ -3,15 +3,22 @@
 // YouTube facade pattern — thumbnail at build time, iframe only on click
 
 import { tStr, DEFAULT_LOCALE, type Localized, type Locale } from '../../lib/i18n';
+import MediaLabel from '../mdx/MediaLabel.astro';
 
 interface Props {
   url:    string;
   title?: Localized<string>;
+  /** Red section label. Default: "Film:" / "Film:". `false` hides. */
+  label?:    Localized<string> | false;
+  /** Optional white subtitle. Empty = no line. */
+  subtitle?: Localized<string>;
 }
 
-const { url, title } = Astro.props;
+const { url, title, label, subtitle } = Astro.props;
 const lang: Locale = (Astro.locals as { lang?: Locale })?.lang ?? DEFAULT_LOCALE;
 const titleStr = tStr(title, lang) || (lang === 'hu' ? 'Videó' : 'Video');
+const defaultLabel: Localized<string> = { en: 'Film:', hu: 'Film:' };
+const effectiveLabel = label === undefined ? defaultLabel : label;
 
 // Extract YouTube video ID from multiple URL patterns
 function extractYouTubeId(rawUrl: string): string | null {
@@ -40,6 +47,7 @@ const thumbnailUrl = videoId
   : null;
 ---
 
+{videoId && <MediaLabel label={effectiveLabel} subtitle={subtitle} />}
 {videoId && (
   <div
     class="yt-embed"
@@ -72,10 +80,13 @@ const thumbnailUrl = videoId
 )}
 
 <script>
+  import { scrollMediaIntoCenter } from '../../lib/media-scroll';
+
   document.querySelectorAll<HTMLElement>('.yt-embed').forEach(embed => {
     const activate = () => {
       const id = embed.dataset.ytId;
       if (!id) return;
+      scrollMediaIntoCenter(embed);
       const iframe = document.createElement('iframe');
       iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0&modestbranding=1`;
       iframe.allow = 'autoplay; fullscreen; picture-in-picture';

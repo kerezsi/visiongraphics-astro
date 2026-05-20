@@ -93,14 +93,19 @@ export function useDragScroll<T extends HTMLElement>(threshold = 6) {
       // Only handle mouse drag here — touch already gets native scrolling
       if (e.pointerType !== 'mouse') return;
       if (e.button !== 0) return;
+      // Don't call setPointerCapture yet — doing so on every mouse-down would
+      // retarget the eventual `click` event to the strip element, suppressing
+      // child onClick handlers. We only capture once a real drag begins.
       state.current = { active: true, startX: e.clientX, startScroll: el.scrollLeft, moved: false };
-      el.setPointerCapture(e.pointerId);
     };
 
     const onPointerMove = (e: PointerEvent) => {
       if (!state.current.active) return;
       const dx = e.clientX - state.current.startX;
-      if (Math.abs(dx) > threshold) state.current.moved = true;
+      if (Math.abs(dx) > threshold && !state.current.moved) {
+        state.current.moved = true;
+        try { el.setPointerCapture(e.pointerId); } catch {}
+      }
       if (state.current.moved) {
         el.scrollLeft = state.current.startScroll - dx;
         e.preventDefault();

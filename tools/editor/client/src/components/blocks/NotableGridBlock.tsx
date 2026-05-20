@@ -1,5 +1,6 @@
 import React from 'react';
 import type { BlockData, NotableGridProps } from '../../types/blocks.ts';
+import { readLocale, DEFAULT_LOCALE } from '../../lib/localized.ts';
 
 export default function NotableGridBlock({ block }: { block: BlockData & { type: 'notable-grid'; props: NotableGridProps } }) {
   const items = Array.isArray(block.props.items) ? block.props.items : [];
@@ -22,7 +23,7 @@ export default function NotableGridBlock({ block }: { block: BlockData & { type:
               borderBottom: i < items.length - 1 ? '1px solid var(--color-border)' : 'none',
             }}
           >
-            <span className="notable-name" style={{ fontSize: 12, color: 'var(--color-text)' }}>{item.name}</span>
+            <span className="notable-name" style={{ fontSize: 12, color: 'var(--color-text)' }}>{readLocale(item.name as any, DEFAULT_LOCALE)}</span>
             <span className="notable-year" style={{ fontSize: 11, color: 'var(--color-text-faint)' }}>{item.year}</span>
           </div>
         ))}

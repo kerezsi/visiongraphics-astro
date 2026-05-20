@@ -4,15 +4,22 @@
 // Fetches thumbnail at BUILD TIME (no runtime API calls)
 
 import { tStr, DEFAULT_LOCALE, type Localized, type Locale } from '../../lib/i18n';
+import MediaLabel from '../mdx/MediaLabel.astro';
 
 interface Props {
   vimeoId: string;
   title:   Localized<string>;
+  /** Red section label. Default: "Film:" / "Film:". `false` hides. */
+  label?:    Localized<string> | false;
+  /** Optional white subtitle. Empty = no line. */
+  subtitle?: Localized<string>;
 }
 
-const { vimeoId, title } = Astro.props;
+const { vimeoId, title, label, subtitle } = Astro.props;
 const lang: Locale = (Astro.locals as { lang?: Locale })?.lang ?? DEFAULT_LOCALE;
 const titleStr = tStr(title, lang);
+const defaultLabel: Localized<string> = { en: 'Film:', hu: 'Film:' };
+const effectiveLabel = label === undefined ? defaultLabel : label;
 
 // Fetch Vimeo thumbnail at build time
 let thumbnailUrl = '';
@@ -27,6 +34,7 @@ try {
 }
 ---
 
+<MediaLabel label={effectiveLabel} subtitle={subtitle} />
 <div
   class="film-embed"
   data-vimeo-id={vimeoId}
@@ -51,10 +59,13 @@ try {
 </div>
 
 <script>
+  import { scrollMediaIntoCenter } from '../../lib/media-scroll';
+
   document.querySelectorAll<HTMLElement>('.film-embed').forEach(embed => {
     const activate = () => {
       const id = embed.dataset.vimeoId;
       if (!id) return;
+      scrollMediaIntoCenter(embed);
       const iframe = document.createElement('iframe');
       iframe.src = `https://player.vimeo.com/video/${id}?autoplay=1&color=c8a96e&title=0&byline=0&portrait=0`;
       iframe.allow = 'autoplay; fullscreen; picture-in-picture';

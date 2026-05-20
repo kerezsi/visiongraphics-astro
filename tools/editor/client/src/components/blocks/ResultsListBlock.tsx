@@ -1,5 +1,6 @@
 import React from 'react';
 import type { BlockData, ResultsListProps } from '../../types/blocks.ts';
+import { readLocale, DEFAULT_LOCALE } from '../../lib/localized.ts';
 
 export default function ResultsListBlock({ block }: { block: BlockData & { type: 'results-list'; props: ResultsListProps } }) {
   const items = Array.isArray(block.props.items) ? block.props.items : [];
@@ -23,7 +24,7 @@ export default function ResultsListBlock({ block }: { block: BlockData & { type:
             }}
           >
             <span style={{ color: 'var(--color-accent)', marginTop: 1, flexShrink: 0 }}>✓</span>
-            <span>{item}</span>
+            <span>{readLocale(item as any, DEFAULT_LOCALE)}</span>
           </li>
         ))}
       </ul>

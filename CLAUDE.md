@@ -22,6 +22,8 @@ Target: rebuild in Astro, deploy to Cloudflare Pages.
 | Content | Astro Content Collections + Keystatic CMS |
 | Content format | MDX (all collections) + YAML metadata (reference collections) |
 | Search | Pagefind (post-build, static) |
+| Lightbox | PhotoSwipe v5 — auto-mounted on `[data-pswp-gallery]` containers via `src/lib/photoswipe.ts` |
+| Inline carousel | Embla Carousel v8 (`embla-carousel-react`) — used by `ImageLightbox.tsx` for the inline gallery viewer |
 | Hosting | Cloudflare Pages (staging: visiongraphics-astro.pages.dev) |
 | Image Storage | Cloudflare R2 bucket: `visiongraphics-images` |
 | CI/CD | GitHub → Cloudflare Pages (auto-deploy on push to master) |
@@ -202,14 +204,15 @@ as opaque embeds (preserved on save, not visually editable in Keystatic UI).
 ```
 src/components/mdx/
   SectionBanner.astro       — section divider with label + title + background image
-  ImageGallery.astro        — lightbox image grid
+  ImageGallery.astro        — inline Embla carousel + PhotoSwipe lightbox
   ImageCompare.astro        — before/after slider
   DeliverableGrid.astro     — card grid for services (2 or 3 columns)
   TimelineTable.astro       — project phase table for services
   NotableGrid.astro         — two-column list of notable projects
   ProcessFlow.astro         — horizontal step diagram with optional feedback arc (services + vision-tech)
   PhaseMatrix.astro         — dot matrix: deliverable types × project phases (services)
-  SingleImage.astro         — single image with click-to-fullscreen (reuses ImageLightbox)
+  SingleImage.astro         — single image with click-to-fullscreen (PhotoSwipe)
+  MediaLabel.astro          — shared red label + optional white subtitle, used internally by media components
   SpecTable.astro           — 2-column spec table: label | value (vision-tech)
   CompareTable.astro        — multi-column comparison table: feature × option (vision-tech)
   ProjectDescription.astro  — description text block (children, no props)
@@ -302,6 +305,44 @@ use repeated `SectionBanner + ImageGallery + Tour360` blocks to group content:
 Image numbering: R2 images are sequential (`01.jpg`, `02.jpg`… `09.jpg`, `10.jpg`…
 `99.jpg`, `100.jpg`). Section split points map directly to this sequence.
 Use the dev site to count images per section.
+
+### Media labels (red heading + optional white subtitle)
+
+Each media MDX component renders an auto-labelled `<MediaLabel>` above it.
+The red label is fixed per media type; the white subtitle is opt-in.
+
+| Component | Default red label (en / hu) | Auto-shown? |
+|---|---|---|
+| `ImageGallery` | "Gallery:" / "Galéria:" | **only on portfolio pages** |
+| `ImageCompare` | "Compare:" / "Összehasonlítás:" | everywhere |
+| `Tour360`      | "360 tour:" / "360 túra:"        | everywhere |
+| `YoutubeEmbed` / `FilmEmbed` | "Film:" / "Film:" | everywhere |
+| `SingleImage`  | (none — never labelled) | n/a |
+
+Props (all five media types accept these in addition to their existing props):
+- `label?: Localized<string> \| false` — overrides the default red text. Pass
+  `false` to suppress the label entirely (e.g. when galleries are sequential).
+- `subtitle?: Localized<string>` — optional white subtitle, mixed case. Empty
+  string / undefined → the line is omitted (no reserved space).
+
+Both label resolution and the page-type-aware default rely on
+`Astro.locals.pageType` (`'portfolio' | 'service' | 'article' | 'vision-tech'`),
+set by each `[slug].astro` template. New page templates that render MDX content
+must set this so labels behave correctly.
+
+### Viewport size cap (wide-short windows)
+
+Media containers (`.tour-wrap`, `.yt-embed`, `.film-embed`, `.embla-viewport`)
+cap their height to `calc(100vh - 6.5rem)` with a matching `max-width` derived
+from `× 16/9`. This keeps 16:9 media fitting on inside very wide / very short
+browser windows (e.g. 1920×500) instead of overflowing off-screen.
+
+### Smooth scroll on media launch
+
+Clicking a 360 tour / YouTube / Vimeo facade calls `scrollMediaIntoCenter()`
+from `src/lib/media-scroll.ts` before swapping in the iframe. This centers
+the media on the visible area (accounting for the sticky header) but only
+when it's partially off-screen — no scroll if already fully visible.
 
 ---
 
@@ -434,6 +475,16 @@ When you write to a non-default locale on a previously-scalar field, the value i
 auto-promoted to a `{ en, hu }` object preserving the existing string under `en`.
 When all non-default-locale entries become empty again, the value collapses back
 to a plain string. This keeps untranslated content simple in the YAML/MDX.
+
+**Block-preview rendering of localized props.** Every canvas block component that
+displays text from `block.props` must coerce values through `readLocale(value,
+DEFAULT_LOCALE)` (from `tools/editor/client/src/lib/localized.ts`) before
+rendering — otherwise React throws *"Objects are not valid as a React child"* when
+content has been translated. Same applies to `value={…}` on `<input>` /
+`<textarea>`. This is wired into: Tour360, YouTubeEmbed, FilmEmbed,
+SectionBanner, SingleImage, DeliverableGrid, TimelineTable, NotableGrid,
+ResultsList, ButtonGroup, SidebarBlock, DiffBlock, CtaSection, RichText, Heading,
+BodyText, BodyLead, SectionLabel — plus the Toolbar's title display.
 
 The codegen emits localized props as JSX object literals:
 ```mdx
@@ -747,9 +798,18 @@ as `<ProjectStory>` and `<ProjectTasks>` children components.
 **MDX body order (standard):**
 1. `<ProjectTasks>` — what was done
 2. `<ImageGallery>` / `<Tour360>` / `<FilmEmbed>` / `<YoutubeEmbed>` — media
-3. `<ProjectStory heading="The Story:">` — background narrative (at the end)
+3. `<ProjectStory heading={{ en: "The Story:", hu: "A sztori:" }}>` — background narrative (at the end)
+
+`ProjectStory`'s `heading` prop is a `Localized<string>`. Pass either a plain
+string (legacy) or a `{ en, hu }` object. The component resolves it via `tStr()`
+against the active locale.
 
 Gallery/compare require `ArticleGalleryMounter` + `ArticleImageCompareMounter` client islands.
+
+**Techniques chips on portfolio pages** are resolved from each technique slug to
+the corresponding vision-tech entry's localized title (uppercased), so HU pages
+show Hungarian technique names. Falls back to the formatted slug if the entry
+has no title.
 
 **Portfolio page layout** (`[slug].astro`):
 - **"The Project:"** (red heading) → description text → data line (Field / Date / Location / Client / Architect)

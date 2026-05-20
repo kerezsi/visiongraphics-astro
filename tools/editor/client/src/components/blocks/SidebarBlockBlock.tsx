@@ -1,8 +1,10 @@
 import React from 'react';
 import type { BlockData, SidebarBlockProps } from '../../types/blocks.ts';
+import { readLocale, DEFAULT_LOCALE } from '../../lib/localized.ts';
 
 export default function SidebarBlockBlock({ block }: { block: BlockData & { type: 'sidebar-block'; props: SidebarBlockProps } }) {
-  const { label, content } = block.props;
+  const label = readLocale(block.props.label as any, DEFAULT_LOCALE);
+  const content = readLocale(block.props.content as any, DEFAULT_LOCALE);
 
   return (
     <div

@@ -2,10 +2,15 @@ import React, { useRef } from 'react';
 import type { BlockData, SingleImageProps } from '../../types/blocks.ts';
 import { useDocumentStore } from '../../store/document.ts';
 import * as api from '../../lib/api-client.ts';
+import { readLocale, DEFAULT_LOCALE } from '../../lib/localized.ts';
 import { DND_IMAGE_SRC, DND_IMAGE_ALT } from './ImageGalleryBlock.tsx';
 
 export default function SingleImageBlock({ block }: { block: BlockData & { type: 'single-image'; props: SingleImageProps } }) {
   const { src = '', alt = '', caption = '' } = block.props;
+  // Localized values resolved to a string for display in this canvas preview.
+  // (Per-locale editing lives in the inspector's LocalizedTextField.)
+  const altStr     = readLocale(alt as any, DEFAULT_LOCALE);
+  const captionStr = readLocale(caption as any, DEFAULT_LOCALE);
   const updateBlock = useDocumentStore((s) => s.updateBlock);
   const pageType    = useDocumentStore((s) => s.pageType);
   const slug        = useDocumentStore((s) => s.slug);
@@ -78,7 +83,7 @@ export default function SingleImageBlock({ block }: { block: BlockData & { type:
           <>
             <img
               src={src}
-              alt={alt}
+              alt={altStr}
               style={{ width: '100%', maxHeight: 220, objectFit: 'cover', display: 'block' }}
             />
             <button
@@ -116,7 +121,7 @@ export default function SingleImageBlock({ block }: { block: BlockData & { type:
         <label style={labelStyle}>Alt text</label>
         <input
           style={fieldStyle}
-          value={alt}
+          value={altStr}
           placeholder="Descriptive alt text"
           onChange={(e) => updateBlock(block.id, { alt: e.target.value })}
         />
@@ -127,7 +132,7 @@ export default function SingleImageBlock({ block }: { block: BlockData & { type:
         <label style={labelStyle}>Caption (optional)</label>
         <input
           style={fieldStyle}
-          value={caption}
+          value={captionStr}
           placeholder="Caption shown below the image"
           onChange={(e) => updateBlock(block.id, { caption: e.target.value })}
         />

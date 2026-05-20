@@ -1,9 +1,10 @@
 import React from 'react';
 import type { BlockData } from '../../types/blocks.ts';
 import { useDocumentStore } from '../../store/document.ts';
+import { readLocale, DEFAULT_LOCALE } from '../../lib/localized.ts';
 
 export default function SectionLabelBlock({ block }: { block: BlockData & { type: 'section-label'; props: { text: string } } }) {
-  const { text } = block.props;
+  const text = readLocale(block.props.text as any, DEFAULT_LOCALE);
   const updateBlock = useDocumentStore((s) => s.updateBlock);
 
   function handleBlur(e: React.FocusEvent<HTMLParagraphElement>) {

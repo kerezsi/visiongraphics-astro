@@ -1,0 +1,54 @@
+---
+// src/components/mdx/MediaLabel.astro
+// Inline red label + optional white subtitle rendered above a media block.
+// Used by ImageGallery, ImageCompare, Tour360, YouTubeEmbed, FilmEmbed.
+//
+// - label: localized string OR `false` to suppress. Default per-block.
+// - subtitle: localized string. Empty → line is omitted (no reserved space).
+// - If both are empty, the component renders nothing at all.
+
+import { tStr, DEFAULT_LOCALE, type Localized, type Locale } from '../../lib/i18n';
+
+interface Props {
+  label?:    Localized<string> | false;
+  subtitle?: Localized<string>;
+}
+
+const { label, subtitle } = Astro.props;
+const lang: Locale = (Astro.locals as { lang?: Locale })?.lang ?? DEFAULT_LOCALE;
+const labelStr    = label === false ? '' : tStr(label as any, lang);
+const subtitleStr = tStr(subtitle as any, lang);
+const show = !!labelStr || !!subtitleStr;
+---
+
+{show && (
+  <div class="media-label">
+    {labelStr    && <h2 class="media-label-red">{labelStr}</h2>}
+    {subtitleStr && <p  class="media-label-white">{subtitleStr}</p>}
+  </div>
+)}
+
+<style>
+  .media-label {
+    margin-top: var(--space-8);
+    margin-bottom: 1.5rem;
+  }
+  .media-label-red {
+    font-family: var(--font-display);
+    font-size: var(--fs-h4);
+    font-weight: 600;
+    color: var(--color-accent);
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+    margin: 0;
+  }
+  .media-label-white {
+    font-family: var(--font-body);
+    font-size: var(--fs-small);
+    color: var(--color-text);
+    letter-spacing: 0.01em;
+    line-height: 1.4;
+    margin: 0.3rem 0 0;
+    max-width: none;
+  }
+</style>

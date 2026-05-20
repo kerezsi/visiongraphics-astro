@@ -1,14 +1,13 @@
 ---
 /**
- * SingleImage — one image with click-to-fullscreen.
- * Self-contained: renders the image directly + uses <dialog> for the lightbox.
- * No React portals needed.
+ * SingleImage — one image with click-to-fullscreen via PhotoSwipe.
  *
  * Usage in MDX:
  *   <SingleImage src="/_img/vision-tech/slug/01.jpg" alt="Description" />
  *   <SingleImage src="/_img/..." alt="..." caption="Optional caption text" />
  */
 import { tStr, DEFAULT_LOCALE, type Localized, type Locale } from '../../lib/i18n';
+import { thumbUrl } from '../../lib/image-url';
 
 interface Props {
   src: string;
@@ -19,43 +18,25 @@ const { src, alt, caption } = Astro.props;
 const lang: Locale = (Astro.locals as { lang?: Locale })?.lang ?? DEFAULT_LOCALE;
 const altStr     = tStr(alt, lang);
 const captionStr = tStr(caption, lang);
-// Stable unique ID for the dialog (generated at build/request time, both fine)
-const id = `si-${Math.random().toString(36).slice(2, 9)}`;
+const thumb      = thumbUrl(src, 'large') || src;
 ---
 
-<figure class="mdx-single-image">
-  <button
+<figure class="mdx-single-image" data-pswp-gallery>
+  <a
+    href={src}
     class="mdx-single-image-trigger"
     aria-label="View full-size image"
-    onclick={`document.getElementById('${id}').showModal()`}
+    data-pswp-caption={captionStr || altStr || ''}
   >
     <img
-      src={src}
+      src={thumb}
       alt={altStr}
       class="mdx-single-image-img"
       loading="lazy"
       decoding="async"
     />
     <span class="mdx-single-image-zoom" aria-hidden="true">⊕</span>
-  </button>
-
-  <dialog
-    id={id}
-    class="mdx-image-dialog"
-    onclick="this.close()"
-  >
-    <button
-      class="mdx-image-dialog-close"
-      onclick="event.stopPropagation(); this.closest('dialog').close()"
-      aria-label="Close"
-    >✕</button>
-    <img
-      src={src}
-      alt={altStr}
-      class="mdx-image-dialog-img"
-      onclick="event.stopPropagation()"
-    />
-  </dialog>
+  </a>
 
   {captionStr && <figcaption class="mdx-single-image-caption">{captionStr}</figcaption>}
 </figure>
@@ -65,7 +46,6 @@ const id = `si-${Math.random().toString(36).slice(2, 9)}`;
     margin: var(--space-8) 0;
   }
 
-  /* Clickable image container */
   .mdx-single-image-trigger {
     display: block;
     width: 100%;
@@ -75,6 +55,7 @@ const id = `si-${Math.random().toString(36).slice(2, 9)}`;
     cursor: zoom-in;
     position: relative;
     overflow: hidden;
+    text-decoration: none;
   }
 
   .mdx-single-image-img {
@@ -89,7 +70,6 @@ const id = `si-${Math.random().toString(36).slice(2, 9)}`;
     transform: scale(1.02);
   }
 
-  /* Zoom hint (matches gallery-zoom-hint style) */
   .mdx-single-image-zoom {
     position: absolute;
     bottom: 0.6rem;
@@ -105,49 +85,6 @@ const id = `si-${Math.random().toString(36).slice(2, 9)}`;
     color: rgba(240, 237, 232, 0.9);
   }
 
-  /* Native dialog lightbox */
-  .mdx-image-dialog {
-    padding: 0;
-    background: rgba(0, 0, 0, 0.0);
-    border: none;
-    max-width: 95vw;
-    max-height: 95vh;
-    cursor: zoom-out;
-    overflow: visible;
-  }
-
-  .mdx-image-dialog::backdrop {
-    background: rgba(0, 0, 0, 0.88);
-  }
-
-  .mdx-image-dialog-img {
-    display: block;
-    max-width: 90vw;
-    max-height: 90vh;
-    object-fit: contain;
-    cursor: default;
-  }
-
-  .mdx-image-dialog-close {
-    position: absolute;
-    top: -2rem;
-    right: 0;
-    background: rgba(0, 0, 0, 0.65);
-    border: none;
-    color: #fff;
-    cursor: pointer;
-    font-size: 1rem;
-    line-height: 1;
-    padding: 0.35rem 0.6rem;
-    border-radius: 3px;
-    transition: background 150ms;
-  }
-
-  .mdx-image-dialog-close:hover {
-    background: rgba(218, 19, 19, 0.75);
-  }
-
-  /* Caption */
   .mdx-single-image-caption {
     font-size: var(--fs-xs);
     color: var(--color-text-faint);

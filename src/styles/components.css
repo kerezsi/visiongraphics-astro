@@ -172,3 +172,24 @@
 [data-theme="light"] .hc-overlay:hover {
   background: linear-gradient(to top, rgba(247,245,242,0.96) 0%, rgba(247,245,242,0.38) 45%, transparent 70%);
 }
+
+/* ── PhotoSwipe caption ──────────────────────────────────────────────────── */
+.pswp__custom-caption {
+  position: absolute;
+  left: 50%;
+  bottom: 12px;
+  transform: translateX(-50%);
+  max-width: min(80vw, 900px);
+  padding: 0.5rem 0.9rem;
+  background: rgba(0, 0, 0, 0.55);
+  color: rgba(255, 255, 255, 0.92);
+  font-family: var(--font-body);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+  text-align: center;
+  border-radius: 3px;
+  pointer-events: none;
+  z-index: 10;
+}
+

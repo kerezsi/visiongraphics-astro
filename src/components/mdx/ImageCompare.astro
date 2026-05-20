@@ -1,13 +1,24 @@
 ---
+import MediaLabel from './MediaLabel.astro';
+import type { Localized } from '../../lib/i18n';
+
 interface Props {
-  before: string;
-  after: string;
+  before:     string;
+  after:      string;
   beforeAlt?: string;
-  afterAlt?: string;
-  label?: string;
+  afterAlt?:  string;
+  /** Red label above. Default: "Compare:" / "Összehasonlítás:". `false` hides. */
+  label?:     Localized<string> | false;
+  /** Optional white subtitle. Empty = no line. */
+  subtitle?:  Localized<string>;
 }
-const { before, after, beforeAlt = '', afterAlt = '', label = '' } = Astro.props;
+
+const { before, after, beforeAlt = '', afterAlt = '', label, subtitle } = Astro.props;
+
+const defaultLabel: Localized<string> = { en: 'Compare:', hu: 'Összehasonlítás:' };
+const effectiveLabel = label === undefined ? defaultLabel : label;
 ---
+<MediaLabel label={effectiveLabel} subtitle={subtitle} />
 <div
   class="image-compare-mount"
   data-before-src={before}
@@ -15,4 +26,3 @@ const { before, after, beforeAlt = '', afterAlt = '', label = '' } = Astro.props
   data-after-src={after}
   data-after-alt={afterAlt}
 ></div>
-{label && <p class="image-compare-caption">{label}</p>}

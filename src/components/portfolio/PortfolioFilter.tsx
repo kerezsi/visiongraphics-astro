@@ -4,6 +4,7 @@
 
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { thumbUrl } from '../../lib/image-url';
+import { localeUrl, DEFAULT_LOCALE, type Locale } from '../../lib/i18n';
 
 // ─── Types ────────────────────────────────────────────────────────
 export interface CategoryRef {
@@ -33,6 +34,7 @@ interface Props {
   projects: ProjectMeta[];
   minYear:  number;
   maxYear:  number;
+  lang?:    Locale;
 }
 
 type SortOption = 'newest' | 'oldest' | 'az';
@@ -48,7 +50,7 @@ function setParams(params: URLSearchParams) {
 }
 
 // ─── Main Component ───────────────────────────────────────────────
-export default function PortfolioFilter({ projects, minYear, maxYear }: Props) {
+export default function PortfolioFilter({ projects, minYear, maxYear, lang = DEFAULT_LOCALE }: Props) {
   // ── Derive available filter options from data ──
   const allCategories = useMemo(() => {
     const seen = new Map<string, CategoryRef>();
@@ -348,7 +350,7 @@ export default function PortfolioFilter({ projects, minYear, maxYear }: Props) {
           {filtered.map(project => (
             <a
               key={project.slug}
-              href={`/portfolio/${project.slug}/`}
+              href={localeUrl(`/portfolio/${project.slug}/`, lang)}
               className="pf-card group flex flex-col bg-surface border rounded-token-sm overflow-hidden no-underline transition-[border-color,transform] duration-[250ms] ease-in-out hover:-translate-y-0.5"
             >
               <div className="relative aspect-video overflow-hidden bg-surface-2">

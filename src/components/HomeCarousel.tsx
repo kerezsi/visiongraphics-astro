@@ -3,6 +3,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useSwipe } from '../lib/use-swipe';
+import { localeUrl, DEFAULT_LOCALE, type Locale } from '../lib/i18n';
 
 export interface CarouselSlide {
   slug:      string;
@@ -14,9 +15,10 @@ export interface CarouselSlide {
 
 interface Props {
   slides: CarouselSlide[];
+  lang?: Locale;
 }
 
-export default function HomeCarousel({ slides }: Props) {
+export default function HomeCarousel({ slides, lang = DEFAULT_LOCALE }: Props) {
   const [current, setCurrent] = useState(0);
   const [paused,  setPaused]  = useState(false);
   const timer = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -66,7 +68,7 @@ export default function HomeCarousel({ slides }: Props) {
 
       {/* Bottom overlay with project info */}
       <a
-        href={`/portfolio/${slide.slug}/`}
+        href={localeUrl(`/portfolio/${slide.slug}/`, lang)}
         className="hc-overlay absolute inset-0 flex items-end no-underline cursor-pointer transition-[background] duration-300"
         tabIndex={0}
       >

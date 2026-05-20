@@ -10,6 +10,7 @@ export default defineConfig({
   root: path.join(__dirname, 'client'),
   server: {
     port: 4323,
+    host: '127.0.0.1',
     watch: {
       usePolling: true,
       interval: 800,

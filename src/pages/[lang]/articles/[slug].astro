@@ -28,6 +28,7 @@ export async function getStaticPaths() {
 
 const { lang, slug } = Astro.params as { lang: Locale; [k: string]: string | undefined };
 Astro.locals.lang = lang;
+Astro.locals.pageType = 'article';
 const allArticles = await getCollection('articles', ({ data }) => data.published);
 const article = allArticles.find(a => a.slug === slug);
 if (!article) return Astro.redirect('/articles/');

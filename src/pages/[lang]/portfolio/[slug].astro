@@ -34,6 +34,7 @@ export async function getStaticPaths() {
 
 const { lang, slug } = Astro.params as { lang: Locale; [k: string]: string | undefined };
 Astro.locals.lang = lang;
+Astro.locals.pageType = 'portfolio';
 const L = ui(lang);
 const allProjects = await getCollection('projects', ({ data }) => data.published);
 const project = allProjects.find(p => p.slug === slug);
@@ -78,6 +79,17 @@ const allServices = data.services && data.services.length > 0
   ? await getCollection('services', s => s.data.published)
   : [];
 const relatedServices = allServices.filter(s => (data.services ?? []).includes(s.slug));
+
+// Resolve technique slugs to localized titles. Fall back to the formatted slug
+// if a vision-tech entry is missing or has no title.
+const allTech = data.techniques && data.techniques.length > 0
+  ? await getCollection('vision-tech')
+  : [];
+const resolvedTechniques = (data.techniques ?? []).map((slug: string) => {
+  const entry = allTech.find(e => e.slug === slug);
+  const title = entry ? tStr(entry.data.title, lang) : '';
+  return { slug, label: (title || formatTech(slug)).toUpperCase() };
+});
 ---
 
 <Page
@@ -160,12 +172,12 @@ const relatedServices = allServices.filter(s => (data.services ?? []).includes(s
     <!-- "The Task:" section header + techniques + services -->
     <div class="project-task-header">
       <h2 class="project-red-heading">{L.project.theTask}</h2>
-      {data.techniques && data.techniques.length > 0 && (
+      {resolvedTechniques.length > 0 && (
         <div class="techniques-bar">
-          {data.techniques.map((tech: string, i: number) => (
+          {resolvedTechniques.map((tech, i: number) => (
             <>
               {i > 0 && <span class="tech-sep"> | </span>}
-              <a href={localeUrl(`/vision-tech/${tech}/`, lang)} class="tech-item">{formatTech(tech)}</a>
+              <a href={localeUrl(`/vision-tech/${tech.slug}/`, lang)} class="tech-item">{tech.label}</a>
             </>
           ))}
         </div>

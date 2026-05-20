@@ -1,5 +1,6 @@
 import React from 'react';
 import type { BlockData, DeliverableGridProps } from '../../types/blocks.ts';
+import { readLocale, DEFAULT_LOCALE } from '../../lib/localized.ts';
 
 export default function DeliverableGridBlock({ block }: { block: BlockData & { type: 'deliverable-grid'; props: DeliverableGridProps } }) {
   const items = Array.isArray(block.props.items) ? block.props.items : [];
@@ -30,10 +31,10 @@ export default function DeliverableGridBlock({ block }: { block: BlockData & { t
             }}
           >
             <div className="deliverable-title" style={{ fontSize: 12, fontWeight: 600, color: 'var(--color-text)', marginBottom: 4 }}>
-              {item.title}
+              {readLocale(item.title as any, DEFAULT_LOCALE)}
             </div>
             <div className="deliverable-desc" style={{ fontSize: 11, color: 'var(--color-text-muted)', lineHeight: 1.5 }}>
-              {item.desc}
+              {readLocale(item.desc as any, DEFAULT_LOCALE)}
             </div>
           </div>
         ))}

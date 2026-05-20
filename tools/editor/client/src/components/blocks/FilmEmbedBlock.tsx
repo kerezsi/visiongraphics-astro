@@ -1,5 +1,6 @@
 import React from 'react';
 import type { BlockData, FilmEmbedProps } from '../../types/blocks.ts';
+import { readLocale, DEFAULT_LOCALE } from '../../lib/localized.ts';
 
 export default function FilmEmbedBlock({ block }: { block: BlockData & { type: 'film-embed'; props: FilmEmbedProps } }) {
   const { vimeoId, title } = block.props;
@@ -33,7 +34,7 @@ export default function FilmEmbedBlock({ block }: { block: BlockData & { type: '
       </div>
       <div>
         <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--color-text)' }}>
-          {title || 'Film Title'}
+          {readLocale(title as any, DEFAULT_LOCALE) || 'Film Title'}
         </div>
         <div style={{ fontSize: 10, color: 'var(--color-text-faint)', marginTop: 2 }}>
           Vimeo ID: {vimeoId || <em>not set</em>}

@@ -28,17 +28,27 @@ published: true
 Adaptive reuse projects face a specific communication problem: the site is real and visible, but the proposed transformation requires imagination to picture. A decommissioned factory, an empty warehouse, a deteriorated residential block — stakeholders see what's there now, not what's possible. Adaptive reuse illustrations bridge that gap by combining the existing building with the proposed new use.
 
 The result is a visualization that's anchored in reality (the actual site, the actual scale, the actual neighbourhood) while showing a designed future that doesn't exist yet.
-
-## Production approaches
-
-The right technique depends on the extent of the transformation and the quality of site documentation.
 </Lang>
 
 <Lang code="hu">
 Az adaptív újrahasznosítási projektek sajátos kommunikációs problémával szembesülnek: a telek valódi és látható, de a tervezett átalakítás elképzelése képzelőerőt igényel. Egy leszerelt gyár, egy üres raktár, egy leromlott lakóblokk — az érdekeltek azt látják, ami most ott van, nem azt, ami lehetséges. Az adaptív újrahasznosítási illusztrációk áthidalják ezt a szakadékot: a meglévő épületet kombinálják a tervezett új funkcióval.
 
 Az eredmény olyan látványterv, amely a valóságban gyökerezik (a tényleges telken, a tényleges léptékben, a tényleges környéken), miközben még nem létező, megtervezett jövőt mutat.
+</Lang>
 
+<ImageCompare
+  before="/_img/vision-tech/adaptive-reuse-illustrations/transformation-cafe.jpg"
+  after="/_img/vision-tech/adaptive-reuse-illustrations/industrial-ruin.jpg"
+  label={{ en: "Industrial ruin reimagined as a cultural centre with café", hu: "Ipari rom kulturális központtá és kávézóvá újragondolva" }}
+/>
+
+<Lang code="en">
+## Production approaches
+
+The right technique depends on the extent of the transformation and the quality of site documentation.
+</Lang>
+
+<Lang code="hu">
 ## Produkciós megközelítések
 
 A megfelelő technika az átalakítás mértékétől és a helyszíni dokumentáció minőségétől függ.
@@ -62,6 +72,26 @@ A megfelelő technika az átalakítás mértékétől és a helyszíni dokument�
 />
 
 <Lang code="en">
+The same site, three different futures — generated from the same base photograph with different design briefs:
+</Lang>
+
+<Lang code="hu">
+Ugyanaz a telek, három különböző jövő — ugyanabból az alapfotóból, eltérő tervezési briefekkel generálva:
+</Lang>
+
+<ImageCompare
+  before="/_img/vision-tech/adaptive-reuse-illustrations/transformation-futurist.jpg"
+  after="/_img/vision-tech/adaptive-reuse-illustrations/industrial-ruin.jpg"
+  label={{ en: "Futurist architectural reinterpretation", hu: "Futurista építészeti újraértelmezés" }}
+/>
+
+<ImageCompare
+  before="/_img/vision-tech/adaptive-reuse-illustrations/transformation-social.jpg"
+  after="/_img/vision-tech/adaptive-reuse-illustrations/industrial-ruin.jpg"
+  label={{ en: "Activated public space, social-life programme", hu: "Aktivált közösségi tér, közösségi-élet program" }}
+/>
+
+<Lang code="en">
 ## Photo-based compositing
 
 For transformations primarily affecting the facade — new cladding, window replacement, facade cleaning, ground floor activation, added landscaping — high-quality site photography provides the base. We photograph the building at the appropriate angle and lighting conditions, then composite the proposed changes over the existing fabric.
@@ -69,24 +99,6 @@ For transformations primarily affecting the facade — new cladding, window repl
 The challenge here is not technical but perceptual: the eye is very good at detecting inconsistencies in lighting, scale, and perspective between composited elements. Shadows must fall correctly. Reflections must be consistent. New material textures must match the apparent age and weather condition of the existing context. This is detail work, not automation.
 
 AI-enhanced compositing (ComfyUI with Flux, using ControlNet to preserve the existing structure's geometry) accelerates the generation of surface variation and material alternatives. Multiple facade treatments can be generated rapidly for comparison — brick, render, cladding, mixed — from the same base photograph.
-
-## 3D + photo hybrid
-
-When the transformation involves structural additions — a rooftop extension, a new entrance volume, additional floors — the new elements are modeled in 3ds Max and composited over site photography. The existing building in the photograph provides ground truth for scale and context; the 3D elements are matched to the photograph's perspective, lens characteristics, and lighting.
-
-Shadow casting between 3D elements and the photographed building requires careful setup. The 3D scene includes a rough stand-in model of the existing building (just enough geometry for shadow receiving and perspective matching) even though the building itself comes from the photograph.
-
-## Before-and-after presentation
-
-The visualization gains communicative power from being shown as a comparison rather than a standalone image. Three formats work well:
-
-**Static side-by-side** — the existing building photograph alongside the proposed state. Clear and fast to read; works in any context including print.
-
-**Interactive slider** — the existing and proposed images overlaid with a draggable divider. Viewers control the comparison, which creates more engagement with the proposed transformation. We produce these as ImageCompare blocks embeddable in web presentations.
-
-**Phased sequence** — multiple images showing intermediate states: existing → cleared and prepared → phase one complete → full transformation. Useful for phased developments and planning submissions where the transformation happens over time.
-
-## What we need from you
 </Lang>
 
 <Lang code="hu">
@@ -97,13 +109,37 @@ Olyan átalakulásoknál, amelyek elsősorban a homlokzatot érintik — új bur
 A kihívás itt nem technikai, hanem észlelési: a szem nagyon jó az összevetett elemek közötti fény-, lépték- és perspektíva-ellentmondások felismerésében. Az árnyékoknak helyesen kell esniük. A tükröződéseknek konzisztensnek kell lenniük. Az új anyagtextúráknak illeszkedniük kell a meglévő kontextus észlelt korához és időjárási állapotához. Ez részletmunka, nem automatizálás.
 
 Az AI-támogatott kompozit (ComfyUI Flux-szal, a meglévő szerkezet geometriájának megőrzésére ControlNet-tel) gyorsítja a felületi variáció és anyagalternatívák generálását. Több homlokzati kezelés gyorsan generálható ugyanabból az alapfotóból összehasonlításra — tégla, vakolat, burkolat, vegyes.
+</Lang>
 
+<Lang code="en">
+## 3D + photo hybrid
+
+When the transformation involves structural additions — a rooftop extension, a new entrance volume, additional floors — the new elements are modeled in 3ds Max and composited over site photography. The existing building in the photograph provides ground truth for scale and context; the 3D elements are matched to the photograph's perspective, lens characteristics, and lighting.
+
+Shadow casting between 3D elements and the photographed building requires careful setup. The 3D scene includes a rough stand-in model of the existing building (just enough geometry for shadow receiving and perspective matching) even though the building itself comes from the photograph.
+</Lang>
+
+<Lang code="hu">
 ## 3D + fotó hibrid
 
 Ha az átalakulás szerkezeti bővítéseket foglal magában — tetőemelet, új bejárat-térfogat, további szintek —, az új elemeket 3ds Maxben modellezzük, és a helyszíni fotó fölé kompozitáljuk. A fotón szereplő meglévő épület adja a léptéket és a kontextust; a 3D-elemeket a fotó perspektívájához, lencse-karakteréhez és világításához illesztjük.
 
 A 3D-elemek és a fotózott épület közötti árnyékvetés gondos beállítást igényel. A 3D-jelenet tartalmaz egy nagyjából álló helyettesítő modellt a meglévő épületről (épp annyi geometriát, amennyi az árnyékfogadáshoz és a perspektíva-illesztéshez kell), még akkor is, ha maga az épület a fotóból jön.
+</Lang>
 
+<Lang code="en">
+## Before-and-after presentation
+
+The visualization gains communicative power from being shown as a comparison rather than a standalone image. Three formats work well:
+
+**Static side-by-side** — the existing building photograph alongside the proposed state. Clear and fast to read; works in any context including print.
+
+**Interactive slider** — the existing and proposed images overlaid with a draggable divider. Viewers control the comparison, which creates more engagement with the proposed transformation. We produce these as ImageCompare blocks embeddable in web presentations.
+
+**Phased sequence** — multiple images showing intermediate states: existing → cleared and prepared → phase one complete → full transformation. Useful for phased developments and planning submissions where the transformation happens over time.
+</Lang>
+
+<Lang code="hu">
 ## Előtte-utána prezentáció
 
 A látványterv kommunikációs ereje akkor erősödik, ha összehasonlításként, nem önállóan mutatjuk be. Három jól működő formátum:
@@ -113,7 +149,13 @@ A látványterv kommunikációs ereje akkor erősödik, ha összehasonlításké
 **Interaktív csúszka** — a meglévő és tervezett képeket egymásra fektetjük húzható elválasztóval. A néző irányítja az összehasonlítást, ami nagyobb elköteleződést szül a tervezett átalakulás iránt. Ezeket ImageCompare-blokkként készítjük el, webes prezentációkba ágyazhatóan.
 
 **Ütemezett sorozat** — több kép, amely köztes állapotokat mutat: meglévő → eltakarítva és előkészítve → első ütem elkészülve → teljes átalakulás. Hasznos ütemezett beruházásokhoz és olyan engedélyezési beadványokhoz, ahol az átalakulás időben zajlik.
+</Lang>
 
+<Lang code="en">
+## What we need from you
+</Lang>
+
+<Lang code="hu">
 ## Mire van szükségünk Öntől
 </Lang>
 

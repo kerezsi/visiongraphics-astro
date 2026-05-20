@@ -325,6 +325,27 @@ img {
   margin-top: clamp(2rem, 5vw, 4rem);
 }
 
+/* MediaLabel is part of the following media block — don't add a fluid gap
+   between the label and its sibling (gallery mount, tour-wrap, etc.).
+   The label's own margin-bottom (0.75rem) provides the right spacing. */
+.project-content > .media-label + *,
+.vt-body-content > .media-label + * {
+  margin-top: 0;
+}
+
+/* Fit 16:9 media inside the viewport on wide-and-short windows.
+   Without this, a 1920×500 browser turns a 16:9 gallery into an 1080px-tall
+   block that's mostly off-screen. We cap height to roughly viewport-minus-
+   header and use a matching max-width so the aspect ratio survives.
+   --size-header is 4.5rem; add ~2rem of breathing room. */
+.tour-wrap,
+.yt-embed,
+.film-embed {
+  max-height: calc(100vh - 6.5rem);
+  max-width: calc((100vh - 6.5rem) * 16 / 9);
+  margin-inline: auto;
+}
+
 /* ─── Gallery / ImageLightbox (React island — global CSS) ───────── */
 
 /* Gallery title label */
@@ -344,7 +365,31 @@ img {
   width: 100%;
 }
 
-/* Large active image */
+/* Embla viewport — clips the sliding container; nav arrows positioned over it */
+.embla-viewport {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  /* Mirror the gallery-main size cap so the slides fit the viewport */
+  max-height: calc(100vh - 6.5rem);
+  max-width: calc((100vh - 6.5rem) * 16 / 9);
+  margin-inline: auto;
+}
+
+.embla-container {
+  display: flex;
+  /* Embla applies transforms here; touch-action lets vertical scrolling
+     pass through while horizontal drag is captured. */
+  touch-action: pan-y pinch-zoom;
+}
+
+.embla-slide {
+  flex: 0 0 100%;
+  min-width: 0;
+}
+
+/* Large active image — each slide is a .gallery-main inside the embla flex.
+   No max-width here (it's on .embla-viewport); slide must fill the slot. */
 .gallery-main {
   position: relative;
   width: 100%;
@@ -352,6 +397,7 @@ img {
   overflow: hidden;
   cursor: zoom-in;
   background: var(--color-surface);
+  text-decoration: none;
 }
 
 .gallery-main-img {

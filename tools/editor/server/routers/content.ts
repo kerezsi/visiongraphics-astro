@@ -8,6 +8,21 @@ import { validatePath, readFile, writeFile, PROJECT_ROOT } from '../lib/fs-utils
 
 const router = express.Router();
 
+// Resolve a possibly-localized title (string | { en, hu, ... }) to a string
+// for editor listing endpoints. Falls back to slug.
+function resolveTitle(value: unknown, fallback: string): string {
+  if (typeof value === 'string') return value;
+  if (value && typeof value === 'object') {
+    const v = value as Record<string, unknown>;
+    if (typeof v.en === 'string' && v.en) return v.en;
+    if (typeof v.hu === 'string' && v.hu) return v.hu;
+    for (const key of Object.keys(v)) {
+      if (typeof v[key] === 'string' && v[key]) return v[key] as string;
+    }
+  }
+  return fallback;
+}
+
 // ---------------------------------------------------------------------------
 // Helper — list MDX/MD files in a content directory
 // ---------------------------------------------------------------------------
@@ -52,11 +67,11 @@ async function listYamlFiles(dirPath: string): Promise<Array<{ slug: string; tit
         let title: string;
         if (isYaml) {
           const data = yaml.load(raw) as any;
-          title = data?.title ?? slug;
+          title = resolveTitle(data?.title, slug);
         } else {
           // Use gray-matter to parse the YAML frontmatter in .md files
           const { data } = matter(raw);
-          title = (data?.title as string) ?? slug;
+          title = resolveTitle(data?.title, slug);
         }
         results.push({ slug, title });
       } catch {
@@ -80,7 +95,7 @@ router.get('/articles', async (_req: Request, res: Response) => {
       const { data } = matter(raw);
       return {
         slug, path: file,
-        title: data.title ?? slug,
+        title: resolveTitle(data.title, slug),
         date: data.date ?? null,
         published: data.published ?? true,
         tags: data.tags ?? [],
@@ -109,7 +124,7 @@ router.get('/projects', async (_req: Request, res: Response) => {
       const { data } = matter(raw);
       return {
         slug, path: file,
-        title: data.title ?? slug,
+        title: resolveTitle(data.title, slug),
         year: data.year ?? null,
         published: data.published ?? true,
         featured: data.featured ?? false,
@@ -138,7 +153,7 @@ router.get('/services', async (_req: Request, res: Response) => {
       const { data } = matter(raw);
       return {
         slug, path: file,
-        title: data.title ?? slug,
+        title: resolveTitle(data.title, slug),
         order: data.order ?? 999,
         published: data.published ?? true,
       };
@@ -161,7 +176,7 @@ router.get('/vision-tech', async (_req: Request, res: Response) => {
       const { data } = matter(raw);
       return {
         slug, path: file,
-        title: data.title ?? slug,
+        title: resolveTitle(data.title, slug),
         technique: data.technique ?? null,
         cost: data.cost ?? null,
         published: data.published ?? true,
@@ -498,7 +513,7 @@ router.get('/:name', async (req: Request, res: Response) => {
       try {
         const raw = await readFile(file);
         const { data } = matter(raw);
-        return { slug, title: data.title ?? slug, path: file };
+        return { slug, title: resolveTitle(data.title, slug), path: file };
       } catch {
         return { slug, title: slug, path: file };
       }

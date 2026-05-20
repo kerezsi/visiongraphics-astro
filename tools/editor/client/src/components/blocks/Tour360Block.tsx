@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import type { BlockData, Tour360Props } from '../../types/blocks.ts';
 import { useDocumentStore } from '../../store/document.ts';
 import * as api from '../../lib/api-client.ts';
+import { readLocale, DEFAULT_LOCALE } from '../../lib/localized.ts';
 import { getDraggedImageSrc } from './ImageGalleryBlock.tsx';
 
 export default function Tour360Block({ block }: { block: BlockData & { type: 'tour-360'; props: Tour360Props } }) {
@@ -122,7 +123,7 @@ export default function Tour360Block({ block }: { block: BlockData & { type: 'to
 
       {/* Title / URL */}
       <div style={{ position: 'relative' }}>
-        <div style={{ fontSize: 12, fontWeight: 600, color: '#fff' }}>{title || '360° Tour'}</div>
+        <div style={{ fontSize: 12, fontWeight: 600, color: '#fff' }}>{readLocale(title as any, DEFAULT_LOCALE) || '360° Tour'}</div>
         <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.6)', marginTop: 2, maxWidth: 240, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
           {url || <em>URL not set</em>}
         </div>

@@ -4,21 +4,29 @@
 // Never auto-loads the iframe — only on explicit user click
 
 import { tStr, DEFAULT_LOCALE, type Localized, type Locale } from '../../lib/i18n';
+import MediaLabel from '../mdx/MediaLabel.astro';
 
 interface Props {
   url:        string;
   title:      Localized<string>;
   coverImage?: string;  // optional cover — falls back to styled placeholder
+  /** Red section label. Default: "360 tour:" / "360 túra:". `false` hides. */
+  label?:    Localized<string> | false;
+  /** Optional white subtitle. Empty = no line. */
+  subtitle?: Localized<string>;
 }
 
-const { url, title, coverImage } = Astro.props;
+const { url, title, coverImage, label, subtitle } = Astro.props;
 const lang: Locale = (Astro.locals as { lang?: Locale })?.lang ?? DEFAULT_LOCALE;
 const titleStr     = tStr(title, lang);
+const defaultLabel: Localized<string> = { en: '360 tour:', hu: '360 túra:' };
+const effectiveLabel = label === undefined ? defaultLabel : label;
 const launchLabel  = lang === 'hu' ? '360°-os túra indítása'   : 'Launch 360° Tour';
 const previewAlt   = lang === 'hu' ? `${titleStr} — 360°-os túra előnézete` : `${titleStr} — 360° tour preview`;
 const ariaLaunch   = lang === 'hu' ? `360°-os túra indítása: ${titleStr}`   : `Launch 360° tour: ${titleStr}`;
 ---
 
+<MediaLabel label={effectiveLabel} subtitle={subtitle} />
 <div class="tour-wrap" data-tour-url={url}>
   {coverImage
     ? <img src={coverImage} alt={previewAlt} class="tour-cover" loading="lazy" />
@@ -44,6 +52,8 @@ const ariaLaunch   = lang === 'hu' ? `360°-os túra indítása: ${titleStr}`   
 </div>
 
 <script>
+  import { scrollMediaIntoCenter } from '../../lib/media-scroll';
+
   document.querySelectorAll<HTMLElement>('.tour-wrap').forEach(wrap => {
     const btn = wrap.querySelector('.tour-launch-btn');
     if (!btn) return;
@@ -51,6 +61,8 @@ const ariaLaunch   = lang === 'hu' ? `360°-os túra indítása: ${titleStr}`   
     btn.addEventListener('click', () => {
       const url = wrap.dataset.tourUrl;
       if (!url) return;
+
+      scrollMediaIntoCenter(wrap);
 
       // Replace with iframe
       const iframe = document.createElement('iframe');

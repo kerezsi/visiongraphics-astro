@@ -187,7 +187,7 @@ const c = COPY[lang];
           </div>
           <a href={localeUrl('/portfolio/', lang)} class="btn btn-secondary">{c.fullPortfolio}</a>
         </div>
-        <HomeCarousel slides={carouselSlides} client:load />
+        <HomeCarousel slides={carouselSlides} lang={lang} client:load />
       </section>
     )}
 

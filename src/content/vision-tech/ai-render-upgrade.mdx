@@ -29,7 +29,17 @@ AI Render Upgrade takes an existing architectural image and generates photoreali
 This solves a specific problem: a project has renders that were produced early in the design process, or directly exported from ArchiCAD, Revit, or SketchUp without post-processing. The design is correct but the images don't communicate quality. The AI upgrade produces finished, photorealistic output from those existing images without rebuilding the scene in 3D.
 
 The service is available via the dedicated platform: ai.visiongraphics.eu
+</Lang>
 
+<Lang code="hu">
+Az AI render-fejlesztés egy meglévő építészeti képet vesz alapul, és fotórealisztikus változatokat generál belőle. A geometria, arányok és térbeli viszonyok rögzítettek maradnak — a kimenet világítása, légköre, évszaka és felületi minősége változik.
+
+Ez egy konkrét problémát old meg: a projektnek olyan renderei vannak, amelyek a tervezés korai szakaszában készültek, vagy közvetlenül exportálódtak ArchiCAD-ből, Revitből vagy SketchUpből, utófeldolgozás nélkül. A tervezés helyes, de a képek nem közvetítenek minőséget. Az AI-fejlesztés kész, fotórealisztikus kimenetet ad ezekből a meglévő képekből, anélkül, hogy a jelenetet 3D-ben újra fel kellene építeni.
+
+A szolgáltatás a dedikált platformon érhető el: ai.visiongraphics.eu
+</Lang>
+
+<Lang code="en">
 ## What changes and what stays
 
 The AI uses the input image as structural and compositional guidance. ControlNet conditioning extracts the depth, edge structure, and spatial organization of the image and uses it to anchor the generation — so the building stays where it is, the camera angle stays fixed, and the massing remains correct. What the AI generates is the surface quality, lighting, atmosphere, and material character.
@@ -47,28 +57,9 @@ What the AI generates:
 - Seasonal state (summer greenery, autumn colour, winter snow)
 - Weather and atmosphere (clear, overcast, rain, dusk, golden hour)
 - Context (people, vehicles, landscaping appropriate to the atmosphere)
-
-## Variations per image
-
-Each input image produces up to 10 variations. Variations can explore:
-
-- Different seasons (the same building in spring, summer, autumn, winter)
-- Different times of day (morning, midday, golden hour, blue hour)
-- Different weather states (clear, overcast, dramatic sky)
-- Different material interpretations (within the structural constraints of the input)
-
-Multiple variations allow comparison without the cost of producing multiple photorealistic renders from scratch.
-
-## Input requirements
 </Lang>
 
 <Lang code="hu">
-Az AI render-fejlesztés egy meglévő építészeti képet vesz alapul, és fotórealisztikus változatokat generál belőle. A geometria, arányok és térbeli viszonyok rögzítettek maradnak — a kimenet világítása, légköre, évszaka és felületi minősége változik.
-
-Ez egy konkrét problémát old meg: a projektnek olyan renderei vannak, amelyek a tervezés korai szakaszában készültek, vagy közvetlenül exportálódtak ArchiCAD-ből, Revitből vagy SketchUpből, utófeldolgozás nélkül. A tervezés helyes, de a képek nem közvetítenek minőséget. Az AI-fejlesztés kész, fotórealisztikus kimenetet ad ezekből a meglévő képekből, anélkül, hogy a jelenetet 3D-ben újra fel kellene építeni.
-
-A szolgáltatás a dedikált platformon érhető el: ai.visiongraphics.eu
-
 ## Mi változik és mi marad
 
 Az AI a bemeneti képet szerkezeti és kompozíciós irányadóként használja. A ControlNet-kondicionálás kinyeri a kép mélységét, élszerkezetét és térbeli szerveződését, és ezzel rögzíti a generálást — így az épület ott marad, ahol van, a kameraszög rögzített, és a tömeg helyes. Amit az AI generál, az a felületi minőség, fény, légkör és anyagi karakter.
@@ -86,7 +77,22 @@ Amit az AI generál:
 - Évszaki állapot (nyári zöld, őszi szín, téli hó)
 - Időjárás és légkör (tiszta, borult, eső, alkonyat, aranyóra)
 - Kontextus (emberek, járművek, légkörhöz illő tájépítészet)
+</Lang>
 
+<Lang code="en">
+## Variations per image
+
+Each input image produces up to 10 variations. Variations can explore:
+
+- Different seasons (the same building in spring, summer, autumn, winter)
+- Different times of day (morning, midday, golden hour, blue hour)
+- Different weather states (clear, overcast, dramatic sky)
+- Different material interpretations (within the structural constraints of the input)
+
+Multiple variations allow comparison without the cost of producing multiple photorealistic renders from scratch.
+</Lang>
+
+<Lang code="hu">
 ## Változatok képenként
 
 Minden bemeneti kép legfeljebb 10 változatot ad. A változatok vizsgálhatják:
@@ -97,7 +103,13 @@ Minden bemeneti kép legfeljebb 10 változatot ad. A változatok vizsgálhatják
 - Eltérő anyagi értelmezések (a bemenet szerkezeti korlátain belül)
 
 A több változat lehetővé teszi az összehasonlítást anélkül, hogy több fotórealisztikus rendert kellene a nulláról elkészíteni.
+</Lang>
 
+<Lang code="en">
+## Input requirements
+</Lang>
+
+<Lang code="hu">
 ## Bemeneti követelmények
 </Lang>
 
@@ -118,26 +130,6 @@ Software exports — ArchiCAD, Revit, and SketchUp exports are typically flat, u
 Seasonal and weather variations — a single render upgraded to show four seasons or multiple weather conditions, for projects where context response is part of the design argument.
 
 Existing render library — older renders from a previous phase that still correctly show the geometry but need updating in atmosphere or material quality for a new presentation.
-
-## What it doesn't do
-
-AI Render Upgrade is not the same as producing a new photorealistic render from a fully developed 3D scene. Material control is guided by the input but not specified element by element. Surface quality is generated probabilistically — results are photorealistic in character but not guaranteed to match exact specified materials. For material-precise output, a full V-Ray render from the 3D model is required.
-
-The AI also does not generate interior content from exterior inputs, or add structural elements not present in the original image.
-
-## How to order
-
-AI Render Upgrade is available directly at ai.visiongraphics.eu. Upload your existing images, specify the variations you want, and receive the photorealistic outputs.
-
-For projects combining AI upgrades with new visualization work — fresh renders, animations, or 360 tours — coordinate with us directly for a combined scope.
-
-## Related techniques
-
-For AI-generated motion from the upgraded images: AI Animation
-
-For a fully controlled photorealistic render from the 3D model: Photorealistic Rendering
-
-For transforming the stylistic character of a facade: Architectural Styling
 </Lang>
 
 <Lang code="hu">
@@ -150,19 +142,51 @@ Szoftverexportok — az ArchiCAD-, Revit- és SketchUp-exportok jellemzően lapo
 Évszaki és időjárási változatok — egyetlen render négy évszakra vagy több időjárási állapotra fejlesztve, olyan projektekhez, ahol a kontextusra való válasz része a tervezési érvelésnek.
 
 Meglévő render-könyvtár — egy korábbi fázisból származó régebbi renderek, amelyek a geometriát még helyesen mutatják, de új prezentációhoz légkör- vagy anyagminőség-frissítést igényelnek.
+</Lang>
 
+<Lang code="en">
+## What it doesn't do
+
+AI Render Upgrade is not the same as producing a new photorealistic render from a fully developed 3D scene. Material control is guided by the input but not specified element by element. Surface quality is generated probabilistically — results are photorealistic in character but not guaranteed to match exact specified materials. For material-precise output, a full V-Ray render from the 3D model is required.
+
+The AI also does not generate interior content from exterior inputs, or add structural elements not present in the original image.
+</Lang>
+
+<Lang code="hu">
 ## Mit nem csinál
 
 Az AI render-fejlesztés nem ugyanaz, mint új fotórealisztikus render készítése egy teljesen kidolgozott 3D-jelenetből. Az anyagvezérlés a bemenet által irányított, de nem elemenként meghatározott. A felületi minőség valószínűségi alapon generált — az eredmény fotórealisztikus karakterű, de nem garantáltan illeszkedik a pontosan megadott anyagokhoz. Anyagpontos kimenethez teljes V-Ray-render szükséges a 3D-modellből.
 
 Az AI nem generál belső tartalmat külső bemenetekből, és nem ad hozzá olyan szerkezeti elemeket, amelyek az eredeti képen nem szerepelnek.
+</Lang>
 
+<Lang code="en">
+## How to order
+
+AI Render Upgrade is available directly at ai.visiongraphics.eu. Upload your existing images, specify the variations you want, and receive the photorealistic outputs.
+
+For projects combining AI upgrades with new visualization work — fresh renders, animations, or 360 tours — coordinate with us directly for a combined scope.
+</Lang>
+
+<Lang code="hu">
 ## Hogyan rendelheti meg
 
 Az AI render-fejlesztés közvetlenül az ai.visiongraphics.eu-n érhető el. Töltse fel a meglévő képeit, adja meg a kívánt változatokat, és megkapja a fotórealisztikus kimeneteket.
 
 AI-fejlesztést új látványterv-munkával kombináló projektekhez — friss renderek, animációk vagy 360°-os túrák — közvetlenül egyeztessen velünk az összevont terjedelemről.
+</Lang>
 
+<Lang code="en">
+## Related techniques
+
+For AI-generated motion from the upgraded images: AI Animation
+
+For a fully controlled photorealistic render from the 3D model: Photorealistic Rendering
+
+For transforming the stylistic character of a facade: Architectural Styling
+</Lang>
+
+<Lang code="hu">
 ## Kapcsolódó technikák
 
 A fejlesztett képekből AI által generált mozgáshoz: AI-animáció

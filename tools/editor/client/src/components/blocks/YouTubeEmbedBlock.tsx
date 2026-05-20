@@ -1,5 +1,6 @@
 import React from 'react';
 import type { BlockData, YouTubeEmbedProps } from '../../types/blocks.ts';
+import { readLocale, DEFAULT_LOCALE } from '../../lib/localized.ts';
 
 export default function YouTubeEmbedBlock({ block }: { block: BlockData & { type: 'youtube-embed'; props: YouTubeEmbedProps } }) {
   const { url, title } = block.props;
@@ -33,7 +34,7 @@ export default function YouTubeEmbedBlock({ block }: { block: BlockData & { type
       </div>
       <div>
         <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--color-text)' }}>
-          {title || 'YouTube Video'}
+          {readLocale(title as any, DEFAULT_LOCALE) || 'YouTube Video'}
         </div>
         <div style={{ fontSize: 10, color: 'var(--color-text-faint)', marginTop: 2, maxWidth: 280, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
           {url || <em>URL not set</em>}

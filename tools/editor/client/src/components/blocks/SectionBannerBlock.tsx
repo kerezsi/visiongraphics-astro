@@ -3,6 +3,7 @@ import type { BlockData, SectionBannerProps } from '../../types/blocks.ts';
 import { useDocumentStore } from '../../store/document.ts';
 import { useUIStore } from '../../store/ui.ts';
 import * as api from '../../lib/api-client.ts';
+import { readLocale, DEFAULT_LOCALE } from '../../lib/localized.ts';
 import { getDraggedImageSrc } from './ImageGalleryBlock.tsx';
 
 export default function SectionBannerBlock({ block }: { block: BlockData & { type: 'SectionBanner'; props: SectionBannerProps } }) {
@@ -134,13 +135,13 @@ export default function SectionBannerBlock({ block }: { block: BlockData & { typ
 
       {/* Text content */}
       <div style={{ position: 'relative', textAlign }}>
-        {label && (
+        {readLocale(label as any, DEFAULT_LOCALE) && (
           <p style={{ fontSize: 9, color: 'var(--color-text-muted)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 4 }}>
-            {label}
+            {readLocale(label as any, DEFAULT_LOCALE)}
           </p>
         )}
         <Tag style={{ fontSize: 16, fontWeight: 700, color: '#fff', lineHeight: 1.2, margin: 0 }}>
-          {title || 'Section Title'}
+          {readLocale(title as any, DEFAULT_LOCALE) || 'Section Title'}
         </Tag>
       </div>
 

@@ -4,6 +4,7 @@ import { useUIStore } from '../../store/ui.ts';
 import type { EditorView } from '../../store/ui.ts';
 import type { PageType } from '../../types/blocks.ts';
 import { generateThumbs, gitPush, gitPromote, pushAllToR2 } from '../../lib/api-client.ts';
+import { readLocale, DEFAULT_LOCALE } from '../../lib/localized.ts';
 
 const toolbarStyle: React.CSSProperties = {
   height: 44,
@@ -168,7 +169,7 @@ export function Toolbar() {
   const [promoteStatus, setPromoteStatus] = useState<string | null>(null);
   const flashTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const title = (meta as Record<string, unknown>).title as string | undefined;
+  const title = readLocale((meta as Record<string, unknown>).title as any, DEFAULT_LOCALE) || undefined;
 
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {

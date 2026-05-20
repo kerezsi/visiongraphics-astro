@@ -6,7 +6,7 @@ import Page from '../../../../layouts/Page.astro';
 import SectionBanner from '../../../../components/ui/SectionBanner.astro';
 import { getCollection, getEntry } from 'astro:content';
 import { thumbUrl } from '../../../../lib/image-url';
-import { localizedPaths, type Locale } from '../../../../lib/i18n';
+import { localizedPaths, localeUrl, type Locale } from '../../../../lib/i18n';
 
 export async function getStaticPaths() {
   const allProjects = await getCollection('projects', ({ data }) => data.published);
@@ -23,7 +23,7 @@ const label = catMap.get(category) ?? category;
 const projects = allProjects
   .filter(p => p.data.categories.some(c => c.id === category))
   .sort((a, b) => b.data.year - a.data.year);
-if (!projects.length) return Astro.redirect('/portfolio/');
+if (!projects.length) return Astro.redirect(localeUrl('/portfolio/', lang));
 
 // Resolve client names and locations for all projects
 const projectMeta = await Promise.all(
@@ -53,7 +53,7 @@ const projectMeta = await Promise.all(
 
     <div class="category-header container">
       <div class="category-breadcrumb">
-        <a href="/portfolio/">Portfolio</a>
+        <a href={localeUrl('/portfolio/', lang)}>Portfolio</a>
         <span>→</span>
         <span>{label}</span>
       </div>
@@ -61,13 +61,13 @@ const projectMeta = await Promise.all(
       <h2 class="display-lg category-h1">{label}</h2>
       <p class="category-sub">
         {projects.length} project{projects.length !== 1 ? 's' : ''} in this category.
-        <a href="/portfolio/">Browse all →</a>
+        <a href={localeUrl('/portfolio/', lang)}>Browse all →</a>
       </p>
     </div>
 
     <div class="category-grid container">
       {projects.map((project, i) => (
-        <a href={`/portfolio/${project.slug}/`} class="cat-card">
+        <a href={localeUrl(`/portfolio/${project.slug}/`, lang)} class="cat-card">
           <div class="cat-card-image">
             <img
               src={thumbUrl(project.data.coverImage)}
@@ -92,8 +92,8 @@ const projectMeta = await Promise.all(
     </div>
 
     <div class="category-cta container">
-      <a href="/portfolio/" class="btn btn-secondary">← All Projects</a>
-      <a href="/contact/" class="btn btn-primary">Start a Project</a>
+      <a href={localeUrl('/portfolio/', lang)} class="btn btn-secondary">← All Projects</a>
+      <a href={localeUrl('/contact/', lang)} class="btn btn-primary">Start a Project</a>
     </div>
 
   </div>

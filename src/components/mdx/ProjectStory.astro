@@ -2,10 +2,14 @@
 // src/components/mdx/ProjectStory.astro
 // Renders the story/background section with an editable heading.
 // Content is passed as MDX children (slot).
-const { heading = 'The Story:' } = Astro.props;
+import { tStr, DEFAULT_LOCALE, type Locale } from '../../lib/i18n';
+
+const { heading } = Astro.props as { heading?: unknown };
+const lang: Locale = (Astro.locals as { lang?: Locale })?.lang ?? DEFAULT_LOCALE;
+const headingStr = tStr(heading as any, lang) || 'The Story:';
 ---
 <section class="mdx-project-story">
-  <h2 class="project-red-heading">{heading}</h2>
+  <h2 class="project-red-heading">{headingStr}</h2>
   <div class="story-text">
     <slot />
   </div>

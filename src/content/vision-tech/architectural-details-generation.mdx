@@ -28,7 +28,15 @@ published: true
 Contemporary construction largely abandoned ornamental facade detail because manual craft at scale became prohibitively expensive. AI generation changes part of that equation — designing an ornamental element is now fast and explorable. Combined with the improving accessibility of CNC fabrication and 3D printing, the gap between a generated detail and a manufactured one is narrower than it has been for decades.
 
 This technique generates architectural details — cornices, window surrounds, column capitals, panel patterns, railings, decorative reliefs — using ComfyUI with Flux, informed by Qwen visual analysis of historical references. The output is a set of design options ready for review, with selected variants developable into 3D-printable geometry.
+</Lang>
 
+<Lang code="hu">
+A kortárs építészet nagyrészt feladta a díszítő homlokzati részleteket, mert a méretarányos kézi mesterség megfizethetetlenné vált. Az AI-generálás megváltoztatja az egyenlet egy részét — egy díszítő elem tervezése ma gyors és felfedezhető. A CNC-megmunkálás és 3D-nyomtatás javuló elérhetőségével együtt a generált és gyártott részlet közötti szakadék szűkebb, mint évtizedek óta bármikor.
+
+Ez a technika építészeti részleteket — párkányokat, ablakkáva-keretezéseket, oszlopfőket, panelmintákat, korlátokat, díszítő reliefeket — generál ComfyUI-jal és Flux-szal, történeti referenciák Qwen vizuális elemzésével támogatva. A kimenet szemlézésre kész tervopciók halmaza, a kiválasztott változatok pedig 3D-nyomtatható geometriává fejleszthetők.
+</Lang>
+
+<Lang code="en">
 ## The generation pipeline
 
 **Reference analysis with Qwen** — before generating anything, we use Qwen's vision capabilities to analyze photographs or drawings of the architectural tradition the details should belong to. Qwen identifies the characteristic elements: the ratio of projection to wall surface, how light and shadow articulate the detail at distance, the geometry of recurring motifs. This analysis informs the generation prompt with specificity that generic style descriptions lack.
@@ -41,10 +49,6 @@ This technique generates architectural details — cornices, window surrounds, c
 </Lang>
 
 <Lang code="hu">
-A kortárs építészet nagyrészt feladta a díszítő homlokzati részleteket, mert a méretarányos kézi mesterség megfizethetetlenné vált. Az AI-generálás megváltoztatja az egyenlet egy részét — egy díszítő elem tervezése ma gyors és felfedezhető. A CNC-megmunkálás és 3D-nyomtatás javuló elérhetőségével együtt a generált és gyártott részlet közötti szakadék szűkebb, mint évtizedek óta bármikor.
-
-Ez a technika építészeti részleteket — párkányokat, ablakkáva-keretezéseket, oszlopfőket, panelmintákat, korlátokat, díszítő reliefeket — generál ComfyUI-jal és Flux-szal, történeti referenciák Qwen vizuális elemzésével támogatva. A kimenet szemlézésre kész tervopciók halmaza, a kiválasztott változatok pedig 3D-nyomtatható geometriává fejleszthetők.
-
 ## A generálási pipeline
 
 **Referencia-elemzés Qwennel** — mielőtt bármit generálnánk, a Qwen vizuális képességeit használjuk, hogy elemezzük az építészeti tradíció fotóit vagy rajzait, amelyhez a részleteknek tartozniuk kell. A Qwen azonosítja a jellegzetes elemeket: a kiállás és falfelület arányát, hogy a fény és árnyék hogyan tagolja a részletet távolból, az ismétlődő motívumok geometriáját. Ez az elemzés olyan konkrétsággal egészíti ki a generálási promptot, amelyet az általános stílusleírások nem adnak.
@@ -79,18 +83,6 @@ The generation is not limited to historical styles, though historical references
 - **Regional vernacular** — local material traditions, craft patterns specific to a geographic context
 - **Contemporary ornamental** — parametric patterns, perforated panels, abstract relief, computational geometry that reads as detail without historical reference
 - **Hybrid and novel** — elements that combine references or extrapolate from them into genuinely new formal territory
-
-## Physical production
-
-Generated designs can be prepared for physical manufacture. The path from image to object involves extracting or modeling the geometry from the AI output, which we do in 3ds Max — either by tracing the generated form or by using AI-assisted geometry generation tools. The resulting 3D file can be:
-
-- Sent directly to a 3D printing service for resin or polymer prototyping
-- Adapted for CNC milling in stone, wood, or composite materials
-- Used as the basis for traditional mold-making if production volumes justify it
-
-We do not operate fabrication equipment ourselves but work with production partners and can advise on the appropriate material and process for the specific application.
-
-## What we need from you
 </Lang>
 
 <Lang code="hu">
@@ -103,7 +95,21 @@ A generálás nem korlátozódik történeti stílusokra, bár a történeti ref
 - **Regionális népi** — helyi anyagi tradíciók, földrajzi kontextushoz kötött kézműves minták
 - **Kortárs ornamentális** — parametrikus minták, perforált panelek, absztrakt relief, történeti referencia nélküli, számításos geometria, ami részletként olvasható
 - **Hibrid és újító** — referenciákat kombináló vagy belőlük valóban új formai területre ekstrapoláló elemek
+</Lang>
 
+<Lang code="en">
+## Physical production
+
+Generated designs can be prepared for physical manufacture. The path from image to object involves extracting or modeling the geometry from the AI output, which we do in 3ds Max — either by tracing the generated form or by using AI-assisted geometry generation tools. The resulting 3D file can be:
+
+- Sent directly to a 3D printing service for resin or polymer prototyping
+- Adapted for CNC milling in stone, wood, or composite materials
+- Used as the basis for traditional mold-making if production volumes justify it
+
+We do not operate fabrication equipment ourselves but work with production partners and can advise on the appropriate material and process for the specific application.
+</Lang>
+
+<Lang code="hu">
 ## Fizikai gyártás
 
 A generált tervek fizikai gyártásra előkészíthetők. A képtől a tárgyig vezető út a geometria kinyerését vagy modellezését foglalja magában az AI-kimenetből, amit 3ds Maxben végzünk — vagy a generált forma átrajzolásával, vagy AI-támogatott geometria-generáló eszközökkel. Az így létrejövő 3D-fájl:
@@ -113,7 +119,13 @@ A generált tervek fizikai gyártásra előkészíthetők. A képtől a tárgyig
 - Hagyományos öntőminta-készítés alapjául szolgálhat, ha a gyártási mennyiség indokolja
 
 Magunk nem üzemeltetünk gyártóberendezést, de gyártópartnerekkel dolgozunk, és tanácsot adunk a megfelelő anyaghoz és folyamathoz az adott alkalmazáshoz.
+</Lang>
 
+<Lang code="en">
+## What we need from you
+</Lang>
+
+<Lang code="hu">
 ## Mire van szükségünk Öntől
 </Lang>
 

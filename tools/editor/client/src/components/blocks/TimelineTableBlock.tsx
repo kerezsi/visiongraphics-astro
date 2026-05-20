@@ -1,5 +1,6 @@
 import React from 'react';
 import type { BlockData, TimelineTableProps } from '../../types/blocks.ts';
+import { readLocale, DEFAULT_LOCALE } from '../../lib/localized.ts';
 
 export default function TimelineTableBlock({ block }: { block: BlockData & { type: 'timeline-table'; props: TimelineTableProps } }) {
   const rows = Array.isArray(block.props.rows) ? block.props.rows : [];
@@ -23,10 +24,10 @@ export default function TimelineTableBlock({ block }: { block: BlockData & { typ
             }}
           >
             <span className="timeline-scope" style={{ fontSize: 12, fontWeight: 600, color: 'var(--color-text)', minWidth: 100, flexShrink: 0 }}>
-              {row.scope}
+              {readLocale(row.scope as any, DEFAULT_LOCALE)}
             </span>
             <span className="timeline-time" style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>
-              {row.deliverables}
+              {readLocale(row.deliverables as any, DEFAULT_LOCALE)}
             </span>
           </div>
         ))}

@@ -1,12 +1,30 @@
 ---
+import MediaLabel from './MediaLabel.astro';
+import type { Localized } from '../../lib/i18n';
+
 interface ImageItem {
   src: string;
   alt?: string;
 }
 interface Props {
   images: ImageItem[];
+  /** Red label above the gallery. Default on portfolio pages: "Gallery:" / "Galéria:".
+   *  Default elsewhere: none. Pass `false` to force-hide. */
+  label?:    Localized<string> | false;
+  /** Optional white subtitle, mixed case. Empty = no line shown. */
+  subtitle?: Localized<string>;
 }
-const { images } = Astro.props;
+
+const { images, label, subtitle } = Astro.props;
+const pageType = (Astro.locals as { pageType?: string })?.pageType;
+
+// On portfolio pages: auto-apply "Gallery:" / "Galéria:" unless overridden.
+// On all other pages: silent by default — caller must set `label` to opt in.
+const defaultLabel: Localized<string> | false =
+  pageType === 'portfolio' ? { en: 'Gallery:', hu: 'Galéria:' } : false;
+const effectiveLabel = label === undefined ? defaultLabel : label;
+
 const dataImages = JSON.stringify(images).replace(/'/g, '&#39;');
 ---
+<MediaLabel label={effectiveLabel} subtitle={subtitle} />
 <div class="article-gallery-mount" data-images={dataImages}></div>

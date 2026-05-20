@@ -1,8 +1,12 @@
 import React from 'react';
 import type { BlockData, CtaSectionProps } from '../../types/blocks.ts';
+import { readLocale, DEFAULT_LOCALE } from '../../lib/localized.ts';
 
 export default function CtaSectionBlock({ block }: { block: BlockData & { type: 'cta-section'; props: CtaSectionProps } }) {
-  const { heading, subtext, buttonLabel, buttonHref } = block.props;
+  const { buttonHref } = block.props;
+  const heading     = readLocale(block.props.heading as any, DEFAULT_LOCALE);
+  const subtext     = readLocale(block.props.subtext as any, DEFAULT_LOCALE);
+  const buttonLabel = readLocale(block.props.buttonLabel as any, DEFAULT_LOCALE);
 
   return (
     <section
