@@ -1,7 +1,7 @@
 ---
 title:
-  en: "Night Renderings"
-  hu: "Éjszakai látványtervek"
+  en: Night Renderings
+  hu: Éjszakai látványtervek
 description:
   en: "Photorealistic night views produced in 3ds Max with V-Ray. Each light source — facade luminaires, interior spill through glazing, street lighting — is individually set up with accurate photometric data. A distinct lighting rig, not a variant of a daytime render."
   hu: "Fotórealisztikus éjszakai nézetek 3ds Maxben, V-Rayjel. Minden fényforrást — homlokzati lámpákat, üvegen át kiszűrődő belső fényt, utcai világítást — külön állítunk be, pontos fotometrikus adatokkal. Önálló fényrendszer, nem egy nappali render változata."
@@ -35,6 +35,8 @@ Az éjszakai render nem egy egyszerűen bekattintható változat egy külső ren
 A megtérülés vizuális: sok épület hatásosabban érvényesül sötétedés után, amikor az építészeti világítás válik a domináns tervezési elemmé.
 </Lang>
 
+<ImageGallery images={[{"src":"/_img/vision-tech/night-renderings/rm-06-x.jpg","alt":"RM_06_x"},{"src":"/_img/vision-tech/night-renderings/rm-07-x.jpg","alt":"RM_07_x"}]} />
+
 <Lang code="en">
 ## What makes night rendering technically distinct
 
@@ -67,6 +69,8 @@ Egy nappali külsőnél a napfény végzi a munka nagy részét. Éjszaka a jele
 **Expozíció-kalibrálás** — a virtuális kamerabeállítások egy valódi éjszakai fotót tükröznek: hosszabb expozíció, eltérő ISO-válasz, színhőmérséklet-eltolódás. Ennek elrontása olyan képet ad, ami szürke nappali jelenet hozzáadott fényekkel, nem éjszakai fotó.
 </Lang>
 
+<ImageGallery images={[{"src":"/_img/vision-tech/night-renderings/visiongraphics-ref-053-x.jpg","alt":"visiongraphics_ref_053_x"},{"src":"/_img/vision-tech/night-renderings/visiongraphics-ref-054-x.jpg","alt":"visiongraphics_ref_054_x"},{"src":"/_img/vision-tech/night-renderings/visiongraphics-ref-055-x.jpg","alt":"visiongraphics_ref_055_x"}]} />
+
 <Lang code="en">
 ## When night views add real value
 
@@ -95,6 +99,8 @@ Az éjszakai render akkor éri meg a többletmunkát, ha a világítás szándé
 A kidolgozott világítási terv nélküli projekteknél egy alap éjszakai render lehetséges, de korlátozott. Az eredmény teljesen attól függ, mit lehet egyáltalán megvilágítani.
 </Lang>
 
+<ImageGallery images={[{"src":"/_img/vision-tech/night-renderings/visiongraphics-ref-049-x.jpg","alt":"visiongraphics_ref_049_x"},{"src":"/_img/vision-tech/night-renderings/visiongraphics-ref-050-x.jpg","alt":"visiongraphics_ref_050_x"}]} />
+
 <Lang code="en">
 ## What we need from you
 </Lang>
@@ -104,12 +110,14 @@ A kidolgozott világítási terv nélküli projekteknél egy alap éjszakai rend
 </Lang>
 
 <SpecTable rows={[
-  { label: { en: "Lighting design",   hu: "Világítási terv" },        value: { en: "IES profiles or luminaire product specs preferred. Without them, results are estimated from fixture type and general intent.",        hu: "IES-profilok vagy lámpa-termékspecifikációk preferáltak. Nélkülük az eredményt típus és általános szándék alapján becsüljük." } },
-  { label: { en: "Interior lighting", hu: "Belső világítás" },         value: { en: "At least indicative — we need to know what the spill through glazing should look like. Fully dark interiors are also a valid brief.", hu: "Legalább irányadó szinten — tudnunk kell, hogyan nézzen ki az üvegen átszűrődő fény. A teljesen sötét belső is érvényes brief." } },
-  { label: { en: "Facade elements",   hu: "Homlokzati elemek" },       value: { en: "Any backlit, emissive, or externally lit cladding components need to be specified — material, color temperature, intensity direction.", hu: "Minden hátulról világított, emisszív vagy külsőleg megvilágított burkolatot meg kell adni — anyag, színhőmérséklet, intenzitás iránya." } },
-  { label: { en: "3D model",          hu: "3D-modell" },                value: { en: "The same model used for daytime exterior renders. Night and day views should be planned together to avoid duplicate modeling.",       hu: "Ugyanaz a modell, mint a nappali külső rendernél. Az éjszakai és nappali nézeteket együtt érdemes tervezni a duplikált modellezés elkerüléséért." } },
-  { label: { en: "Reference mood",    hu: "Referenciahangulat" },       value: { en: "Dusk or full night? Warm or cool atmosphere? Reference photographs of comparable projects are useful here.",                            hu: "Alkonyat vagy teljes éjszaka? Meleg vagy hideg hangulat? Hasonló projektek referenciafotói itt hasznosak." } },
+{ label: { en: "Lighting design",   hu: "Világítási terv" },        value: { en: "IES profiles or luminaire product specs preferred. Without them, results are estimated from fixture type and general intent.",        hu: "IES-profilok vagy lámpa-termékspecifikációk preferáltak. Nélkülük az eredményt típus és általános szándék alapján becsüljük." } },
+{ label: { en: "Interior lighting", hu: "Belső világítás" },         value: { en: "At least indicative — we need to know what the spill through glazing should look like. Fully dark interiors are also a valid brief.", hu: "Legalább irányadó szinten — tudnunk kell, hogyan nézzen ki az üvegen átszűrődő fény. A teljesen sötét belső is érvényes brief." } },
+{ label: { en: "Facade elements",   hu: "Homlokzati elemek" },       value: { en: "Any backlit, emissive, or externally lit cladding components need to be specified — material, color temperature, intensity direction.", hu: "Minden hátulról világított, emisszív vagy külsőleg megvilágított burkolatot meg kell adni — anyag, színhőmérséklet, intenzitás iránya." } },
+{ label: { en: "3D model",          hu: "3D-modell" },                value: { en: "The same model used for daytime exterior renders. Night and day views should be planned together to avoid duplicate modeling.",       hu: "Ugyanaz a modell, mint a nappali külső rendernél. Az éjszakai és nappali nézeteket együtt érdemes tervezni a duplikált modellezés elkerüléséért." } },
+{ label: { en: "Reference mood",    hu: "Referenciahangulat" },       value: { en: "Dusk or full night? Warm or cool atmosphere? Reference photographs of comparable projects are useful here.",                            hu: "Alkonyat vagy teljes éjszaka? Meleg vagy hideg hangulat? Hasonló projektek referenciafotói itt hasznosak." } },
 ]} />
+
+<ImageGallery images={[{"src":"/_img/vision-tech/night-renderings/visiongraphics-ref-052-x.jpg","alt":"visiongraphics_ref_052_x"},{"src":"/_img/vision-tech/night-renderings/deldom-red-06-night-x.jpg","alt":"deldom_RED_06_night_x"},{"src":"/_img/vision-tech/night-renderings/mingxi-ejj-legi-01-x.jpg","alt":"MINGXI_EJJ_Legi_01_x"},{"src":"/_img/vision-tech/night-renderings/visiongraphics-ref-046-x.jpg","alt":"visiongraphics_ref_046_x"},{"src":"/_img/vision-tech/night-renderings/visiongraphics-ref-047-x.jpg","alt":"visiongraphics_ref_047_x"},{"src":"/_img/vision-tech/night-renderings/visiongraphics-ref-048-x.jpg","alt":"visiongraphics_ref_048_x"}]} />
 
 <Lang code="en">
 ## Delivery
