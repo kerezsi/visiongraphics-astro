@@ -76,8 +76,8 @@ export function Inspector({ block }: Props) {
 
     case 'rich-text':
       return (
-        <div style={{ padding: 12 }}>
-          <TextareaField label="HTML" value={p.html as string} onChange={(v) => update('html', v)} rows={8} mono />
+        <div style={{ padding: 12, display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0 }}>
+          <TextareaField label="HTML" value={p.html as string} onChange={(v) => update('html', v)} mono fill />
         </div>
       );
 
@@ -178,7 +178,8 @@ export function Inspector({ block }: Props) {
       const images = (p.images as Array<{ src: string; alt: string }>) ?? [];
       return (
         <div style={{ padding: 12, display: 'flex', flexDirection: 'column', gap: 10 }}>
-          <LocalizedTextField label="Title" value={p.title as LocalizedValue | undefined} onChange={(v) => update('title', v)} />
+          <LocalizedTextField label="Label (red header)" value={p.label    as LocalizedValue | undefined} onChange={(v) => update('label',    v)} />
+          <LocalizedTextField label="Subtitle"           value={p.subtitle as LocalizedValue | undefined} onChange={(v) => update('subtitle', v)} />
           <ArrayField
             label="Images"
             items={images}

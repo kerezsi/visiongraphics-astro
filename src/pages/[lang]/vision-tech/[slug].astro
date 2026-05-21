@@ -23,6 +23,7 @@ import SpecTable from '../../../components/mdx/SpecTable.astro';
 import CompareTable from '../../../components/mdx/CompareTable.astro';
 import Lang from '../../../components/i18n/Lang.astro';
 import { localizedPaths, localeUrl, tStr, type Locale } from '../../../lib/i18n';
+import { vtLabel } from '../../../lib/vision-tech-labels';
 
 export async function getStaticPaths() {
   const all = await getCollection('vision-tech', e => e.data.published !== false);
@@ -136,13 +137,15 @@ const c = COPY[lang];
 >
 
   <!-- ─── Hero ─────────────────────────────────────────────── -->
-  <SectionBanner
-    image={data.image}
-    label={data.technique ?? c.technique}
-    title={titleStr}
-    size="page"
-    headingLevel="h1"
-  />
+  <div class="vt-hero-wrap">
+    <SectionBanner
+      image={data.image}
+      label={data.technique ? vtLabel(data.technique, lang) : c.technique}
+      title={titleStr}
+      size="page"
+      headingLevel="h1"
+    />
+  </div>
   <div class="vt-breadcrumb container">
     <a href={localeUrl('/vision-tech/', lang)} class="vt-back">{c.allTechniques}</a>
   </div>
@@ -156,24 +159,24 @@ const c = COPY[lang];
       <div class="vt-fields-row">
         <span class="vt-field">
           <span class="vt-field-label">{c.purpose}</span>
-          <span class="vt-field-val">{data.purpose.join(' | ')}</span>
+          <span class="vt-field-val">{data.purpose.map(p => vtLabel(p, lang)).join(' | ')}</span>
         </span>
         {data.technique && (
           <span class="vt-field">
             <span class="vt-field-label">{c.technicalApproach}</span>
-            <span class="vt-field-val">{data.technique}</span>
+            <span class="vt-field-val">{vtLabel(data.technique, lang)}</span>
           </span>
         )}
         <span class="vt-field">
           <span class="vt-field-label">{c.reality}</span>
-          <span class="vt-field-val">{data.reality}</span>
+          <span class="vt-field-val">{vtLabel(data.reality, lang)}</span>
         </span>
       </div>
 
       <div class="vt-fields-row">
         <span class="vt-field">
           <span class="vt-field-label">{c.complexity}</span>
-          <span class="vt-field-val">{data.complexity}</span>
+          <span class="vt-field-val">{vtLabel(data.complexity, lang)}</span>
         </span>
         <span class="vt-field">
           <span class="vt-field-label">{c.cost}</span>
@@ -181,7 +184,7 @@ const c = COPY[lang];
         </span>
         <span class="vt-field">
           <span class="vt-field-label">{c.model3d}</span>
-          <span class="vt-field-val">{data.model3d}</span>
+          <span class="vt-field-val">{vtLabel(data.model3d, lang)}</span>
         </span>
       </div>
     </div>
@@ -287,6 +290,12 @@ const c = COPY[lang];
 </script>
 
 <style>
+  /* ─── Hero ──────────────────────────────────────────────── */
+  /* Tech-page banner is 50% taller than the shared `size="page"` default. */
+  .vt-hero-wrap :global(.section-banner--page) {
+    height: clamp(203px, 24.75vw, 338px);
+  }
+
   /* ─── Breadcrumb ────────────────────────────────────────── */
   .vt-breadcrumb {
     padding-block: var(--space-4);
@@ -361,11 +370,11 @@ const c = COPY[lang];
 
   .vt-body-content :global(h2) {
     font-size: var(--fs-h5); font-weight: 600;
-    color: var(--color-text); margin: 2rem 0 0.6rem; line-height: 1.25;
+    color: var(--color-accent); margin: 2rem 0 0.6rem; line-height: 1.25;
   }
   .vt-body-content :global(h3) {
     font-size: var(--fs-body); font-weight: 600;
-    color: var(--color-text); margin: 1.5rem 0 0.5rem;
+    color: var(--color-accent); margin: 1.5rem 0 0.5rem;
   }
   .vt-body-content :global(p) {
     font-size: var(--fs-body); line-height: 1.75;

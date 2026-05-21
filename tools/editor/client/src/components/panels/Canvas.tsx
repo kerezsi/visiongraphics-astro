@@ -15,7 +15,12 @@ import { useDocumentStore, createDefaultBlock } from '../../store/document.ts';
 import { useUIStore } from '../../store/ui.ts';
 import { BlockHost } from '../canvas/BlockHost.tsx';
 import { blockRegistry } from '../../lib/block-registry.ts';
-import type { BlockType } from '../../types/blocks.ts';
+import type { BlockType, BlockData } from '../../types/blocks.ts';
+import {
+  detectBlockLang,
+  groupForSideBySide,
+  hasBilingualBlocks,
+} from '../../lib/block-lang.ts';
 
 
 const canvasStyle: React.CSSProperties = {
@@ -48,6 +53,46 @@ const insertionLineStyle: React.CSSProperties = {
   borderRadius: 1,
   margin: '1px 0',
   pointerEvents: 'none',
+};
+
+const langBarStyle: React.CSSProperties = {
+  display: 'flex',
+  alignItems: 'center',
+  gap: 6,
+  padding: '6px 8px',
+  margin: '0 auto 8px',
+  maxWidth: 900,
+  background: 'var(--color-surface)',
+  border: '1px solid var(--color-border)',
+  borderRadius: 4,
+  fontSize: 10,
+  letterSpacing: '0.05em',
+};
+
+const langBarLabelStyle: React.CSSProperties = {
+  fontSize: 10,
+  color: 'var(--color-text-faint)',
+  textTransform: 'uppercase',
+  letterSpacing: '0.08em',
+  marginRight: 2,
+};
+
+const langChipStyle: React.CSSProperties = {
+  border: '1px solid var(--color-border)',
+  borderRadius: 3,
+  padding: '2px 8px',
+  fontSize: 10,
+  letterSpacing: '0.06em',
+  cursor: 'pointer',
+  textTransform: 'uppercase',
+  fontWeight: 600,
+};
+
+const pairRowStyle: React.CSSProperties = {
+  display: 'grid',
+  gridTemplateColumns: '1fr 1fr',
+  gap: 8,
+  alignItems: 'start',
 };
 
 // Droppable wrapper for the whole canvas area
@@ -85,6 +130,10 @@ export function Canvas() {
   const aiBlockSelectMode = useUIStore((s) => s.aiBlockSelectMode);
   const aiSelectedBlockIds = useUIStore((s) => s.aiSelectedBlockIds);
   const setAiBlockSelectMode = useUIStore((s) => s.setAiBlockSelectMode);
+  const langVisible = useUIStore((s) => s.langVisible);
+  const langSideBySide = useUIStore((s) => s.langSideBySide);
+  const toggleLangVisible = useUIStore((s) => s.toggleLangVisible);
+  const toggleLangSideBySide = useUIStore((s) => s.toggleLangSideBySide);
 
   const [draggingFromPalette, setDraggingFromPalette] = useState(false);
   const [paletteOverBlockId, setPaletteOverBlockId] = useState<string | null>(null);
@@ -151,6 +200,16 @@ export function Canvas() {
     ? (blockRegistry.get(paletteBlockType)?.label ?? paletteBlockType)
     : null;
 
+  // Bilingual UI: visibility-filtered list, optionally grouped into EN/HU pairs.
+  const showLangControls = hasBilingualBlocks(blocks);
+  const isVisible = (b: BlockData): boolean => {
+    const l = detectBlockLang(b);
+    if (l === null) return true;
+    return langVisible[l];
+  };
+  const visibleBlocks = blocks.filter(isVisible);
+  const canvasItems = langSideBySide ? groupForSideBySide(visibleBlocks) : null;
+
   return (
     <DndContext
       sensors={sensors}
@@ -189,17 +248,80 @@ export function Canvas() {
           </div>
         )}
 
+        {/* Bilingual visibility / layout controls — only when document has Lang blocks */}
+        {showLangControls && (
+          <div style={langBarStyle}>
+            <span style={langBarLabelStyle}>Languages:</span>
+            {(['en', 'hu'] as const).map((l) => {
+              const on = langVisible[l];
+              return (
+                <button
+                  key={l}
+                  onClick={() => toggleLangVisible(l)}
+                  style={{
+                    ...langChipStyle,
+                    background: on ? 'var(--color-accent)' : 'transparent',
+                    color: on ? '#fff' : 'var(--color-text-faint)',
+                    borderColor: on ? 'var(--color-accent)' : 'var(--color-border)',
+                  }}
+                  title={`Toggle ${l.toUpperCase()} blocks`}
+                >
+                  {on ? '●' : '○'} {l.toUpperCase()}
+                </button>
+              );
+            })}
+            <div style={{ width: 1, height: 16, background: 'var(--color-border)', margin: '0 4px' }} />
+            <button
+              onClick={toggleLangSideBySide}
+              style={{
+                ...langChipStyle,
+                background: langSideBySide ? 'var(--color-accent)' : 'transparent',
+                color: langSideBySide ? '#fff' : 'var(--color-text-faint)',
+                borderColor: langSideBySide ? 'var(--color-accent)' : 'var(--color-border)',
+              }}
+              title="Show paired EN/HU Lang blocks side by side"
+            >
+              {langSideBySide ? '▮▮' : '▮'} Side by side
+            </button>
+          </div>
+        )}
+
         <CanvasDropArea isEmpty={blocks.length === 0}>
-          <SortableContext items={blocks.map((b) => b.id)} strategy={verticalListSortingStrategy}>
-            {blocks.map((block) => (
-              <React.Fragment key={block.id}>
-                <BlockHost block={block} />
-                {/* Insertion line AFTER this block — shows where the dropped block will land */}
-                {draggingFromPalette && paletteOverBlockId === block.id && (
-                  <div style={insertionLineStyle} />
-                )}
-              </React.Fragment>
-            ))}
+          <SortableContext items={visibleBlocks.map((b) => b.id)} strategy={verticalListSortingStrategy}>
+            {canvasItems
+              ? canvasItems.map((item) => {
+                  if (item.kind === 'pair') {
+                    const pairKey = `${item.en.id}__${item.hu.id}`;
+                    const showAfter = paletteOverBlockId === item.en.id || paletteOverBlockId === item.hu.id;
+                    return (
+                      <React.Fragment key={pairKey}>
+                        <div style={pairRowStyle}>
+                          <BlockHost block={item.en} />
+                          <BlockHost block={item.hu} />
+                        </div>
+                        {draggingFromPalette && showAfter && (
+                          <div style={insertionLineStyle} />
+                        )}
+                      </React.Fragment>
+                    );
+                  }
+                  return (
+                    <React.Fragment key={item.block.id}>
+                      <BlockHost block={item.block} />
+                      {draggingFromPalette && paletteOverBlockId === item.block.id && (
+                        <div style={insertionLineStyle} />
+                      )}
+                    </React.Fragment>
+                  );
+                })
+              : visibleBlocks.map((block) => (
+                  <React.Fragment key={block.id}>
+                    <BlockHost block={block} />
+                    {draggingFromPalette && paletteOverBlockId === block.id && (
+                      <div style={insertionLineStyle} />
+                    )}
+                  </React.Fragment>
+                ))}
           </SortableContext>
 
           {blocks.length === 0 && (

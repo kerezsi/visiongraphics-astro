@@ -82,13 +82,24 @@ const thumbnailUrl = videoId
 <script>
   import { scrollMediaIntoCenter } from '../../lib/media-scroll';
 
+  const pauseOtherYouTubeVideos = (current: HTMLElement) => {
+    document.querySelectorAll<HTMLIFrameElement>('.yt-embed--active iframe').forEach(iframe => {
+      if (iframe.closest('.yt-embed') === current) return;
+      iframe.contentWindow?.postMessage(
+        '{"event":"command","func":"pauseVideo","args":""}',
+        '*'
+      );
+    });
+  };
+
   document.querySelectorAll<HTMLElement>('.yt-embed').forEach(embed => {
     const activate = () => {
       const id = embed.dataset.ytId;
       if (!id) return;
+      pauseOtherYouTubeVideos(embed);
       scrollMediaIntoCenter(embed);
       const iframe = document.createElement('iframe');
-      iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0&modestbranding=1`;
+      iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0&modestbranding=1&enablejsapi=1`;
       iframe.allow = 'autoplay; fullscreen; picture-in-picture';
       iframe.allowFullscreen = true;
       iframe.title = 'YouTube Video';

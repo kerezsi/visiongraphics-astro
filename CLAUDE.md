@@ -315,7 +315,7 @@ The red label is fixed per media type; the white subtitle is opt-in.
 |---|---|---|
 | `ImageGallery` | "Gallery:" / "Galéria:" | **only on portfolio pages** |
 | `ImageCompare` | "Compare:" / "Összehasonlítás:" | everywhere |
-| `Tour360`      | "360 tour:" / "360 túra:"        | everywhere |
+| `Tour360`      | "360° tour:" / "360° túra:"      | everywhere |
 | `YoutubeEmbed` / `FilmEmbed` | "Film:" / "Film:" | everywhere |
 | `SingleImage`  | (none — never labelled) | n/a |
 

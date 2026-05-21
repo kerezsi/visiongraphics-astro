@@ -36,6 +36,26 @@ function splitMdxBody(body: string): Segment[] {
       while (nameEnd < body.length && /[A-Za-z0-9]/.test(body[nameEnd])) nameEnd++;
       const name = body.slice(i + 1, nameEnd);
 
+      // <Lang code="en|hu">…</Lang> — bilingual prose wrapper.  Not a UI block;
+      // we slice it out as its own prose segment so it doesn't get glued to
+      // adjacent Lang blocks in one giant rich-text chunk.  proseToBlocks will
+      // recognise it via the "starts with <" path and emit a single rich-text
+      // block per Lang wrapper; codegen round-trips its html verbatim.
+      if (name === 'Lang') {
+        const closeTag = '</Lang>';
+        const closeIdx = body.indexOf(closeTag, nameEnd);
+        if (closeIdx === -1) { i++; continue; }
+        const langEnd = closeIdx + closeTag.length;
+        // Flush prose before the Lang block
+        const before = body.slice(proseStart, i).trim();
+        if (before) segments.push({ kind: 'prose', text: before });
+        // Emit the whole <Lang …>…</Lang> as a prose segment
+        segments.push({ kind: 'prose', text: body.slice(i, langEnd).trim() });
+        i = langEnd;
+        proseStart = i;
+        continue;
+      }
+
       // Only handle known components
       if (!MDX_COMPONENTS.has(name)) {
         i++;
@@ -251,6 +271,8 @@ function componentToBlock(name: string, props: Record<string, unknown>): BlockDa
         type: 'image-gallery',
         props: {
           images: Array.isArray(props.images) ? props.images as Array<{ src: string; alt: string }> : [],
+          ...(props.label    !== undefined ? { label:    props.label    } : {}),
+          ...(props.subtitle !== undefined ? { subtitle: props.subtitle } : {}),
         },
       };
 

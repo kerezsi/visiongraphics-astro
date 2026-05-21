@@ -123,17 +123,63 @@ function ImageSlot({
 }
 
 export default function ImageCompareBlock({ block }: { block: BlockData & { type: 'image-compare'; props: ImageCompareProps } }) {
-  const { before, after } = block.props;
+  const { before, after, beforeAlt, afterAlt } = block.props;
   const updateBlock = useDocumentStore((s) => s.updateBlock);
+
+  // Swap the two images (and their alts) atomically.  Useful when the
+  // before/after pair was inserted in the wrong direction — the rendered
+  // <ImageCompare> shows `before` on the right (AFTER label) and `after`
+  // on the left (BEFORE label), which is the inverse of the prop names,
+  // so users routinely need to flip the pair.
+  function handleSwap() {
+    updateBlock(block.id, {
+      before:    after    ?? '',
+      after:     before   ?? '',
+      beforeAlt: afterAlt ?? '',
+      afterAlt:  beforeAlt ?? '',
+    });
+  }
+
+  const canSwap = Boolean(before || after);
 
   return (
     <div style={{ padding: '8px 16px' }}>
       <div style={{ fontSize: 10, color: 'var(--color-text-faint)', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
         Image Compare
       </div>
-      <div style={{ display: 'flex', gap: 8 }}>
+      <div style={{ display: 'flex', gap: 8, alignItems: 'stretch' }}>
         <ImageSlot label="Before" src={before} onUpload={(url) => updateBlock(block.id, { before: url })} />
-        <div style={{ width: 1, background: 'var(--color-border)', flexShrink: 0 }} />
+
+        {/* Swap button — sits between the two slots, replacing the divider line */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flexShrink: 0, paddingTop: 14 }}>
+          <button
+            onClick={handleSwap}
+            disabled={!canSwap}
+            title="Swap before / after"
+            aria-label="Swap before and after images"
+            style={{
+              background: 'var(--color-surface-2)',
+              border: '1px solid var(--color-border)',
+              borderRadius: '50%',
+              width: 26,
+              height: 26,
+              fontSize: 12,
+              cursor: canSwap ? 'pointer' : 'not-allowed',
+              opacity: canSwap ? 1 : 0.4,
+              color: 'var(--color-text)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: 0,
+              lineHeight: 1,
+            }}
+            onMouseEnter={(e) => { if (canSwap) (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--color-accent)'; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--color-border)'; }}
+          >
+            ⇄
+          </button>
+        </div>
+
         <ImageSlot label="After" src={after} onUpload={(url) => updateBlock(block.id, { after: url })} />
       </div>
     </div>

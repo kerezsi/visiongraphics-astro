@@ -10,7 +10,7 @@ interface Props {
   url:        string;
   title:      Localized<string>;
   coverImage?: string;  // optional cover — falls back to styled placeholder
-  /** Red section label. Default: "360 tour:" / "360 túra:". `false` hides. */
+  /** Red section label. Default: "360° tour:" / "360° túra:". `false` hides. */
   label?:    Localized<string> | false;
   /** Optional white subtitle. Empty = no line. */
   subtitle?: Localized<string>;
@@ -19,7 +19,7 @@ interface Props {
 const { url, title, coverImage, label, subtitle } = Astro.props;
 const lang: Locale = (Astro.locals as { lang?: Locale })?.lang ?? DEFAULT_LOCALE;
 const titleStr     = tStr(title, lang);
-const defaultLabel: Localized<string> = { en: '360 tour:', hu: '360 túra:' };
+const defaultLabel: Localized<string> = { en: '360° tour:', hu: '360° túra:' };
 const effectiveLabel = label === undefined ? defaultLabel : label;
 const launchLabel  = lang === 'hu' ? '360°-os túra indítása'   : 'Launch 360° Tour';
 const previewAlt   = lang === 'hu' ? `${titleStr} — 360°-os túra előnézete` : `${titleStr} — 360° tour preview`;

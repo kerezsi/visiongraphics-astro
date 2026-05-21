@@ -7,17 +7,38 @@ import type { BlockData, DocumentState } from '../../types/blocks.js';
 
 const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}(T[\d:.Z+-]*)?$/;
 
-function needsBlockScalar(value: string): boolean {
-  return value.includes('\n') || value.length > 80;
-}
-
-function yamlScalar(value: string): string {
-  if (needsBlockScalar(value)) {
-    // Use literal block scalar |, indent each line by 2 spaces
-    const indented = value.split('\n').map((l) => `  ${l}`).join('\n');
+/**
+ * Serialize a string value as YAML.
+ *
+ * - Multi-line strings  → block scalar `|` with body indented under the key.
+ * - Single-line strings → quoted form if they contain YAML-special chars,
+ *   otherwise bare.  We do NOT switch to block scalar based on length —
+ *   doing so was the source of two production-breaking bugs:
+ *
+ *   1. `description.en: |\n<body>` emitted inside a nested object had the
+ *      body indented at the wrong column (matching the key, not deeper),
+ *      producing invalid YAML that Astro refused to parse.
+ *   2. After the failed parse, gray-matter returned empty frontmatter and
+ *      the editor's importer pushed the still-unparsed YAML into the body
+ *      as a rich-text block — causing the page meta to render as visible
+ *      markdown the next time the file was saved.
+ *
+ *   Always quoting long single-line strings avoids both failure modes.
+ *
+ * @param parentIndent - the indent string preceding the KEY this value
+ *   belongs to.  For top-level keys: "".  For nested object members: "  ".
+ *   Used only for block-scalar continuation lines so they sit deeper than
+ *   the line containing the `|` indicator.
+ */
+function yamlScalar(value: string, parentIndent: string = ''): string {
+  if (value.includes('\n')) {
+    // Block scalar body must be indented deeper than the line containing `|`.
+    // YAML's rule: body indent > parent block indent. Conventional +2.
+    const bodyIndent = parentIndent + '  ';
+    const indented = value.split('\n').map((l) => `${bodyIndent}${l}`).join('\n');
     return `|\n${indented}`;
   }
-  // Quote if contains YAML-special chars
+  // Quote if contains YAML-special chars OR is awkwardly bordered with spaces
   if (/[:#\[\]{},|>&*!'"?@`\\]/.test(value) || value.startsWith(' ') || value.endsWith(' ')) {
     return `"${value.replace(/\\/g, '\\\\').replace(/"/g, '\\"')}"`;
   }
@@ -70,7 +91,9 @@ function toYaml(meta: Record<string, unknown>): string {
         for (const [k, v] of entries) {
           if (v === null || v === undefined) continue;
           if (typeof v === 'string') {
-            lines.push(`  ${k}: ${yamlScalar(v)}`);
+            // Nested member key sits at column 2 — block-scalar continuation
+            // lines (if any) must be indented at column 4.
+            lines.push(`  ${k}: ${yamlScalar(v, '  ')}`);
           } else {
             lines.push(`  ${k}: ${v}`);
           }
@@ -147,8 +170,18 @@ function blockToMdx(block: BlockData): string | null {
     case 'image-gallery': {
       const images = (p.images ?? []) as Array<{ src: string; alt: string }>;
       if (images.length === 0) return null;
-      const imagesJson = JSON.stringify(images);
-      return `<ImageGallery images={${imagesJson}} />`;
+      const parts: string[] = [`images={${JSON.stringify(images)}}`];
+      // Localized red label.  Skip when empty object or "" — same convention as other
+      // localized fields elsewhere in the editor.
+      const hasContent = (v: unknown): boolean => {
+        if (v === undefined || v === null || v === '') return false;
+        if (typeof v === 'string') return v.length > 0;
+        if (typeof v === 'object') return Object.values(v as Record<string, unknown>).some((x) => typeof x === 'string' && x.length > 0);
+        return false;
+      };
+      if (hasContent(p.label))    parts.push(`label={${JSON.stringify(p.label)}}`);
+      if (hasContent(p.subtitle)) parts.push(`subtitle={${JSON.stringify(p.subtitle)}}`);
+      return `<ImageGallery ${parts.join(' ')} />`;
     }
 
     case 'image-compare': {

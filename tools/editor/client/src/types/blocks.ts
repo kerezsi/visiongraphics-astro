@@ -74,6 +74,10 @@ export interface SingleImageProps {
 
 export interface ImageGalleryProps {
   images: Array<{ src: string; alt: string }>;
+  /** Red header above the gallery (Localized). Maps to `label` prop on <ImageGallery>. */
+  label?: import('../lib/localized.ts').LocalizedValue;
+  /** White subtitle line under the label (Localized). Maps to `subtitle` prop on <ImageGallery>. */
+  subtitle?: import('../lib/localized.ts').LocalizedValue;
 }
 
 // Flat props matching the MDX <ImageCompare> component signature

@@ -13,6 +13,8 @@ interface UIStore {
   view: EditorView;
   aiBlockSelectMode: boolean;
   aiSelectedBlockIds: string[];
+  langVisible: { en: boolean; hu: boolean };
+  langSideBySide: boolean;
 
   selectBlock: (id: string | null) => void;
   setTab: (tab: UIStore['leftPanelTab']) => void;
@@ -26,6 +28,8 @@ interface UIStore {
   setAiBlockSelectMode: (active: boolean) => void;
   toggleAiSelectedBlock: (id: string) => void;
   clearAiSelectedBlocks: () => void;
+  toggleLangVisible: (lang: 'en' | 'hu') => void;
+  toggleLangSideBySide: () => void;
 }
 
 export const useUIStore = create<UIStore>((set) => ({
@@ -39,6 +43,8 @@ export const useUIStore = create<UIStore>((set) => ({
   view: 'editor',
   aiBlockSelectMode: false,
   aiSelectedBlockIds: [],
+  langVisible: { en: true, hu: true },
+  langSideBySide: false,
 
   selectBlock: (id) => set({ selectedBlockId: id }),
   setTab: (tab) => set({ leftPanelTab: tab }),
@@ -59,4 +65,8 @@ export const useUIStore = create<UIStore>((set) => ({
       : [...s.aiSelectedBlockIds, id],
   })),
   clearAiSelectedBlocks: () => set({ aiSelectedBlockIds: [], aiBlockSelectMode: false }),
+  toggleLangVisible: (lang) => set((s) => ({
+    langVisible: { ...s.langVisible, [lang]: !s.langVisible[lang] },
+  })),
+  toggleLangSideBySide: () => set((s) => ({ langSideBySide: !s.langSideBySide })),
 }));

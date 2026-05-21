@@ -22,6 +22,7 @@ const serviceItems = allServices.map(s => ({
   title:       tStr(s.data.title, lang),
   tagline:     tStr(s.data.tagline, lang) || undefined,
   description: tStr(s.data.description, lang),
+  image:       s.data.bannerImage || undefined,
 }));
 
 const COPY = {

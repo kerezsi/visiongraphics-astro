@@ -8,6 +8,7 @@ export interface ServiceItem {
   title:       string;
   tagline?:    string;
   description: string;
+  image?:      string;
 }
 
 interface Props {
@@ -62,37 +63,51 @@ export default function ServicesTabs({
       </nav>
 
       {/* Content panel */}
-      <div className="st-panel flex flex-col justify-center"
+      <div className="st-panel relative flex flex-col justify-center overflow-hidden"
            style={{ padding: 'clamp(2rem, 4vw, 3.5rem) clamp(2rem, 5vw, 4rem)' }}
            role="tabpanel"
            key={svc.slug}>
 
-        {svc.tagline && (
-          <p className="font-body text-tiny font-medium tracking-[0.15em] uppercase text-accent mb-[0.6rem]">
-            {svc.tagline}
-          </p>
+        {svc.image && (
+          <>
+            <img
+              src={svc.image}
+              alt=""
+              aria-hidden="true"
+              className="st-panel-bg absolute inset-0 w-full h-full object-cover"
+            />
+            <div className="st-panel-overlay absolute inset-0" aria-hidden="true" />
+          </>
         )}
 
-        <h2 className="font-display text-h4 font-light text-content tracking-tight-2 leading-[1.1] mb-5">
-          {svc.title}
-        </h2>
+        <div className="relative z-[2]">
+          {svc.tagline && (
+            <p className="font-body text-tiny font-medium tracking-[0.15em] uppercase text-accent mb-[0.6rem]">
+              {svc.tagline}
+            </p>
+          )}
 
-        <p className="text-body text-muted leading-[1.75] max-w-[60ch] mb-8">
-          {svc.description}
-        </p>
+          <h2 className="font-display text-h4 font-light text-content tracking-tight-2 leading-[1.1] mb-5">
+            {svc.title}
+          </h2>
 
-        <a
-          href={`${servicesUrlPrefix}${svc.slug}/`}
-          className="st-link inline-flex items-center gap-[0.6rem] font-body text-small font-medium text-accent no-underline transition-[gap,color] duration-200 pb-[0.15rem] w-fit"
-          style={{ borderBottom: '1px solid rgba(218, 19, 19, 0.3)' }}
-        >
-          {exploreLabel}
-          <svg viewBox="0 0 20 12" fill="none" aria-hidden="true"
-               className="w-[1.1rem] h-[0.7rem] shrink-0">
-            <path d="M1 6h17M13 1l5 5-5 5" stroke="currentColor" strokeWidth="1.5"
-                  strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </a>
+          <p className="text-body text-muted leading-[1.75] max-w-[60ch] mb-8">
+            {svc.description}
+          </p>
+
+          <a
+            href={`${servicesUrlPrefix}${svc.slug}/`}
+            className="st-link inline-flex items-center gap-[0.6rem] font-body text-small font-medium text-accent no-underline transition-[gap,color] duration-200 pb-[0.15rem] w-fit"
+            style={{ borderBottom: '1px solid rgba(218, 19, 19, 0.3)' }}
+          >
+            {exploreLabel}
+            <svg viewBox="0 0 20 12" fill="none" aria-hidden="true"
+                 className="w-[1.1rem] h-[0.7rem] shrink-0">
+              <path d="M1 6h17M13 1l5 5-5 5" stroke="currentColor" strokeWidth="1.5"
+                    strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </a>
+        </div>
       </div>
     </div>
   );

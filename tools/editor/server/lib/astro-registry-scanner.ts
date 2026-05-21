@@ -68,11 +68,12 @@ function extractComponentsFromTemplate(filePath: string): Set<string> {
 // ---------------------------------------------------------------------------
 
 export function scanAstroRegistry(projectRoot: string): PageTypeRegistry {
+  // Templates live under src/pages/[lang]/... since the i18n refactor.
   const templates: Record<string, string> = {
-    project:         join(projectRoot, 'src', 'pages', 'portfolio', '[slug].astro'),
-    service:         join(projectRoot, 'src', 'pages', 'services',  '[slug].astro'),
-    'vision-tech':   join(projectRoot, 'src', 'pages', 'vision-tech', '[slug].astro'),
-    article:         join(projectRoot, 'src', 'pages', 'articles',  '[slug].astro'),
+    project:         join(projectRoot, 'src', 'pages', '[lang]', 'portfolio',   '[slug].astro'),
+    service:         join(projectRoot, 'src', 'pages', '[lang]', 'services',    '[slug].astro'),
+    'vision-tech':   join(projectRoot, 'src', 'pages', '[lang]', 'vision-tech', '[slug].astro'),
+    article:         join(projectRoot, 'src', 'pages', '[lang]', 'articles',    '[slug].astro'),
   };
 
   const registry: PageTypeRegistry = {};

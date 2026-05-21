@@ -35,6 +35,18 @@
 
 .st-panel { animation: stFadeIn 250ms ease; }
 
+/* Background image inside the panel — dimmed so text stays readable */
+.st-panel-bg { z-index: 0; opacity: 0.35; }
+.st-panel-overlay {
+  z-index: 1;
+  background: linear-gradient(
+    105deg,
+    color-mix(in srgb, var(--color-surface) 92%, transparent) 0%,
+    color-mix(in srgb, var(--color-surface) 70%, transparent) 60%,
+    color-mix(in srgb, var(--color-surface) 35%, transparent) 100%
+  );
+}
+
 /* Desktop grid: fixed sidebar + flexible content panel.
    Mobile override below collapses to a single column. */
 .st-root { grid-template-columns: 280px 1fr; }

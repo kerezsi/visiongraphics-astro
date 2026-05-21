@@ -5,6 +5,7 @@ import Page from '../../../layouts/Page.astro';
 import SectionBanner from '../../../components/ui/SectionBanner.astro';
 import { thumbUrl } from '../../../lib/image-url';
 import { staticLocalePaths, localeUrl, tStr, type Locale } from '../../../lib/i18n';
+import { vtLabel } from '../../../lib/vision-tech-labels';
 
 export const getStaticPaths = staticLocalePaths;
 
@@ -20,6 +21,8 @@ const model3d_vals    = [...new Set(techniques.map(t => t.data.model3d))].sort()
 const complexity_vals = ['1 - Basic','2 - Intermediate','3 - Advanced','4 - Expert','5 - Cutting-Edge'];
 const reality_vals    = ['Pure Reality','Enhanced Reality','Hybrid Reality-Vision','Conceptual Reality','Pure Vision'];
 const purpose_vals    = [...new Set(techniques.flatMap(t => t.data.purpose))].sort();
+
+const fLabel = (v: string) => vtLabel(v, lang);
 
 const COPY = {
   en: {
@@ -142,7 +145,7 @@ const tools = [
         <div class="vt-filter-group">
           <span class="vt-filter-label">{c.fTechnique}</span>
           <div class="vt-pills" data-filter="technique">
-            {techniques_vals.map(v => <button class="vt-pill" data-val={v}>{v}</button>)}
+            {techniques_vals.map(v => <button class="vt-pill" data-val={v}>{fLabel(v)}</button>)}
           </div>
         </div>
 
@@ -156,28 +159,28 @@ const tools = [
         <div class="vt-filter-group">
           <span class="vt-filter-label">{c.fModel3d}</span>
           <div class="vt-pills" data-filter="model3d">
-            {model3d_vals.map(v => <button class="vt-pill" data-val={v}>{v}</button>)}
+            {model3d_vals.map(v => <button class="vt-pill" data-val={v}>{fLabel(v)}</button>)}
           </div>
         </div>
 
         <div class="vt-filter-group">
           <span class="vt-filter-label">{c.fComplexity}</span>
           <div class="vt-pills" data-filter="complexity">
-            {complexity_vals.map(v => <button class="vt-pill" data-val={v}>{v}</button>)}
+            {complexity_vals.map(v => <button class="vt-pill" data-val={v}>{fLabel(v)}</button>)}
           </div>
         </div>
 
         <div class="vt-filter-group">
           <span class="vt-filter-label">{c.fReality}</span>
           <div class="vt-pills" data-filter="reality">
-            {reality_vals.map(v => <button class="vt-pill" data-val={v}>{v}</button>)}
+            {reality_vals.map(v => <button class="vt-pill" data-val={v}>{fLabel(v)}</button>)}
           </div>
         </div>
 
         <div class="vt-filter-group">
           <span class="vt-filter-label">{c.fPurpose}</span>
           <div class="vt-pills" data-filter="purpose">
-            {purpose_vals.map(v => <button class="vt-pill" data-val={v}>{v}</button>)}
+            {purpose_vals.map(v => <button class="vt-pill" data-val={v}>{fLabel(v)}</button>)}
           </div>
         </div>
 
@@ -207,14 +210,14 @@ const tools = [
               </div>
               <div class="vt-card-body">
                 <div class="vt-card-meta">
-                  {t.data.technique && <span class="vt-badge">{t.data.technique}</span>}
+                  {t.data.technique && <span class="vt-badge">{fLabel(t.data.technique)}</span>}
                   <span class="vt-cost">{t.data.cost}</span>
                 </div>
                 <h3 class="vt-card-title">{titleStr}</h3>
                 <p class="vt-card-desc">{descStr.substring(0, 100)}…</p>
                 <div class="vt-card-tags">
-                  <span class="vt-tag-small">{t.data.complexity}</span>
-                  <span class="vt-tag-small">{t.data.reality}</span>
+                  <span class="vt-tag-small">{fLabel(t.data.complexity)}</span>
+                  <span class="vt-tag-small">{fLabel(t.data.reality)}</span>
                 </div>
               </div>
             </a>
