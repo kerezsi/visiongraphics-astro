@@ -4,8 +4,40 @@ import { useUIStore } from '../../store/ui.ts';
 import * as api from '../../lib/api-client.ts';
 import type { PageType } from '../../types/blocks.ts';
 
-// Template files that should not appear in the pages list
-const PAGE_EXCLUDES = /\[.*\]|\/_/;
+// Decide whether a page from the server's listing should be hidden in the UI.
+// Excludes:
+//   1. Dynamic-route templates whose *filename* itself is bracketed
+//      (e.g. [slug].astro, [category].astro) — those are templates, not editable pages.
+//   2. Private/underscore-prefixed segments (e.g. /_redirects).
+//   3. The bare root redirect src/pages/index.astro — it just 308s to /en/
+//      and has no editable content; the real home page is src/pages/[lang]/index.astro.
+// IMPORTANT: a bracketed *directory* like [lang] in the path is fine — we keep
+// those entries because they are the locale-prefixed real pages.
+function isPageHidden(path: string): boolean {
+  const np = path.replace(/\\/g, '/');
+  const last = np.split('/').pop() ?? '';
+  if (last.startsWith('[')) return true;
+  if (/(^|\/)_/.test(np)) return true;
+  if (np === 'src/pages/index.astro') return true;
+  return false;
+}
+
+// Build a readable label from the page path.
+// Examples:
+//   src/pages/[lang]/index.astro              → "home"
+//   src/pages/[lang]/about/index.astro        → "about"
+//   src/pages/[lang]/portfolio/index.astro    → "portfolio"
+//   src/pages/[lang]/some/nested/index.astro  → "some/nested"
+function pageLabel(path: string, fallback: string): string {
+  const cleaned = path
+    .replace(/\\/g, '/')
+    .replace(/^src\/pages\//, '')
+    .replace(/^\[lang\]\//, '')
+    .replace(/\/index\.astro$/, '')
+    .replace(/\.astro$/, '');
+  if (cleaned === '' || cleaned === '[lang]' || cleaned === 'index') return 'home';
+  return cleaned || fallback;
+}
 
 interface FileEntry {
   path: string;
@@ -78,16 +110,8 @@ export function FileBrowser() {
       if (section.isPages) {
         const items = await api.listPages();
         const entries = (items as Array<{ path: string; name: string }>)
-          .filter((item) => !PAGE_EXCLUDES.test(item.path))
-          .map((item) => {
-            // Make a readable label: src/pages/about/index.astro → about
-            const parts = item.path.replace(/\\/g, '/').split('/');
-            const filename = parts[parts.length - 1];
-            const label = filename === 'index.astro'
-              ? (parts[parts.length - 2] ?? item.name)
-              : item.name;
-            return { path: item.path, name: label };
-          });
+          .filter((item) => !isPageHidden(item.path))
+          .map((item) => ({ path: item.path, name: pageLabel(item.path, item.name) }));
         setSections((s) => ({ ...s, [section.collection]: entries }));
       } else {
         const items = await api.listContent(section.collection);
