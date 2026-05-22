@@ -20,6 +20,13 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
 const fullTitle = title === 'Vision Graphics'
   ? 'Vision Graphics Kft. — Architectural Visualization, Budapest'
   : `${title} | Vision Graphics Kft.`;
+
+// Build-time cache-buster. Cloudflare Pages content-addresses uploaded assets
+// by hash — when dedupe thinks a hash is already uploaded but the edge blob is
+// missing/corrupted, the canonical URL serves a 500 with empty body. Including
+// a per-build timestamp ensures every HTML file's hash changes on every build,
+// bypassing the stale-manifest condition.
+const buildStamp = new Date().toISOString();
 ---
 
 <!doctype html>
@@ -36,6 +43,7 @@ const fullTitle = title === 'Vision Graphics'
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="generator" content={Astro.generator} />
+  <meta name="x-build" content={buildStamp} />
 
   <!-- Primary Meta -->
   <title>{fullTitle}</title>
