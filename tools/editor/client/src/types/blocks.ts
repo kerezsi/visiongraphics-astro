@@ -86,7 +86,14 @@ export interface ImageCompareProps {
   after: string;
   beforeAlt?: string;
   afterAlt?: string;
-  label?: string;
+  /** Red title above the comparison. Default: "Compare:" / "Összehasonlítás:" */
+  label?: import('../lib/localized.ts').LocalizedValue;
+  /** Optional white subtitle. */
+  subtitle?: import('../lib/localized.ts').LocalizedValue;
+  /** Override the "Before" overlay label. Default: "Before" / "Előtte" */
+  beforeText?: import('../lib/localized.ts').LocalizedValue;
+  /** Override the "After" overlay label. Default: "After" / "Utána" */
+  afterText?: import('../lib/localized.ts').LocalizedValue;
 }
 
 export interface FilmEmbedProps {

@@ -21,7 +21,19 @@ export default function ImageCompare({
 }: ImageCompareProps) {
   const [position, setPosition] = useState(initialPosition);
   const [isDragging, setIsDragging] = useState(false);
+  // Aspect ratio is taken from the loaded "before" image's natural dimensions
+  // once it loads. Falls back to the explicit prop until then (prevents layout
+  // jump on slow networks). Both images should share the same aspect anyway —
+  // a mismatch would crop one of them.
+  const [naturalAspect, setNaturalAspect] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const handleBeforeLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    const img = e.currentTarget;
+    if (img.naturalWidth > 0 && img.naturalHeight > 0) {
+      setNaturalAspect(`${img.naturalWidth} / ${img.naturalHeight}`);
+    }
+  };
 
   const clamp = (v: number) => Math.min(100, Math.max(0, v));
 
@@ -74,7 +86,7 @@ export default function ImageCompare({
       ref={containerRef}
       className={`image-compare${className ? ` ${className}` : ''}`}
       style={{
-        aspectRatio,
+        aspectRatio: naturalAspect ?? aspectRatio,
         userSelect: isDragging ? 'none' : undefined,
         cursor: isDragging ? 'col-resize' : undefined,
       }}
@@ -87,6 +99,7 @@ export default function ImageCompare({
         src={before.src}
         alt={before.alt}
         draggable={false}
+        onLoad={handleBeforeLoad}
       />
 
       {/* ── AFTER — clipped to reveal from left ── */}

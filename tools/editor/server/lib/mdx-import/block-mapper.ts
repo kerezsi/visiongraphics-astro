@@ -285,7 +285,11 @@ function componentToBlock(name: string, props: Record<string, unknown>): BlockDa
           after:     (props.after     as string) ?? '',
           beforeAlt: (props.beforeAlt as string) ?? '',
           afterAlt:  (props.afterAlt  as string) ?? '',
-          label:     (props.label     as string) ?? '',
+          // Localized — pass through string OR { en, hu } object as parsed.
+          ...(props.label      !== undefined ? { label:      props.label }      : {}),
+          ...(props.subtitle   !== undefined ? { subtitle:   props.subtitle }   : {}),
+          ...(props.beforeText !== undefined ? { beforeText: props.beforeText } : {}),
+          ...(props.afterText  !== undefined ? { afterText:  props.afterText }  : {}),
         },
       };
 

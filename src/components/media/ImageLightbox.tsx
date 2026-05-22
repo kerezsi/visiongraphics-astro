@@ -46,8 +46,15 @@ export default function ImageLightbox({ images, title }: Props) {
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
   const scrollTo   = useCallback((i: number) => emblaApi?.scrollTo(i), [emblaApi]);
 
-  // Auto-scroll the active thumbnail into view in the thumb strip
+  // Auto-scroll the active thumbnail into view *within the thumb strip*.
+  // Skip the very first mount — `block: 'nearest'` falls back to scrolling
+  // the whole page when the gallery is off-screen on first paint, which
+  // dragged visitors mid-page on load. After that, only the horizontal
+  // strip scroll matters (`inline: 'center'`), so we use `block: 'nearest'`
+  // and a `start: 0` sentinel to skip the initial run.
+  const skipInitialScroll = useRef(true);
   useEffect(() => {
+    if (skipInitialScroll.current) { skipInitialScroll.current = false; return; }
     const root = galleryRootRef.current;
     if (!root) return;
     const activeThumb = root.querySelector<HTMLElement>('.gallery-thumb--active');

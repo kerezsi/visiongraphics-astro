@@ -190,7 +190,22 @@ function blockToMdx(block: BlockData): string | null {
       if (p.after)     parts.push(`after="${p.after}"`);
       if (p.beforeAlt) parts.push(`beforeAlt="${p.beforeAlt}"`);
       if (p.afterAlt)  parts.push(`afterAlt="${p.afterAlt}"`);
-      if (p.label)     parts.push(`label="${p.label}"`);
+      // Localized fields — emit string literal or JSX object literal.
+      const hasContent = (v: unknown): boolean => {
+        if (v === undefined || v === null || v === '') return false;
+        if (typeof v === 'string') return v.length > 0;
+        if (typeof v === 'object') return Object.values(v as Record<string, unknown>).some((x) => typeof x === 'string' && x.length > 0);
+        return false;
+      };
+      const emitLocalized = (key: string, v: unknown) => {
+        if (!hasContent(v)) return;
+        if (typeof v === 'string') parts.push(`${key}="${v.replace(/"/g, '\\"')}"`);
+        else parts.push(`${key}={${JSON.stringify(v)}}`);
+      };
+      emitLocalized('label',      p.label);
+      emitLocalized('subtitle',   p.subtitle);
+      emitLocalized('beforeText', p.beforeText);
+      emitLocalized('afterText',  p.afterText);
       return `<ImageCompare ${parts.join(' ')} />`;
     }
 

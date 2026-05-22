@@ -1,6 +1,6 @@
 ---
 import MediaLabel from './MediaLabel.astro';
-import type { Localized } from '../../lib/i18n';
+import { tStr, DEFAULT_LOCALE, type Localized, type Locale } from '../../lib/i18n';
 
 interface Props {
   before:     string;
@@ -11,12 +11,25 @@ interface Props {
   label?:     Localized<string> | false;
   /** Optional white subtitle. Empty = no line. */
   subtitle?:  Localized<string>;
+  /** Override the "Before" overlay label. Default: "Before" / "Előtte". */
+  beforeText?: Localized<string>;
+  /** Override the "After" overlay label. Default: "After" / "Utána". */
+  afterText?:  Localized<string>;
 }
 
-const { before, after, beforeAlt = '', afterAlt = '', label, subtitle } = Astro.props;
+const {
+  before, after, beforeAlt = '', afterAlt = '',
+  label, subtitle, beforeText, afterText,
+} = Astro.props;
 
-const defaultLabel: Localized<string> = { en: 'Compare:', hu: 'Összehasonlítás:' };
+const defaultLabel:      Localized<string> = { en: 'Compare:', hu: 'Összehasonlítás:' };
+const defaultBeforeText: Localized<string> = { en: 'Before',   hu: 'Előtte' };
+const defaultAfterText:  Localized<string> = { en: 'After',    hu: 'Utána' };
+
 const effectiveLabel = label === undefined ? defaultLabel : label;
+const lang: Locale = (Astro.locals as { lang?: Locale })?.lang ?? DEFAULT_LOCALE;
+const beforeLabel = tStr(beforeText ?? defaultBeforeText, lang);
+const afterLabel  = tStr(afterText  ?? defaultAfterText,  lang);
 ---
 <MediaLabel label={effectiveLabel} subtitle={subtitle} />
 <div
@@ -25,4 +38,6 @@ const effectiveLabel = label === undefined ? defaultLabel : label;
   data-before-alt={beforeAlt}
   data-after-src={after}
   data-after-alt={afterAlt}
+  data-before-text={beforeLabel}
+  data-after-text={afterLabel}
 ></div>

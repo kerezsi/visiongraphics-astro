@@ -24,16 +24,18 @@ export default function ArticleImageCompareMounter() {
   return (
     <>
       {mounts.map((el, i) => {
-        const beforeSrc = el.dataset.beforeSrc ?? '';
-        const beforeAlt = el.dataset.beforeAlt ?? '';
-        const afterSrc  = el.dataset.afterSrc  ?? '';
-        const afterAlt  = el.dataset.afterAlt  ?? '';
+        const beforeSrc  = el.dataset.beforeSrc  ?? '';
+        const beforeAlt  = el.dataset.beforeAlt  ?? '';
+        const afterSrc   = el.dataset.afterSrc   ?? '';
+        const afterAlt   = el.dataset.afterAlt   ?? '';
+        const beforeText = el.dataset.beforeText || 'Before';
+        const afterText  = el.dataset.afterText  || 'After';
         if (!beforeSrc || !afterSrc) return null;
         return createPortal(
           <ImageCompare
             key={i}
-            before={{ src: beforeSrc, alt: beforeAlt, label: 'Before' }}
-            after={{ src: afterSrc,  alt: afterAlt,  label: 'After'  }}
+            before={{ src: beforeSrc, alt: beforeAlt, label: beforeText }}
+            after={{ src: afterSrc,  alt: afterAlt,  label: afterText  }}
             initialPosition={50}
             aspectRatio="16 / 9"
           />,

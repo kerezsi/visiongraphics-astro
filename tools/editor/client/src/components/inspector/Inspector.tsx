@@ -200,31 +200,35 @@ export function Inspector({ block }: Props) {
     }
 
     case 'image-compare': {
-      const before = p.before as { src: string; alt: string; label?: string };
-      const after = p.after as { src: string; alt: string; label?: string };
+      // The two image slots live on the canvas block (ImageCompareBlock). This
+      // inspector exposes the localized title / subtitle / overlay-label overrides.
+      // Defaults when empty: title "Compare:" / "Összehasonlítás:", subtitle none,
+      // before "Before" / "Előtte", after "After" / "Utána".
       return (
-        <div style={{ padding: 12, display: 'flex', flexDirection: 'column', gap: 10 }}>
-          <div>
-            <div style={{ fontSize: 10, color: 'var(--color-text-faint)', marginBottom: 6, textTransform: 'uppercase' }}>Before</div>
-            <ImagePickerField label="Src" value={before?.src ?? ''} onChange={(v) => update('before', { ...before, src: v })} />
-            <div style={{ marginTop: 6 }}>
-              <TextField label="Alt" value={before?.alt ?? ''} onChange={(v) => update('before', { ...before, alt: v })} />
-            </div>
-            <div style={{ marginTop: 6 }}>
-              <TextField label="Label" value={before?.label ?? ''} onChange={(v) => update('before', { ...before, label: v })} />
-            </div>
-          </div>
-          <div>
-            <div style={{ fontSize: 10, color: 'var(--color-text-faint)', marginBottom: 6, textTransform: 'uppercase' }}>After</div>
-            <ImagePickerField label="Src" value={after?.src ?? ''} onChange={(v) => update('after', { ...after, src: v })} />
-            <div style={{ marginTop: 6 }}>
-              <TextField label="Alt" value={after?.alt ?? ''} onChange={(v) => update('after', { ...after, alt: v })} />
-            </div>
-            <div style={{ marginTop: 6 }}>
-              <TextField label="Label" value={after?.label ?? ''} onChange={(v) => update('after', { ...after, label: v })} />
-            </div>
-          </div>
-          <TextField label="Aspect Ratio" value={(p.aspectRatio as string) ?? '16 / 9'} onChange={(v) => update('aspectRatio', v)} />
+        <div style={{ padding: 12, display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <LocalizedTextField
+            label="Title"
+            value={p.label as LocalizedValue | undefined}
+            onChange={(v) => update('label', v)}
+            placeholder="Compare:"
+          />
+          <LocalizedTextField
+            label="Subtitle"
+            value={p.subtitle as LocalizedValue | undefined}
+            onChange={(v) => update('subtitle', v)}
+          />
+          <LocalizedTextField
+            label="Before text"
+            value={p.beforeText as LocalizedValue | undefined}
+            onChange={(v) => update('beforeText', v)}
+            placeholder="Before"
+          />
+          <LocalizedTextField
+            label="After text"
+            value={p.afterText as LocalizedValue | undefined}
+            onChange={(v) => update('afterText', v)}
+            placeholder="After"
+          />
         </div>
       );
     }

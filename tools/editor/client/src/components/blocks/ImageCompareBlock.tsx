@@ -147,8 +147,17 @@ export default function ImageCompareBlock({ block }: { block: BlockData & { type
       <div style={{ fontSize: 10, color: 'var(--color-text-faint)', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
         Image Compare
       </div>
+      {/*
+        Slot order is intentionally swapped vs. the prop names: the rendered
+        <ImageCompare> shows the `after` prop on the LEFT (where the "Before"
+        label appears in the viewer) and the `before` prop on the RIGHT (where
+        the "After" label appears). Mirroring that here removes the mental
+        flip the user used to do every time. The "Before" / "After" text
+        labels stay in left/right positions — they describe the VIEWER'S
+        left/right, not the underlying prop names.
+      */}
       <div style={{ display: 'flex', gap: 8, alignItems: 'stretch' }}>
-        <ImageSlot label="Before" src={before} onUpload={(url) => updateBlock(block.id, { before: url })} />
+        <ImageSlot label="Before" src={after} onUpload={(url) => updateBlock(block.id, { after: url })} />
 
         {/* Swap button — sits between the two slots, replacing the divider line */}
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flexShrink: 0, paddingTop: 14 }}>
@@ -180,7 +189,7 @@ export default function ImageCompareBlock({ block }: { block: BlockData & { type
           </button>
         </div>
 
-        <ImageSlot label="After" src={after} onUpload={(url) => updateBlock(block.id, { after: url })} />
+        <ImageSlot label="After" src={before} onUpload={(url) => updateBlock(block.id, { before: url })} />
       </div>
     </div>
   );
