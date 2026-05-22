@@ -10,6 +10,7 @@
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import ImageCompare from '../ui/ImageCompare.tsx';
+import '../../lib/build-stamp';
 
 export default function ArticleImageCompareMounter() {
   const [mounts, setMounts] = useState<HTMLElement[]>([]);

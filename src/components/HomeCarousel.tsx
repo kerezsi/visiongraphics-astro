@@ -4,6 +4,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useSwipe } from '../lib/use-swipe';
 import { localeUrl, DEFAULT_LOCALE, type Locale } from '../lib/i18n';
+import '../lib/build-stamp';
 
 export interface CarouselSlide {
   slug:      string;
