@@ -661,6 +661,47 @@ The Pages Function lives **outside** Astro's `src/` tree and is bundled by Cloud
 build step automatically — no Astro config changes needed. The static build (`output:
 'static'`) is unaffected.
 
+### Cloudflare Pages cache-buster (DO NOT REMOVE)
+
+Cloudflare Pages content-addresses every uploaded asset by hash and dedupes
+across deploys. When its dedupe layer treats a hash as "already uploaded" but
+the underlying edge KV blob is actually missing or corrupted, the route serves
+**HTTP 500 with empty body** — only `Server: cloudflare` and `CF-RAY` in the
+response headers, no `Content-Type`, no body. The deployment is still reported
+as successful. Symptom on production: detail pages 500, or pages render but
+React islands (galleries, image-compare, lightbox) silently fail to hydrate
+because their JS chunks 500. Fetching `…/index.html` or `…/foo.js` directly
+returns a 308 to the canonical URL — Cloudflare *knows* the file exists, the
+blob fetch is what fails.
+
+Two cache-busters force fresh content hashes on every build so the dedupe
+condition can't apply:
+
+1. **HTML files** — `src/layouts/Base.astro` emits `<meta name="x-build" content={buildStamp}>`
+   where `buildStamp = new Date().toISOString()`. Every HTML page's content
+   (and thus its blob hash) changes on every build.
+2. **JS chunks** — `astro.config.mjs` injects `__BUILD_STAMP__` via Vite
+   `define`. `src/lib/build-stamp.ts` reads it and assigns to `window.__VG_BUILD`
+   (real side effect, prevents Rollup tree-shaking). Every React island root
+   (`HomeCarousel`, `PortfolioFilter`, `ServicesTabs`, `ImageLightbox`,
+   `ArticleGalleryMounter`, `ArticleImageCompareMounter`) imports it. The
+   `build-stamp.<hash>.js` shared chunk's hash changes per build, so every
+   chunk that imports it gets a fresh hash too.
+
+**When adding a new React island** (anything used as `client:load` /
+`client:idle` / `client:visible` in `.astro` templates), add
+`import '../path/to/lib/build-stamp';` at the top of its entry file. Without
+this, the new chunk's hash is stable across builds — fine until its content
+changes for the first time, at which point it can hit the dedupe bug.
+
+CSS chunks haven't shown this bug in practice, so no equivalent buster is
+needed there.
+
+If the bug recurs anyway (e.g. on a non-island JS asset), the universal
+recovery is: hard-reset `master` to the last known-good commit, force-push,
+let Cloudflare redeploy. Then on `develop`, make any small content change to
+the affected file's source (forces a new hash next deploy) and `↑ Live`.
+
 ---
 
 ## Design System
