@@ -7,7 +7,7 @@ export type PageType = 'article' | 'service' | 'project' | 'vision-tech' | 'page
 export type BlockData =
   | { id: string; type: 'SectionBanner';    props: { image: string; label: string; title: string; [key: string]: unknown } }
   | { id: string; type: 'image-gallery';    props: { images: Array<{ src: string; alt: string }>; label?: unknown; subtitle?: unknown } }
-  | { id: string; type: 'image-compare';    props: { before: string; after: string; beforeAlt?: string; afterAlt?: string; label?: string } }
+  | { id: string; type: 'image-compare';    props: { before: string; after: string; beforeAlt?: string; afterAlt?: string; label?: unknown; subtitle?: unknown; beforeText?: unknown; afterText?: unknown } }
   | { id: string; type: 'deliverable-grid'; props: { items: Array<{ title: string; desc: string }>; columns?: 2 | 3 } }
   | { id: string; type: 'timeline-table';   props: { rows: Array<{ scope: string; deliverables: string }> } }
   | { id: string; type: 'notable-grid';     props: { items: Array<{ name: string; year: string }> } }

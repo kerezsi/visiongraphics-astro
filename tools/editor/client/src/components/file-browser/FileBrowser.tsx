@@ -61,6 +61,9 @@ export function FileBrowser() {
   const [isNewDialogOpen, setIsNewDialogOpen] = useState(false);
   const [newSlug, setNewSlug] = useState('');
   const [newPageType, setNewPageType] = useState<PageType>('article');
+  const [query, setQuery] = useState('');
+  const q = query.trim().toLowerCase();
+  const isSearching = q.length > 0;
 
   const loadFile = useDocumentStore((s) => s.loadFile);
   const newDocument = useDocumentStore((s) => s.newDocument);
@@ -128,8 +131,8 @@ export function FileBrowser() {
 
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-      {/* New button */}
-      <div style={{ padding: '8px 10px', borderBottom: '1px solid var(--color-border)', flexShrink: 0 }}>
+      {/* New button + search */}
+      <div style={{ padding: '8px 10px', borderBottom: '1px solid var(--color-border)', flexShrink: 0, display: 'flex', flexDirection: 'column', gap: 6 }}>
         <button
           onClick={() => setIsNewDialogOpen(true)}
           style={{
@@ -145,6 +148,46 @@ export function FileBrowser() {
         >
           + New Document
         </button>
+        <div style={{ position: 'relative' }}>
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search files…"
+            style={{
+              width: '100%',
+              background: 'var(--color-surface-2)',
+              border: '1px solid var(--color-border)',
+              borderRadius: 'var(--radius-sm)',
+              color: 'var(--color-text)',
+              padding: '4px 22px 4px 8px',
+              fontSize: 11,
+              boxSizing: 'border-box',
+            }}
+          />
+          {isSearching && (
+            <button
+              onClick={() => setQuery('')}
+              title="Clear search"
+              aria-label="Clear search"
+              style={{
+                position: 'absolute',
+                top: '50%',
+                right: 4,
+                transform: 'translateY(-50%)',
+                background: 'none',
+                border: 'none',
+                color: 'var(--color-text-faint)',
+                fontSize: 12,
+                cursor: 'pointer',
+                padding: '0 4px',
+                lineHeight: 1,
+              }}
+            >
+              ✕
+            </button>
+          )}
+        </div>
       </div>
 
       {/* New document dialog (inline) */}
@@ -213,9 +256,22 @@ export function FileBrowser() {
 
       {/* File tree */}
       <div style={{ flex: 1, overflowY: 'auto' }}>
+        {isSearching && SECTIONS.every((s) => {
+          const all = sections[s.collection] ?? [];
+          return all.filter((f) => f.name.toLowerCase().includes(q) || f.path.toLowerCase().includes(q)).length === 0;
+        }) && (
+          <div style={{ padding: '14px 12px', fontSize: 11, color: 'var(--color-text-faint)', fontStyle: 'italic', textAlign: 'center' }}>
+            No matching files
+          </div>
+        )}
         {SECTIONS.map((section) => {
-          const files = sections[section.collection] ?? [];
-          const isExpanded = expanded[section.collection] ?? false;
+          const allFiles = sections[section.collection] ?? [];
+          const files = isSearching
+            ? allFiles.filter((f) => f.name.toLowerCase().includes(q) || f.path.toLowerCase().includes(q))
+            : allFiles;
+          // When searching: skip sections with zero matches entirely; force-expand sections that do match.
+          if (isSearching && files.length === 0) return null;
+          const isExpanded = isSearching ? true : (expanded[section.collection] ?? false);
           const isLoading = loading[section.collection] ?? false;
 
           return (
@@ -247,7 +303,11 @@ export function FileBrowser() {
                 <span style={{ fontSize: 8 }}>{isExpanded ? '▾' : '▸'}</span>
                 <span style={{ flex: 1 }}>{section.label}</span>
                 {isLoading && <span style={{ fontSize: 9 }}>…</span>}
-                {!isLoading && <span style={{ fontSize: 9, color: 'var(--color-text-faint)' }}>{files.length}</span>}
+                {!isLoading && (
+                  <span style={{ fontSize: 9, color: 'var(--color-text-faint)' }}>
+                    {isSearching ? `${files.length}/${allFiles.length}` : files.length}
+                  </span>
+                )}
               </button>
 
               {/* Files */}
