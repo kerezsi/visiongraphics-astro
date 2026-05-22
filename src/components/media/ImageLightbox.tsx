@@ -6,6 +6,7 @@ import { useEffect, useCallback, useState, useRef } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import { thumbUrl } from '../../lib/image-url';
 import { useDragScroll } from '../../lib/use-swipe';
+import '../../lib/build-stamp';
 
 interface ImageItem {
   src: string;

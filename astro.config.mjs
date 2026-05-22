@@ -99,6 +99,17 @@ export default defineConfig({
   ],
   vite: {
     plugins: [...(!isProd ? [r2DevProxy] : [])],
+    // Per-build constant injected as a global #define. Referenced from
+    // src/lib/build-stamp.ts which is imported by Base.astro's inline script
+    // and every React island root, so every JS chunk's content changes on
+    // every build, forcing fresh content hashes. This works around a
+    // Cloudflare Pages dedupe bug where unchanged hashes can map to
+    // missing/corrupted edge blobs and serve 500 with empty body (galleries,
+    // image-compare, lightbox fail to hydrate). Same rationale as the
+    // x-build meta tag in src/layouts/Base.astro for HTML files.
+    define: isProd ? {
+      __BUILD_STAMP__: JSON.stringify(new Date().toISOString()),
+    } : { __BUILD_STAMP__: '"dev"' },
   },
   // Dev: server mode — all routes SSR (Keystatic needs this for write API).
   //   Content pages look up by Astro.params.slug, getStaticPaths provides URL list only.

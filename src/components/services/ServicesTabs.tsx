@@ -2,6 +2,7 @@
 // Vertical sidebar tabbed layout for services index — React island
 
 import { useState } from 'react';
+import '../../lib/build-stamp';
 
 export interface ServiceItem {
   slug:        string;

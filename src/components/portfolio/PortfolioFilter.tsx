@@ -5,6 +5,7 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { thumbUrl } from '../../lib/image-url';
 import { localeUrl, DEFAULT_LOCALE, type Locale } from '../../lib/i18n';
+import '../../lib/build-stamp';
 
 // ─── Types ────────────────────────────────────────────────────────
 export interface CategoryRef {

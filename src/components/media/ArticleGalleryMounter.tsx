@@ -8,6 +8,7 @@
 
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import '../../lib/build-stamp';
 import ImageLightbox from './ImageLightbox.tsx';
 
 interface ImageItem { src: string; alt: string; }
