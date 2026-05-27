@@ -211,13 +211,43 @@ router.post('/git-push', async (req: Request, res: Response) => {
 // stranding the repo on master with no master push and the editor UI
 // reloaded to master's older state (no Live button, etc.).
 //
-// The fix: push develop's tip directly to origin/master via a refspec.
-// This is a fast-forward push — no merge commit, but linear history is
-// fine for a solo workflow, and crucially it touches ZERO files in the
-// working tree. tsx never sees a change. The process keeps running.
+// Strategy — three cases, no checkout in any of them:
+//
+//   1. master == develop (after fetch): nothing to promote, return early.
+//   2. master is an ancestor of develop: fast-forward by pushing develop's
+//      tip directly via `git push origin develop:refs/heads/master`.
+//   3. master has commits develop doesn't have (typical: pre-existing
+//      "release: ..." merge commits on master from the legacy checkout-based
+//      promote): build a merge commit via plumbing (`git commit-tree`) with
+//      develop's tree and parents [master, develop], then push that commit
+//      to origin/master. This produces a `release: ...` merge commit on
+//      master without touching the working tree.
+//
+// After the push, the local master ref is fast-forwarded to origin/master
+// via `update-ref` (pure ref write, no working-tree change).
 //
 // Body: { message?: string } — used for any pending develop commit
 // ---------------------------------------------------------------------------
+
+// Run a command, capturing stdout/stderr/exit code. Never throws.
+function runOnce(
+  cmd: string,
+  args: string[],
+): Promise<{ code: number | null; stdout: string; stderr: string }> {
+  return new Promise((resolve) => {
+    const child = spawn(cmd, args, { cwd: PROJECT_ROOT, shell: false });
+    let stdout = '';
+    let stderr = '';
+    child.stdout.on('data', (d: Buffer) => { stdout += d.toString(); });
+    child.stderr.on('data', (d: Buffer) => { stderr += d.toString(); });
+    child.on('close', (code) => resolve({ code, stdout, stderr }));
+    child.on('error', (err: Error) => {
+      stderr += `\n[spawn error] ${err.message}\n`;
+      resolve({ code: null, stdout, stderr });
+    });
+  });
+}
+
 router.post('/git-promote', async (req: Request, res: Response) => {
   const branch = getCurrentBranch();
   if (branch !== 'develop') {
@@ -232,30 +262,94 @@ router.post('/git-promote', async (req: Request, res: Response) => {
   const { message } = req.body as { message?: string };
   const commitMsg = message ?? 'editor: update content';
 
-  console.log(`[commands] git promote develop → origin/master (refspec push)`);
+  let log = '';
 
-  const steps: Step[] = [
-    // Sync remote refs so we have an accurate view of origin/master
-    { cmd: 'git', args: ['fetch', 'origin'] },
+  // Wrapper: append command + output to log; throw with details on failure
+  // unless `tolerantCommit` is set (treats exit 1 as success — git commit
+  // returns 1 when there's nothing staged).
+  async function step(
+    cmd: string,
+    args: string[],
+    opts: { tolerantCommit?: boolean } = {},
+  ): Promise<string> {
+    log += `\n$ ${cmd} ${args.join(' ')}\n`;
+    const r = await runOnce(cmd, args);
+    log += r.stdout;
+    if (r.stderr) log += r.stderr;
+    const ok = r.code === 0 || (opts.tolerantCommit === true && r.code === 1);
+    if (!ok) {
+      throw new Error(
+        `Step failed (exit ${r.code}): ${cmd} ${args.join(' ')}\n${r.stderr || r.stdout}`,
+      );
+    }
+    return r.stdout.trim();
+  }
 
-    // Commit any pending edits on the current (develop) branch
-    { cmd: 'git', args: ['add', '-A'] },
-    { cmd: 'git', args: ['commit', '-m', commitMsg], tolerantCommit: true },
+  console.log(`[commands] git promote develop → origin/master`);
 
-    // Push develop normally (updates staging + the develop branch alias)
-    { cmd: 'git', args: ['push', 'origin', 'develop'] },
+  try {
+    // 1. Sync remote refs so origin/master is up to date locally
+    await step('git', ['fetch', 'origin']);
 
-    // Push develop's tip to origin/master via refspec (fast-forward).
-    // This triggers the Cloudflare Pages production build for visiongraphics.eu.
-    // No working-tree change → tsx watch doesn't restart → sequence completes.
-    { cmd: 'git', args: ['push', 'origin', 'develop:master'] },
+    // 2. Commit any pending edits on develop
+    await step('git', ['add', '-A']);
+    await step('git', ['commit', '-m', commitMsg], { tolerantCommit: true });
 
-    // Update local master ref to match — keeps `git log master..develop`
-    // and similar comparisons accurate. Pure ref update, no working-tree change.
-    { cmd: 'git', args: ['update-ref', 'refs/heads/master', 'refs/heads/develop'] },
-  ];
+    // 3. Push develop normally (updates staging + develop branch alias)
+    await step('git', ['push', 'origin', 'develop']);
 
-  runSteps(steps, res, PROJECT_ROOT);
+    // 4. Decide promotion strategy based on relationship between master & develop
+    const masterSha  = await step('git', ['rev-parse', 'refs/remotes/origin/master']);
+    const developSha = await step('git', ['rev-parse', 'refs/heads/develop']);
+
+    if (masterSha === developSha) {
+      log += '\nMaster already at develop tip — nothing to promote.\n';
+      res.json({ ok: true, stdout: log, stderr: '' });
+      return;
+    }
+
+    // Is master an ancestor of develop? exit 0 = yes, exit 1 = no.
+    const ancestry = await runOnce('git', [
+      'merge-base', '--is-ancestor', masterSha, developSha,
+    ]);
+    log += `\n$ git merge-base --is-ancestor ${masterSha.slice(0,7)} ${developSha.slice(0,7)} → exit ${ancestry.code}\n`;
+
+    let promoteSha: string;
+    if (ancestry.code === 0) {
+      // Fast-forward case: push develop's tip directly
+      promoteSha = developSha;
+      log += 'Fast-forward push (master is ancestor of develop).\n';
+    } else {
+      // Diverged: build a merge commit via plumbing, then push that
+      const developTree = await step('git', ['rev-parse', 'develop^{tree}']);
+      const releaseMsg  = `release: forward to develop (${masterSha.slice(0,7)}..${developSha.slice(0,7)})`;
+      promoteSha = await step('git', [
+        'commit-tree', developTree,
+        '-p', masterSha,
+        '-p', developSha,
+        '-m', releaseMsg,
+      ]);
+      log += `Created merge commit ${promoteSha.slice(0,7)} with parents ${masterSha.slice(0,7)} (master) + ${developSha.slice(0,7)} (develop).\n`;
+    }
+
+    // 5. Push the chosen commit to origin/master.
+    // Triggers the Cloudflare Pages production build for visiongraphics.eu.
+    await step('git', ['push', 'origin', `${promoteSha}:refs/heads/master`]);
+
+    // 6. Re-fetch and fast-forward the local master ref to match origin/master.
+    // Pure ref update — no working-tree change → tsx never restarts.
+    await step('git', ['fetch', 'origin']);
+    await step('git', ['update-ref', 'refs/heads/master', 'refs/remotes/origin/master']);
+
+    res.json({ ok: true, stdout: log, stderr: '' });
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    res.status(500).json({
+      ok: false,
+      error: msg,
+      stdout: log,
+    });
+  }
 });
 
 export default router;

@@ -166,9 +166,16 @@ The palette will automatically show the new block only on page types where its A
 
 **VG Editor toolbar push buttons:**
 - **↑ Git** — always commits any pending changes and pushes to the **`develop` branch** (regardless of currently checked-out branch — switches to develop first if needed). Updates the staging URL `develop.visiongraphics-astro.pages.dev` (and `staging.visiongraphics.eu` once the custom domain is wired up).
-- **↑ Live** — promotes `develop` → `master` (publish to production). Yellow-bordered button with a confirmation dialog. Sequence: commits any pending edits to develop → pushes develop → checks out master → pulls master with `--ff-only` → merges develop with `--no-ff` (creates an explicit `release: ...` merge commit) → pushes master → checks out develop. The `master` push triggers a Cloudflare Pages production deploy to `visiongraphics.eu`.
+- **↑ Live** — promotes `develop` → `master` (publish to production). Yellow-bordered button with a confirmation dialog. Sequence (NO `git checkout` — tsx watch must stay alive): fetch origin → commit any pending edits on develop → push develop → compare local `develop` with `origin/master`. Three cases:
+  1. **Equal** — early exit, nothing to promote.
+  2. **Fast-forward** (master is an ancestor of develop) — push develop's tip directly to `refs/heads/master`.
+  3. **Diverged** (typical: pre-existing `release: ...` merge commits on master) — build a merge commit via plumbing (`git commit-tree` with develop's tree, parents `[origin/master, develop]`, message `release: forward to develop (<m>..<d>)`) and push that commit to `refs/heads/master`.
+
+  Then `git update-ref` fast-forwards the local master ref to match origin/master (pure ref write — no working-tree change). The master push triggers a Cloudflare Pages production deploy to `visiongraphics.eu`.
 
 The `master` branch should never be edited directly from the editor — always go through `develop` and use **↑ Live** when ready to publish.
+
+**Why the plumbing dance?** The editor server runs under `tsx watch`. Any `git checkout master` reverts the working tree to master's older code, tsx kills the running process mid-sequence, and the promote aborts in an unsafe state. A previous fix tried a naive `git push origin develop:master` refspec — but that's rejected as non-fast-forward as soon as master has any commit develop doesn't (e.g. the `release: ...` merge commits this very flow creates). The `commit-tree` approach keeps history clean, never touches the working tree, and works regardless of divergence direction.
 
 ### Collections
 
