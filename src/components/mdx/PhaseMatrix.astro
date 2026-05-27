@@ -18,8 +18,8 @@ const lang: Locale = (Astro.locals as { lang?: Locale })?.lang ?? DEFAULT_LOCALE
 const titleStr = tStr(title, lang);
 
 const LEGEND = lang === 'hu'
-  ? { primary: 'Elsődleges használat', secondary: 'Alkalmankénti', none: 'Ritkán szükséges' }
-  : { primary: 'Primary use',          secondary: 'Occasional',     none: 'Rarely needed' };
+  ? { primary: 'Gyakran használt', secondary: 'Alkalmanként', none: 'Ritkán szükséges' }
+  : { primary: 'Primary use',      secondary: 'Occasional',   none: 'Rarely needed' };
 ---
 
 <div class="phase-matrix">

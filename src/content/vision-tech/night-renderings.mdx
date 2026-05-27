@@ -4,7 +4,7 @@ title:
   hu: Éjszakai látványtervek
 description:
   en: "Photorealistic night views produced in 3ds Max with V-Ray. Each light source — facade luminaires, interior spill through glazing, street lighting — is individually set up with accurate photometric data. A distinct lighting rig, not a variant of a daytime render."
-  hu: "Fotórealisztikus éjszakai nézetek 3ds Maxben, V-Rayjel. Minden fényforrást — homlokzati lámpákat, üvegen át kiszűrődő belső fényt, utcai világítást — külön állítunk be, pontos fotometrikus adatokkal. Önálló fényrendszer, nem egy nappali render változata."
+  hu: "3ds Max-ban és V-Ray-jel készített fotorealisztikus éjszakai látványtervek. Minden fényforrás – homlokzati lámpatestek, az üvegfelületeken keresztül kiszűrődő belső fények, közvilágítás – egyedileg, pontos fotometrikus adatok alapján van beállítva. Önálló világítási rendszer, nem egy nappali render egyszerű változata."
 image: /_img/vision-tech/night-renderings.jpg
 technique: Digital
 cost: €€
@@ -30,9 +30,9 @@ The payoff is visual: many buildings read more powerfully after dark, when archi
 </Lang>
 
 <Lang code="hu">
-Az éjszakai render nem egy egyszerűen bekattintható változat egy külső rendelés mellé. Külön fényrendszert, eltérő anyagbeállítást és egy olyan expozíció-kalibrálást igényel, amely a jelenetet hosszú expozíciójú fotóként kezeli. Minden képkockán látható fényforrást — homlokzati lámpát, üvegen át kiszűrődő belső fényt, utcai világítást — egyenként, valós intenzitással és fotometrikus profilokkal kell meghatározni.
+Az éjszakai látványtervek nem csupán egy utólagosan bepipálható változatot jelentenek a kültéri megrendelések mellett. Teljesen önálló világítási rendszert, eltérő anyagbeállításokat és olyan expozíciós kalibrációt igényelnek, amely hosszú expozíciós idejű fotóként kezeli a jelenetet. A képen látható minden egyes fényforrást – a homlokzati lámpatesteket, az üvegfelületeken át kiszűrődő belső fényeket és a közvilágítást – egyedileg kell meghatározni, valósághű intenzitási értékekkel és fotometrikus profilokkal.
 
-A megtérülés vizuális: sok épület hatásosabban érvényesül sötétedés után, amikor az építészeti világítás válik a domináns tervezési elemmé.
+A befektetett munka eredménye látványos: számos épület sötétedés után sokkal erőteljesebb karaktert kap, amikor a díszvilágítás válik a domináns tervezési elemmé.
 </Lang>
 
 <ImageGallery images={[{"src":"/_img/vision-tech/night-renderings/rm-06-x.jpg","alt":"RM_06_x"},{"src":"/_img/vision-tech/night-renderings/rm-07-x.jpg","alt":"RM_07_x"}]} />
@@ -54,19 +54,19 @@ In a daytime exterior, sunlight does most of the work. At night, the scene is as
 </Lang>
 
 <Lang code="hu">
-## Miért különleges technikailag az éjszakai render
+## Mitől más az éjszakai látványtervezés technikai szempontból?
 
-Egy nappali külsőnél a napfény végzi a munka nagy részét. Éjszaka a jelenet sok független forrásból áll össze:
+Egy nappali kültéri képnél a napfény végzi a munka nagy részét. Éjszaka viszont a jelenet sok független fényforrásból épül fel:
 
-**Homlokzati világítás** — minden lámpához típus (spot, flood, lineáris, wash) és intenzitás kell. A világítástervezőtől származó IES fotometrikus fájlok adják a pontos sugárformát és lecsengést. Nélkülük a típus alapján becsülünk, ami hihető, de pontatlan eredményt hoz.
+**Homlokzati világítás** – minden lámpatestnek meg kell határozni a típusát (spot, flood/fényvető, vonalmenti, falmosó) és az intenzitását. A világítástervezőtől kapott IES fotometrikus fájlok biztosítják a pontos fénycsóva-alakot és a fényerő csökkenését (falloff). Ezek hiányában csak megbecsülni tudjuk a lámpatestek típusát, ami elfogadható, de pontatlan eredményt ad.
 
-**Belső kiszűrődés** — az üvegen át áradó meleg fény gyakran egy éjszakai render sikerét vagy bukását dönti el. Ehhez a belső világítást rendesen be kell állítani, legalább az üvegen át látható zónákban. Egy padlóig megvilágított, sötét belső egészen másképp néz ki, mint egy mennyezeti downlightos.
+**Kiszűrődő belső fények** – a belső terek üvegfelületeken át derengő meleg fénye gyakran a legmeghatározóbb eleme az éjszakai látványtervnek. Ehhez elengedhetetlen a belső világítás pontos beállítása, legalább az üvegen keresztül látható zónákban. Egy teljesen sötét belső tér világító padlókkal egészen máshogy hat, mint egy mennyezeti süllyesztett spotokkal megvilágított helyiség.
 
-**Utcai és környezeti világítás** — a környező épületek, utcalámpák és égbolt-fényesség adják az ambiens expozíció alapját. A városi és külvárosi helyszínek nagyon eltérő ambiens szintekkel rendelkeznek; mindkettő befolyásolja, hogyan jelenik meg az épület a képkockán.
+**Köz- és környezeti világítás** – a szomszédos épületek, az utcai lámpák és az égbolt derengése határozzák meg a környezeti expozíció alapját. A városi és az elővárosi helyszínek környezeti fényereje jelentősen eltér; mindkettő közvetlenül befolyásolja az épület megjelenését.
 
-**Emisszív anyagok** — háttérvilágítású cégtáblák, élvilágított üvegezés, megvilágított hézagok és minden olyan homlokzati elem, ami világít, V-Ray-ben emisszív anyagtulajdonságot kapjon, ne külső fényforrást.
+**Emisszív (világító) anyagok** – a háttérvilágítású feliratokhoz, az élvilágított üvegekhez, a megvilágított kávákhoz és minden olyan homlokzati elemhez, amely önállóan világít, külső fényforrások helyett emisszív anyagbeállításokat használunk a V-Ray-ben.
 
-**Expozíció-kalibrálás** — a virtuális kamerabeállítások egy valódi éjszakai fotót tükröznek: hosszabb expozíció, eltérő ISO-válasz, színhőmérséklet-eltolódás. Ennek elrontása olyan képet ad, ami szürke nappali jelenet hozzáadott fényekkel, nem éjszakai fotó.
+**Expozíció kalibrálása** – a virtuális kamera beállításai a valós éjszakai fotózást tükrözik: hosszabb expozíciós idő, eltérő ISO-érzékenység és színhőmérséklet-eltolódás. Ha ezt elhibázzuk, a kép egy lámpákkal teleszórt, szürke nappali jelenetként fog hatni, nem pedig éjszakai fotóként.
 </Lang>
 
 <ImageGallery images={[{"src":"/_img/vision-tech/night-renderings/visiongraphics-ref-053-x.jpg","alt":"visiongraphics_ref_053_x"},{"src":"/_img/vision-tech/night-renderings/visiongraphics-ref-054-x.jpg","alt":"visiongraphics_ref_054_x"},{"src":"/_img/vision-tech/night-renderings/visiongraphics-ref-055-x.jpg","alt":"visiongraphics_ref_055_x"}]} />
@@ -86,17 +86,17 @@ For projects without a developed lighting design, a basic night render is possib
 </Lang>
 
 <Lang code="hu">
-## Mikor adnak igazi értéket az éjszakai nézetek
+## Mikor hordoznak valós értéket az éjszakai látványtervek?
 
-Az éjszakai render akkor éri meg a többletmunkát, ha a világítás szándékos tervezési elem, nem utólagos kiegészítés:
+Az éjszakai látványtervezés akkor éri meg a plusz előkészítési időt, ha a világítás a tervezési koncepció szerves része, nem pedig csak egy utólagos gondolat:
 
-- **Az építészeti világítás** része a projekt-briefnek — van mit megmutatni
-- Az épületnek megvilágított homlokzati elemei vannak (megvilágított bordák, hézagok, perforált árnyékolók, hátulról világított burkolat)
-- **Vendéglátó-, kereskedelmi vagy kulturális épületek**, ahol az éjszakai jelenlét befolyásolja a kereskedelmi teljesítményt
-- **Városi tájékozódási pontok**, ahol az épület a város éjszakai sziluettjének felismerhető eleme lesz
-- **Pályázati beadványok és publikációk**, ahol egy jellegzetes, erős grafikai minőségű kép számít
+- **A díszvilágítás-tervezés** a projekt feladatleírásának része – van mit bemutatni.
+- Az épület megvilágított homlokzati elemekkel rendelkezik (világító lamellák, kávák, perforált panelek, háttérvilágítású burkolatok).
+- **Szállodaipari, kereskedelmi vagy kulturális funkciójú épületeknél**, ahol az éjszakai megjelenés közvetlenül befolyásolja az üzleti teljesítményt.
+- **Városi tájékozódási pontoknál (landmark)**, ahol az épület sötétedés után a városi látkép jellegzetes elemévé válik.
+- **Pályázatok és publikációk** esetében, ahol a karakteres vizuális megjelenés és az erős grafikai minőség kulcsfontosságú.
 
-A kidolgozott világítási terv nélküli projekteknél egy alap éjszakai render lehetséges, de korlátozott. Az eredmény teljesen attól függ, mit lehet egyáltalán megvilágítani.
+Az olyan projekteknél, amelyek nem rendelkeznek részletes világítási tervvel, lehetséges egy alap szintű éjszakai render elkészítése, de a lehetőségek korlátozottak. Az eredmény teljesen attól függ, hogy mit tudunk megvilágítani az épületen.
 </Lang>
 
 <ImageGallery images={[{"src":"/_img/vision-tech/night-renderings/visiongraphics-ref-049-x.jpg","alt":"visiongraphics_ref_049_x"},{"src":"/_img/vision-tech/night-renderings/visiongraphics-ref-050-x.jpg","alt":"visiongraphics_ref_050_x"}]} />
@@ -106,30 +106,19 @@ A kidolgozott világítási terv nélküli projekteknél egy alap éjszakai rend
 </Lang>
 
 <Lang code="hu">
-## Mire van szükségünk Öntől
+## Mire van szükségünk Öntől?
 </Lang>
 
 <SpecTable rows={[
-{ label: { en: "Lighting design",   hu: "Világítási terv" },        value: { en: "IES profiles or luminaire product specs preferred. Without them, results are estimated from fixture type and general intent.",        hu: "IES-profilok vagy lámpa-termékspecifikációk preferáltak. Nélkülük az eredményt típus és általános szándék alapján becsüljük." } },
-{ label: { en: "Interior lighting", hu: "Belső világítás" },         value: { en: "At least indicative — we need to know what the spill through glazing should look like. Fully dark interiors are also a valid brief.", hu: "Legalább irányadó szinten — tudnunk kell, hogyan nézzen ki az üvegen átszűrődő fény. A teljesen sötét belső is érvényes brief." } },
-{ label: { en: "Facade elements",   hu: "Homlokzati elemek" },       value: { en: "Any backlit, emissive, or externally lit cladding components need to be specified — material, color temperature, intensity direction.", hu: "Minden hátulról világított, emisszív vagy külsőleg megvilágított burkolatot meg kell adni — anyag, színhőmérséklet, intenzitás iránya." } },
-{ label: { en: "3D model",          hu: "3D-modell" },                value: { en: "The same model used for daytime exterior renders. Night and day views should be planned together to avoid duplicate modeling.",       hu: "Ugyanaz a modell, mint a nappali külső rendernél. Az éjszakai és nappali nézeteket együtt érdemes tervezni a duplikált modellezés elkerüléséért." } },
-{ label: { en: "Reference mood",    hu: "Referenciahangulat" },       value: { en: "Dusk or full night? Warm or cool atmosphere? Reference photographs of comparable projects are useful here.",                            hu: "Alkonyat vagy teljes éjszaka? Meleg vagy hideg hangulat? Hasonló projektek referenciafotói itt hasznosak." } },
+{ label: { en: "Lighting design",   hu: "Világítási terv" },        value: { en: "IES profiles or luminaire product specs preferred. Without them, results are estimated from fixture type and general intent.",        hu: "Lehetőleg IES fájlok vagy a lámpatestek gyártói specifikációi. Ezek hiányában az eredményt a lámpatestek típusa és az általános tervezői szándék alapján becsüljük meg." } },
+{ label: { en: "Interior lighting", hu: "Belső világítás" },         value: { en: "At least indicative — we need to know what the spill through glazing should look like. Fully dark interiors are also a valid brief.", hu: "Legalább irányadó szinten – tudnunk kell, hogyan szűrődjön ki a fény az üvegfelületeken keresztül. A teljesen sötét belső terek is elfogadható feladatleírásnak minősülnek." } },
+{ label: { en: "Facade elements",   hu: "Homlokzati elemek" },       value: { en: "Any backlit, emissive, or externally lit cladding components need to be specified — material, color temperature, intensity direction.", hu: "Bármilyen háttérvilágítású, emisszív vagy kívülről megvilágított burkolati elemet specifikálni kell – az anyagot, a színhőmérsékletet és az intenzitás irányát." } },
+{ label: { en: "3D model",          hu: "3D modell" },               value: { en: "The same model used for daytime exterior renders. Night and day views should be planned together to avoid duplicate modeling.",       hu: "Ugyanaz a modell, amelyet a nappali kültéri látványtervekhez használunk. A nappali és éjszakai nézeteket érdemes együtt tervezni a duplikált modellezés elkerülése érdekében." } },
+{ label: { en: "Reference mood",    hu: "Referencia-hangulat" },     value: { en: "Dusk or full night? Warm or cool atmosphere? Reference photographs of comparable projects are useful here.",                            hu: "Alkonyat (kék óra) vagy mély éjszaka? Meleg vagy hűvös atmoszféra? A hasonló projektekről készült referenciaképek sokat segítenek ebben a fázisban." } },
+{ label: { en: "Delivery",          hu: "Átadás" },                   value: { en: "4K stills matching the daytime exterior views. Twilight (blue hour) and full night are different setups — agree which before work starts. Both can be produced from the same model but require separate rendering time.",                            hu: "A nappali kültéri nézeteknek megfelelő állóképek. Az alkonyati (kék óra) és a mély éjszakai jelenetek eltérő beállításokat igényelnek – a munka megkezdése előtt egyeztessük, melyik készüljön el. Mindkettő előállítható ugyanabból a modellből, de külön renderelési időt igényelnek." } },
 ]} />
 
 <ImageGallery images={[{"src":"/_img/vision-tech/night-renderings/visiongraphics-ref-052-x.jpg","alt":"visiongraphics_ref_052_x"},{"src":"/_img/vision-tech/night-renderings/deldom-red-06-night-x.jpg","alt":"deldom_RED_06_night_x"},{"src":"/_img/vision-tech/night-renderings/mingxi-ejj-legi-01-x.jpg","alt":"MINGXI_EJJ_Legi_01_x"},{"src":"/_img/vision-tech/night-renderings/visiongraphics-ref-046-x.jpg","alt":"visiongraphics_ref_046_x"},{"src":"/_img/vision-tech/night-renderings/visiongraphics-ref-047-x.jpg","alt":"visiongraphics_ref_047_x"},{"src":"/_img/vision-tech/night-renderings/visiongraphics-ref-048-x.jpg","alt":"visiongraphics_ref_048_x"}]} />
-
-<Lang code="en">
-## Delivery
-
-4K stills matching the daytime exterior views. Twilight (blue hour) and full night are different setups — agree which before work starts. Both can be produced from the same model but require separate rendering time.
-</Lang>
-
-<Lang code="hu">
-## Átadás
-
-4K állóképek, illeszkedve a nappali külső nézetekhez. Az alkonyat (kék óra) és a teljes éjszaka külön beállítás — a munka megkezdése előtt egyezzünk meg, melyik kell. Mindkettő ugyanabból a modellből készülhet, de külön renderidőt igényel.
-</Lang>
 
 <Lang code="en">
 ## Related techniques
@@ -144,9 +133,9 @@ For animated lighting transitions (day to dusk to night): [3D Animation](/vision
 <Lang code="hu">
 ## Kapcsolódó technikák
 
-Nappali változatért — ugyanaz a modell: [Külső](/vision-tech/exterior/)
+A nappali megfelelőhöz – ugyanabból a modellből: [Külső](/vision-tech/exterior/)
 
-A belső világítás ellenőrzéséhez: [Belső tér](/vision-tech/interior/)
+A belső világítás ellenőrzéséhez és validálásához: [Belső](/vision-tech/interior/)
 
-Animált fényátmenetekhez (nappaltól alkonyaton át éjszakáig): [3D-animáció](/vision-tech/3d-animation/)
+Animált fényátmenetekhez (nappalról alkonyatra, majd éjszakára): [3D animáció](/vision-tech/3d-animation/)
 </Lang>

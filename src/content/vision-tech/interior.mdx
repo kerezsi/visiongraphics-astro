@@ -1,10 +1,10 @@
 ---
 title:
   en: Interior
-  hu: Belső tér
+  hu: Belső képek
 description:
   en: "Photorealistic renderings of interior spaces produced in 3ds Max with V-Ray. Global illumination, IES photometric lighting, and physically-based materials create accurate previews of rooms before they're built or fitted out."
-  hu: "Belső terek fotórealisztikus látványtervei 3ds Maxben, V-Rayjel készítve. Globális megvilágítás, IES fotometrikus világítás és fizikai alapú anyagok pontos előnézetet adnak a helyiségekről, még az építés vagy belsőépítészeti kivitelezés előtt."
+  hu: "3ds Max-ban és V-Ray-jel készített fotorealisztikus belső téri látványtervek. A globális megvilágítás (Global Illumination), az IES fotometrikus fények és a fizikailag pontos anyagok (PBR) hű előnézetet biztosítanak a helyiségekről, még azok felépítése vagy berendezése előtt."
 image: /_img/vision-tech/interior.jpg
 technique: Digital
 cost: €
@@ -31,7 +31,7 @@ Interior renderings show how rooms look and feel before they're built. The techn
 </Lang>
 
 <Lang code="hu">
-A belső látványtervek megmutatják, hogyan néznek ki és hogyan érződnek a helyiségek, még mielőtt megépülnének. A technikai kihívás a fény: a külső nézettel szemben egy belső térben a fény többször visszaverődik a felületekről, mielőtt a kamerába érne, ezért a V-Ray globális megvilágítása áll a munka középpontjában.
+A belső téri látványtervek megmutatják a helyiségek hangulatát és megjelenését még a felépülésük előtt. A legnagyobb technikai kihívást a világítás jelenti: a kültérrel ellentétben a belső terekben a fény többször is visszaverődik a felületekről, mielőtt elérné a kamerát, így a munka középpontjában a V-Ray globális megvilágítási (GI) rendszere áll.
 </Lang>
 
 <ImageGallery images={[{"src":"/_img/vision-tech/interior/pici-kavezo-0010000-x.jpg","alt":"PICI_kavezo_0010000_x"},{"src":"/_img/vision-tech/interior/visiongraphics-ref-001-x.jpg","alt":"visiongraphics_ref_001_x"},{"src":"/_img/vision-tech/interior/visiongraphics-ref-003-x.jpg","alt":"visiongraphics_ref_003_x"},{"src":"/_img/vision-tech/interior/visiongraphics-ref-004-x.jpg","alt":"visiongraphics_ref_004_x"},{"src":"/_img/vision-tech/interior/visiongraphics-ref-005-x.jpg","alt":"visiongraphics_ref_005_x"},{"src":"/_img/vision-tech/interior/visiongraphics-ref-006-x.jpg","alt":"visiongraphics_ref_006_x"},{"src":"/_img/vision-tech/interior/visiongraphics-ref-007-x.jpg","alt":"visiongraphics_ref_007_x"}]} />
@@ -53,35 +53,35 @@ The gap between a credible interior render and an unconvincing one is almost alw
 </Lang>
 
 <Lang code="hu">
-## A technikai kihívás
+## A technikai kihívások
 
-A belső fény pontos beállítása minden szakaszban gondos munkát igényel:
+A belső terek tökéletes megvilágításához minden fázisban precíz beállításokra van szükség:
 
-**Globális megvilágítás** — a fény minden felületről visszaverődik a jelenetben. Az anyag reflektivitása és diffúz színe közvetlenül befolyásolja, hogyan jelennek meg a szomszédos területek. Egy enyhén meleg vakolat egészen másként viselkedik, mint egy semleges fehér fal, és mindkettő másképp néz ki eltérő belmagasságoknál.
+**Globális megvilágítás (Global Illumination)** – a fény a jelenet minden egyes felületéről visszaverődik. Az anyagok fényvisszaverő képessége (reflectivity) és diffúz színe közvetlenül befolyásolja a szomszédos felületek megjelenését. Egy enyhén meleg tónusú vakolat teljesen másképp viselkedik, mint egy semleges fehér fal, és mindkettő eltérő képet mutat különböző belmagasságok mellett.
 
-**Mesterséges világítás** — a lámpagyártóktól közvetlenül beszerzett IES fotometrikus profilok adják a legpontosabb eredményt. Ezek nélkül a típus alapján becsüljük meg a viselkedést, ami olyan bizonytalanságot hoz, amely csak a végső renderben válik nyilvánvalóvá.
+**Mesterséges világítás** – a lámpatestek valódi gyártóitól származó IES fotometrikus profilok biztosítják a legpontosabb eredményt. Ezek hiányában csak megbecsülni tudjuk a fényforrások típusát, ami olyan találgatásokhoz vezet, amelyek csak a végleges renderelésnél válnak láthatóvá.
 
-**Ablakportálok** — a természetes fénnyel megvilágított belső terekhez minden üvegezett nyílásnál fényportál-geometria kell, plusz egy ehhez illesztett HDRI a külső éghez. A belső és külső expozíció aránya dönti el, hogy az üvegezés kilátásként vagy kifehéredett fehér ürességként jelenik-e meg.
+**Ablakportálok (Light Portals)** – a természetes fénnyel megvilágított belső terekhez megfelelő fényportál-geometriára (Light Portal) van szükség minden üvegfelületnél, kiegészítve a külső égboltnak megfelelő HDRI térképpel. A belső és külső tér közötti expozíciós arány határozza meg, hogy az üvegezés mögött valódi kilátás látható-e, vagy csak egy túlexponált fehér folt.
 
-**Anyag közelsége** — a kamera minden felülethez közel van egy belsőben. Az anyagmunka nehezebb, mint a külsőé: faerezet, szövetszövés, kő spekuláris változása, csempézés fugarészletei. Ezek csak rétegzett anyagbeállításokkal hatnak meggyőzően.
+**Anyagok közelsége** – belső tereknél a kamera minden felülethez közel helyezkedik el. Emiatt az anyagok kidolgozása sokkal nagyobb precizitást igényel, mint a kültéri munkáknál: a fa erezete, a szövetek szövése, a kőfelületek csillogásának (specular) finom változásai vagy a csempék fugázása mind-mind kulcsfontosságú. Ezek csak összetett, rétegzett anyagbeállításokkal (layered materials) válnak igazán meggyőzővé.
 
-A hiteles és a meggyőzhetetlen belső render közötti különbség szinte mindig a fény- és anyagminőség, nem a modell összetettsége.
+A hiteles és a nem meggyőző belső téri látványterv közötti különbség szinte mindig a világítás és az anyagok minőségén múlik, nem pedig a 3D modell bonyolultságán.
 </Lang>
 
 <ImageGallery images={[{"src":"/_img/vision-tech/interior/visiongraphics-ref-018-x.jpg","alt":"visiongraphics_ref_018_x"},{"src":"/_img/vision-tech/interior/visiongraphics-ref-019-x.jpg","alt":"visiongraphics_ref_019_x"},{"src":"/_img/vision-tech/interior/visiongraphics-ref-020-x.jpg","alt":"visiongraphics_ref_020_x"},{"src":"/_img/vision-tech/interior/visiongraphics-ref-021-x.jpg","alt":"visiongraphics_ref_021_x"},{"src":"/_img/vision-tech/interior/visiongraphics-ref-022-x.jpg","alt":"visiongraphics_ref_022_x"}]} />
 
 <ProcessFlow
 steps={[
-{ label: { en: "Brief",        hu: "Brief" },         sub: { en: "rooms, views, mood",       hu: "helyiségek, nézetek, hangulat" } },
-{ label: { en: "3D model",     hu: "3D-modell" },      sub: { en: "from floor plans",          hu: "alaprajzok alapján" } },
-{ label: { en: "Materials",    hu: "Anyagok" },         sub: { en: "surfaces, finishes",        hu: "felületek, kivitelek" } },
-{ label: { en: "Furniture",    hu: "Bútor" },           sub: { en: "specific or indicative",    hu: "konkrét vagy referencia szintű" } },
-{ label: { en: "Lighting rig", hu: "Világítás" },       sub: { en: "GI + sources",              hu: "GI + fényforrások" } },
-{ label: { en: "Draft render", hu: "Próbarender" },     sub: { en: "review composition",        hu: "kompozíció szemlézése" } },
-{ label: { en: "Production",   hu: "Produkció" },       sub: { en: "4K V-Ray final",            hu: "4K V-Ray végleges" } },
+{ label: { en: "Brief",        hu: "Brief" },              sub: { en: "rooms, views, mood",       hu: "helyiségek, nézőpontok, hangulat meghatározása" } },
+{ label: { en: "3D model",     hu: "3D modell" },          sub: { en: "from floor plans",          hu: "modellezés alaprajzok alapján" } },
+{ label: { en: "Materials",    hu: "Anyagok" },             sub: { en: "surfaces, finishes",        hu: "felületek és burkolatok beállítása" } },
+{ label: { en: "Furniture",    hu: "Bútorok" },             sub: { en: "specific or indicative",    hu: "konkrét vagy illusztratív bútorok elhelyezése" } },
+{ label: { en: "Lighting rig", hu: "Világítás" },           sub: { en: "GI + sources",              hu: "GI és fényforrások beállítása" } },
+{ label: { en: "Draft render", hu: "Próbarender" },         sub: { en: "review composition",        hu: "kompozíció ellenőrzése" } },
+{ label: { en: "Production",   hu: "Véglegesítés" },        sub: { en: "4K V-Ray final",            hu: "4K V-Ray renderelés" } },
 ]}
-feedback={[{ from: 5, to: 2, label: { en: "Layout or finish revision", hu: "Elrendezés- vagy kivitelmódosítás" } }]}
-title={{ en: "Production workflow", hu: "Produkciós folyamat" }}
+feedback={[{ from: 5, to: 2, label: { en: "Layout or finish revision", hu: "Igény szerint az elrendezés vagy a burkolatok módosítása" } }]}
+title={{ en: "Production workflow", hu: "Munkafolyamat" }}
 />
 
 <Lang code="en">
@@ -89,17 +89,17 @@ title={{ en: "Production workflow", hu: "Produkciós folyamat" }}
 </Lang>
 
 <Lang code="hu">
-## Mire van szükségünk Öntől
+## Mire van szükségünk Öntől?
 </Lang>
 
 <ImageGallery images={[{"src":"/_img/vision-tech/interior/visiongraphics-ref-023-x.jpg","alt":"visiongraphics_ref_023_x"},{"src":"/_img/vision-tech/interior/visiongraphics-ref-024-x.jpg","alt":"visiongraphics_ref_024_x"},{"src":"/_img/vision-tech/interior/visiongraphics-ref-025-x.jpg","alt":"visiongraphics_ref_025_x"},{"src":"/_img/vision-tech/interior/visiongraphics-ref-026-x.jpg","alt":"visiongraphics_ref_026_x"},{"src":"/_img/vision-tech/interior/visiongraphics-ref-027-x.jpg","alt":"visiongraphics_ref_027_x"},{"src":"/_img/vision-tech/interior/visiongraphics-ref-028-x.jpg","alt":"visiongraphics_ref_028_x"},{"src":"/_img/vision-tech/interior/visiongraphics-ref-029-x.jpg","alt":"visiongraphics_ref_029_x"},{"src":"/_img/vision-tech/interior/visiongraphics-ref-030-x.jpg","alt":"visiongraphics_ref_030_x"},{"src":"/_img/vision-tech/interior/visiongraphics-ref-031-x.jpg","alt":"visiongraphics_ref_031_x"},{"src":"/_img/vision-tech/interior/visiongraphics-ref-032-x.jpg","alt":"visiongraphics_ref_032_x"},{"src":"/_img/vision-tech/interior/visiongraphics-ref-033-x.jpg","alt":"visiongraphics_ref_033_x"},{"src":"/_img/vision-tech/interior/visiongraphics-ref-034-x.jpg","alt":"visiongraphics_ref_034_x"}]} />
 
 <SpecTable rows={[
-{ label: { en: "Floor plans",      hu: "Alaprajzok" },         value: { en: "With accurate dimensions. Ceiling heights are essential — they directly affect lighting quality and cannot be guessed.", hu: "Pontos méretekkel. A belmagasságok elengedhetetlenek — közvetlenül befolyásolják a fényminőséget és nem lehet csak megbecsülni." } },
-{ label: { en: "Finish schedule",  hu: "Kivitellista" },       value: { en: "Floor, wall, ceiling materials with product references where possible. The more specific, the more accurate the material behavior.", hu: "Padló-, fal- és mennyezeti anyagok termékreferenciával, ha lehetséges. Minél konkrétabb, annál pontosabb az anyagviselkedés." } },
-{ label: { en: "Furniture",         hu: "Bútor" },              value: { en: "Specific pieces if the interior design is resolved; style references and approximate sizes if not.", hu: "Konkrét darabok, ha a belsőépítészet eldőlt; stílusreferenciák és hozzávetőleges méretek, ha nem." } },
-{ label: { en: "Lighting design",  hu: "Világítási terv" },    value: { en: "IES files from the luminaire manufacturer, or fixture product names so we can source them. Without this, artificial lighting is estimated.", hu: "IES-fájlok a lámpagyártótól, vagy a termékek neve, hogy beszerezhessük. Enélkül a mesterséges világítást csak becsüljük." } },
-{ label: { en: "Sections",         hu: "Metszetek" },          value: { en: "Useful for spaces with complex ceiling geometry, coffered ceilings, split levels, or double-height volumes.", hu: "Hasznosak összetett mennyezetgeometriához, kazettás mennyezetekhez, átmeneti szintekhez vagy duplaszintes terekhez." } },
+{ label: { en: "Floor plans",      hu: "Alaprajzok" },                       value: { en: "With accurate dimensions. Ceiling heights are essential — they directly affect lighting quality and cannot be guessed.", hu: "Pontos méretekkel. A belmagasságok megadása elengedhetetlen – ezek közvetlenül befolyásolják a világítás minőségét, így nem becsülhetők meg." } },
+{ label: { en: "Finish schedule",  hu: "Konszignációk / Burkolattervek" },    value: { en: "Floor, wall, ceiling materials with product references where possible. The more specific, the more accurate the material behavior.", hu: "Padló-, fal- és mennyezeti anyagok, lehetőség szerint termékhivatkozásokkal. Minél pontosabbak az adatok, annál valósághűbb lesz az anyagok viselkedése." } },
+{ label: { en: "Furniture",         hu: "Bútorok" },                          value: { en: "Specific pieces if the interior design is resolved; style references and approximate sizes if not.", hu: "Konkrét bútorok, ha a belsőépítészeti terv már kész; stílusreferenciák és hozzávetőleges méretek, ha még alakulóban van." } },
+{ label: { en: "Lighting design",  hu: "Világítási terv" },                  value: { en: "IES files from the luminaire manufacturer, or fixture product names so we can source them. Without this, artificial lighting is estimated.", hu: "IES fájlok a lámpatestek gyártójától, vagy a termékek pontos nevei, hogy felkutathassuk a szükséges adatokat. Ezek hiányában a mesterséges világítást csak becsülni tudjuk." } },
+{ label: { en: "Sections",         hu: "Metszetek" },                        value: { en: "Useful for spaces with complex ceiling geometry, coffered ceilings, split levels, or double-height volumes.", hu: "Különösen hasznosak összetett mennyezetgeometriák, kazettás mennyezetek, eltolt szintek vagy kétszintes terek esetén." } },
 ]} />
 
 <ImageGallery images={[{"src":"/_img/vision-tech/interior/visiongraphics-ref-009-x.jpg","alt":"visiongraphics_ref_009_x"},{"src":"/_img/vision-tech/interior/visiongraphics-ref-010-x.jpg","alt":"visiongraphics_ref_010_x"},{"src":"/_img/vision-tech/interior/visiongraphics-ref-011-x.jpg","alt":"visiongraphics_ref_011_x"},{"src":"/_img/vision-tech/interior/visiongraphics-ref-012-x.jpg","alt":"visiongraphics_ref_012_x"},{"src":"/_img/vision-tech/interior/visiongraphics-ref-013-x.jpg","alt":"visiongraphics_ref_013_x"},{"src":"/_img/vision-tech/interior/visiongraphics-ref-014-x.jpg","alt":"visiongraphics_ref_014_x"},{"src":"/_img/vision-tech/interior/visiongraphics-ref-015-x.jpg","alt":"visiongraphics_ref_015_x"}]} />
@@ -113,7 +113,7 @@ title={{ en: "Production workflow", hu: "Produkciós folyamat" }}
 <Lang code="hu">
 ## Átadás
 
-4K állókép minden megállapított kamerapozícióra. Full HD digitális és prezentációs felhasználásra. A több helyiség vagy nézetváltozat ugyanazt a modellt használja — minden további nézet csak az adott kamerapozíció beállításának és a világítás finomhangolásának idejét igényli, nem teljes újraépítést.
+4K felbontású állóképek a megbeszélt kamerapozíciók alapján. Full HD felbontású verziók digitális és prezentációs használatra. Mivel a különböző helyiségek vagy nézetváltozatok ugyanazon a modellen osztoznak, minden további nézet csak a kamera beállításának és a fények finomhangolásának idejét igényelheti, nem pedig a teljes modell újjáépítését.
 </Lang>
 
 <Lang code="en">
@@ -129,15 +129,15 @@ title={{ en: "Production workflow", hu: "Produkciós folyamat" }}
 </Lang>
 
 <Lang code="hu">
-## Mikor térül meg egy belső látványterv
+## Mikor térül meg igazán a belső téri látványtervezés?
 
-**Tervezés-fejlesztés** — a kivitelek kombinációinak tesztelése a végleges anyagválasztás előtt itt térül meg a leggyorsabban. Egy anyagütközés vagy aránybeli probléma renderben perceket vesz; helyszínen elkapni heteket.
+**Tervezésfejlesztés során** – a különböző anyagkombinációk tesztelése a végleges specifikáció előtt itt térül meg a legközvetlenebbül. Egy anyagkonfliktus vagy arányossági hiba kiszűrése a látványterven perceket vesz igénybe; ugyanezt a helyszínen korrigálni hetekbe telhet.
 
-**Előértékesítés** — lakások, szállodai szobák vagy kereskedelmi belsők marketingje még az építkezés vagy belsőépítészet befejezése előtt.
+**Előértékesítéskor** – lakások, szállodai szobák vagy irodai belső terek értékesítése és marketingje még a kivitelezés vagy a berendezés befejezése előtt.
 
-**Ügyfél-jóváhagyás** — a meglepetések csökkentése, amikor a tervezés összetett térbeli viszonyokat vagy nem szokványos anyagkombinációkat tartalmaz.
+**Megrendelői jóváhagyáskor** – a kellemetlen meglepetések elkerülése, különösen ha a terv összetett térbeli kapcsolatokat vagy szokatlan anyagkombinációkat tartalmaz.
 
-**FF&E koordináció** — bútorok és berendezési tárgyak kontextusban való megjelenítése a beszerzési döntések véglegesítése előtt.
+**Bútorozás és berendezés (FF&E) koordinációjakor** – a bútorok, lámpák és szerelvények bemutatása a valós térbeli környezetükben, a vásárlási döntések meghozatala előtt.
 </Lang>
 
 <ImageGallery images={[{"src":"/_img/vision-tech/interior/cam-marketing-01-x.jpg","alt":"Cam_Marketing_01_x"},{"src":"/_img/vision-tech/interior/cam-marketing-02-black-x.jpg","alt":"Cam_Marketing_02_Black_x"},{"src":"/_img/vision-tech/interior/cam-marketing-03-black-x.jpg","alt":"Cam_Marketing_03_Black_x"},{"src":"/_img/vision-tech/interior/cam-marketing-04-black-x.jpg","alt":"Cam_Marketing_04_Black_x"},{"src":"/_img/vision-tech/interior/cam-marketing-05-black-x.jpg","alt":"Cam_Marketing_05_Black_x"},{"src":"/_img/vision-tech/interior/cam-marketing-05-x.jpg","alt":"Cam_Marketing_05_x"},{"src":"/_img/vision-tech/interior/cam-marketing-06-x.jpg","alt":"Cam_Marketing_06_x"},{"src":"/_img/vision-tech/interior/cam-marketing-07-black-x.jpg","alt":"Cam_Marketing_07_Black_x"},{"src":"/_img/vision-tech/interior/cam-marketing-08-black-x.jpg","alt":"Cam_Marketing_08_Black_x"},{"src":"/_img/vision-tech/interior/cam-marketing-09-black-x.jpg","alt":"Cam_Marketing_09_Black_x"},{"src":"/_img/vision-tech/interior/cam-marketing-12-black-x.jpg","alt":"Cam_Marketing_12_Black_x"},{"src":"/_img/vision-tech/interior/cam-marketing-14-black-x.jpg","alt":"Cam_Marketing_14_Black_x"},{"src":"/_img/vision-tech/interior/cam-marketing-15-black-x.jpg","alt":"Cam_Marketing_15_Black_x"},{"src":"/_img/vision-tech/interior/cam-marketing-18-x.jpg","alt":"Cam_Marketing_18_x"},{"src":"/_img/vision-tech/interior/cam-marketing-info-black-x.jpg","alt":"Cam_Marketing_info_Black_x"}]} />
@@ -155,9 +155,9 @@ For the building exterior: [Exterior](/vision-tech/exterior/)
 <Lang code="hu">
 ## Kapcsolódó technikák
 
-Fix kamerás nézetek helyett teljesen bejárható belsőhöz: [360°-os látványtervek](/vision-tech/360-renderings/)
+A fix kameraállások helyett teljesen bejárható belső terekhez: [360°-os renderelés](/vision-tech/360-renderings/)
 
-Magával ragadó séta-élményhez: [Virtuális valóság](/vision-tech/virtual-reality-vr-experience/)
+A magával ragadó, immerzív virtuális bejárásokhoz: [Virtuális valóság (VR)](/vision-tech/virtual-reality-vr-experience/)
 
-Az épület külsejéhez: [Külső](/vision-tech/exterior/)
+Az épület külső megjelenésének bemutatásához: [Külső](/vision-tech/exterior/)
 </Lang>

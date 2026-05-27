@@ -1,10 +1,10 @@
 ---
 title:
-  en: "Exterior"
-  hu: "Külső"
+  en: Exterior
+  hu: Külső képek
 description:
   en: "Photorealistic still images of building exteriors produced in 3ds Max with V-Ray. Models are built from architectural drawings, materials are physically based, and lighting is simulated from the actual site coordinates and time of day."
-  hu: "Épületkülsők fotórealisztikus állóképei 3ds Maxben, V-Rayjel készítve. A modelleket építészeti rajzokból építjük, az anyagok fizikai alapúak, a fény pedig a tényleges helyszínkoordinátákból és napszakból szimulálva."
+  hu: "3ds Max-ban és V-Ray-jel készített fotorealisztikus állóképek az épületek külsejéről. A modellek építészeti rajzok alapján épülnek fel, az anyagok fizikailag pontosak (PBR), a megvilágítást pedig a valós helyszíni koordináták és napszak alapján szimuláljuk."
 image: /_img/vision-tech/exterior.jpg
 technique: Digital
 cost: €
@@ -33,10 +33,12 @@ The result is a fixed camera view that reads as a photograph of the finished bui
 </Lang>
 
 <Lang code="hu">
-A külső látványtervek egy épület külsejét mutatják fotórealisztikus állóképen, még az építés előtt. 3ds Maxben dolgozunk V-Rayjel — az építészeti rajzaiból modellezünk, fizikai alapú anyagokat alkalmazunk, és a fényt a helyszín és a megválasztott napszak alapján szimuláljuk.
+A külső téri látványtervek fotorealisztikus állókép formájában mutatják be az épület külsejét még a felépülése előtt. 3ds Max és V-Ray szoftverekkel dolgozunk: lemodellezzük az építészeti rajzokat, fizikailag pontos anyagokat alkalmazunk, és szimuláljuk a természetes fényt a helyszín pontos koordinátái és a választott napszak alapján.
 
-Az eredmény egy fix kameranézet, amely a kész épület fotójaként hat.
+Az eredmény egy olyan rögzített kamerakép, amely az elkészült épület valódi fotójaként hat.
 </Lang>
+
+<ImageGallery images={[{"src":"/_img/vision-tech/exterior/visiongraphics-ref-041-x.jpg","alt":"visiongraphics_ref_041_x"},{"src":"/_img/vision-tech/exterior/visiongraphics-ref-036-x.jpg","alt":"visiongraphics_ref_036_x"},{"src":"/_img/vision-tech/exterior/visiongraphics-ref-038-x.jpg","alt":"visiongraphics_ref_038_x"},{"src":"/_img/vision-tech/exterior/visiongraphics-ref-043-x.jpg","alt":"visiongraphics_ref_043_x"},{"src":"/_img/vision-tech/exterior/visiongraphics-ref-044-x.jpg","alt":"visiongraphics_ref_044_x"}]} />
 
 <Lang code="en">
 ## What goes into it
@@ -53,31 +55,31 @@ A convincing exterior depends on several things working together:
 </Lang>
 
 <Lang code="hu">
-## Miből áll össze
+## A minőségi kültéri látványterv összetevői
 
-Egy meggyőző külső számos elem együttműködésén áll:
+A meggyőző kültéri látványterv több tényező szoros együttműködéséből épül fel:
 
-**Kontextus-modellezés** — mennyi környezetet kell 3D-ben felépíteni, attól függ, milyen feltűnően jelenik meg a választott nézetben. Szűk városi helyszíneknél ez jelentős környező geometriát is jelenthet.
+**Környezet modellezése** – az, hogy a környezet mekkora részét kell 3D-ben felépíteni, attól függ, mennyire hangsúlyosan jelenik meg a választott nézetben. Sűrű városi helyszíneknél ez jelentős mennyiségű környező geometria lemodellezését igényelheti.
 
-**Anyagok** — beton, üveg, burkolat, tégla. A V-Ray fizikai alapú anyagrendszere valós reflektivitás-, érdesség- és áttetszőségi értékeket igényel. A gyártói termékreferenciák sokkal jobbak, mint a találgatás.
+**Anyagok** – beton, üveg, burkolat, tégla. A V-Ray fizikailag pontos anyagsendszere (PBR) valós visszaverődési, érdességi és áttetszőségi értékeket igényel. A gyártói termékminták és referenciák használata sokat segít a találgatások elkerülésében.
 
-**Entourage** — emberek, járművek, növényzet, amelyek a léptéket és aktivitást mutatják anélkül, hogy elvonnák a figyelmet az építészetről.
+**Környezeti elemek (Entourage)** – emberek, járművek és növényzet elhelyezése a lépték és az életérzés bemutatására, anélkül, hogy elvonnák a figyelmet magáról az építészetről.
 
-**Kamera és világítás** — a napállást a tényleges helyszínkoordinátákból és a megegyezett napszakból állítjuk be. A kamerapozíciót a renderelés megkezdése előtt eldöntjük.
+**Kamera és világítás** – a napállást a helyszín valós koordinátái és a megbeszélt napszak alapján állítjuk be. A kamera pozícióját még a végleges renderelés megkezdése előtt véglegesítjük.
 </Lang>
 
 <ProcessFlow
-  steps={[
-    { label: { en: "Brief",         hu: "Brief" },         sub: { en: "views, mood, time of day", hu: "nézetek, hangulat, napszak" } },
-    { label: { en: "3D model",      hu: "3D-modell" },      sub: { en: "from CAD / IFC",            hu: "CAD-ből / IFC-ből" } },
-    { label: { en: "Materials",     hu: "Anyagok" },         sub: { en: "PBR, manufacturer refs",    hu: "PBR, gyártói referenciák" } },
-    { label: { en: "Camera & light", hu: "Kamera és fény" }, sub: { en: "sun angle, sky",            hu: "napszög, ég" } },
-    { label: { en: "Draft render",   hu: "Próbarender" },    sub: { en: "full HD review",            hu: "Full HD szemle" } },
-    { label: { en: "Production",     hu: "Produkció" },      sub: { en: "4K V-Ray final",            hu: "4K V-Ray végleges" } },
-    { label: { en: "Post",           hu: "Utómunka" },       sub: { en: "grade, entourage, output",  hu: "fokozat, entourage, kimenet" } },
-  ]}
-  feedback={[{ from: 4, to: 2, label: { en: "Material or context revision", hu: "Anyag- vagy kontextusmódosítás" } }]}
-  title={{ en: "Production workflow", hu: "Produkciós folyamat" }}
+steps={[
+{ label: { en: "Brief",         hu: "Brief" },               sub: { en: "views, mood, time of day", hu: "nézőpontok, hangulat, napszak meghatározása" } },
+{ label: { en: "3D model",      hu: "3D modell" },           sub: { en: "from CAD / IFC",            hu: "modellezés CAD vagy IFC alapján" } },
+{ label: { en: "Materials",     hu: "Anyagok" },              sub: { en: "PBR, manufacturer refs",    hu: "PBR anyagok beállítása, gyártói referenciák alapján" } },
+{ label: { en: "Camera & light", hu: "Kamera és világítás" }, sub: { en: "sun angle, sky",            hu: "napállás és égbolt szimulációja" } },
+{ label: { en: "Draft render",   hu: "Próbarender" },         sub: { en: "full HD review",            hu: "Full HD ellenőrzés" } },
+{ label: { en: "Production",     hu: "Véglegesítés" },        sub: { en: "4K V-Ray final",            hu: "4K V-Ray renderelés" } },
+{ label: { en: "Post",           hu: "Utómunka" },            sub: { en: "grade, entourage, output",  hu: "színkorrekció, környezeti elemek behelyezése, exportálás" } },
+]}
+feedback={[{ from: 4, to: 2, label: { en: "Material or context revision", hu: "Igény szerint anyagok vagy környezet módosítása" } }]}
+title={{ en: "Production workflow", hu: "Munkafolyamat" }}
 />
 
 <Lang code="en">
@@ -85,32 +87,25 @@ Egy meggyőző külső számos elem együttműködésén áll:
 </Lang>
 
 <Lang code="hu">
-## Mire van szükségünk Öntől
+## Mire van szükségünk Öntől?
 </Lang>
 
 <SpecTable rows={[
-  { label: { en: "Plans & elevations", hu: "Tervek és homlokzatok" }, value: { en: "CAD (DWG/DXF) or IFC preferred. PDFs work but add modeling time.",                                                                hu: "CAD (DWG/DXF) vagy IFC preferált. A PDF működik, de modellezési időt ad hozzá." } },
-  { label: { en: "Material specs",      hu: "Anyagspecifikációk" },    value: { en: "Product names or manufacturer references. Hex colors are the bare minimum — we'll make them work but physical material behavior requires more.", hu: "Terméknevek vagy gyártói hivatkozások. A hexakód a minimum — működünk vele, de a fizikai anyagviselkedéshez több kell." } },
-  { label: { en: "Site context",        hu: "Helyszínkontextus" },     value: { en: "Neighboring buildings, street level, significant trees or features that appear in the view.",                                                  hu: "Szomszédos épületek, utcaszint, a nézetben megjelenő jelentős fák vagy tájelemek." } },
-  { label: { en: "Camera views",        hu: "Kameranézetek" },          value: { en: "Agree these before work begins. Repositioning a camera after the render is started costs a full re-render.",                                  hu: "Egyezzünk meg ezekben a munka megkezdése előtt. Egy kamera áthelyezése a render megkezdése után teljes újrarendert jelent." } },
-  { label: { en: "Reference images",    hu: "Referenciaképek" },        value: { en: "Show us the atmosphere you want, not just the architectural style. Lighting mood is what matters most here.",                                  hu: "Mutassa meg, milyen hangulatot szeretne, ne csak az építészeti stílust. A fényhangulat itt a legfontosabb." } },
-  { label: { en: "Landscape",            hu: "Tájépítészet" },           value: { en: "Planting plan if it exists; otherwise we propose context-appropriate vegetation.",                                                            hu: "Növénykiültetési terv, ha van; ha nincs, mi javaslunk kontextushoz illő növényzetet." } },
+{ label: { en: "Plans & elevations", hu: "Tervek és homlokzatok" }, value: { en: "CAD (DWG/DXF) or IFC preferred. PDFs work but add modeling time.",                                                                hu: "Előnyben részesítjük a CAD (DWG/DXF) vagy IFC fájlokat. A PDF-ekből is tudunk dolgozni, de ez növeli a modellezési időt." } },
+{ label: { en: "Material specs",      hu: "Anyagspecifikációk" },    value: { en: "Product names or manufacturer references. Hex colors are the bare minimum — we'll make them work but physical material behavior requires more.", hu: "Terméknevek vagy gyártói referenciák. A hexadecimális színkódok (HEX) jelentik a minimumot – ezeket is be tudjuk állítani, de a fizikailag pontos anyagjellemzőkhöz ennél több információ szükséges." } },
+{ label: { en: "Site context",        hu: "Környezeti kontextus" },  value: { en: "Neighboring buildings, street level, significant trees or features that appear in the view.",                                                  hu: "Szomszédos épületek, utcaszint, jelentősebb fák vagy tereptárgyak, amelyek megjelennek a nézetben." } },
+{ label: { en: "Camera views",        hu: "Kameraállások" },          value: { en: "Agree these before work begins. Repositioning a camera after the render is started costs a full re-render.",                                  hu: "Ezeket a munka megkezdése előtt egyeztetni kell. A kamera utólagos áthelyezése a renderelés megkezdése után teljes újra-renderelési költséggel jár." } },
+{ label: { en: "Reference images",    hu: "Referenciaképek" },        value: { en: "Show us the atmosphere you want, not just the architectural style. Lighting mood is what matters most here.",                                  hu: "Mutassa meg a kívánt hangulatot, ne csak az építészeti stílust. Ebben a fázisban a fények hangulata a legfontosabb." } },
+{ label: { en: "Landscape",            hu: "Tájépítészet" },           value: { en: "Planting plan if it exists; otherwise we propose context-appropriate vegetation.",                                                            hu: "Ültetési terv, ha létezik; egyéb esetben a környezethez illő növényzetet javasolunk." } },
+{ label: { en: "Delivery",             hu: "Átadás" },                  value: { en: "Stills at 4K (3840 × 2160 minimum, wider for panoramic formats). Full HD versions for web and presentation use. TIFF for print, JPEG for digital delivery.", hu: "Állóképek 4K felbontásban (minimum 3840 × 2160 px, panoráma formátumoknál szélesebb). Full HD verziók webes és prezentációs használatra. TIFF formátum nyomtatáshoz, JPEG digitális átadáshoz." } },
 ]} />
 
 <Lang code="en">
-## Delivery
-
-Stills at 4K (3840 × 2160 minimum, wider for panoramic formats). Full HD versions for web and presentation use. TIFF for print, JPEG for digital delivery.
-
 Day and night variants are billed separately — each requires a distinct lighting rig.
 </Lang>
 
 <Lang code="hu">
-## Átadás
-
-4K állóképek (legalább 3840 × 2160, panoráma formátumokhoz szélesebb). Full HD verziók webes és prezentációs felhasználáshoz. TIFF nyomtatáshoz, JPEG digitális leadáshoz.
-
-A nappali és éjszakai változatokat külön számlázzuk — mindegyik külön fényrendszert igényel.
+A nappali és éjszakai változatokat külön számlázzuk, mivel mindegyikhez teljesen eltérő fénybeállításokra van szükség.
 </Lang>
 
 <Lang code="en">
@@ -124,13 +119,13 @@ A nappali és éjszakai változatokat külön számlázzuk — mindegyik külön
 </Lang>
 
 <Lang code="hu">
-## Mikor éri meg
+## Mikor érdemes elkészíttetni?
 
-- **Tervezési fejlesztés** — a térbeli problémák elkapása az építés előtt — ez az elsődleges érték, nem maga a végkép
-- **Engedélykérelmek**, amelyek látványterv-alátámasztó dokumentumokat igényelnek
-- **Előértékesítés és marketing** az építkezés megkezdése előtt
-- **Homlokzati változat-tanulmányok** — ugyanaz a modell, anyagcserés renderek az alternatívák összehasonlítására
-- **Pályázati beadványok**
+- **Tervezésfejlesztés során** – a legnagyobb érték az, hogy még az építkezés előtt kiszűrhetők a térbeli problémák, nem pusztán a kész kép.
+- **Engedélyeztetési eljárásokhoz**, ahol a vizualizáció kötelező támogató melléklet.
+- **Előértékesítéshez és marketinghez**, még az építkezés megkezdése előtt.
+- **Homlokzati változatok tanulmányozásához** – ugyanaz a modell, anyagmódosított renderekkel az alternatívák összehasonlításához.
+- **Tervpályázatok benyújtásához.**
 </Lang>
 
 <Lang code="en">
@@ -148,11 +143,11 @@ For aerial views of the building in its site: [Aerial Integration](/vision-tech/
 <Lang code="hu">
 ## Kapcsolódó technikák
 
-Maximális kontextus-realizmushoz — a 3D-modell valódi helyszínfotóba illesztve: [Fotóintegráció](/vision-tech/photo-integration/)
+A környezet maximális realizmusáért – a 3D modell valódi helyszíni fotóba ágyazva: [Fotóintegráció](/vision-tech/photo-integration/)
 
-Éjszakai világításhoz: [Éjszakai látványtervek](/vision-tech/night-renderings/)
+Éjszakai megvilágítás ábrázolásához: [Éjszakai látványtervek](/vision-tech/night-renderings/)
 
-Belső terekhez: [Belső](/vision-tech/interior/)
+Belső terek bemutatásához: [Belső](/vision-tech/interior/)
 
-Az épület légi nézetéhez a telken: [Légi integráció](/vision-tech/aerial-integration/)
+Az épület és a telek felülnézeti, légi bemutatásához: [Légi fotóintegráció](/vision-tech/aerial-integration/)
 </Lang>

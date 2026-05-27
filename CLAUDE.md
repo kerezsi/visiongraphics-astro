@@ -166,9 +166,16 @@ The palette will automatically show the new block only on page types where its A
 
 **VG Editor toolbar push buttons:**
 - **↑ Git** — always commits any pending changes and pushes to the **`develop` branch** (regardless of currently checked-out branch — switches to develop first if needed). Updates the staging URL `develop.visiongraphics-astro.pages.dev` (and `staging.visiongraphics.eu` once the custom domain is wired up).
-- **↑ Live** — promotes `develop` → `master` (publish to production). Yellow-bordered button with a confirmation dialog. Sequence: commits any pending edits to develop → pushes develop → checks out master → pulls master with `--ff-only` → merges develop with `--no-ff` (creates an explicit `release: ...` merge commit) → pushes master → checks out develop. The `master` push triggers a Cloudflare Pages production deploy to `visiongraphics.eu`.
+- **↑ Live** — promotes `develop` → `master` (publish to production). Yellow-bordered button with a confirmation dialog. Sequence (NO `git checkout` — tsx watch must stay alive): fetch origin → commit any pending edits on develop → push develop → compare local `develop` with `origin/master`. Three cases:
+  1. **Equal** — early exit, nothing to promote.
+  2. **Fast-forward** (master is an ancestor of develop) — push develop's tip directly to `refs/heads/master`.
+  3. **Diverged** (typical: pre-existing `release: ...` merge commits on master) — build a merge commit via plumbing (`git commit-tree` with develop's tree, parents `[origin/master, develop]`, message `release: forward to develop (<m>..<d>)`) and push that commit to `refs/heads/master`.
+
+  Then `git update-ref` fast-forwards the local master ref to match origin/master (pure ref write — no working-tree change). The master push triggers a Cloudflare Pages production deploy to `visiongraphics.eu`.
 
 The `master` branch should never be edited directly from the editor — always go through `develop` and use **↑ Live** when ready to publish.
+
+**Why the plumbing dance?** The editor server runs under `tsx watch`. Any `git checkout master` reverts the working tree to master's older code, tsx kills the running process mid-sequence, and the promote aborts in an unsafe state. A previous fix tried a naive `git push origin develop:master` refspec — but that's rejected as non-fast-forward as soon as master has any commit develop doesn't (e.g. the `release: ...` merge commits this very flow creates). The `commit-tree` approach keeps history clean, never touches the working tree, and works regardless of divergence direction.
 
 ### Collections
 
@@ -660,6 +667,33 @@ npx wrangler pages dev dist \
 The Pages Function lives **outside** Astro's `src/` tree and is bundled by Cloudflare's
 build step automatically — no Astro config changes needed. The static build (`output:
 'static'`) is unaffected.
+
+### Vite dev cache gotcha — "504 Outdated Optimize Dep"
+
+If React islands on a page render but their content stays empty (galleries
+show only their red label / no thumbnails; image-compare slots are blank;
+lightbox doesn't open), check the browser console for:
+
+```
+[astro-island] Error hydrating /src/components/media/Article*Mounter.tsx
+  TypeError: Failed to fetch dynamically imported module: …
+```
+
+…and the network panel for:
+
+```
+GET /node_modules/.vite/deps/embla-carousel-react.js?v=<hash> → 504 Outdated Optimize Dep
+```
+
+This is Vite's pre-bundled dep cache going stale — the HTML still references
+the old `?v=<hash>` but Vite has re-optimized under a new hash. Happens after
+`npm install`, branch switches that change `package.json`, or sometimes just
+across long-running dev sessions. **Production builds are not affected** —
+this only manifests under `npm run dev`.
+
+Fix: stop the dev server, delete `node_modules/.vite`, restart. `start-dev.bat`
+does this automatically on every launch, so it usually only bites you if you
+restart Astro alone with `npm run dev` after pulling new dependencies.
 
 ### Cloudflare Pages cache-buster (DO NOT REMOVE)
 

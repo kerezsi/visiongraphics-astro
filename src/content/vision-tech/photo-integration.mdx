@@ -4,7 +4,7 @@ title:
   hu: Fotóintegráció
 description:
   en: "A proposed building rendered in 3ds Max with V-Ray and composited into a real ground-level photograph of its site. The surroundings are real; the new building is rendered to match the photograph's perspective, lighting, and conditions."
-  hu: "Tervezett épület 3ds Maxben, V-Rayjel renderelve és valódi földszinti telekfotóba illesztve. A környezet valódi; az új épületet úgy rendereljük, hogy illeszkedjen a fotó perspektívájához, fényéhez és feltételeihez."
+  hu: "A tervezett épületet 3ds Max-ban rendereljük V-Ray-jel, majd a helyszínről készült valódi, utcaszinti fotóba kompozitáljuk. A környezet valós; az új épületet úgy rendereljük, hogy pontosan illeszkedjen a fénykép perspektívájához, fényeihez és egyéb adottságaihoz."
 image: /_img/vision-tech/photo-integration.jpg
 technique: Hybrid
 cost: €€
@@ -33,9 +33,9 @@ This is the standard format for planning submissions that require visualization 
 </Lang>
 
 <Lang code="hu">
-A fotóintegráció egy renderelt épületet helyez egy valódi telekfotóba, amelyet utcaszintről vagy közeli kilátópontról készítettünk. A meglévő utcakép, szomszédos épületek, növényzet és talajviszonyok valódiak. A tervezett épületet V-Rayben rendereljük úgy, hogy illeszkedjen a fotó kamerájához, fényéhez és expozíciójához, majd kompozitáljuk.
+A fotóintegráció során a renderelt épületet a helyszínről készült valódi, utcaszintről vagy egy közeli nézőpontból lőtt fényképbe helyezzük el. A meglévő utcakép, a szomszédos épületek, a növényzet és a talajviszonyok teljesen valósak. A tervezett épületet V-Ray-ben rendereljük le úgy, hogy pontosan kövesse a fotó kamerabeállításait, fényviszonyait és expozícióját, majd ezt kompozitáljuk be a képbe.
 
-Ez az engedélyezési beadványok szabványos formátuma, amelyek az utcaképre gyakorolt hatás látványterv-bemutatását igénylik, és olyan ügyfélprezentációkhoz, ahol az épület valódi kontextusban való mutatása meggyőzőbb, mint egy önálló render.
+Ez az elfogadott, standard formátum az olyan hatósági tervbeadásoknál, amelyek előírják az utcaképi hatás vizuális igazolását, valamint az olyan ügyfél-prezentációknál, ahol az épület valós környezetében történő ábrázolása sokkal meggyőzőbb, mint egy önálló render.
 </Lang>
 
 <ImageCompare before="/_img/vision-tech/photo-integration/sas-szallo-x.jpg" after="/_img/vision-tech/photo-integration/sas-iroda-x.jpg" />
@@ -57,30 +57,30 @@ Ez az engedélyezési beadványok szabványos formátuma, amelyek az utcaképre 
 <Lang code="hu">
 ## A technikai folyamat
 
-**Fotózás** — a telekről olyan pozíciókból fotózunk, amelyek tisztán mutatják az épületet és olyan nézőpontokból, amelyeket a hatóságok valószínűleg használnak. A kamerapozíciót, lencsét és expozíciós adatokat pontosan rögzítjük.
+**Fotózás** – a helyszínt olyan pozíciókból fotózzuk le, amelyek tisztán mutatják a leendő épületet, valamint olyan nézőpontokból, amelyeket a hatóságok a leginkább vizsgálni fognak. A kamera pozícióját, az objektívet és az expozíciós adatokat precízen rögzítjük.
 
-**Perspektíva-illesztés** — a 3ds Maxben olyan V-Ray kamerát állítunk be, amely pontosan a valódi kamera látómezejét, pozícióját és dőlését másolja. EXIF fókusztávolság-adatokat és mért kameramagasságot használunk. A 3D-modellt geo-referenciás helyszínrajzra helyezzük, hogy az épület a tényleges valós pozíciójában álljon.
+**Perspektíva összehangolása** – a 3ds Max-ban felállított V-Ray kamerát úgy kalibráljuk, hogy pontosan másolja a valós kamera látószögét, pozícióját és dőlésszögét. Ehhez az EXIF gyújtótávolság-adatokat és a mért kameramagasságot használjuk. A 3D modellt egy georeferált helyszínrajzra helyezzük el, így az épület a valós világnak megfelelő, pontos helyére kerül.
 
-**Világítás** — a V-Ray napot a fotó valódi dátumára, időpontjára és GPS-helyére állítjuk. A renderelt árnyékok ugyanabba az irányba esnek, mint a képen látható valódi árnyékok. Borult viszonyokhoz illesztett HDRI-t használunk helyette.
+**Világítás** – a V-Ray napot (V-Ray Sun) a fotózás valós dátuma, pontos időpontja és a helyszín GPS-koordinátái alapján állítjuk be. A renderelt árnyékok így pontosan megegyeznek a képen látható valós árnyékok irányával. Borult égbolt esetén egy ehhez igazított HDRI-t használunk a megvilágításhoz.
 
-**Shadow catcher és tükröződés** — a talajon lévő shadow catcher sík fogadja az renderelt épület által vetett árnyékot, megőrizve alatta a valódi talajtextúrát és útfelületet. Az üveg és a fényezett homlokzatok illesztett környezetből veszik a tükröződéseket.
+**Árnyékbefogás és tükröződés** – a talajon elhelyezett shadow catcher (árnyékbefogó) sík fogadja a renderelt épület által vetett árnyékokat, miközben érintetlenül hagyja az alatta lévő valódi talajtextúrát és útburkolatot. Az üvegfelületek és a polírozott homlokzatok a környezetnek megfelelő tükröződéseket kapják meg.
 
-**Utófeldolgozás** — a rendert a fotó színéhez, kontrasztjához és légköri párájához illesztjük. A renderelt épület és a valódi fotó közötti kompozit-szegélyt teljes felbontáson finomítjuk.
+**Utómunka** – a renderelés színeit, kontrasztját és az atmoszférikus párát a fotóhoz igazítjuk. A renderelt épület és a valós fénykép közötti illesztési éleket teljes felbontásban, aprólékosan dolgozzuk el.
 </Lang>
 
 <ImageCompare before="/_img/vision-tech/photo-integration/visiongraphics-ref-058-x.jpg" after="/_img/vision-tech/photo-integration/visiongraphics-ref-057-x.jpg" />
 
 <ProcessFlow
 steps={[
-{ label: { en: "Site photography", hu: "Helyszíni fotózás" }, sub: { en: "positions, EXIF data",        hu: "pozíciók, EXIF-adatok" } },
-{ label: { en: "Camera match",      hu: "Kamera-illesztés" },   sub: { en: "V-Ray, measured position",   hu: "V-Ray, mért pozíció" } },
-{ label: { en: "3D model",          hu: "3D-modell" },          sub: { en: "building on site plan",      hu: "épület a helyszínrajzon" } },
-{ label: { en: "Lighting match",    hu: "Fény-illesztés" },     sub: { en: "sun position, conditions",   hu: "napállás, viszonyok" } },
-{ label: { en: "Render passes",     hu: "Render-passok" },       sub: { en: "building, shadow, reflection", hu: "épület, árnyék, tükröződés" } },
-{ label: { en: "Composite",          hu: "Kompozit" },             sub: { en: "match + grade",              hu: "illesztés és fokozat" } },
+{ label: { en: "Site photography", hu: "Helyszíni fotózás" },     sub: { en: "positions, EXIF data",        hu: "pozíciók, EXIF adatok rögzítése" } },
+{ label: { en: "Camera match",      hu: "Kamerabeillesztés" },     sub: { en: "V-Ray, measured position",   hu: "V-Ray kamera kalibrálása a mért pozíció alapján" } },
+{ label: { en: "3D model",          hu: "3D modell" },             sub: { en: "building on site plan",      hu: "az épület pontos elhelyezése a helyszínrajzon" } },
+{ label: { en: "Lighting match",    hu: "Fények összehangolása" }, sub: { en: "sun position, conditions",   hu: "napállás és fényviszonyok szimulációja" } },
+{ label: { en: "Render passes",     hu: "Render rétegek" },         sub: { en: "building, shadow, reflection", hu: "épület, árnyék és tükröződés (pass-ok) renderelése" } },
+{ label: { en: "Composite",          hu: "Kompozitálás" },           sub: { en: "match + grade",              hu: "illesztés és színkorrekció" } },
 ]}
-feedback={[{ from: 5, to: 1, label: { en: "Angle or lighting revision", hu: "Szög- vagy fénymódosítás" } }]}
-title={{ en: "Production workflow", hu: "Produkciós folyamat" }}
+feedback={[{ from: 5, to: 1, label: { en: "Angle or lighting revision", hu: "Kameraállás vagy világítás módosítása" } }]}
+title={{ en: "Production workflow", hu: "Munkafolyamat" }}
 />
 
 <ImageGallery images={[{"src":"/_img/vision-tech/photo-integration/visiongraphics-ref-059-x.jpg","alt":"visiongraphics_ref_059_x"},{"src":"/_img/vision-tech/photo-integration/visiongraphics-ref-065-x.jpg","alt":"visiongraphics_ref_065_x"},{"src":"/_img/vision-tech/photo-integration/zveni-a-terasz-x.jpg","alt":"zveni_a_terasz_x"},{"src":"/_img/vision-tech/photo-integration/zveni-c-terasz-x.jpg","alt":"zveni_c_terasz_x"}]} />
@@ -98,15 +98,15 @@ title={{ en: "Production workflow", hu: "Produkciós folyamat" }}
 </Lang>
 
 <Lang code="hu">
-## Mikor használjuk a fotóintegrációt
+## Mikor alkalmazzuk a fotóintegrációt?
 
-**Engedélyezési beadványok** — sok hatóság fotómontázs vagy vizualizált hatástanulmány formájában megkövetel olyan dokumentációt, amely a tervezett épületet meghatározott nézőpontokból, a meglévő utcaképben mutatja. A fotóintegráció ezekhez a szabványos technika.
+**Engedélyeztetési eljárásoknál** – számos építésügyi hatóság megköveteli a meglévő utcakép meghatározott nézőpontjaiból készített fotómontázsokat vagy utcaképi hatásvizsgálatokat. Ezekhez a fotóintegráció jelenti az elfogadott, standard technológiát.
 
-**Közmeghallgatás** — bemutatni a lakosoknak és érdekelteknek, milyennek látszik majd egy új épület az utcájukból, a parkból vagy egy nekik ismerős nézőpontból.
+**Lakossági fórumokon** – bemutatja a helyi lakosoknak és az érintett feleknek, hogyan fog kinézni az új épület az utcájukból, egy közeli parkból vagy egy jól ismert konkrét nézőpontból.
 
-**Történelmi és érzékeny környezetek** — műemléki védettségű területeken vagy védett épületek mellett a tervezett épület valódi meglévő környezet mellé helyezett bemutatása hitelesebb, mint egy önálló render.
+**Történelmi és kiemelt jelentőségű környezetben** – a műemlékvédelmi területeken vagy a műemlék épületek melletti projekteknél a tervezett épület bemutatása a valós, létező környezetével lényegesen hitelesebb, mint egy önálló render.
 
-**Ügyfélprezentációk** — fejlesztőknek és befektetőknek, akik a valódi kontextusban készült képeket meggyőzőbbnek találják, mint a tiszta látványtervet.
+**Ügyfél-prezentációkhoz** – fejlesztőknek és befektetőknek, akik a valós környezetbe ágyazott képeket sokkal meggyőzőbbnek találják, mint a tiszta vizualizációkat.
 </Lang>
 
 <ImageGallery images={[{"src":"/_img/vision-tech/photo-integration/rg-ad-foto-img-0001-x.jpg","alt":"RG_AD_FOTO_IMG_0001_x"},{"src":"/_img/vision-tech/photo-integration/rg-ad-foto-img-0005-x.jpg","alt":"RG_AD_FOTO_IMG_0005_x"},{"src":"/_img/vision-tech/photo-integration/rg-ad-foto-legi-x.jpg","alt":"RG_AD_FOTO_LEGI_x"}]} />
@@ -116,15 +116,15 @@ title={{ en: "Production workflow", hu: "Produkciós folyamat" }}
 </Lang>
 
 <Lang code="hu">
-## Mire van szükségünk Öntől
+## Mire van szükségünk Öntől?
 </Lang>
 
 <SpecTable rows={[
-{ label: { en: "3D model",          hu: "3D-modell" },           value: { en: "The proposed building in 3ds Max, or drawings and IFC for us to model from.",                                                                hu: "A tervezett épület 3ds Maxben, vagy rajzok és IFC, amelyekből építhetjük." } },
-{ label: { en: "Site plan",          hu: "Helyszínrajz" },         value: { en: "Accurate footprint positioning. The building must be placed at its real GPS coordinates.",                                                  hu: "Pontos alapterület-pozíció. Az épületnek a valódi GPS-koordinátáin kell állnia." } },
-{ label: { en: "Material specs",    hu: "Anyagspecifikációk" },   value: { en: "Facade, glazing, ground floor treatment — everything visible from the street.",                                                                hu: "Homlokzat, üvegezés, földszinti kezelés — minden, ami az utcáról látható." } },
-{ label: { en: "Required viewpoints", hu: "Szükséges nézőpontok" }, value: { en: "Any specific positions required by planners or the brief. We photograph from these positions and design additional views around them.",   hu: "A tervező hatóság vagy a brief által megkövetelt konkrét pozíciók. Ezekből fotózunk, és további nézeteket köréjük tervezünk." } },
-{ label: { en: "Landscape",          hu: "Tájépítészet" },          value: { en: "Street-level planting, paving, street furniture if designed. We use real site photography for everything that already exists.",          hu: "Utcaszintű növénykiültetés, burkolat, utcabútorok, ha tervezve vannak. Minden meglévő elemhez valódi helyszíni fotót használunk." } },
+{ label: { en: "3D model",          hu: "3D modell" },             value: { en: "The proposed building in 3ds Max, or drawings and IFC for us to model from.",                                                                hu: "A tervezett épület 3ds Max formátumban, vagy rajzok és IFC fájl, amelyből felépíthetjük a modellt." } },
+{ label: { en: "Site plan",          hu: "Helyszínrajz" },          value: { en: "Accurate footprint positioning. The building must be placed at its real GPS coordinates.",                                                  hu: "A beépítési kontúr pontos pozicionálása. Az épületet a valós GPS-koordinátáinak megfelelő helyre kell tenni." } },
+{ label: { en: "Material specs",    hu: "Anyagspecifikációk" },    value: { en: "Facade, glazing, ground floor treatment — everything visible from the street.",                                                                hu: "Homlokzat, üvegezés, földszint kialakítása – minden, ami az utca felől látható." } },
+{ label: { en: "Required viewpoints", hu: "Előírt nézőpontok" },    value: { en: "Any specific positions required by planners or the brief. We photograph from these positions and design additional views around them.",   hu: "Bármilyen konkrét pozíció, amelyet a hatóságok vagy a feladatleírás megkövetel. Befotózzuk ezeket a helyeket, és ezek köré tervezünk további nézeteket." } },
+{ label: { en: "Landscape",          hu: "Környezetrendezés" },      value: { en: "Street-level planting, paving, street furniture if designed. We use real site photography for everything that already exists.",          hu: "Utcaszinti növényzet, burkolat, utcabútorok (ha meg vannak tervezve). Minden egyéb meglévő elemhez a valós helyszíni fotót használjuk fel." } },
 ]} />
 
 <ImageCompare before="/_img/vision-tech/photo-integration/sch-foto-dsc-3715-ejjel-x.jpg" after="/_img/vision-tech/photo-integration/sch-foto-dsc-5100-nappal-x.jpg" />
@@ -142,9 +142,9 @@ For a 360° version — the building inserted into a real 360° panorama: [360 P
 <Lang code="hu">
 ## Kapcsolódó technikák
 
-Ugyanez a technika fentről: [Légi integráció](/vision-tech/aerial-integration/)
+Ugyanehhez a technológiához felülnézetből (légifotóból): [Légi fotóintegráció](/vision-tech/aerial-integration/)
 
-Földszintű fotózáshoz a meglévő állapotok dokumentálására: [Drónfotózás](/vision-tech/drone-photography/)
+Utcaszinti fotózáshoz a meglévő állapotok dokumentálására: [Drónos fotózás](/vision-tech/drone-photography/)
 
-360°-os változathoz — az épület valódi 360°-os panorámába illesztve: [360°-os fotóintegráció](/vision-tech/360-photo-integration/)
+A 360°-os változathoz – az épület valódi 360°-os panorámaképbe ágyazva: [360°-os fotóintegráció](/vision-tech/360-photo-integration/)
 </Lang>
