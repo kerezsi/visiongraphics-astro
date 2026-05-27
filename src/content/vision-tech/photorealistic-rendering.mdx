@@ -4,7 +4,7 @@ title:
   hu: Fotórealisztikus renderelés
 description:
   en: "The quality tier where a still image is indistinguishable from a photograph of the completed building. V-Ray production rendering combined with a multi-backend AI post-processing pipeline for surface detail, atmospheric depth, and environmental richness — at seconds per variation instead of minutes."
-  hu: "Az a minőségi szint, ahol az állókép megkülönböztethetetlen a kész épület fotójától. V-Ray produkciós render többgépes AI utófeldolgozó pipeline-nal — felületi részletességhez, légköri mélységhez és környezeti gazdagsághoz, változatonként másodpercek alatt, nem percek alatt."
+  hu: "Az a minőségi szint, ahol az állókép megkülönböztethetetlen az elkészült épületről készült fotótól. V-Ray produkciós renderelés ötvözve egy több-szerveres (multi-backend) AI utómunka-folyamattal a felületi részletekért, a környezet mélységéért és a részletgazdagságért – percek helyett másodpercek alatt készülő variációkkal."
 image: /_img/vision-tech/photorealistic-rendering.jpg
 technique: AI-Enhanced
 cost: €
@@ -32,37 +32,37 @@ The base render defines geometry, lighting, and material identity accurately. Th
 </Lang>
 
 <Lang code="hu">
-A fotórealisztikus renderelés az a minőségi szint, ahol az állókép a kész épület fotójaként hat. Ezt V-Ray produkciós render és AI utófeldolgozó pipeline kombinációjával érjük el — a render kimenetét további passzokon futtatjuk át, amelyek felületi változatosságot, légköri gazdagságot és környezeti részleteket adnak hozzá, olyanokat, amiket 3D-ben kézzel sokkal tovább tartana megépíteni.
+A fotorealisztikus renderelés az a minőségi kategória, amelynél az állóképek az elkészült épületről készült valódi fotóként hatnak. Ezt a V-Ray produkciós renderelés és egy AI utómunka-folyamat kombinációjával érjük el: a renderelt kimenetet olyan további lépéseken futtatjuk át, amelyek felületi változatosságot, környezeti mélységet és olyan részleteket adnak hozzá a képhez, amelyek manuális, 3D-s felépítése lényegesen hosszabb időt venne igénybe.
 
-Az alaprender pontosan meghatározza a geometriát, a fényt és az anyagidentitást. Az AI-réteg a vizuális komplexitást adja hozzá — azt a különbséget, ami a technikailag korrekt rendert fotószerűen meggyőző képtől elválasztja.
+Az alaprender pontosan meghatározza a geometriát, a világítást és az anyagok jellegét. Az AI-réteg pedig azt a vizuális komplexitást adja hozzá, amely megkülönbözteti a technikailag helyes látványtervet a fotószerűen meggyőző képtől.
 </Lang>
 
 <ImageGallery images={[{"src":"/_img/vision-tech/photorealistic-rendering/visiongraphics-ref-036.jpg","alt":"visiongraphics_ref_036"},{"src":"/_img/vision-tech/photorealistic-rendering/pici-kavezo-0010000.jpg","alt":"PICI_kavezo_0010000"},{"src":"/_img/vision-tech/photorealistic-rendering/visiongraphics-ref-021.jpg","alt":"visiongraphics_ref_021"},{"src":"/_img/vision-tech/photorealistic-rendering/visiongraphics-ref-039.jpg","alt":"visiongraphics_ref_039"}]} />
 
 <ProcessFlow
 steps={[
-{ label: { en: "3D model",       hu: "3D-modell" },           sub: { en: "clean geometry",          hu: "tiszta geometria" } },
-{ label: { en: "Materials",      hu: "Anyagok" },              sub: { en: "manual layered texturing", hu: "kézi rétegzett textúrázás" } },
-{ label: { en: "Entourage",      hu: "Entourage" },            sub: { en: "3D figures and vehicles", hu: "3D-figurák és járművek" } },
-{ label: { en: "Lighting",       hu: "Világítás" },            sub: { en: "sun, HDRI, portals",      hu: "nap, HDRI, portálok" } },
-{ label: { en: "Draft render",   hu: "Próbarender" },          sub: { en: "review composition",      hu: "kompozíció szemlézése" } },
-{ label: { en: "Production",     hu: "Produkció" },            sub: { en: "high-quality V-Ray pass", hu: "magas minőségű V-Ray pass" } },
-{ label: { en: "Photoshop post", hu: "Photoshop utómunka" },   sub: { en: "color, atmosphere",       hu: "szín, légkör" } },
+{ label: { en: "3D model",       hu: "3D modell" },             sub: { en: "clean geometry",          hu: "tiszta geometria felépítése" } },
+{ label: { en: "Materials",      hu: "Anyagok" },                sub: { en: "manual layered texturing", hu: "manuális, rétegzett textúrázás" } },
+{ label: { en: "Entourage",      hu: "Környezeti elemek" },      sub: { en: "3D figures and vehicles", hu: "3D alakok és járművek elhelyezése" } },
+{ label: { en: "Lighting",       hu: "Világítás" },              sub: { en: "sun, HDRI, portals",      hu: "napállás, HDRI, fényportálok beállítása" } },
+{ label: { en: "Draft render",   hu: "Próbarender" },            sub: { en: "review composition",      hu: "kompozíció ellenőrzése" } },
+{ label: { en: "Production",     hu: "Véglegesítés" },           sub: { en: "high-quality V-Ray pass", hu: "kiváló minőségű V-Ray renderelés" } },
+{ label: { en: "Photoshop post", hu: "Photoshop utómunka" },     sub: { en: "color, atmosphere",       hu: "színek és hangulat finomhangolása" } },
 ]}
-feedback={[{ from: 5, to: 1, label: { en: "Material or lighting change → re-render", hu: "Anyag- vagy fényváltozás → újrarenderelés" } }]}
-title={{ en: "Traditional V-Ray pipeline", hu: "Hagyományos V-Ray pipeline" }}
+feedback={[{ from: 5, to: 1, label: { en: "Material or lighting change → re-render", hu: "Anyag- vagy fényváltoztatás esetén teljes újra-renderelés szükséges" } }]}
+title={{ en: "Traditional V-Ray pipeline", hu: "Hagyományos V-Ray folyamat" }}
 />
 
 <ProcessFlow
 steps={[
-{ label: { en: "V-Ray base render", hu: "V-Ray alaprender" }, sub: { en: "geometry, GI, materials", hu: "geometria, GI, anyagok" } },
-{ label: { en: "Prompt + style",    hu: "Prompt + stílus" },   sub: { en: "project visual language", hu: "projekt vizuális nyelve" } },
-{ label: { en: "AI passes",         hu: "AI passzok" },         sub: { en: "parallel multi-backend",  hu: "párhuzamos, több backend" } },
-{ label: { en: "Variation review",  hu: "Változatok átnézése" }, sub: { en: "select and refine",        hu: "kiválasztás és finomítás" } },
-{ label: { en: "Final composite",   hu: "Végső kompozit" },     sub: { en: "6 MP per image",          hu: "6 MP-es képek" } },
+{ label: { en: "V-Ray base render", hu: "V-Ray alaprender" },        sub: { en: "geometry, GI, materials", hu: "geometria, GI és anyagok meghatározása" } },
+{ label: { en: "Prompt + style",    hu: "Prompt + stílus" },          sub: { en: "project visual language", hu: "a projekt egyedi vizuális nyelvezetének beállítása" } },
+{ label: { en: "AI passes",         hu: "AI fázisok" },                sub: { en: "parallel multi-backend",  hu: "párhuzamos multi-backend feldolgozás" } },
+{ label: { en: "Variation review",  hu: "Változatok ellenőrzése" },   sub: { en: "select and refine",        hu: "szelekció és finomhangolás" } },
+{ label: { en: "Final composite",   hu: "Végső kompozit" },           sub: { en: "6 MP per image",          hu: "6 megapixel felbontású képkimenet" } },
 ]}
-feedback={[{ from: 3, to: 2, label: { en: "Adjust prompt or style", hu: "Prompt- vagy stílusmódosítás" } }]}
-title={{ en: "AI-Enhanced pipeline", hu: "AI-támogatott pipeline" }}
+feedback={[{ from: 3, to: 2, label: { en: "Adjust prompt or style", hu: "Prompt vagy stílus módosítása" } }]}
+title={{ en: "AI-Enhanced pipeline", hu: "AI-támogatott folyamat" }}
 />
 
 <Lang code="en">
@@ -70,23 +70,23 @@ title={{ en: "AI-Enhanced pipeline", hu: "AI-támogatott pipeline" }}
 </Lang>
 
 <Lang code="hu">
-## Hagyományos vs. AI-támogatott render
+## Standard renderelés vs. AI-támogatott
 </Lang>
 
 <CompareTable
 headers={[
-{ en: "Standard render", hu: "Hagyományos render" },
+{ en: "Standard render", hu: "Standard render" },
 { en: "AI-Enhanced",     hu: "AI-támogatott" },
 ]}
 rows={[
-{ label: { en: "Surface detail",     hu: "Felületi részletesség" },  values: [{ en: "Modelled and textured manually — every element explicit",                hu: "Kézzel modellezve és textúrázva — minden elem kifejezett" },                                  { en: "AI injects micro-variation, weathering, and texture richness onto base materials", hu: "Az AI mikro-variációt, kopást és textúragazdagságot ad hozzá az alapanyagokra" }] },
-{ label: { en: "Entourage",          hu: "Entourage" },               values: [{ en: "3D people and vehicles modelled, placed, lit individually",              hu: "3D-emberek és járművek modellezve, elhelyezve, egyedileg világítva" },                        { en: "AI-generated figures and vehicles composited with accurate shadows and scale", hu: "AI által generált alakok és járművek pontos árnyékkal és léptékkel kompozitálva" }] },
-{ label: { en: "Environment",        hu: "Környezet" },                values: [{ en: "HDRI sky, basic foliage 3D models",                                       hu: "HDRI ég, alap lombozati 3D-modellek" },                                                       { en: "AI-augmented sky quality, atmospheric depth, integrated vegetation",            hu: "AI-támogatott égminőség, légköri mélység, integrált növényzet" }] },
-{ label: { en: "Time per variation", hu: "Idő változatonként" },      values: [{ en: "Minutes to hours of re-rendering for each change",                       hu: "Percek vagy órák újrarendere minden változtatásra" },                                          { en: "Seconds per AI pass — variations explored in real time",                        hu: "Másodpercek AI passzonként — a változatok valós időben próbálhatók" }] },
-{ label: { en: "Variations explored", hu: "Változatok száma" },        values: [{ en: "Typically 1–2 final views per camera due to production cost",            hu: "Jellemzően 1–2 végleges nézet kamerapozíciónként a költségek miatt" },                         { en: "Many variations in parallel — seasons, weather, time of day from one base",     hu: "Sok változat párhuzamosan — évszakok, időjárás, napszakok egy alapból" }] },
-{ label: { en: "Typical cost",       hu: "Tipikus költség" },          values: [{ en: "Higher for comparable visual result",                                     hu: "Magasabb azonos vizuális eredményhez" },                                                      { en: "Lower — AI makes photorealistic quality more accessible",                       hu: "Alacsonyabb — az AI elérhetőbbé teszi a fotórealisztikus minőséget" }] },
+{ label: { en: "Surface detail",     hu: "Felületi részletek" },     values: [{ en: "Modelled and textured manually — every element explicit",                hu: "Manuálisan modellezve és textúrázva – minden elem konkrétan kidolgozott." },                  { en: "AI injects micro-variation, weathering, and texture richness onto base materials", hu: "Az AI mikro-változatosságot, patinát és textúra-részletgazdagságot visz fel az alapanyagokra." }] },
+{ label: { en: "Entourage",          hu: "Környezet (Entourage)" },   values: [{ en: "3D people and vehicles modelled, placed, lit individually",              hu: "3D alakok és járművek egyedileg modellezve, elhelyezve és megvilágítva." },                   { en: "AI-generated figures and vehicles composited with accurate shadows and scale", hu: "AI-generált alakok és járművek beillesztve, pontos árnyékokkal és léptékkel." }] },
+{ label: { en: "Environment",        hu: "Környezet (Environment)" }, values: [{ en: "HDRI sky, basic foliage 3D models",                                       hu: "HDRI égbolt, alapvető 3D növényzetmodellek." },                                               { en: "AI-augmented sky quality, atmospheric depth, integrated vegetation",            hu: "AI-jal gazdagított égboltminőség, atmoszférikus mélység, integrált növényzet." }] },
+{ label: { en: "Time per variation", hu: "Időigény változatonként" },  values: [{ en: "Minutes to hours of re-rendering for each change",                       hu: "Percek vagy órák az újra-rendereléshez minden egyes módosításnál." },                          { en: "Seconds per AI pass — variations explored in real time",                        hu: "Másodpercek az AI fázisok alatt – a variációk valós időben vizsgálhatók." }] },
+{ label: { en: "Variations explored", hu: "Feltárt változatok száma" }, values: [{ en: "Typically 1–2 final views per camera due to production cost",            hu: "Jellemzően kameránként 1-2 végleges nézet a gyártási költségek miatt." },                      { en: "Many variations in parallel — seasons, weather, time of day from one base",     hu: "Sok párhuzamos variáció – évszakok, időjárás, napszakok egyetlen alapból." }] },
+{ label: { en: "Typical cost",       hu: "Jellemző költség" },         values: [{ en: "Higher for comparable visual result",                                     hu: "Magasabb azonos vizuális eredmény eléréséhez." },                                              { en: "Lower — AI makes photorealistic quality more accessible",                       hu: "Alacsonyabb – az AI elérhetőbbé teszi a fotorealisztikus minőséget." }] },
 ]}
-caption={{ en: "Same V-Ray base — different post-processing approach", hu: "Azonos V-Ray-alap — eltérő utófeldolgozási megközelítés" }}
+caption={{ en: "Same V-Ray base — different post-processing approach", hu: "Azonos V-Ray alap – eltérő utómunka-megközelítés" }}
 />
 
 <ImageCompare before="/_img/vision-tech/photorealistic-rendering/bugyi-k-p-1-g01-i-s01-daytime-g01-i-s01.jpg" after="/_img/vision-tech/photorealistic-rendering/bugyi-k-p-1-.jpg" subtitle={{"en":"CAD output vs AI render","hu":"CAD kimenez és AI feljavítás"}} />
@@ -106,17 +106,17 @@ The raw V-Ray render handles geometry, physically-based lighting, and base mater
 </Lang>
 
 <Lang code="hu">
-## Mit csinálnak pontosan az AI passzok
+## Mit csinálnak valósághűen az AI-lépések?
 
-A nyers V-Ray render adja a geometriát, a fizikai alapú világítást és az alap anyagviselkedést. Render után az AI passzok hozzáadják:
+A nyers V-Ray render kezeli a geometriát, a fizikailag pontos megvilágítást és az alapvető anyagviselkedést. A renderelés után az AI-lépések az alábbiakat adják hozzá:
 
-**Felületi változatosság** — finom kopás, mikrotextúra-részletesség és anyag-egyenetlenség, amelyek miatt a felületek valódinak hatnak, nem egyenletesen tökéleteseknek. A változatosság típusa és mértéke az anyagtípushoz és a projekt szándékolt korához, állapotához van kalibrálva.
+**Felületi változatosság** – finom patinák, mikro-textúra részletek és anyagbeli egyenetlenségek, amelyek a felületeket valósághűvé teszik az egyenletesen tökéletes helyett. A változatosság típusa és mértéke az anyag típusához, valamint a projekt tervezett korához és állapotához van kalibrálva.
 
-**Környezeti elemek** — lombozat-minőség, ég karaktere, talajsík-integráció. Egy frissen ültetett fa máshogy hat, mint egy beállt; az AI ezeket meg tudja különböztetni és alkalmazni.
+**Környezeti elemek** – a növényzet minősége, az égbolt jellege, a talajhoz való illeszkedés. Egy frissen ültetett fa másként mutat, mint egy meglévő, idős fa; az AI képes különbséget tenni ezek között, és megfelelően alkalmazni a feltételeket.
 
-**Entourage** — emberek és járművek pontos árnyékkal, léptékkel és világítással elhelyezve, anélkül, hogy 3D-figurákat kellene modellezni, riggelni és animálni.
+**Környezeti alakok és járművek (Entourage)** – pontos árnyékokkal, léptékkel és megvilágítással elhelyezett alakok és járművek, a 3D-s karakterek modellezésének, csontozásának (rigging) és animálásának felesleges időigénye nélkül.
 
-**Légköri effektek** — mélységi pára, lencse-karakter és színfokozat a fényszándékkal összehangolva. Ezek a részletek választják el a technikailag korrekt rendert egy vizuálisan meggyőző fotótól.
+**Atmoszférikus hatások** – a mélységi pára, az objektív jellemzői és a világítási szándékhoz igazított színkorrekció. Ezek azok a részletek, amelyek megkülönböztetik a technikailag helyes látványtervet a vizuálisan meggyőző fotótól.
 </Lang>
 
 <ImageGallery images={[{"src":"/_img/vision-tech/photorealistic-rendering/dji-20250428104835-0011-dfoggy-autumn-early-morning-x.jpg","alt":"DJI_20250428104835_0011_Dfoggy-autumn-early_morning_x"},{"src":"/_img/vision-tech/photorealistic-rendering/dji-20250428104835-0011-dfoggy-spring-early-morning-x.jpg","alt":"DJI_20250428104835_0011_Dfoggy-spring-early_morning_x"},{"src":"/_img/vision-tech/photorealistic-rendering/dji-20250428104835-0011-dwinter-snow-evening-x.jpg","alt":"DJI_20250428104835_0011_Dwinter_snow-evening_x"}]} />
@@ -136,17 +136,17 @@ The pipeline is built around fast, low-step generation models so a pass through 
 </Lang>
 
 <Lang code="hu">
-## Miért számít az iterációs sebesség
+## Miért számít az iteráció gyorsasága?
 
-A pipeline gyors, alacsony lépésszámú generáló modellek köré épül, így egy AI-réteges áthaladás másodpercekig, nem percekig tart. Három gyakorlati következmény az ügyfél számára:
+A munkafolyamat gyors, kevés lépésből álló generatív modellekre épül, így az AI-rétegen való átfutás percek helyett másodperceket vesz igénybe. Ennek három gyakorlati előnye van az ügyfél számára:
 
-**Változatok párhuzamosan** — több légkör ugyanabból a V-Ray alaprenderből egyszerre: napos dél, aranyóra, kék óra, borult, téli — mindegyik külön kimenetként, anélkül, hogy a 3D-jelenetet újra kellene renderelni. A döntés összehasonlítássá válik a találgatás helyett.
+**Párhuzamos variációk** – egyidejűleg többféle hangulat és atmoszféra ugyanabból a V-Ray alaprenderből: napos délidő, golden hour, blue hour, felhős égbolt, tél – mindegyik külön kimenetként, a 3D jelenet újra-renderelése nélkül. A döntéshozatal így a találgatás helyett közvetlen összehasonlítássá válik.
 
-**Több backend egyszerre dolgozik** — amikor egy projekt képcsomagot igényel, a munka több generáló gép között oszlik szét párhuzamosan. Egy változatkészlet, ami egyetlen gépen sorban várakozna, töredékidő alatt elkészül.
+**Összehangolt szerverpark (Multi-backend)** – ha egy projekthez több képre van szükség, a munkaterhelést párhuzamosan több generáló gép között osztjuk meg. Az a variációsorozat, amely egyetlen gépen egymás után sorban állna, a töredéke alatt elkészül.
 
-**Projekt-specifikus vizuális nyelv** — minden projekt kap egy mentett stílust — egy névvel ellátott vizuális szignatúrát (lencse-karakter, színkezelés, légköri hajlam), amelyet minden képnél újrahasznosítunk. Egy rendersorozat összefüggő egészként hat, nem független generálásokként — ez brosúráknál, weboldalaknál és pályázati panelekén többet ér, mint bármely egyetlen kép.
+**Projekt-specifikus vizuális nyelvezet** – minden projekt saját, mentett stílust kap. Ez egy nevesített vizuális védjegy (objektív-karakter, színkezelés, atmoszférikus tónusok), amelyet minden egyes képen újra felhasználunk. A látványtervek sorozata így koherens készletként hat, nem pedig egymástól független képekként, ami a prospektusok, weboldalak és tervpályázati tablók esetében fontosabb, mint bármelyik önálló kép.
 
-**Prompt a projektből magából** — minden nézethez az AI-utasítás a tényleges projektből áll össze (helyszín, anyagok, tervezői szándék), nem általános promptokból. Így az eredmény a brief mellett marad, és nem sodródik el az AI-stílusú alapértelmezések felé.
+**Magából a projektből levezetett promptok** – minden egyes nézetnél az AI-t irányító instrukciókat a projekt valós tartalmából (helyszín, anyagok, tervezési szándék) állítjuk össze, nem pedig általános promptokból. Ez biztosítja, hogy az eredmények összhangban maradjanak a tervezői feladattal, ahelyett, hogy eltolódnának az általános AI-stílusú alapértelmezések felé.
 </Lang>
 
 <Lang code="en">
@@ -164,17 +164,17 @@ For design development and iterative client review, standard rendering quality i
 </Lang>
 
 <Lang code="hu">
-## Mikor megfelelő ez a minőségi szint
+## Mikor indokolt ez a minőségi kategória?
 
-A fotórealisztikus minőség akkor indokolt, amikor a kép önmagában áll, nem egy szemle- vagy döntési folyamatot támogat:
+A fotorealisztikus minőség akkor válik szükségessé, ha a kép önmagában áll meg a helyén, ahelyett, hogy csupán egy ellenőrzési vagy döntési folyamatot támogatna:
 
-- Hero-képek marketingbrosúrákhoz, weboldalakhoz és építkezési tablókhoz
-- Sajtóközlemények és szerkesztőségi anyagok
-- Pályázati panelek, ahol a kép hatása számít
-- Befektetői prezentációk
-- Értékesítési központi nyomtatott megjelenítések
+- Kiemelt, úgynevezett „hero" képek marketingprospektusokhoz, weboldalakhoz és építési kordonok dekorációjához (hoardingokhoz).
+- Sajtóközleményekhez és szerkesztőségi beküldésekhez.
+- Tervpályázati tablókhoz, ahol a vizuális hatás döntő jelentőségű.
+- Befektetői prezentációkhoz.
+- Az értékesítési irodák nagyméretű nyomtatott képeihez.
 
-Tervezésfejlesztéshez és iteratív ügyfél-szemléhez a hagyományos render-minőség általában gyorsabb és ugyanolyan hasznos — a fotórealizmus leadási minőség, nem tervezőeszköz.
+A tervezésfejlesztéshez és a folyamatos ügyféli egyeztetésekhez a standard renderelési minőség általában gyorsabb és ugyanolyan hasznos – a fotorealizmus az átadási minőség szintje, nem pedig a tervezés eszköze.
 </Lang>
 
 <SingleImage src="/_img/vision-tech/photorealistic-rendering/cam-marketing-04-black.jpg" alt="BUD Skycourt" />
@@ -184,16 +184,16 @@ Tervezésfejlesztéshez és iteratív ügyfél-szemléhez a hagyományos render-
 </Lang>
 
 <Lang code="hu">
-## Mire van szükségünk Öntől
+## Mire van szükségünk Öntől?
 </Lang>
 
 <SpecTable rows={[
-{ label: { en: "3D model quality",  hu: "3D-modell minősége" },     value: { en: "Base geometry must be clean and complete. The AI layer adds visual richness — it doesn't fix modeling errors or missing elements.",                                                          hu: "Az alapgeometriának tisztának és teljesnek kell lennie. Az AI-réteg vizuális gazdagságot ad hozzá — nem javít modellezési hibát vagy hiányzó elemet." } },
-{ label: { en: "Material specs",    hu: "Anyagspecifikációk" },     value: { en: "Product references for key surfaces. The AI handles variation and weathering, but base material identity (concrete vs. stone vs. cladding) must be set correctly in V-Ray.",                          hu: "Termékreferenciák a fő felületekhez. Az AI a változatosságot és kopást kezeli, de az alap anyagidentitást (beton vs. kő vs. burkolat) helyesen kell beállítani V-Rayben." } },
-{ label: { en: "Camera position",   hu: "Kamerapozíció" },           value: { en: "Fixed before rendering begins. Changing the viewpoint requires a full re-render of the base image; the AI layer cannot invent new viewpoints.",                                                       hu: "A renderelés előtt rögzítve. A nézőpont megváltoztatása az alapkép teljes újrarenderelését igényli; az AI-réteg nem talál ki új nézőpontokat." } },
-{ label: { en: "Lighting intent",   hu: "Fényszándék" },             value: { en: "Time of day, season, and weather mood. With AI variations, you can pick several to explore in parallel — but the V-Ray base lighting still needs a defined target.",                                  hu: "Napszak, évszak és időjárási hangulat. Az AI-változatokkal több is választható párhuzamos vizsgálatra — de a V-Ray alapvilágításnak akkor is meghatározott célja kell legyen." } },
-{ label: { en: "Visual references", hu: "Vizuális referenciák" },    value: { en: "Photographs or renders that match the target atmosphere. These are used to build the project's style — the named visual signature reused across every image in the set.",                          hu: "Fotók vagy renderek, amelyek illeszkednek a céllegkörhöz. Ezek alapján építjük fel a projekt stílusát — a névvel ellátott vizuális szignatúrát, amit a sorozat minden képén újrahasznosítunk." } },
-{ label: { en: "Output use",        hu: "Felhasználás" },            value: { en: "Print or digital, and at what scale. Standard output is 6 MP per image (~3000 × 2000 px); larger sizes are available on request and affect the time per variation.",                                  hu: "Print vagy digitális, és milyen léptéken. Az alapkimenet 6 MP képenként (kb. 3000 × 2000 pixel); nagyobb méretek igényre elérhetők, és befolyásolják a változatonkénti időt." } },
+{ label: { en: "3D model quality",  hu: "3D modell minősége" },      value: { en: "Base geometry must be clean and complete. The AI layer adds visual richness — it doesn't fix modeling errors or missing elements.",                                                          hu: "Az alapgeometriának tisztának és teljesnek kell lennie. Az AI-réteg vizuális gazdagságot ad hozzá – nem javítja ki a modellezési hibákat vagy a hiányzó elemeket." } },
+{ label: { en: "Material specs",    hu: "Anyagspecifikációk" },      value: { en: "Product references for key surfaces. The AI handles variation and weathering, but base material identity (concrete vs. stone vs. cladding) must be set correctly in V-Ray.",                          hu: "Termékreferenciák a legfőbb felületekhez. Az AI kezeli a változatosságot és a patinát, de az alapvető anyagkaraktert (beton, kő, burkolat) helyesen kell beállítani a V-Ray-ben." } },
+{ label: { en: "Camera position",   hu: "Kamera pozíciója" },         value: { en: "Fixed before rendering begins. Changing the viewpoint requires a full re-render of the base image; the AI layer cannot invent new viewpoints.",                                                       hu: "A renderelés megkezdése előtt véglegesítve. A nézőpont megváltoztatása az alap kép teljes újra-renderelését igényli; az AI-réteg nem képes új nézőpontokat kitalálni." } },
+{ label: { en: "Lighting intent",   hu: "Tervezett világítás" },      value: { en: "Time of day, season, and weather mood. With AI variations, you can pick several to explore in parallel — but the V-Ray base lighting still needs a defined target.",                                  hu: "Napszak, évszak és időjárási hangulat. Az AI variációkkal egyszerre többet is kiválaszthat párhuzamos vizsgálatra – de a V-Ray alapmegvilágításnak így is szüksége van egy konkrét célirányra." } },
+{ label: { en: "Visual references", hu: "Vizuális referenciák" },    value: { en: "Photographs or renders that match the target atmosphere. These are used to build the project's style — the named visual signature reused across every image in the set.",                          hu: "A megcélzott hangulatnak megfelelő fotók vagy renderek. Ezeket használjuk fel a projekt egyedi stílusának – az összes képen újra felhasznált, nevesített vizuális védjegynek – a felépítéséhez." } },
+{ label: { en: "Output use",        hu: "Felhasználás módja" },       value: { en: "Print or digital, and at what scale. Standard output is 6 MP per image (~3000 × 2000 px); larger sizes are available on request and affect the time per variation.",                                  hu: "Nyomtatott vagy digitális, és milyen méretben. A standard kimenet 6 megapixel képenként (kb. 3000 × 2000 px); nagyobb méretek kérésre elérhetők, ami befolyásolja az egy-egy változatra jutó elkészítési időt." } },
 ]} />
 
 <Lang code="en">
@@ -209,15 +209,15 @@ The AI side of this pipeline evolves continuously. The limits described above re
 </Lang>
 
 <Lang code="hu">
-## Mit nem csinál ez a megközelítés
+## Mire nem alkalmas ez a megközelítés?
 
-Az AI-réteg azzal dolgozik, amit a V-Ray ad. Gazdagítja a felületeket, a légkört és a környezetet — nem talál ki geometriát, nem változtatja meg a nézőpontot és nem javít modellezési hibát. Az alapmodellnek jónak kell lennie, mielőtt az utófeldolgozás értéket adna.
+Az AI-réteg abból dolgozik, amit a V-Ray előállít. Gazdagítja a felületeket, a környezetet és az atmoszférát – de nem talál ki új geometriát, nem változtat nézőpontot, és nem javítja ki a modellezési hibákat. Az alapmodellnek helyesnek kell lennie ahhoz, hogy az utómunka valódi értéket adjon hozzá.
 
-Az anyagvezérlés irányított, nem abszolút. A felületi karakter az alaprender korlátain belül generálódik, referenciákhoz kalibrálva, de nem pixelről pixelre meghatározva. Olyan projekteknél, ahol egy konkrét gyártói kivitelnek pontosan kell megjelennie, ezt a munkát a V-Ray alapanyag végzi — az AI-réteg gazdagságot ad hozzá, nem helyettesítést.
+Az anyagok kezelése inkább irányított, mintsem abszolút. A felület jellege az alaprender korlátain belül generálódik a referenciákhoz kalibrálva, de nem pixelről pixelre specifikált. Az olyan projekteknél, ahol egy konkrét gyártótól származó felületnek pontosan kell megjelennie, a V-Ray alapanyag végzi ezt a munkát – az AI-réteg gazdagítja a felületet, de nem helyettesíti azt.
 
-A kimeneti felbontást a generáló pipeline behatárolja. 6 MP képenként a szabvány. Nagyon nagy formátumú nyomatok (teljes építkezési tablók, épületborítások) vagy nagyobb alaprendert, vagy mozaikos megközelítést igényelnek — projektenként egyeztetve.
+A kimeneti felbontást korlátozza a generatív folyamat. Képenként a 6 megapixel a standard méret. A rendkívül nagyméretű nyomatok (teljes építési kordonok, épülethálók) vagy nagyobb alaprendert, vagy darabolt (tiled) megközelítést igényelnek – ezt projektenként egyeztetjük.
 
-A pipeline AI-oldala folyamatosan fejlődik. A fent leírt korlátok az általunk használt eszközök jelenlegi állapotát tükrözik — nem állandó plafont. A modellek, a felbontások és az anyagspecifikusság feletti kontroll negyedévről negyedévre javul, és a pipeline-unkat ezzel együtt frissítjük. Számítson rá, hogy a határvonal "ezt az AI kezeli" és "ezt a kézi V-Ray kezeli" között folyamatosan az AI oldala felé tolódik.
+Ennek a folyamatnak az AI oldala folyamatosan fejlődik. A fent leírt korlátok a jelenleg használt eszközök állapotát tükrözik – nem jelentenek állandó plafont. A modellek, a felbontások és az anyagspecifikációk feletti ellenőrzés negyedévről negyedévre javul, és a mi munkafolyamatunk is ezzel együtt frissül. Arra lehet számítani, hogy a „mit kezel az AI" és a „mit kell manuálisan beállítani a V-Ray-ben" közötti határvonal folyamatosan az AI oldala felé tolódik el.
 </Lang>
 
 <Lang code="en">
@@ -233,9 +233,9 @@ For animated sequences at the same quality level: [3D Animation](/vision-tech/3d
 <Lang code="hu">
 ## Kapcsolódó technikák
 
-Hagyományos külső- és belsőnézetek ugyanezzel a pipeline-nal: [Külső](/vision-tech/exterior/), [Belső](/vision-tech/interior/)
+Standard kültéri és belső téri nézetek ugyanezen munkafolyamat használatával: [Külső](/vision-tech/exterior/), [Belső](/vision-tech/interior/)
 
-Meglévő renderek gyors AI-fejlesztése új 3D-munka nélkül: [AI render-fejlesztés](/vision-tech/ai-render-upgrade/)
+Meglévő renderek gyors, AI-alapú feljavítása új 3D-s munka nélkül: [AI fotósítás](/vision-tech/ai-render-upgrade/)
 
-Ugyanezen a minőségi szinten készült animált szekvenciákhoz: [3D-animáció](/vision-tech/3d-animation/)
+Azonos minőségű animált jelenetekhez: [3D animáció](/vision-tech/3d-animation/)
 </Lang>

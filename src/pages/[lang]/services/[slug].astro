@@ -77,8 +77,8 @@ const COPY = {
     metaSuffix:        '— Szolgáltatások',
     bannerLabel:       'Szolgáltatás',
     breadcrumbServices:'Szolgáltatások',
-    pricingLabel:      'Árképzés',
-    startRequirements: 'Mire van szüksége az induláshoz',
+    pricingLabel:      'Árazás',
+    startRequirements: 'Mi szükséges az induláshoz?',
     techniquesUsed:    'A szolgáltatáshoz használt technikák:',
     projectsUsing:     'Projektek, amelyek ezt a szolgáltatást használták:',
     seeWork:           'Munkáink',
@@ -337,12 +337,15 @@ const c = COPY[lang];
   }
 
   /* Direct-child typography — scoped to top-level MDX elements only so nested
-     card/component text (deliverable-grid, process-flow, etc.) is not affected */
+     card/component text (deliverable-grid, process-flow, etc.) is not affected.
+     Body copy matches the vision-tech template: --fs-body, max-width: none,
+     so prose spans the full container width instead of the global 65ch cap. */
   .service-main > :global(p) {
-    font-size: var(--fs-small);
+    font-size: var(--fs-body);
     color: var(--color-text-muted);
-    line-height: 1.7;
+    line-height: 1.75;
     margin: 0;
+    max-width: none;
   }
   .service-main > :global(h2) {
     font-size: var(--fs-h4);
@@ -357,12 +360,15 @@ const c = COPY[lang];
     display: flex;
     flex-direction: column;
     gap: 0.4rem;
+    max-width: none;
   }
   .service-main :global(ul li) {
-    font-size: var(--fs-small);
+    font-size: var(--fs-body);
+    line-height: 1.65;
     color: var(--color-text-muted);
     padding-left: 1.25rem;
     position: relative;
+    max-width: none;
   }
   .service-main :global(ul li::before) {
     content: '→';

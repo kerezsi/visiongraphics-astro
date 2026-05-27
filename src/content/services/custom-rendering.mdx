@@ -7,16 +7,16 @@ description:
   hu: "Dedikált render node-ok 3ds Maxhez, V-Ray Standalone-hoz és Blenderhez — 15+ év V-Ray-szakértelemmel együtt. A jelenetét rendesen előkészítjük, mielőtt a farmra kerülne: gyorsabb render, kevesebb hiba, alacsonyabb költség."
 tagline:
   en: "When your files won't render, we fix that."
-  hu: "Ha a fájljai nem akarnak renderelni, mi megoldjuk."
+  hu: "Ha nem indul el a renderelés, mi orvosoljuk."
 bannerImage: "/_img/banners/banner-rendering.jpg"
 order: 7
 published: true
 startRequirements:
   en: "Your MAX, Blender, or VRscene file · Render settings and output spec · Timeline and priority level"
-  hu: "A MAX-, Blender- vagy VRscene-fájlja · Render-beállítások és kimeneti specifikáció · Határidő és prioritási szint"
+  hu: "MAX, Blender vagy VRscene fájl · Renderbeállítások és kimeneti specifikációk · Határidő és prioritási szint"
 pricing:
   en: "By scope. Hourly for diagnostics. Render farm by node-hour. Quote within hours for urgent jobs."
-  hu: "Terjedelem szerint. Diagnosztika óradíjban. Render farm node-óra alapján. Sürgős munkáknál órákon belüli árajánlat."
+  hu: "Projektméret alapján. Diagnosztika óradíj szerint. Renderfarm node-óránként. Sürgős esetekben órákon belül árajánlatot adunk."
 ---
 
 <Lang code="en">
@@ -31,17 +31,26 @@ Most render farms take your files and process them as-is. We take your files, pr
 </Lang>
 
 <Lang code="hu">
-A legtöbb render farm úgy fogadja a fájlt, ahogy van. Mi átvesszük, rendesen előkészítjük, és csak utána rendereljük — ez gyorsabb frame-eket, kevesebb hibát és alacsonyabb költséget jelent. Tizenöt év V-Ray-tapasztalat azt jelenti, hogy a problémákat azelőtt elkapjuk, hogy egész éjjel futó, sikertelen renderré válnának.
+A legtöbb renderfarm változtatás nélkül indítja el a fájljait. Mi átnézzük, megfelelően előkészítjük, és csak ezután indítjuk el a renderelést – ez gyorsabb képkockákat, kevesebb hibát és alacsonyabb költségeket jelent. Tizenöt évnyi V-Ray tapasztalatunkkal már azelőtt kiszűrjük a problémákat, hogy azok egy sikertelen, éjszakai rendereléshez vezetnének.
 
-## Mit támogatunk
+## Amit támogatunk:
 
-- **3ds Max + V-Ray** — minden aktuális verzió, beleértve a régi jelenetek konvertálását
-- **V-Ray Standalone** — VRscene-feladás, elosztott render
-- **Blender** — Cycles és EEVEE
-- **Rush prioritás** — aznapi átfutás sürgős határidős munkákra
+- **3ds Max + V-Ray** – az összes legújabb verzió, beleértve a régi jelenetek konvertálását.
+- **V-Ray Standalone** – VRscene-alapú küldés, elosztott renderelés (distributed rendering).
+- **Blender** – Cycles és EEVEE támogatás.
+- **Sürgősségi (Rush) prioritás** – akár aznapi átadás kritikus határidős munkák esetén.
 </Lang>
 
-<SectionBanner image="/_img/banners/banner-general.jpg" label={{ en: "Who We Help", hu: "Kinek segítünk" }} title={{ en: "Built for Studios That Outgrow Their Hardware", hu: "Stúdióknak, amelyek kinőtték a saját hardverüket" }} />
+<SectionBanner image="/_img/banners/banner-tech.jpg" label={{ en: "Rendering Pipelines", hu: "Renderelési munkafolyamatok" }} title={{ en: "Four Pipelines, One Studio", hu: "Négy munkafolyamat, egy stúdió" }} />
+
+<DeliverableGrid columns={2} items={[
+  { title: { en: "3ds Max + V-Ray",                hu: "3ds Max + V-Ray" },              desc: { en: "All recent versions, including legacy scene conversion. The renderer we know best after 15+ years of production use. Stills, animations, full V-Ray feature set.",                                                                                                                                                                                                       hu: "Minden új verzió támogatása, beleértve a régi jelenetek konvertálását is. Ez az a renderelő, amelyet a legjobban ismerünk több mint 15 évnyi aktív használat után. Állóképek, animációk, a teljes V-Ray funkciókészlet kiaknázása." } },
+  { title: { en: "V-Ray Standalone",               hu: "V-Ray Standalone" },             desc: { en: "VRscene submission for fully optimized distributed rendering. Strips out Max overhead, sends only what the renderer needs. Maximum throughput on the farm.",                                                                                                                                                                                                                  hu: "VRscene-alapú küldés a teljesen optimalizált, elosztott rendereléshez. Megszünteti a Max-ból eredő felesleges rendszerterhelést, és csak azt küldi el a gépnek, amire a renderelőnek szüksége van. Maximális teljesítmény a farmon." } },
+  { title: { en: "Blender — Cycles & EEVEE",       hu: "Blender — Cycles és EEVEE" },     desc: { en: "Full Blender pipeline support — Cycles for path-traced quality, EEVEE for fast preview animations. Asset compatibility, scene conversion, and farm submission included. Works particularly well on scenes that came in from ArchiCAD, Revit, or SketchUp.",                                                                                                                  hu: "Teljes Blender munkafolyamat-támogatás: Cycles a path-tracing minőségért, EEVEE a gyors előnézeti animációkért. Az asset-kompatibilitás, a jelenetkonverzió és a farmra küldés is a szolgáltatás része. Különösen jól működik olyan jeleneteknél, amelyek ArchiCAD-ből, Revitből vagy SketchUpból érkeznek." } },
+  { title: { en: "AI Animation Rendering",         hu: "AI animációs renderelés" },       desc: { en: "A hybrid pipeline that combines geometric precision with AI surface quality. Render a 3D prepass in 3ds Max or Blender (rough geometry, lighting, camera path), then apply an AI beauty pass to produce final-quality frames. Massive time savings on animation projects — what used to take a week renders in a day.",                                                       hu: "Egy hibrid munkafolyamat, amely ötvözi a geometriai pontosságot az AI felületi minőségével. Lefuttatunk egy 3D előnézetet 3ds Max-ban vagy Blenderben (durva geometria, alapvető megvilágítás, kamerapálya), majd egy AI beauty pass-t alkalmazunk a végleges minőségű képkockák elkészítéséhez. Hatalmas időmegtakarítás animációs projekteknél – ami korábban egy hétig tartott, az egy nap alatt elkészül." } },
+]} />
+
+<SectionBanner image="/_img/banners/banner-general.jpg" label={{ en: "Who We Help", hu: "Kiknek segítünk?" }} title={{ en: "Built for Studios That Outgrow Their Hardware", hu: "Azoknak a stúdióknak, amelyek kinőtték a saját hardverüket" }} />
 
 <Lang code="en">
 This service exists for architects, small visualization studios, and freelancers who produce great work but hit hardware limits — particularly on animations, where a local machine would take weeks. We're not a nameless automated farm. You get a real conversation about your scene before we start.
@@ -54,26 +63,26 @@ This service exists for architects, small visualization studios, and freelancers
 </Lang>
 
 <Lang code="hu">
-Ez a szolgáltatás építészeknek, kisebb látványtervező stúdióknak és szabadúszóknak szól, akik kiváló munkát készítenek, de hardveres falba ütköznek — különösen animációknál, ahol egy helyi gép heteket futna. Nem vagyunk névtelen, automatizált farm. Egy valódi beszélgetés indítja a munkát, még a render előtt.
+Ez a szolgáltatásunk olyan építészeknek, kisebb vizualizációs stúdióknak és szabadúszóknak szól, akik kiváló munkát végeznek, de beleütköznek a hardveres korlátokba – különösen az animációknál, ahol a saját gépen történő renderelés hetekig tartana. Nem egy névtelen, automatizált farm vagyunk: nálunk valós szakmai egyeztetés előzi meg a renderelést.
 
-- Animációkimenetre van szüksége, de nincs hozzá kapacitása
-- Határidőkritikus projektek, ahol nem opció a hardverhiba
-- Olyan jelenetekkel dolgozik, amelyek a megosztott farmokon kifogynak a memóriából
-- Kell valaki, akivel beszélni lehet, amikor a render nem néz ki jól
-- Régi 3ds Max-jelenetek konvertálása a jelenlegi V-Ray-szabványra
+- Animációt kell készíteniük, de nincs meg hozzá a szükséges számítási kapacitásuk.
+- Kritikus határidejű projektjeik vannak, ahol a hardverhiba nem megengedhető.
+- Olyan jelenetekkel dolgoznak, amelyek túlterhelik a memóriát (RAM) az általános renderfarmokon.
+- Szeretnének szakmai segítséget kérni, ha a renderelés nem úgy néz ki, ahogy kellene.
+- Régebbi 3ds Max jeleneteket kell konvertálniuk az aktuális V-Ray szabványok szerint.
 </Lang>
 
-<SectionBanner image="/_img/banners/banner-workflow.jpg" label={{ en: "How We Work", hu: "Hogyan dolgozunk" }} title={{ en: "Scene First, Render Second", hu: "Először a jelenet, utána a render" }} />
+<SectionBanner image="/_img/banners/banner-workflow.jpg" label={{ en: "How We Work", hu: "Hogyan dolgozunk?" }} title={{ en: "Scene First, Render Second", hu: "Előbb a jelenet, aztán a render" }} />
 
 <ProcessFlow
-  title={{ en: "How a render job works", hu: "Hogyan zajlik egy render-feladat" }}
+  title={{ en: "How a render job works", hu: "Hogyan épül fel a renderelési munka?" }}
   steps={[
-    { label: { en: "Brief",        hu: "Brief" },           sub: { en: "Timeline, specs, priority",         hu: "Határidő, specifikáció, prioritás" } },
-    { label: { en: "Scene Check",  hu: "Jelenet-ellenőrzés" }, sub: { en: "Diagnose before we commit",       hu: "Diagnosztika, mielőtt elköteleződnénk" } },
-    { label: { en: "Prep",         hu: "Előkészítés" },     sub: { en: "Optimize for farm submission",      hu: "Optimalizálás a farmra való feladáshoz" } },
-    { label: { en: "Test Render",  hu: "Próbarender" },     sub: { en: "Frame sample for approval",         hu: "Mintakép jóváhagyásra" } },
-    { label: { en: "Full Render",  hu: "Teljes render" },   sub: { en: "All frames, monitored",             hu: "Minden frame, felügyelve" } },
-    { label: { en: "Delivery",     hu: "Átadás" },          sub: { en: "Frames + compositing pass",         hu: "Frame-ek és kompozit-pass" } },
+    { label: { en: "Brief",        hu: "Brief" },             sub: { en: "Timeline, specs, priority",         hu: "Határidő, specifikációk és prioritás meghatározása." } },
+    { label: { en: "Scene Check",  hu: "Jelenetellenőrzés" }, sub: { en: "Diagnose before we commit",         hu: "Diagnosztizáljuk a fájlt, mielőtt belevágunk." } },
+    { label: { en: "Prep",         hu: "Előkészítés" },       sub: { en: "Optimize for farm submission",      hu: "Optimalizálunk a farmra való küldés előtt." } },
+    { label: { en: "Test Render",  hu: "Tesztrenderelés" },   sub: { en: "Frame sample for approval",         hu: "Próbakockák készítése és jóváhagyása." } },
+    { label: { en: "Full Render",  hu: "Teljes renderelés" }, sub: { en: "All frames, monitored",             hu: "Minden képkocka lefuttatása, folyamatos felügyelet mellett." } },
+    { label: { en: "Delivery",     hu: "Átadás" },            sub: { en: "Frames + compositing pass",         hu: "A kész képkockák és kompozitálási rétegek (render pass-ok) átadása." } },
   ]}
 />
 
@@ -89,23 +98,23 @@ Common issues we resolve before rendering:
 </Lang>
 
 <Lang code="hu">
-A jelenetét feladás előtt megnézzük. Nehéz geometria, hiányzó textúrák, rossz GI-beállítások, túlméretezett textúratérképek — ezek mind 6 órás render-feladatot 36 órássá változtatnak. Mi előbb megtaláljuk és Önnel együtt javítjuk őket.
+Még az indítás előtt átnézzük a jelenetét. A túl nehéz geometria, a hiányzó textúrák, a hibás GI-beállítások vagy a túlméretezett textúrafájlok mind képesek egy 6 órás renderelést 36 órássá nyújtani. Mi ezeket előre felkutatjuk, és Önnel együttműködve kijavítjuk.
 
-Render előtt megoldott gyakori problémák:
-- V-Ray-artefaktumok, GI-villogás és expozíciós gondok
-- Render közben fellépő összeomlások, amelyeket összetett geometria okozta memóriahiányok generálnak
-- Hiányzó UV-k és textúra-hivatkozási problémák
-- Light cache-problémák, különösen kamera-pálya animációknál
-- Proxy-geometria hibái, amelyek csak render közben jelennek meg
+Gyakori problémák, amelyeket a renderelés előtt megoldunk:
+- V-Ray képhibák (artifactek), GI villódzás (flickering) és expozíciós problémák.
+- Renderelés közbeni fagyások, amelyeket a túl bonyolult geometria miatti memória-túlcsordulás okoz.
+- Hiányzó UV-k és textúrahivatkozási problémák.
+- A kamerapálya-animációkra jellemző light cache problémák.
+- Sérült proxy geometriák, amelyek csak a renderelés kezdetekor derülnek ki.
 </Lang>
 
-<SectionBanner image="/_img/banners/banner-arch-viz.jpg" label={{ en: "Why Work With Us", hu: "Miért velünk" }} title={{ en: "Expert Hands, Not Just Hardware", hu: "Szakértő kezek, nem csak hardver" }} />
+<SectionBanner image="/_img/banners/banner-arch-viz.jpg" label={{ en: "Why Work With Us", hu: "Miért érdemes velünk dolgozni?" }} title={{ en: "Expert Hands, Not Just Hardware", hu: "Szakértelem a puszta hardver mellé" }} />
 
 <DeliverableGrid columns={2} items={[
-  { title: { en: "Own hardware",                hu: "Saját hardver" },              desc: { en: "10–20 dedicated nodes — no shared queue, no competing for resources when your deadline matters. Rush priority available for same-day turnaround.", hu: "10–20 dedikált node — nincs közös sor, nem kell erőforrásért versenyezni, amikor a határidő számít. Rush prioritás aznapi átfutásra is elérhető." } },
-  { title: { en: "V-Ray expertise",             hu: "V-Ray-szakértelem" },          desc: { en: "15+ years with V-Ray in production. We understand the renderer, not just the interface — which means we can diagnose and fix problems faster than anyone just reading documentation.", hu: "15+ év V-Ray produkciós tapasztalat. Nemcsak a felületet ismerjük, hanem a rendert magát — ezért gyorsabban diagnosztizálunk és javítunk, mint aki csak dokumentációt olvas." } },
-  { title: { en: "Scene preparation included",  hu: "A jelenet-előkészítés benne van" }, desc: { en: "We don't just press go. Scene prep — optimization, troubleshooting, test frames — is part of the service, not an extra. Prepared scenes render faster and cost less overall.", hu: "Nem csak elindítjuk a rendert. A jelenet-előkészítés — optimalizálás, hibakeresés, próbaframe-ek — a szolgáltatás része, nem extra. Az előkészített jelenetek gyorsabban renderelnek, és összességében olcsóbbak." } },
-  { title: { en: "Complex files welcome",       hu: "Bonyolult fájlok is jöhetnek" }, desc: { en: "Airport terminals, multi-building masterplans, scenes that crash on other machines — we have the RAM and the know-how to handle them. We specialize in files everyone else returns.", hu: "Repülőtéri terminálok, többépületes masterplanek, más gépeken összeomló jelenetek — megvan hozzájuk a memóriánk és a know-how-nk. Olyan fájlok a specialitásunk, amelyeket mindenki más visszaad." } },
+  { title: { en: "Own hardware",                hu: "Saját hardverpark" },              desc: { en: "10–20 dedicated nodes — no shared queue, no competing for resources when your deadline matters. Rush priority available for same-day turnaround.", hu: "10–20 dedikált node – nincs közös várólista, nem kell másokkal versenyeznie a kapacitásért, ha szorít a határidő. Sürgősségi prioritással akár aznapi átadást is biztosítunk." } },
+  { title: { en: "V-Ray expertise",             hu: "V-Ray szakértelem" },              desc: { en: "15+ years with V-Ray in production. We understand the renderer, not just the interface — which means we can diagnose and fix problems faster than anyone just reading documentation.", hu: "Több mint 15 évnyi éles V-Ray tapasztalat. Magát a renderelőmotort értjük, nem csak a felhasználói felületet – ezáltal gyorsabban diagnosztizáljuk és javítjuk a hibákat, mint bárki, aki csak a leírásokat bújja." } },
+  { title: { en: "Scene preparation included",  hu: "Jelenet-előkészítés az árban" },   desc: { en: "We don't just press go. Scene prep — optimization, troubleshooting, test frames — is part of the service, not an extra. Prepared scenes render faster and cost less overall.", hu: "Nemcsak megnyomjuk az indítógombot. A jelenet előkészítése – az optimalizálás, a hibaelhárítás és a tesztkockák készítése – a szolgáltatás alapvető része, nem pedig feláras extra. Az optimalizált jelenetek gyorsabban renderelődnek, így összességében kevesebb költséggel járnak." } },
+  { title: { en: "Complex files welcome",       hu: "Összetett fájlok fogadása" },      desc: { en: "Airport terminals, multi-building masterplans, scenes that crash on other machines — we have the RAM and the know-how to handle them. We specialize in files everyone else returns.", hu: "Repülőtéri terminálok, tömbtelkes beépítések (masterplanek), más gépeken lefagyó jelenetek – megvan a szükséges memóriakapacitásunk (RAM) és a szakértelmünk a kezelésükhöz. Azokra a fájlokra specializálódtunk, amelyeket más szolgáltatók visszaadnak." } },
 ]} />
 
 <Lang code="en">
@@ -113,5 +122,5 @@ Typical turnaround for a prepared scene: still images within 24 hours, animation
 </Lang>
 
 <Lang code="hu">
-Tipikus átfutás előkészített jelenetnél: állóképek 24 órán belül, animációs szekvenciák a frame-számtól és bonyolultságtól függő árajánlattal. Rush prioritás valódi határidős helyzetekre — fenntartunk hozzá kapacitást.
+Jellemző átadási idő egy előkészített jelenet esetén: állóképek 24 órán belül, animációknál a képkockák száma és az összetettség alapján adunk ajánlatot. Valóban kritikus határidő esetén sürgősségi prioritás is kérhető – ehhez folyamatosan tartunk fenn szabad kapacitást.
 </Lang>

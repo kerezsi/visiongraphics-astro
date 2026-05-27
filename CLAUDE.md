@@ -661,6 +661,33 @@ The Pages Function lives **outside** Astro's `src/` tree and is bundled by Cloud
 build step automatically — no Astro config changes needed. The static build (`output:
 'static'`) is unaffected.
 
+### Vite dev cache gotcha — "504 Outdated Optimize Dep"
+
+If React islands on a page render but their content stays empty (galleries
+show only their red label / no thumbnails; image-compare slots are blank;
+lightbox doesn't open), check the browser console for:
+
+```
+[astro-island] Error hydrating /src/components/media/Article*Mounter.tsx
+  TypeError: Failed to fetch dynamically imported module: …
+```
+
+…and the network panel for:
+
+```
+GET /node_modules/.vite/deps/embla-carousel-react.js?v=<hash> → 504 Outdated Optimize Dep
+```
+
+This is Vite's pre-bundled dep cache going stale — the HTML still references
+the old `?v=<hash>` but Vite has re-optimized under a new hash. Happens after
+`npm install`, branch switches that change `package.json`, or sometimes just
+across long-running dev sessions. **Production builds are not affected** —
+this only manifests under `npm run dev`.
+
+Fix: stop the dev server, delete `node_modules/.vite`, restart. `start-dev.bat`
+does this automatically on every launch, so it usually only bites you if you
+restart Astro alone with `npm run dev` after pulling new dependencies.
+
 ### Cloudflare Pages cache-buster (DO NOT REMOVE)
 
 Cloudflare Pages content-addresses every uploaded asset by hash and dedupes
