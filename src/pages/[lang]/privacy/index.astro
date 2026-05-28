@@ -1,0 +1,387 @@
+---
+// src/pages/[lang]/privacy/index.astro
+//
+// GDPR-compliant Privacy Policy. Bilingual content is held in two parallel
+// arrays (en / hu) of { heading, body[] } sections so the layout stays the
+// same in both locales. The visible body lines are paragraphs — keep them
+// short for readability. HTML in body strings is intentionally rendered
+// raw via set:html since we use <a> tags for the few inline links.
+
+import Page from '../../../layouts/Page.astro';
+import SectionBanner from '../../../components/ui/SectionBanner.astro';
+import { staticLocalePaths, type Locale, localeUrl } from '../../../lib/i18n';
+import { ui } from '../../../i18n/strings';
+
+export const getStaticPaths = staticLocalePaths;
+const { lang } = Astro.params as { lang: Locale };
+Astro.locals.lang = lang;
+const L = ui(lang);
+
+const LAST_UPDATED = '2026-05-27';
+
+type Section = { heading: string; body: string[] };
+
+const EN: { meta: { title: string; description: string }; intro: string; sections: Section[]; lastUpdated: string } = {
+  meta: {
+    title: 'Privacy Policy',
+    description: 'How Vision Graphics Kft. handles your personal data — GDPR-compliant privacy notice for visiongraphics.eu.',
+  },
+  intro:
+    'This notice explains what personal data we collect when you visit visiongraphics.eu or contact us, why we collect it, how long we keep it, and the rights you have under the EU General Data Protection Regulation (GDPR) and Hungarian Act CXII of 2011 (Infotv.).',
+  lastUpdated: `Last updated: ${LAST_UPDATED}`,
+  sections: [
+    {
+      heading: 'Who we are (data controller)',
+      body: [
+        'Vision Graphics Kft.',
+        'Registered seat and mailing address: H-1126 Budapest, Hollósy Simon utca 15., Hungary',
+        'Company registration: 01-09-564319 (Court of Registration: Fővárosi Törvényszék Cégbírósága)',
+        'Tax number: 12203688-2-43',
+        'Email: <a href="mailto:info@visiongraphics.hu">info@visiongraphics.hu</a>',
+        'Phone: +36 30 945 4179',
+        'Web: <a href="https://www.visiongraphics.hu">www.visiongraphics.hu</a>',
+      ],
+    },
+    {
+      heading: 'What data we collect',
+      body: [
+        '<strong>Contact form (visiongraphics.eu/contact/):</strong> name, email address, and the contents of your message. Optionally: company / organisation, project type, deadline. You provide this data voluntarily by submitting the form.',
+        '<strong>Server logs:</strong> our hosting provider (Cloudflare Inc.) records the standard request metadata for every page view — IP address, user agent, referrer, timestamp, requested URL. This is used for security, abuse prevention, and aggregate performance monitoring.',
+        '<strong>Browser storage:</strong> a single localStorage entry named <code>vg-theme</code> stores your dark/light mode preference so the site remembers it between visits. This value never leaves your browser and is not transmitted to us.',
+        'We do <strong>not</strong> use analytics services, advertising trackers, social media pixels, or marketing cookies.',
+      ],
+    },
+    {
+      heading: 'Why we process it (purposes and legal basis)',
+      body: [
+        '<strong>To reply to your enquiry</strong> — basis: pre-contractual measures at your request (GDPR Art. 6(1)(b)) and our legitimate interest in responding to business communications (Art. 6(1)(f)).',
+        '<strong>Site operation, security, and abuse prevention</strong> — basis: our legitimate interest in keeping the site available and protected from attacks (Art. 6(1)(f)).',
+        '<strong>Legal compliance</strong> — where we are required by Hungarian or EU law to retain certain communications (e.g. accounting records related to a quoted project) — basis: Art. 6(1)(c).',
+      ],
+    },
+    {
+      heading: 'How long we keep it',
+      body: [
+        '<strong>Contact form messages</strong>: emails are delivered to our Google Workspace mailbox at <code>info@visiongraphics.hu</code> and are <strong>not deleted by default</strong>. We retain them as part of our project correspondence archive. You may request deletion at any time (see "Your rights" below); statutory accounting-related retention may apply to messages that became part of a contractual relationship.',
+        '<strong>Server logs</strong>: Cloudflare retains standard access logs according to its own retention policy (typically a few days for raw logs, longer for aggregated metrics). See <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare\'s privacy policy</a>.',
+        '<strong>Browser theme preference</strong>: stored in your browser until you clear it.',
+      ],
+    },
+    {
+      heading: 'Who we share it with (recipients and processors)',
+      body: [
+        '<strong>Resend Inc.</strong> (USA) — transmits the contact form email from our website to our mailbox. Acts as data processor. Cross-border transfer covered by EU Standard Contractual Clauses. <a href="https://resend.com/legal/privacy-policy">Resend privacy policy</a>.',
+        '<strong>Google LLC / Google Ireland Ltd.</strong> — provides our Google Workspace mailbox where contact form emails are stored. Acts as data processor. <a href="https://workspace.google.com/terms/dpa_terms.html">Google Workspace DPA</a>.',
+        '<strong>Cloudflare Inc.</strong> (USA / global CDN) — hosts the main website at visiongraphics.eu and processes all HTTP traffic. Acts as data processor. <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare privacy policy</a>.',
+        '<strong>Tárhely.Eu Kft.</strong> (Hungary) — hosts the 360° tour content at <code>pano.visiongraphics.eu</code>. Acts as data processor.',
+        'We do not sell or rent your data to anyone. We do not share it for advertising or profiling purposes.',
+      ],
+    },
+    {
+      heading: 'Cookies and similar technologies',
+      body: [
+        'visiongraphics.eu does not set marketing, advertising, or analytics cookies, and does not require a cookie consent banner.',
+        '<strong>Strictly necessary storage we use:</strong> one localStorage entry (<code>vg-theme</code>) to remember your dark/light mode choice. This is exempt from consent requirements under the ePrivacy Directive Art. 5(3).',
+        '<strong>Cookies set by Cloudflare:</strong> Cloudflare may set strictly necessary security cookies such as <code>__cf_bm</code> (bot management) on its own initiative. These are essential for protecting the site from automated abuse and do not require consent.',
+        '<strong>Third-party embeds (YouTube, Vimeo):</strong> video and tour embeds use a "facade" pattern — only a static thumbnail loads on page view. When you click play, the YouTube or Vimeo iframe loads and the respective provider may set its own cookies and process data according to its privacy policy (<a href="https://policies.google.com/privacy">YouTube/Google</a>, <a href="https://vimeo.com/privacy">Vimeo</a>). The 360° tours on <code>pano.visiongraphics.eu</code> are hosted on our own infrastructure and do not set tracking cookies.',
+      ],
+    },
+    {
+      heading: 'International transfers',
+      body: [
+        'Resend Inc., Google LLC, and Cloudflare Inc. are US-based companies that process some data outside the European Economic Area. These transfers are covered by EU Standard Contractual Clauses (SCCs) and, where applicable, the EU-US Data Privacy Framework. We do not transfer data to countries without an adequate level of protection.',
+      ],
+    },
+    {
+      heading: 'Your rights',
+      body: [
+        'Under GDPR (Articles 15–22) you have the right to:',
+        '— Access the personal data we hold about you, and receive a copy.',
+        '— Have inaccurate data corrected (rectification).',
+        '— Have your data erased ("right to be forgotten"), subject to overriding legal-retention obligations.',
+        '— Restrict our processing while a dispute is being resolved.',
+        '— Receive your data in a portable, machine-readable format.',
+        '— Object to processing based on our legitimate interest.',
+        '— Withdraw consent at any time, where processing is based on consent (this does not affect lawfulness of prior processing).',
+        'To exercise any of these rights, email <a href="mailto:info@visiongraphics.hu">info@visiongraphics.hu</a>. We will respond within 30 days.',
+        'You also have the right to lodge a complaint with the Hungarian Data Protection Authority: <strong>Nemzeti Adatvédelmi és Információszabadság Hatóság (NAIH)</strong>, 1055 Budapest, Falk Miksa utca 9–11., phone +36-1-391-1400, web <a href="https://naih.hu/">naih.hu</a>.',
+      ],
+    },
+    {
+      heading: 'Children',
+      body: [
+        'The site is intended for an adult professional audience and is not directed at children under 16. We do not knowingly collect personal data from minors. If you believe a minor has provided us data, please contact us so we can delete it.',
+      ],
+    },
+    {
+      heading: 'Automated decision-making',
+      body: [
+        'We do not use automated decision-making or profiling that produces legal or similarly significant effects.',
+      ],
+    },
+    {
+      heading: 'Changes to this notice',
+      body: [
+        'We may update this notice from time to time as our practices or applicable law change. The "Last updated" date at the top reflects the most recent revision. Material changes will be highlighted on the contact page.',
+      ],
+    },
+    {
+      heading: 'Questions',
+      body: [
+        'Any question about this notice or how we handle your data: <a href="mailto:info@visiongraphics.hu">info@visiongraphics.hu</a> or +36 30 945 4179.',
+      ],
+    },
+  ],
+};
+
+const HU: typeof EN = {
+  meta: {
+    title: 'Adatkezelési tájékoztató',
+    description: 'A Vision Graphics Kft. adatkezelési tájékoztatója — hogyan kezeljük a látogatók adatait a visiongraphics.eu oldalon, GDPR-kompatibilis tájékoztató.',
+  },
+  intro:
+    'Ez a tájékoztató összefoglalja, hogy milyen személyes adatokat kezelünk, amikor Ön ellátogat a visiongraphics.eu oldalra vagy kapcsolatba lép velünk, miért kezeljük ezeket az adatokat, meddig tároljuk, és milyen jogai vannak az Európai Unió általános adatvédelmi rendelete (GDPR) és az információs önrendelkezési jogról szóló 2011. évi CXII. törvény (Infotv.) alapján.',
+  lastUpdated: `Utolsó frissítés: ${LAST_UPDATED}`,
+  sections: [
+    {
+      heading: 'Az adatkezelő',
+      body: [
+        'Vision Graphics Kft.',
+        'Székhely és levelezési cím: H-1126 Budapest, Hollósy Simon utca 15.',
+        'Cégjegyzékszám: 01-09-564319 (nyilvántartó bíróság: Fővárosi Törvényszék Cégbírósága)',
+        'Adószám: 12203688-2-43',
+        'E-mail: <a href="mailto:info@visiongraphics.hu">info@visiongraphics.hu</a>',
+        'Telefon: +36 30 945 4179',
+        'Web: <a href="https://www.visiongraphics.hu">www.visiongraphics.hu</a>',
+      ],
+    },
+    {
+      heading: 'Milyen adatokat kezelünk',
+      body: [
+        '<strong>Kapcsolatfelvételi űrlap (visiongraphics.eu/contact/):</strong> név, e-mail cím és az üzenet tartalma. Opcionálisan: cég / szervezet, projekt típusa, határidő. Ezeket az adatokat Ön önkéntesen, az űrlap kitöltésével adja meg.',
+        '<strong>Szerverlogok:</strong> tárhelyszolgáltatónk (Cloudflare Inc.) minden oldalmegtekintéshez naplózza a szabványos kéréseket — IP-cím, böngészőazonosító (user agent), hivatkozó oldal (referrer), időbélyeg, kért URL. Ezeket biztonsági célokra, visszaélések megelőzésére és összesített teljesítményfigyelésre használjuk.',
+        '<strong>Böngésző-tároló:</strong> egyetlen <code>vg-theme</code> nevű localStorage bejegyzést használunk a sötét/világos téma beállításának megjegyzéséhez. Ez az érték soha nem hagyja el az Ön böngészőjét, hozzánk nem kerül továbbításra.',
+        '<strong>Nem használunk</strong> analitikai szolgáltatást, hirdetési követőkódot, közösségi média pixelt vagy marketing-célú sütit.',
+      ],
+    },
+    {
+      heading: 'Az adatkezelés célja és jogalapja',
+      body: [
+        '<strong>Megkeresésére adott válaszhoz</strong> — jogalap: az Ön kérésére tett, szerződéskötést előkészítő intézkedések (GDPR 6. cikk (1) b) pont) és az üzleti kommunikációra való válaszadás jogos érdeke (6. cikk (1) f) pont).',
+        '<strong>Honlap üzemeltetése, biztonsága, visszaélés-megelőzés</strong> — jogalap: a weboldal elérhetőségéhez és támadások elleni védelméhez fűződő jogos érdekünk (6. cikk (1) f) pont).',
+        '<strong>Jogszabályi kötelezettség teljesítése</strong> — ha magyar vagy uniós jog megőrzési kötelezettséget ír elő (pl. szerződéses kapcsolathoz kötődő levelezések számviteli megőrzése) — jogalap: 6. cikk (1) c) pont.',
+      ],
+    },
+    {
+      heading: 'Megőrzési idő',
+      body: [
+        '<strong>Kapcsolatfelvételi üzenetek:</strong> az e-mailek a <code>info@visiongraphics.hu</code> Google Workspace postafiókba érkeznek, és <strong>alapértelmezetten nem kerülnek törlésre</strong>. A projektlevelezés részeként archiváljuk őket. Ön bármikor kérheti az adatai törlését (lásd "Az Ön jogai"); a szerződéses kapcsolatból eredő levelezésekre vonatkozhat törvényi (pl. számviteli) megőrzési kötelezettség.',
+        '<strong>Szerverlogok:</strong> a Cloudflare saját megőrzési szabályzata szerint tárolja a hozzáférési naplókat (jellemzően néhány nap nyers napló, hosszabb idő aggregált metrikák esetén). Részletek: <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare adatvédelmi tájékoztató</a>.',
+        '<strong>Böngésző-téma beállítás:</strong> az Ön böngészőjében tárolódik, amíg Ön nem törli.',
+      ],
+    },
+    {
+      heading: 'Adattovábbítás és adatfeldolgozók',
+      body: [
+        '<strong>Resend Inc.</strong> (USA) — a kapcsolatfelvételi űrlap e-mailjét továbbítja a weboldalról a postafiókunkba. Adatfeldolgozóként jár el. A határon átnyúló adattovábbítás az EU Általános Szerződési Feltételei (SCC) alapján történik. <a href="https://resend.com/legal/privacy-policy">Resend adatvédelmi tájékoztató</a>.',
+        '<strong>Google LLC / Google Ireland Ltd.</strong> — biztosítja a Google Workspace postafiókunkat, ahol a kapcsolatfelvételi e-mailek tárolódnak. Adatfeldolgozóként jár el. <a href="https://workspace.google.com/terms/dpa_terms.html">Google Workspace DPA</a>.',
+        '<strong>Cloudflare Inc.</strong> (USA / globális CDN) — a visiongraphics.eu weboldalt szolgálja ki és minden HTTP-forgalmat feldolgoz. Adatfeldolgozóként jár el. <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare adatvédelmi tájékoztató</a>.',
+        '<strong>Tárhely.Eu Kft.</strong> (Magyarország) — a <code>pano.visiongraphics.eu</code> domainen elhelyezett 360°-os túra tartalmakat szolgálja ki. Adatfeldolgozóként jár el.',
+        'Az Ön adatait nem adjuk el és nem adjuk bérbe senkinek. Nem adjuk át hirdetési vagy profilalkotási célból.',
+      ],
+    },
+    {
+      heading: 'Sütik és hasonló technológiák',
+      body: [
+        'A visiongraphics.eu nem használ marketing-, hirdetés- vagy analitikai sütit, és nem igényel sütibeleegyező sávot.',
+        '<strong>A használt szigorúan szükséges tárolás:</strong> egyetlen localStorage bejegyzés (<code>vg-theme</code>) a sötét/világos téma választás megjegyzéséhez. Ez az ePrivacy irányelv 5. cikk (3) bekezdése alapján mentesül a hozzájárulási kötelezettség alól.',
+        '<strong>A Cloudflare által beállított sütik:</strong> a Cloudflare saját kezdeményezésére állíthat be szigorúan szükséges biztonsági sütiket, például <code>__cf_bm</code> (bot-elemzés). Ezek elengedhetetlenek az automatizált visszaélésekkel szembeni védelemhez és nem igényelnek hozzájárulást.',
+        '<strong>Külső beágyazások (YouTube, Vimeo):</strong> a videó- és túra-beágyazások "facade" mintát követnek — oldalmegtekintéskor csak statikus előnézeti kép töltődik be. Amikor Ön a lejátszásra kattint, a YouTube- vagy Vimeo-iframe betöltődik, és az adott szolgáltató saját sütiket helyezhet el, valamint adatokat kezelhet a saját adatvédelmi szabályzata szerint (<a href="https://policies.google.com/privacy">YouTube/Google</a>, <a href="https://vimeo.com/privacy">Vimeo</a>). A <code>pano.visiongraphics.eu</code> alatti 360°-os túrák a saját infrastruktúránkon futnak, követőkódot nem állítanak be.',
+      ],
+    },
+    {
+      heading: 'Nemzetközi adattovábbítás',
+      body: [
+        'A Resend Inc., a Google LLC és a Cloudflare Inc. egyesült államokbeli székhelyű vállalatok, amelyek az adatok egy részét az Európai Gazdasági Térségen kívül kezelik. Az adattovábbítást az EU Általános Szerződési Feltételei (SCC), illetve adott esetben az EU-US Data Privacy Framework biztosítja. Olyan országba, ahol az adatvédelem nem megfelelő szintű, nem továbbítunk adatot.',
+      ],
+    },
+    {
+      heading: 'Az Ön jogai',
+      body: [
+        'A GDPR 15–22. cikkei alapján Önnek joga van:',
+        '— Hozzáférni az Önről kezelt személyes adatokhoz, másolatot kérni róluk.',
+        '— Pontatlan adatok helyesbítését kérni.',
+        '— Az adatainak törlését kérni („az elfeledtetéshez való jog"), kivéve ahol jogszabályi megőrzési kötelezettség áll fenn.',
+        '— Az adatkezelést korlátozni vita megoldása alatt.',
+        '— Az adatait géppel olvasható, hordozható formátumban megkapni.',
+        '— Tiltakozni a jogos érdeken alapuló adatkezelés ellen.',
+        '— Hozzájárulását bármikor visszavonni, ha az adatkezelés hozzájáruláson alapult (ez nem érinti a korábbi adatkezelés jogszerűségét).',
+        'Bármelyik jog gyakorlásához írjon az <a href="mailto:info@visiongraphics.hu">info@visiongraphics.hu</a> címre. Megkeresésére 30 napon belül válaszolunk.',
+        'Önnek joga van panaszt tenni a magyar adatvédelmi hatóságnál is: <strong>Nemzeti Adatvédelmi és Információszabadság Hatóság (NAIH)</strong>, 1055 Budapest, Falk Miksa utca 9–11., telefon: +36-1-391-1400, web: <a href="https://naih.hu/">naih.hu</a>.',
+      ],
+    },
+    {
+      heading: 'Gyermekek',
+      body: [
+        'A weboldal felnőtt, szakmai közönség számára készült, nem irányul 16 év alatti gyermekekre. Tudatosan nem gyűjtünk személyes adatot kiskorúaktól. Ha úgy gondolja, hogy egy kiskorú adatot adott meg számunkra, kérjük jelezze, hogy törölhessük.',
+      ],
+    },
+    {
+      heading: 'Automatizált döntéshozatal',
+      body: [
+        'Nem alkalmazunk olyan automatizált döntéshozatalt vagy profilalkotást, amely Önre nézve joghatással járna vagy hasonlóan jelentős hatása lenne.',
+      ],
+    },
+    {
+      heading: 'A tájékoztató módosítása',
+      body: [
+        'A tájékoztatót gyakorlatunk vagy az alkalmazandó jog változásakor időről időre frissítjük. A fenti „Utolsó frissítés" dátum a legutóbbi módosítást jelzi. A lényeges változásokat a Kapcsolat oldalon külön kiemeljük.',
+      ],
+    },
+    {
+      heading: 'Kérdések',
+      body: [
+        'A tájékoztatóval vagy az adatkezeléssel kapcsolatos bármely kérdésére szívesen válaszolunk: <a href="mailto:info@visiongraphics.hu">info@visiongraphics.hu</a> vagy +36 30 945 4179.',
+      ],
+    },
+  ],
+};
+
+const C = lang === 'hu' ? HU : EN;
+---
+
+<Page
+  title={C.meta.title}
+  description={C.meta.description}
+  fullBleed
+>
+  <div class="legal-page">
+
+    <SectionBanner
+      image="/_img/banners/banner-general.jpg"
+      label={lang === 'hu' ? 'Jogi nyilatkozat' : 'Legal'}
+      title={C.meta.title}
+      headingLevel="h1"
+      size="page"
+    />
+
+    <section class="section legal-section">
+      <div class="container legal-container">
+
+        <p class="legal-updated">{C.lastUpdated}</p>
+        <p class="legal-intro">{C.intro}</p>
+
+        {C.sections.map(section => (
+          <article class="legal-block">
+            <h2 class="legal-heading">{section.heading}</h2>
+            {section.body.map(line => (
+              <p class="legal-body" set:html={line} />
+            ))}
+          </article>
+        ))}
+
+        <p class="legal-footer-note">
+          <a href={localeUrl('/impressum/', lang)}>
+            {lang === 'hu' ? 'Impresszum' : 'Imprint'}
+          </a>
+          {' · '}
+          <a href={localeUrl('/contact/', lang)}>{L.nav.contact}</a>
+        </p>
+
+      </div>
+    </section>
+
+  </div>
+</Page>
+
+<style>
+  .legal-page { width: 100%; }
+
+  .legal-section {
+    padding-block: clamp(2.5rem, 4vw, 4rem);
+  }
+
+  .legal-container {
+    max-width: 820px;
+  }
+
+  .legal-updated {
+    font-size: var(--fs-xs);
+    color: var(--color-text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: var(--space-4);
+  }
+
+  .legal-intro {
+    font-size: var(--fs-body);
+    color: var(--color-text-muted);
+    line-height: 1.75;
+    margin-bottom: var(--space-12);
+    max-width: 72ch;
+  }
+
+  .legal-block {
+    margin-bottom: var(--space-10);
+  }
+
+  .legal-heading {
+    font-size: var(--fs-h5);
+    font-weight: 600;
+    color: var(--color-accent);
+    margin: 0 0 var(--space-4);
+    line-height: 1.3;
+  }
+
+  .legal-body {
+    font-size: var(--fs-body);
+    color: var(--color-text-muted);
+    line-height: 1.75;
+    margin: 0 0 var(--space-3);
+    max-width: 72ch;
+  }
+
+  .legal-body :global(a) {
+    color: var(--color-accent);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 150ms ease;
+  }
+
+  .legal-body :global(a:hover) {
+    border-bottom-color: var(--color-accent);
+  }
+
+  .legal-body :global(code) {
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.92em;
+    background: var(--color-surface);
+    padding: 0.1em 0.4em;
+    border-radius: 3px;
+  }
+
+  .legal-body :global(strong) {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  .legal-footer-note {
+    margin-top: var(--space-12);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-border);
+    font-size: var(--fs-small);
+    color: var(--color-text-faint);
+  }
+
+  .legal-footer-note a {
+    color: var(--color-text-muted);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 150ms ease, color 150ms ease;
+  }
+
+  .legal-footer-note a:hover {
+    color: var(--color-accent);
+    border-bottom-color: var(--color-accent);
+  }
+</style>
