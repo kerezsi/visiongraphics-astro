@@ -4,6 +4,7 @@ import tailwind from '@astrojs/tailwind';
 import mdx from '@astrojs/mdx';
 import keystatic from '@keystatic/astro';
 import node from '@astrojs/node';
+import sitemap from '@astrojs/sitemap';
 
 const isProd = process.env.NODE_ENV === 'production';
 
@@ -95,6 +96,20 @@ export default defineConfig({
       applyBaseStyles: false,
     }),
     mdx(),
+    // Auto-generates /sitemap-index.xml + /sitemap-0.xml at build time
+    // covering every static route. The i18n config above means every page
+    // emits hreflang alternates between /en/ and /hu/ versions automatically.
+    // Excludes editor-only routes (Keystatic admin) and the bare root
+    // redirect (covered by /en/ + /hu/ entries already).
+    sitemap({
+      i18n: {
+        defaultLocale: 'en',
+        locales: { en: 'en-US', hu: 'hu-HU' },
+      },
+      filter: (page) =>
+        !page.includes('/keystatic') &&
+        !page.endsWith('visiongraphics.eu/'),
+    }),
     ...(!isProd ? [keystatic()] : []),
   ],
   vite: {
