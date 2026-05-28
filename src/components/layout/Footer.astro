@@ -104,6 +104,11 @@ const links = (navConfig as Array<{ label: string; href: string; enabled: boolea
     <!-- Bottom bar -->
     <div class="footer-bottom">
       <span>© Vision Graphics Kft. {year}</span>
+      <span class="footer-legal">
+        <a href={localeUrl('/privacy/', lang)}>{L.nav.privacy}</a>
+        <span aria-hidden="true">·</span>
+        <a href={localeUrl('/impressum/', lang)}>{L.nav.impressum}</a>
+      </span>
       <span class="footer-bottom-right">
         Budapest · Est. 1996
       </span>
@@ -195,6 +200,24 @@ const links = (navConfig as Array<{ label: string; href: string; enabled: boolea
   .footer-bottom {
     @apply flex justify-between items-center font-body text-tiny text-faint;
     padding-top: var(--space-6);
+    gap: var(--space-4);
+    flex-wrap: wrap;
+  }
+
+  .footer-legal {
+    @apply inline-flex items-center font-body text-tiny;
+    gap: var(--space-2);
+    color: var(--color-text-faint);
+  }
+
+  .footer-legal a {
+    color: var(--color-text-faint);
+    text-decoration: none;
+    transition: color 150ms ease;
+  }
+
+  .footer-legal a:hover {
+    color: var(--color-text);
   }
 
   /* Responsive */

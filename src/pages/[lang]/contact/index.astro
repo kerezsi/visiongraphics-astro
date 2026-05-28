@@ -4,7 +4,7 @@
 import Page from '../../../layouts/Page.astro';
 import SectionBanner from '../../../components/ui/SectionBanner.astro';
 import Icon from '../../../components/ui/Icon.astro';
-import { staticLocalePaths, type Locale } from '../../../lib/i18n';
+import { staticLocalePaths, type Locale, localeUrl } from '../../../lib/i18n';
 import { ui } from '../../../i18n/strings';
 
 export const getStaticPaths = staticLocalePaths;
@@ -179,6 +179,10 @@ const L = ui(lang);
           <button type="submit" class="btn btn-primary form-submit">
             {L.contact.fSubmit}
           </button>
+
+          <p class="form-consent">
+            {L.contact.consentPrefix}<a href={localeUrl('/privacy/', lang)}>{L.contact.consentLink}</a>{L.contact.consentSuffix}
+          </p>
 
           <p id="form-status" class="form-status" aria-live="polite"></p>
         </form>
@@ -404,6 +408,25 @@ const L = ui(lang);
   .form-submit {
     align-self: flex-start;
     min-width: 160px;
+  }
+
+  .form-consent {
+    font-size: var(--fs-xs);
+    color: var(--color-text-faint);
+    line-height: 1.55;
+    margin: 0;
+    max-width: 65ch;
+  }
+
+  .form-consent a {
+    color: var(--color-text-muted);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 150ms ease;
+  }
+
+  .form-consent a:hover {
+    color: var(--color-accent);
   }
 
   .form-status {

@@ -28,6 +28,8 @@ const en = {
     faq:         'FAQ',
     pricing:     'Pricing',
     blog:        'Blog',
+    privacy:     'Privacy Policy',
+    impressum:   'Imprint',
   },
 
   // ── Buttons / CTAs ───────────────────────────────────────────
@@ -211,6 +213,9 @@ const en = {
     statusSending:    'Sending…',
     statusOk:         "Message sent — we'll be in touch within one business day.",
     statusErr:        'Something went wrong. Please email us directly at info@visiongraphics.hu',
+    consentPrefix:    'By submitting, you agree to our ',
+    consentLink:      'Privacy Policy',
+    consentSuffix:    '. We use your details only to reply to your message.',
   },
 } as const;
 
@@ -226,6 +231,8 @@ const hu: Strings = {
     faq:         'GYIK',
     pricing:     'Árak',
     blog:        'Blog',
+    privacy:     'Adatkezelési tájékoztató',
+    impressum:   'Impresszum',
   },
   cta: {
     seeWork:        'Munkáink',
@@ -397,6 +404,9 @@ const hu: Strings = {
     statusSending:    'Küldés…',
     statusOk:         'Üzenet elküldve — egy munkanapon belül jelentkezünk.',
     statusErr:        'Hiba történt. Kérjük, írjon közvetlenül az info@visiongraphics.hu címre.',
+    consentPrefix:    'A beküldéssel elfogadja az ',
+    consentLink:      'adatkezelési tájékoztatónkat',
+    consentSuffix:    '. Az adatait kizárólag az üzenetére adott válaszhoz használjuk fel.',
   },
 };
 

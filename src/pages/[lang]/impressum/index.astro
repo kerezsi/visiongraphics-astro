@@ -1,0 +1,268 @@
+---
+// src/pages/[lang]/impressum/index.astro
+//
+// Imprint / Impresszum — required under Hungarian e-commerce law
+// (Ektv. 2001. évi CVIII. tv. §4) and EU rules for commercial sites.
+
+import Page from '../../../layouts/Page.astro';
+import SectionBanner from '../../../components/ui/SectionBanner.astro';
+import { staticLocalePaths, type Locale, localeUrl } from '../../../lib/i18n';
+import { ui } from '../../../i18n/strings';
+
+export const getStaticPaths = staticLocalePaths;
+const { lang } = Astro.params as { lang: Locale };
+Astro.locals.lang = lang;
+const L = ui(lang);
+
+type Row = { label: string; value: string };
+
+const EN: { meta: { title: string; description: string }; intro: string; company: Row[]; hosting: { heading: string; rows: Row[] }; supervisory: { heading: string; rows: Row[] } } = {
+  meta: {
+    title: 'Imprint',
+    description: 'Legal information about Vision Graphics Kft. — company details, registration, contact, hosting providers, and supervisory authorities.',
+  },
+  intro:
+    'Legal information about the operator of visiongraphics.eu, in accordance with Hungarian Act CVIII of 2001 on electronic commerce services (Ektv.) §4 and applicable EU disclosure requirements.',
+  company: [
+    { label: 'Company name',          value: 'Vision Graphics Kft.' },
+    { label: 'Registered seat',       value: 'H-1126 Budapest, Hollósy Simon utca 15., Hungary' },
+    { label: 'Mailing address',       value: 'H-1126 Budapest, Hollósy Simon utca 15., Hungary' },
+    { label: 'Company registration',  value: '01-09-564319' },
+    { label: 'Court of registration', value: 'Fővárosi Törvényszék Cégbírósága' },
+    { label: 'Tax number',            value: '12203688-2-43' },
+    { label: 'Bank account',          value: '11712004-20218072 (OTP Bank)' },
+    { label: 'IBAN',                  value: 'HU95 1171 2004 2021 8072 0000 0000' },
+    { label: 'Email',                 value: '<a href="mailto:kerezsi@visiongraphics.hu">kerezsi@visiongraphics.hu</a> · <a href="mailto:info@visiongraphics.hu">info@visiongraphics.hu</a>' },
+    { label: 'Phone',                 value: '+36 30 945 4179' },
+    { label: 'Website',               value: '<a href="https://www.visiongraphics.hu">www.visiongraphics.hu</a>' },
+    { label: 'Representative',        value: 'László Kerezsi, managing director' },
+  ],
+  hosting: {
+    heading: 'Hosting providers',
+    rows: [
+      { label: 'Main website (visiongraphics.eu)', value: 'Cloudflare Inc., 101 Townsend St, San Francisco, CA 94107, USA — <a href="https://www.cloudflare.com/">cloudflare.com</a>' },
+      { label: '360° tours (pano.visiongraphics.eu)', value: 'Tárhely.Eu Kft., 1144 Budapest, Ormánság utca 4. — <a href="https://tarhely.eu/">tarhely.eu</a>' },
+      { label: 'Transactional email (contact form)', value: 'Resend Inc., 2261 Market Street #4191, San Francisco, CA 94114, USA — <a href="https://resend.com/">resend.com</a>' },
+      { label: 'Email mailbox',                       value: 'Google Workspace — Google Ireland Ltd., Gordon House, Barrow Street, Dublin 4, Ireland' },
+    ],
+  },
+  supervisory: {
+    heading: 'Supervisory authorities',
+    rows: [
+      { label: 'Data protection', value: '<strong>Nemzeti Adatvédelmi és Információszabadság Hatóság (NAIH)</strong> · 1055 Budapest, Falk Miksa utca 9–11. · Tel: +36-1-391-1400 · <a href="https://naih.hu/">naih.hu</a>' },
+      { label: 'Consumer protection', value: 'Budapest Főváros Kormányhivatala — Fogyasztóvédelmi Főosztály · 1051 Budapest, Sas utca 19. · <a href="https://www.kormanyhivatal.hu/">kormanyhivatal.hu</a>' },
+    ],
+  },
+};
+
+const HU: typeof EN = {
+  meta: {
+    title: 'Impresszum',
+    description: 'A Vision Graphics Kft. jogi tájékoztatója — cégadatok, nyilvántartási adatok, elérhetőség, tárhelyszolgáltatók és felügyeleti hatóságok.',
+  },
+  intro:
+    'A visiongraphics.eu üzemeltetőjére vonatkozó jogi tájékoztató az elektronikus kereskedelmi szolgáltatásokról szóló 2001. évi CVIII. törvény (Ektv.) 4. §-a és az alkalmazandó uniós tájékoztatási szabályok szerint.',
+  company: [
+    { label: 'Cégnév',                value: 'Vision Graphics Kft.' },
+    { label: 'Székhely',              value: 'H-1126 Budapest, Hollósy Simon utca 15.' },
+    { label: 'Levelezési cím',        value: 'H-1126 Budapest, Hollósy Simon utca 15.' },
+    { label: 'Cégjegyzékszám',        value: '01-09-564319' },
+    { label: 'Nyilvántartó bíróság',  value: 'Fővárosi Törvényszék Cégbírósága' },
+    { label: 'Adószám',               value: '12203688-2-43' },
+    { label: 'Bankszámlaszám',        value: '11712004-20218072 (OTP Bank)' },
+    { label: 'IBAN',                  value: 'HU95 1171 2004 2021 8072 0000 0000' },
+    { label: 'E-mail',                value: '<a href="mailto:kerezsi@visiongraphics.hu">kerezsi@visiongraphics.hu</a> · <a href="mailto:info@visiongraphics.hu">info@visiongraphics.hu</a>' },
+    { label: 'Telefon',               value: '+36 30 945 4179' },
+    { label: 'Weboldal',              value: '<a href="https://www.visiongraphics.hu">www.visiongraphics.hu</a>' },
+    { label: 'Képviselő',             value: 'Kerezsi László, ügyvezető' },
+  ],
+  hosting: {
+    heading: 'Tárhelyszolgáltatók',
+    rows: [
+      { label: 'Fő weboldal (visiongraphics.eu)', value: 'Cloudflare Inc., 101 Townsend St, San Francisco, CA 94107, USA — <a href="https://www.cloudflare.com/">cloudflare.com</a>' },
+      { label: '360°-os túrák (pano.visiongraphics.eu)', value: 'Tárhely.Eu Kft., 1144 Budapest, Ormánság utca 4. — <a href="https://tarhely.eu/">tarhely.eu</a>' },
+      { label: 'Tranzakciós e-mail (kapcsolatfelvételi űrlap)', value: 'Resend Inc., 2261 Market Street #4191, San Francisco, CA 94114, USA — <a href="https://resend.com/">resend.com</a>' },
+      { label: 'E-mail postafiók',                              value: 'Google Workspace — Google Ireland Ltd., Gordon House, Barrow Street, Dublin 4, Írország' },
+    ],
+  },
+  supervisory: {
+    heading: 'Felügyeleti hatóságok',
+    rows: [
+      { label: 'Adatvédelem',         value: '<strong>Nemzeti Adatvédelmi és Információszabadság Hatóság (NAIH)</strong> · 1055 Budapest, Falk Miksa utca 9–11. · Tel: +36-1-391-1400 · <a href="https://naih.hu/">naih.hu</a>' },
+      { label: 'Fogyasztóvédelem',    value: 'Budapest Főváros Kormányhivatala — Fogyasztóvédelmi Főosztály · 1051 Budapest, Sas utca 19. · <a href="https://www.kormanyhivatal.hu/">kormanyhivatal.hu</a>' },
+    ],
+  },
+};
+
+const C = lang === 'hu' ? HU : EN;
+---
+
+<Page
+  title={C.meta.title}
+  description={C.meta.description}
+  fullBleed
+>
+  <div class="legal-page">
+
+    <SectionBanner
+      image="/_img/banners/banner-general.jpg"
+      label={lang === 'hu' ? 'Jogi nyilatkozat' : 'Legal'}
+      title={C.meta.title}
+      headingLevel="h1"
+      size="page"
+    />
+
+    <section class="section legal-section">
+      <div class="container legal-container">
+
+        <p class="legal-intro">{C.intro}</p>
+
+        <article class="legal-block">
+          <h2 class="legal-heading">{lang === 'hu' ? 'Cégadatok' : 'Company details'}</h2>
+          <dl class="legal-dl">
+            {C.company.map(row => (
+              <>
+                <dt>{row.label}</dt>
+                <dd set:html={row.value} />
+              </>
+            ))}
+          </dl>
+        </article>
+
+        <article class="legal-block">
+          <h2 class="legal-heading">{C.hosting.heading}</h2>
+          <dl class="legal-dl">
+            {C.hosting.rows.map(row => (
+              <>
+                <dt>{row.label}</dt>
+                <dd set:html={row.value} />
+              </>
+            ))}
+          </dl>
+        </article>
+
+        <article class="legal-block">
+          <h2 class="legal-heading">{C.supervisory.heading}</h2>
+          <dl class="legal-dl">
+            {C.supervisory.rows.map(row => (
+              <>
+                <dt>{row.label}</dt>
+                <dd set:html={row.value} />
+              </>
+            ))}
+          </dl>
+        </article>
+
+        <p class="legal-footer-note">
+          <a href={localeUrl('/privacy/', lang)}>{L.nav.privacy}</a>
+          {' · '}
+          <a href={localeUrl('/contact/', lang)}>{L.nav.contact}</a>
+        </p>
+
+      </div>
+    </section>
+
+  </div>
+</Page>
+
+<style>
+  .legal-page { width: 100%; }
+
+  .legal-section {
+    padding-block: clamp(2.5rem, 4vw, 4rem);
+  }
+
+  .legal-container {
+    max-width: 820px;
+  }
+
+  .legal-intro {
+    font-size: var(--fs-body);
+    color: var(--color-text-muted);
+    line-height: 1.75;
+    margin-bottom: var(--space-10);
+    max-width: 72ch;
+  }
+
+  .legal-block {
+    margin-bottom: var(--space-10);
+  }
+
+  .legal-heading {
+    font-size: var(--fs-h5);
+    font-weight: 600;
+    color: var(--color-accent);
+    margin: 0 0 var(--space-4);
+    line-height: 1.3;
+  }
+
+  /* Description-list style for company / hosting rows */
+  .legal-dl {
+    display: grid;
+    grid-template-columns: minmax(180px, max-content) 1fr;
+    gap: var(--space-2) var(--space-6);
+    margin: 0;
+    font-size: var(--fs-body);
+  }
+
+  .legal-dl dt {
+    font-weight: 600;
+    color: var(--color-text);
+    text-transform: uppercase;
+    font-size: var(--fs-small);
+    letter-spacing: 0.04em;
+    align-self: baseline;
+  }
+
+  .legal-dl dd {
+    margin: 0;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+  }
+
+  .legal-dl :global(a) {
+    color: var(--color-accent);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 150ms ease;
+  }
+
+  .legal-dl :global(a:hover) {
+    border-bottom-color: var(--color-accent);
+  }
+
+  .legal-dl :global(strong) {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  .legal-footer-note {
+    margin-top: var(--space-12);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-border);
+    font-size: var(--fs-small);
+    color: var(--color-text-faint);
+  }
+
+  .legal-footer-note a {
+    color: var(--color-text-muted);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 150ms ease, color 150ms ease;
+  }
+
+  .legal-footer-note a:hover {
+    color: var(--color-accent);
+    border-bottom-color: var(--color-accent);
+  }
+
+  @media (max-width: 600px) {
+    .legal-dl {
+      grid-template-columns: 1fr;
+      gap: var(--space-1) 0;
+    }
+    .legal-dl dd {
+      margin-bottom: var(--space-3);
+    }
+  }
+</style>
