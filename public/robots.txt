@@ -1,0 +1,111 @@
+# robots.txt for visiongraphics.eu — Vision Graphics Kft.
+#
+# Policy: this site WELCOMES indexing by traditional and AI search engines.
+# We want our work to appear in Google, Bing, DuckDuckGo, Perplexity, ChatGPT
+# search, Claude search, and AI Overviews. AI training crawlers are also
+# permitted — we explicitly opt in so our portfolio can be cited and
+# referenced by AI assistants when users ask about architectural
+# visualization, 3ds Max, V-Ray, VR, or related topics.
+#
+# This file is authoritative. If Cloudflare's "Managed Robots.txt" feature
+# is enabled in the dashboard, disable it to ensure these directives apply
+# without prepended overrides.
+
+# ────────────────────────────────────────────────────────────────
+# Default policy: allow everything
+# ────────────────────────────────────────────────────────────────
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /keystatic/
+
+# Cloudflare Content-Signal (machine-readable companion declaration —
+# explicit signal that search, AI-input/grounding, AND training are
+# all permitted; reservation of rights NOT exercised under EU CDSM
+# Directive Art. 4).
+Content-Signal: search=yes, ai-input=yes, ai-train=yes
+
+# ────────────────────────────────────────────────────────────────
+# AI search & answer engines — explicit ALLOW
+# (these honour robots.txt; the explicit entry overrides any
+#  Cloudflare-default block at the edge)
+# ────────────────────────────────────────────────────────────────
+
+# Google — AI Overviews, Vertex AI grounding, Gemini app
+User-agent: Google-Extended
+Allow: /
+
+# OpenAI — ChatGPT browsing / search (NOT training)
+User-agent: OAI-SearchBot
+Allow: /
+
+# OpenAI — ChatGPT user-initiated fetches
+User-agent: ChatGPT-User
+Allow: /
+
+# Anthropic — Claude user-initiated fetches
+User-agent: Claude-User
+Allow: /
+
+# Anthropic — Claude search index
+User-agent: Claude-SearchBot
+Allow: /
+
+# Anthropic — citations / web context
+User-agent: ClaudeBot
+Allow: /
+
+# Perplexity — answer engine
+User-agent: PerplexityBot
+Allow: /
+
+# Perplexity — user-initiated fetches
+User-agent: Perplexity-User
+Allow: /
+
+# You.com
+User-agent: YouBot
+Allow: /
+
+# Meta AI
+User-agent: meta-externalagent
+Allow: /
+
+# Apple Intelligence
+User-agent: Applebot-Extended
+Allow: /
+
+# Bytedance / Doubao
+User-agent: Bytespider
+Allow: /
+
+# Amazon AI (Rufus etc.)
+User-agent: Amazonbot
+Allow: /
+
+# Diffbot — knowledge graph used by many AI systems
+User-agent: Diffbot
+Allow: /
+
+# Common Crawl — corpus used by many LLM training pipelines
+User-agent: CCBot
+Allow: /
+
+# OpenAI — training crawler (separate from search)
+User-agent: GPTBot
+Allow: /
+
+# Cohere
+User-agent: cohere-ai
+Allow: /
+User-agent: cohere-training-data-crawler
+Allow: /
+
+# Mistral
+User-agent: MistralAI-User
+Allow: /
+
+# ────────────────────────────────────────────────────────────────
+# Sitemap
+# ────────────────────────────────────────────────────────────────
+Sitemap: https://visiongraphics.eu/sitemap-index.xml
