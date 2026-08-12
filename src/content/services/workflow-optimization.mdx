@@ -106,3 +106,34 @@ A rövid távú megoldások hasznosak, de a valódi értéket egy olyan munkafol
 
 Az audit jelentését megtarthatja és megvalósíthatja saját maga, vagy ránk is bízhatja az implementációt. Bármelyik utat is választja, kap egy írásos dokumentumot arról, hogy mit találtunk, az mennyi idejébe kerül jelenleg, és hogyan néz ki a megoldás.
 </Lang>
+
+<SectionBanner image="/_img/banners/banner-rendering.jpg" label={{ en: "In Our Own Studio", hu: "A saját stúdiónkban" }} title={{ en: "We Run On Tools We Built Ourselves", hu: "Saját fejlesztésű eszközökkel dolgozunk" }} />
+
+<Lang code="en">
+We don't recommend automation from a slide deck. Every tool below exists because we hit the problem ourselves first and had to solve it before we could deliver work on time. The tools we built for ourselves are in daily production use — they run our render machines, our file handling and our delivery packaging.
+
+That is what you are buying: judgement earned by building and maintaining these systems, not a theory about them. We know what an automated step costs to keep alive, which is why an audit report tells you what **not** to automate as well as what to.
+</Lang>
+
+<Lang code="hu">
+Nem prezentációból javaslunk automatizálást. Az alábbi eszközök mindegyike azért létezik, mert mi magunk ütköztünk bele a problémába, és meg kellett oldanunk ahhoz, hogy határidőre le tudjuk adni a munkát. A magunknak fejlesztett eszközök napi szinten, éles üzemben futnak: ezek működtetik a rendergépeinket, a fájlkezelésünket és az átadási csomagok összeállítását.
+
+Ezt kapja tőlünk: olyan szakmai ítélőképességet, amely ezeknek a rendszereknek a megépítéséből és karbantartásából származik, nem pedig elméleti tudást. Tudjuk, mibe kerül életben tartani egy automatizált lépést – ezért az audit jelentése arról is szól, mit **nem** érdemes automatizálni.
+</Lang>
+
+<DeliverableGrid columns={2} items={[
+  { title: { en: "Render farm control",        hu: "Renderfarm-vezérlés" },                    desc: { en: "A browser dashboard that starts and stops render services and AI image backends across roughly 15 machines, syncs models and plugins to all of them, clears output folders and tails job logs. It replaced walking to each machine.", hu: "Böngészőből futó vezérlőfelület, amely nagyjából 15 gépen indítja és állítja le a render- és AI-képgeneráló szolgáltatásokat, mindegyikre kiszinkronizálja a modelleket és a plugineket, üríti a kimeneti mappákat, és élőben mutatja a feladatnaplókat. Korábban ehhez minden géphez oda kellett sétálni." } },
+  { title: { en: "Batch camera submission",    hu: "Kötegelt kamera-feladás" },                desc: { en: "Render submission from inside 3ds Max: hundreds of files and cameras queued, named and routed to the right output without manual clicking.", hu: "Renderelés-feladás közvetlenül a 3ds Max-ból: több száz fájl és kamera kerül sorba, a megfelelő elnevezéssel és kimeneti útvonallal, kézi kattintgatás nélkül." } },
+  { title: { en: "Archviz-aware renaming",     hu: "Látványtervhez szabott átnevezés" },       desc: { en: "A bulk file renamer with a reorderable transform pipeline, EXIF support, undo and saved presets. Built for frame sequences, number padding and render passes — the kind of renaming generic tools get wrong.", hu: "Kötegelt fájlátnevező átrendezhető műveletsorral, EXIF-támogatással, visszavonással és menthető beállításokkal. Képsorozatokhoz, sorszám-kitöltéshez (padding) és render-rétegekhez készült – pontosan ahhoz, amit az általános célú eszközök elrontanak." } },
+  { title: { en: "Tour publishing pipeline",   hu: "Túrapublikálási folyamat" },               desc: { en: "Panorama and VR tour authoring with a headless command-line mode, so a whole set of tours can be re-published in batch instead of rebuilt by hand. Bridges pull floorplans and camera positions straight out of the 3D scene.", hu: "Panoráma- és VR-túrák összeállítása felület nélküli, parancssoros módban is, így egy teljes túrakészlet kötegelten újrapublikálható ahelyett, hogy kézzel kellene újraépíteni. A kapcsolódó modulok közvetlenül a 3D-jelenetből olvassák ki az alaprajzokat és a kamerapozíciókat." } },
+  { title: { en: "Automated delivery checks",  hu: "Automatikus átadási ellenőrzés" },         desc: { en: "In our AI image pipeline every generated image is scored automatically before a human ever sees it, and delivery files come out correctly named and formatted every time.", hu: "Az AI-alapú képfeldolgozási folyamatunkban minden elkészült képet automatikus pontozás minősít, mielőtt bárki ránézne, az átadási fájlok pedig mindig a megfelelő elnevezéssel és formátumban készülnek el." } },
+  { title: { en: "Tool vetting database",      hu: "Eszközértékelő adatbázis" },               desc: { en: "A local database that tracks and vets new AI tools weekly — licence terms, hardware requirements, whether they are actually production-safe. Tool choices come from evidence, not from hype.", hu: "Helyi adatbázis, amely hetente követi és értékeli az új AI-eszközöket: licencfeltételek, hardverigény, valós produkciós használhatóság. Így az eszközválasztás tényeken alapul, nem a körülöttük lévő felhajtáson." } },
+]} />
+
+<Lang code="en">
+The same approach applies to your pipeline: start from what you already have, automate only the steps that earn back their maintenance, and document everything so the tools don't depend on us being available. If the answer turns out to be a script inside 3ds Max, that's [3ds Max tools and scripting](/services/3ds-max-tools/). If it's an AI-assisted step in your image pipeline, that's [AI-enhanced services](/services/advanced-ai-services/).
+</Lang>
+
+<Lang code="hu">
+Ugyanezt a szemléletet visszük át az Ön munkafolyamatára: abból indulunk ki, ami már megvan, csak azokat a lépéseket automatizáljuk, amelyek visszahozzák a karbantartásuk árát, és mindent dokumentálunk, hogy az eszközök működése ne függjön a mi elérhetőségünktől. Ha a megoldás végül egy 3ds Max-on belüli szkript, arról a [3ds Max eszközök és szkriptek](/services/3ds-max-tools/) oldalon olvashat. Ha egy AI-támogatott lépés a képfeldolgozási folyamatban, akkor az [AI-támogatott szolgáltatások](/services/advanced-ai-services/) oldalon.
+</Lang>
