@@ -1,0 +1,70 @@
+---
+title: "Building Our Own VR Tour Engine: When the Tour Has to Match the Model"
+date: 2026-08-12
+excerpt: "We already had good commercial tour software. We built our own anyway — because a 360 tour should be generated from the same 3D scene the renders come from, and re-publishing it should be a command, not an afternoon."
+tags:
+  - architectural-visualization
+  - tools
+  - workflow
+  - vr
+published: false
+coverImage: /_img/articles/tour-engine/published-tour-viewer.jpg
+---
+
+A 360 tour normally gets built twice. Once in the 3D scene — where the cameras stand, which room can see which, where the floor plan is drawn. Then again in the tour software, where you place the same viewpoints on the same plan and draw the same connections by hand. Then the architect moves a wall, three cameras shift, you re-render, and you build the second one again.
+
+We have delivered 360 tours in commercial authoring software for years, mostly Pano2VR, and none of this is a complaint about it. It is mature software that does its job. The problem is structural: the tour is a separate document from the scene that produced it, so keeping the two in agreement is manual work nobody bills for and everybody repeats.
+
+So over the past months we built our own tour authoring and publishing engine. Three reasons, in order: **integration** with the 3D scene, **batch** operation, and **control** over the player and the publishing path.
+
+![A published tour in the browser — floor plan mini-map with a live view cone, compass, and the viewpoint thumbnail strip](/_img/articles/tour-engine/published-tour-viewer.jpg)
+
+## The tour is generated from the scene the renders come from
+
+We wrote two bridges — a Blender add-on and a 3ds Max plugin using pymxs — that emit the same JSON hand-off file. In the scene you mark cameras as tour viewpoints, define levels by their elevation range, and press one button. Out comes every viewpoint with its world position in metres and its compass bearing; an orthographic top-down floor plan per level, north-up, with the world-to-pixel mapping so pins land on the plan without anyone dragging them; and the links between viewpoints, computed by raycasting line-of-sight between every same-level camera pair within a distance cap. Objects excluded from renders do not block the ray, so the door-open state is whatever the scene contains. A marker dropped near a staircase links the nearest camera on each floor.
+
+![The bridge panel in Blender's viewport sidebar — marked tour cameras, the level list, and the computed line-of-sight links](/_img/articles/tour-engine/blender-bridge-panel.jpg)
+
+**The tour cannot drift out of sync with the model, because it is derived from the model.** Re-export is idempotent and re-import diffs by stable IDs: moved cameras update their positions, links and plan pins, while titles, hotspots and view settings you authored by hand survive untouched. A camera deleted from the scene is flagged as orphaned and waits for you to confirm.
+
+The bridges deliberately never render — the app consumes finished panoramas and nothing else, decided in the first week. You render equirects with Cycles, V-Ray, Corona or anything that outputs a 2:1 sphere, named after the camera IDs the export already references, and a watch folder attaches them to their nodes as they land, so import runs while the render queue is still working.
+
+![The floor plan page — node pins, link lines, level tabs and the viewpoint strip](/_img/articles/tour-engine/floorplan-editor.jpg)
+
+Old tours come across too. The importer reads Pano2VR project files — built against real projects from versions 5.2 through 7.1 — bringing over nodes, source panoramas, view parameters and north, point and polygon hotspots, links, sounds and floor plans. Skins, animations and baked patches are listed in an import report as skipped rather than silently dropped.
+
+## Headless by default
+
+The visual editor is a convenience layer. Underneath, one Python service layer is exposed four ways: a REST API, a command-line tool, an importable Python API, and an MCP server for agents.
+
+**Re-publishing a tour is a command, not an afternoon.** A complete run is six lines: create the project from a saved template, import the scene export, watch the render folder, tile, run the QA report, publish. The report exits non-zero when it finds errors, so it can gate a build the way a test suite does. Publishing goes through saved deploy profiles — folder, FTP or SFTP — and a folder deploy copies incrementally, so a one-node edit re-copies one node.
+
+The project itself is a folder with a JSON file at the root and stable string IDs everywhere: it diffs in git, and a script or an agent can edit it safely.
+
+![A headless run in the terminal — scene import, tiling, QA report and incremental publish](/_img/articles/tour-engine/cli-headless-run.jpg)
+
+## Why we wrote the player as well
+
+Panorama tours ship with a custom WebGL2 viewer that has zero runtime dependencies. It streams multi-resolution cube tiles with per-visible-tile culling, and WebP tiles come out roughly 30% smaller than JPEG at the same quality. The same engine treats flat and cylindrical high-resolution images — gigapixel drone panoramas, ortho elevations, site plans — as navigable nodes; on a 1.27 gigapixel test panorama, zooming to native resolution costs fourteen tile requests rather than the whole pyramid.
+
+Because the tour knows the real 3D offsets between viewpoints, moving between them is a position-aware directional zoom — it reads as walking towards the next room instead of a crossfade. That falls out of the scene integration: the real offsets are already in the export, so the transition does not have to guess at them.
+
+Tours carrying Gaussian splats or glTF models lazy-load a separate three.js chunk; a plain panorama tour never downloads a 3D library.
+
+## VR, and a guide who can see what the client is seeing
+
+The viewer takes an immersive 3DOF WebXR session from a headset browser and renders over/under stereo panoramas per eye — code that is complete but has not met a headset yet, more on which below. Headsets refuse VR on an insecure origin, so serving on a LAN address generates and caches a self-signed certificate automatically; exported tours are also installable, which is the fallback if a headset declines WebXR through that certificate.
+
+The part we care about most is guided viewing on site. A presenter drives the view and every joined browser follows. The guide's tablet lists each device by name with the room it is in and a compass dial for where it is looking, and clicking a device opens its view full size. Nothing is streamed: the panel renders the same tour locally from a handful of numbers a second, which is why it works on an offline hotspot. The guide can drop a marker on a detail — an edge arrow appears if it is behind you — send one headset elsewhere while the group stays, or gather everyone back. What none of those buttons do is take over someone's head; re-centring rotates the tour's forward direction and lets the wearer look.
+
+![The guide console — one card per joined device with room, heading dial and status, and one device's view opened full size](/_img/articles/tour-engine/guide-console.jpg)
+
+## The honest position
+
+Working end to end: authoring, tiling, export, publishing, skins, the QA report, the Pano2VR importer, the Blender bridge, and the guided-viewing console — the last verified in live multi-client browser sessions in late July.
+
+Not verified on hardware: no headset session has happened yet. VR rendering and the 6DOF splat mode are code-complete, but until a Quest sits on the desk we are not claiming they pass. The 3ds Max bridge is the same story — feature-complete but younger than its Blender twin, with a dozen assumptions about the Max API marked in the code for verification on first production use.
+
+Genuinely missing: inside a VR session hotspots do not render and nothing is clickable, so you navigate before entering VR. That is the next piece of work. 360 video panorama nodes are specified and deliberately unbuilt until a project needs them. And installation is still developer-grade — clone the repository, run a build script, keep Python and Node on the machine. There is no installer, because the one we tried produced a shell that could not start its own backend. This is internal studio tooling, not a product.
+
+If you want a tour that stays in step with the model it came from — or a guided viewing where the person running it can see what your client is looking at — that is part of our [architectural visualization work](/services/architectural-visualization/). [Get in touch](/contact/) and we will walk you through what it would look like on your project.

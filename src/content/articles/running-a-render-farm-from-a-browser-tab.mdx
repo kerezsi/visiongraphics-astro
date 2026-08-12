@@ -1,0 +1,80 @@
+---
+title: "Running the Render Farm From a Browser Tab: The Tool We Built to Stop Walking to Every PC"
+date: 2026-08-12
+excerpt: "One operator, a farm of up to fifteen machines, and a deadline. We wrote a small agent for each PC and a dashboard that talks to all of them — start and stop render and AI services, push models to every node, tail the logs, and stop walking to the machine room."
+tags:
+  - tools
+  - workflow
+  - render-farm
+  - comfyui
+published: false
+coverImage: /_img/articles/render-farm/farm-dashboard-overview.jpg
+---
+
+A batch has to go out tonight and half the machines are sitting there with a dead render service. Each one is a thirty-second fix: wake the screen, find the window, start the process. The thirty seconds is not the problem — the walk is, once per machine, every time. And a new model file has to be on every GPU node before the batch starts, the copy finished before you press go.
+
+We are a one-person studio with a farm of up to fifteen machines, which is exactly the size where this hurts most: too many boxes to manage by walking, too few to justify a commercial farm-management licence per node. So we wrote our own controller.
+
+![The farm dashboard — a card per machine, showing service status across the whole farm](/_img/articles/render-farm/farm-dashboard-overview.jpg)
+
+## Two small pieces
+
+**The whole system is an agent and a dashboard.** The agent is a Node.js HTTP server running on every target PC, listening on port 7700 with zero npm dependencies — the built-in `http` module and nothing else. The dashboard is a small Express app on the file server, port 3000, holding the machine inventory and proxying commands to the right agent. The browser UI is a single HTML file with React from a CDN: no bundler, no build step. A tool that keeps the farm maintained should not itself become the thing that needs maintaining.
+
+Every machine declares a type — Backburner only, AI backend only, or both — and its card shows only the controls that type has. Agents are polled in parallel every five seconds, so an unreachable machine dims its card instead of freezing the page.
+
+![A dual-role machine card — Backburner, SwarmUI, the ComfyUI backend row, and the maintenance buttons](/_img/articles/render-farm/machine-card-both.jpg)
+
+## Starting and stopping things you cannot see
+
+Start and Stop buttons are easy. Knowing whether something is *actually* running took the work.
+
+A service counts as running when something is listening on its port — 7861 for SwarmUI, 7821 or 8188 for the ComfyUI backend behind it. Our first version used a loopback connect and lied to us whenever SwarmUI bound to the LAN address instead of localhost; parsing `netstat` for a LISTENING socket fixed it. Backburner is detected differently: we ask Windows for every `server.exe` and keep only the ones whose executable path contains "Backburner", through PowerShell's `Get-CimInstance Win32_Process` — WMIC has been removed from current Windows 11 builds. Stopping is just as unglamorous: killing SwarmUI means killing the console window that launched it as well as the process holding the port.
+
+## The same hardware, two different jobs
+
+**A render farm and an AI-generation farm are now the same boxes doing different work at different hours.** The GPU workstation generating images during the day is a render node overnight, and the two do not coexist politely — they want the same VRAM and the same CPU.
+
+So the summary bar has two buttons for dual-role machines: Render and Swarm. One click stops the AI backend on every dual node and brings the render service up; the other does the reverse, skipping any node already in the target state.
+
+![Switching every dual-role node from AI generation to render work in one click](/_img/articles/render-farm/dual-node-switch.jpg)
+
+That is the honest shape of what AI changed for a small studio: it is an operations problem before it is a creative one.
+
+## Keeping every machine identical
+
+The other half of the tool is fleet maintenance, all of it running as asynchronous jobs on the agent with the output captured for the dashboard.
+
+- **Sync Models** — robocopy from the donor share into each node's model folder, additive by default so nothing local is deleted. Mirror mode makes the folder an exact copy of the donor and sits behind a confirmation dialog.
+- **Sync Custom Nodes** — the same for ComfyUI custom nodes, additive only. Those folders are git checkouts; mirroring them would be vandalism.
+- **Update** — runs the three updater scripts that ship with the ComfyUI install, each fed an empty stdin so a trailing `pause` exits instead of hanging.
+- **Clear Output History** — wipes the generated-image folder on that node, confirm-gated.
+- **Run Script** — a dropdown of the `.bat` files in one shared scripts folder, nothing outside it, for plugin installs and one-off maintenance. It runs in the agent's own session — session 0 when the agent runs as SYSTEM — so an installer that pops a dialog just hangs.
+
+Two rules make this safe enough to trust: a machine runs one job at a time and answers "busy" to anything else, and the agent refuses to sync or update while a backend is live on it — replacing model files under a running process is how you get a corrupted evening. The bulk action at the top syncs every eligible node at once.
+
+![A model sync in progress — spinner, elapsed time, and the last job result on each card](/_img/articles/render-farm/sync-job-running.jpg)
+
+Clicking the last-job line opens its log in a modal that refreshes every three seconds — robocopy counting files on a machine two rooms away, in real time.
+
+![The live job log — robocopy output streamed back from the agent](/_img/articles/render-farm/job-log-modal.jpg)
+
+## Coming back on its own
+
+Power cuts happen. The agent is a scheduled task that starts at boot with a one-minute delay, so a machine that comes back is manageable again without anyone logging into it. The dashboard is registered the same way on the file server.
+
+Agents also update themselves: on boot, nightly at 04:00, and on demand from a button on each card. The updater pulls from a master share but excludes the per-machine settings file, so local configuration survives while shared farm settings are deliberately overwritten — that is how a new setting reaches every node without a visit to each one. Each agent reports its version in its status response, so it is obvious which node is behind.
+
+Most of the real engineering went into Windows identity, not into HTTP. An AI backend is a desktop GPU application and cannot run in the session-0 context a service lives in, so the agent triggers a per-user task to launch it in the logged-in desktop session. Backburner reads its configuration from the profile of whoever started it, which is empty under the SYSTEM account, so the agent copies that config in before every start. Miss it and the service starts, looks healthy, and never registers with the manager.
+
+![An agent's status response in a browser tab — services, install detection, job state](/_img/articles/render-farm/agent-status-json.jpg)
+
+## The honest position
+
+**It is not a scheduler.** It does not queue, assign, prioritise or balance render jobs — Backburner still does all of that. Our tool starts and stops the things that do the work and keeps their inputs in sync. That division is why it stayed small enough to maintain.
+
+**There is no authentication, and no users.** Anyone who can reach port 3000 on the LAN can stop every render service in the building. No permissions, no audit trail, no job accounting. That is an acceptable trade for a single-operator studio on a closed network and unacceptable anywhere else, which is why it never leaves the LAN.
+
+If your farm has several artists submitting at once, licences to track, chargeback per project, or a need to call someone at two in the morning, buy commercial farm management — that is what it is for. Write your own only when your problem has the shape ours did: a small fleet, one operator, and more of the day going into the walk than into the work.
+
+We build internal tooling like this because we run production every day and know where the time goes. If your studio loses more time to walking and re-checking than to actual work, that is what our [pipeline and workflow optimization work](/services/workflow-optimization/) addresses — [get in touch](/contact/) and we can compare notes.

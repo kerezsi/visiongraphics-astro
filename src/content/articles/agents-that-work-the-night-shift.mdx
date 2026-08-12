@@ -1,0 +1,68 @@
+---
+title: "Agents That Work the Night Shift: The Boring Version of AI Automation"
+date: 2026-08-12
+excerpt: "Not autonomous AI. Scheduled jobs with a model in the loop, an automated check on the output, and a person reading the results in the morning — plus what building nine of them taught us about small local models."
+tags: [ai, tools, workflow, automation]
+published: false
+coverImage: /_img/articles/creative-agents/creative-agents-today.jpg
+---
+
+The word "agent" is doing a lot of work at the moment, and most of what it is asked to carry — software that plans and acts on your behalf while you sleep — is not something we would put near client work. What earns its keep is duller: a job that fires at a set time, calls a model, checks its own output, and leaves something for a human to read in the morning. A slot in the calendar, judgement in the middle, a person at the end.
+
+We built a small runner for exactly that. It grew inside our AI image pipeline, moved into its own project on 6 August 2026, and thirty-three commits later it runs nine agents on the studio server, three of them on a schedule by default.
+
+![The morning view — every agent's output from today on one wall, with run and failure counts](/_img/articles/creative-agents/creative-agents-today.jpg)
+
+## An agent is a declaration, not a program
+
+**Adding an agent means writing a file, not writing code.** The registry holds one entry per agent: key, label, description, category, a default schedule, a parameter schema, and the pipeline itself. The router, the scheduler, the run records and every knob in the interface are generic over that list — there is no per-agent front-end code and no per-agent endpoint anywhere, and there must never be.
+
+Seven of our nine agents are a single tracked JSON document each. The other two are code, because their pipelines are not graphs: a morning ops digest built from an analytics endpoint, and one that roasts a render in a comedy voice and ends with a genuinely useful improvement.
+
+![An agent document — key, parameters, schedule and the node list that forms its pipeline](/_img/articles/creative-agents/agent-declaration-json.jpg)
+
+The pipeline inside the document is a graph: named nodes over one run-state dictionary, edges between them, fourteen node types in the registry today. A writer that turns a system prompt into a JSON object of fields, a caption template, a render, an extension to 9:16, a brand stamp, an image grade, three judges, a save — and a sub-agent node that runs another agent's whole graph inline as one step. A new node type needs no front-end code: the canvas builds its palette, sockets and inspector widgets from the registry declaration.
+
+## Why it left the image pipeline
+
+**The runner is a client of our render service, not a part of it.** It talks over HTTP and nothing else — one endpoint for a text-to-image render, one for the aspect extension, one for the analytics counts — and a standing rule forbids importing the image pipeline's code at all. The payoff shows at deploy time: the two applications update independently, and a pipeline edit made on the server survives the next render-tooling update.
+
+## Schedules are data, not cron
+
+Each agent carries an enabled flag, a list of times or an interval inside a window, a seven-day mask, a jitter setting and a skip-next. One loop serves every agent, wakes each minute, and fires only the *most recent* due slot: a machine that comes back at six in the evening must not replay five missed morning slots, and a 07:45 digest is worthless at 18:00. Jitter is hashed from the agent, the day and the slot rather than rolled fresh, so the preview shows the minute the loop will actually fire.
+
+![The schedule panel — times, day mask, jitter, and the preview of the next real firings](/_img/articles/creative-agents/schedule-editor.jpg)
+
+## What small local models are actually good at
+
+**A small local model given one narrow job and a strict output schema is reliable. The same model asked for a complex nested structure is not.** Our satirical-history site, [FakeHistory.eu](https://fakehistory.eu), taught us that first, and every agent here is built around it.
+
+The agent that feeds that site asks its writer for one flat object of five short strings: a headline of at most seven words, a city, a year, one period-voice sentence of at most eighteen words, and a description of the photograph to render. Not a nested document. Not an article. Five strings.
+
+The joke agent's writers' room chains that principle instead of asking once: six candidate lines in one call, then `{index, reason}` to pick the most visual, then up to two punch-up passes that each hand back one tightened line, then an illustration prompt. Every hop is one question with one shape of answer.
+
+The judges are narrower still — one yes/no verdict and a one-line reason. Their vision rules were learned the expensive way: use the caption-capable model (the QA model is near-blind), send a resized copy at roughly a one-megapixel budget, and turn thinking off for fixed-JSON answers, which spent twenty-five seconds reaching the verdict the flag returns in half a second. Ask about presence, not absence — the composition judge asks "is there a visible defect?", never "is this good", because a model confirms presence far more reliably than absence. And an unparseable verdict counts as a pass: only honest rejections should burn a retry.
+
+## Loops you can see
+
+A judge node has two outputs, pass and fail, and the fail edge is a first-class retry edge carrying its own attempt bound. Six of our seven graphs have exactly one: render, let a judge look at the picture, and on a failure back to the render — three attempts, counted as renders rather than as back-edges. Exhausting the bound fails the run loudly unless the edge names a fallback output; the joke agent ships its last render, the composition check does not. A failed run beats an ugly image.
+
+![The graph canvas — nodes, the retry edge in its own lane below, and the loop body tinted](/_img/articles/creative-agents/agent-graph-canvas.jpg)
+
+Having that loop as visible structure, rather than a `for` buried in a function, is the point of the canvas: retry edges route in their own lane beneath the cards, tint the nodes they re-run, and after a run each card carries its own elapsed time.
+
+![A finished run — the executed steps, per-node timings and the attempts a judge rejected](/_img/articles/creative-agents/run-record-timings.jpg)
+
+## The honest position
+
+Agents are bad at judgement and bad at long chains. Every node is somewhere a run can fail, and the interpreter caps a run at two hundred steps because a hand-edited cycle will eventually find a way. Nothing here decides anything a client will see.
+
+**Unattended generation only pays for itself when there is an automated review step and a human gate.** Without the judge you wake up to a folder of pictures and no idea which are broken. With it you wake up to a shorter list that passed a check, plus a record naming every attempt that did not and why.
+
+The same gate applies to authoring. The local model can write and edit agent pipelines, but nothing it writes is saved or run automatically — its edits arrive on the canvas as a before-and-after diff you accept or discard. In one test the model helpfully replaced a template placeholder with the literal words "A fun pun." Another rewrite quietly dropped a field name, and every run afterwards died at the render, after paying for the language-model call. The save path now refuses a pipeline whose renderer asks for a field no writer produces.
+
+There is also plenty we deliberately have not built: resuming a run from a checkpoint, a pause node for mid-run approval, a generic HTTP node. None has a job that needs it yet. The per-step snapshots exist so a bad output from three days ago can be inspected and reproduced, not so a run can be restarted — we would rather say so than imply a capability we do not ship.
+
+The pictures are a side product. What these agents really are is a rehearsal for the automation that belongs in a production pipeline: something scheduled, something narrow, something that checks its own work, and a person who reads the result over coffee. That is the shape we build when we do [advanced AI and pipeline work](/services/advanced-ai-services/) for other studios — the value is rarely the model, it is the schedule, the review step and the record.
+
+If you have a repetitive production job that runs on a clock and eats an hour of somebody's morning, [get in touch](/contact/) — the first conversation is free.

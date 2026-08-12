@@ -1,0 +1,74 @@
+---
+title: "The AI Tool Flood: How We Decide What Is Actually Usable"
+date: 2026-08-12
+excerpt: "Something genuinely new ships most weeks, and most of it is demo-grade, awkwardly licensed, or impossible to run on hardware you own. We stopped judging by launch threads and built a database instead — 1,160 tools, with a weekly job that re-checks everything that has not settled yet."
+tags:
+  - ai
+  - tools
+  - workflow
+  - research
+published: false
+coverImage: /_img/articles/ai-vetting/ai-tracker-browse.jpg
+---
+
+Something genuinely new ships most weeks. A model that relights an interior from a single image. A mesh generator that finally produces usable topology. A video model that holds a camera move a little longer than the last one did. The demo reel is spectacular, the launch thread is euphoric — and three days later nobody can tell you whether the thing has weights you can actually download, a licence that survives contact with a paying client, or a memory footprint that fits on a card you own.
+
+We used to keep up by reading. That does not scale, and it is biased in a specific way: release-week enthusiasm tells you what a tool does in the best case, on the author's hardware, with the author's chosen input. It tells you almost nothing about the three questions that decide whether we can point a tool at your project. Is it real, or is it a paper with a project page? Is it licensed so that the images it produces can be used commercially? Will it run on machines we own, in our building?
+
+So we stopped reading and built a database.
+
+![The tool browser — filter row across the top, tracked AI tools as cards below](/_img/articles/ai-vetting/ai-tracker-browse.jpg)
+
+## What the database is
+
+It is an internal web app running on a machine in our office — Python and SQLite behind a FastAPI service, a React front end, and a scheduled worker that keeps it current. Nothing about it is public; it exists so that one studio can answer one question quickly.
+
+It currently holds **1,160 tools**, harvested from 135 source videos spanning June 2025 to June 2026, plus direct imports from GitHub and Hugging Face repositories, the ComfyUI custom-node registry, the Ollama model library, and scraped roundup pages. Entries are classified against 21 categories — text-to-image, image editing, upscaling and restoration, relighting, depth estimation, 3D mesh, Gaussian splatting, video, large language models, vision-language models, voice cloning, LoRA training, and the rest. A tool can sit in several, and a new one in none until it is classified.
+
+## What we record about each tool
+
+**Release state, on a ladder.** Announced → paper-only → code released → weights released → available to run locally. A tool's state only ever moves up the ladder unless a person overrides it, so an entry is a record of the best thing ever confirmed about it rather than whatever a check happened to see on a bad day. The current shape of the catalogue is instructive: 211 entries are still only a paper and 27 are only an announcement, 139 have published code but no weights, and 501 are verified as runnable locally; the rest are recorded as generally available, or not yet checked. Roughly one entry in five has nothing you can download at all.
+
+![The dashboard — the tracked catalogue broken down by release state and category](/_img/articles/ai-vetting/ai-tracker-dashboard.jpg)
+
+**Licence, and whether it is commercially safe.** Verification reads the licence metadata the repository itself publishes — GitHub, Hugging Face, arXiv — and classifies it: permissive, copyleft, non-commercial, or use-restricted. Anything carrying "NC", "non-commercial" or "research only" is flagged as unusable for client work. Right now 173 tools are confirmed commercially safe and 37 are confirmed not.
+
+**Hardware.** Where a model publishes weights we can measure, a minimum VRAM figure is derived from its parameter count or the size of its weight files, and the browser can filter to "fits my GPU" at a given number of gigabytes. So far that number is recorded for only a small fraction of the catalogue. Repository stars, download counts and the date of the last push ride along as an activity signal — abandoned is a status too.
+
+**Where it can run in our stack.** ComfyUI support is recorded as native, custom node, or none: 167 tracked tools have a custom node, three are native. A separate flag marks the 236 that can be pulled straight through Ollama, cross-checked against what is actually installed on our own node.
+
+![A tool's detail page — release-state ladder, licence and commercial verdict, evidence links](/_img/articles/ai-vetting/ai-tracker-tool-detail.jpg)
+
+**A fit score against our own work.** Each of our internal projects has a profile: its priority categories, what it prefers, and its hard requirements. A local language model scores every plausibly relevant tool from 0 to 1 with a one-sentence rationale. Where a project requires commercially usable licences, a non-commercial or copyleft tool is forced to 0.2 or below no matter how good it looks.
+
+## The weekly run
+
+Once a week a scheduled job pulls new material, parses tool mentions with a local model, deduplicates against what is already there, re-verifies everything sitting below "available locally" — because that is where states flip — then re-scores fit against our projects, re-enriches, rebuilds the search index and writes a digest of what changed.
+
+It reports on itself. Every stage records whether it succeeded, how many rows it touched and how long it took; the run exits with a failure code if any stage broke, and raises an in-app alert. It refuses to start while another writer is running, because two concurrent writers corrupted the database once and that is not a lesson worth learning twice. Degradation is documented rather than silent: when GitHub rate-limits the checks, the affected tools are marked as rate-limited instead of being quietly downgraded.
+
+A watchlist sits on top of it. Tools we are waiting on — a licence change, a ComfyUI node appearing, weights finally landing — raise an alert when their status moves.
+
+![The status page — the weekly run's stages with counts, timings and live logs](/_img/articles/ai-vetting/ai-tracker-weekly-run.jpg)
+
+## Why any of this matters to your project
+
+**A licence is not paperwork — it decides whether you can use the image.** Several of the most impressive open models ship under non-commercial or research-only terms. An image produced with one of those is not something we can responsibly hand you for a brochure, a hoarding, or an investor deck. Checking that before a tool enters a production pipeline is much cheaper than discovering it afterwards.
+
+**Running locally decides where your material lives.** Unbuilt schemes, tenant layouts, plans under NDA — the runtime filters exist so that we can prefer tools which run on our own machines. Nothing is uploaded, nothing is retained by a third party, and there is no per-image cost that quietly shapes how many variations we are willing to try.
+
+**Hardware limits are real limits.** A model that needs more memory than our cards have is not a future option, it is not an option on your schedule. Recording that number, wherever we can get it, means we plan around it instead of finding out mid-project.
+
+![The Licence facet open, narrowing the catalogue to the tools that are safe to use on paid client work](/_img/articles/ai-vetting/ai-tracker-licence-filter.jpg)
+
+## The honest position
+
+The database is a filter, not a verdict, and it is worth being precise about what it does not do.
+
+It does not tell us a tool is good. It tells us the tool exists, what state it is in, how it is licensed and where it can run. Whether it holds up on a real interior with a real material palette — that only comes out of trying it on actual work, and most things that clear the filter still fail that test.
+
+Its metadata is only as good as its sources. Of the 1,160 entries only 302 carry a licence string at all, and just 210 of those classify cleanly enough to call commercially safe or not without a person reading the terms. VRAM figures are thinner still. Categories are drafted automatically — a language model on the way in, keyword rules for the rest — and fit scores come from the model; both are editable by hand.
+
+And scoring fit is a judgement call. A high score means "worth an afternoon", not "adopt this". The value is not in the number — it is in never choosing tools from memory, or from whatever was most recently impressive.
+
+If you want to know what this means for a specific project — what is realistic to produce this quarter, what is licensed cleanly enough to publish, what stays on our own machines — our [advanced AI services](/services/advanced-ai-services/) page covers what we actually offer, and you are welcome to [get in touch](/contact/).
