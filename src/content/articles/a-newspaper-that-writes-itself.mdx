@@ -1,0 +1,90 @@
+---
+title: "A Newspaper That Writes Itself: Three Acts from fakehistory.eu"
+date: 2026-08-12
+excerpt: "We built a satirical history site that largely writes, illustrates and lays out its own articles — a design system, a newsroom of small AI agents, and an editor that never round-trips a document. Here is what broke, and what transfers straight into client work."
+tags:
+  - ai
+  - workflow
+  - tools
+  - design-systems
+published: false
+coverImage: /_img/articles/fakehistory/forged-gazette-front-page.jpg
+---
+
+Generating one article with a language model is a party trick. Generating the fiftieth, on a schedule, without it reading like the forty-ninth is an engineering problem — the one a studio hits the first time it puts AI into production rather than a demo.
+
+{/* TODO_FAKEHISTORY_DNS — do not publish this article until fakehistory.eu serves the v2 Astro build.
+    Verified 2026-08-12: the apex domain still returns the old WordPress 1.0 site (generator "WordPress 7.0.3");
+    the Forged Gazette build described below is deployed at https://fakehistory.pages.dev. Until the cutover,
+    every link in this article lands readers on the design the article says was replaced. */}
+
+[fakehistory.eu](https://fakehistory.eu) is where we worked it out in public: a satirical history site published as The Forged Gazette, a 17th-century broadsheet that cheerfully admits it is a forgery. Fifty-six article files sit in the repository, forty-five live; fifty-two carry an ornament the machine drew for them, thirty-three carry re-runnable recipes for their artwork. A human approves every publish.
+
+## Act one — the design system is what survives volume
+
+The redesign came before the automation. Foxed paper, brown ink, sealing-wax red for kickers, links and stamps; a dark mode called Candlelight that trades the paper for night-gallery green and the red for gilt. Three cuts of IM Fell carry the type.
+
+![The Forged Gazette in its Candlelight palette — gilt rules on night-gallery green](/_img/articles/fakehistory/forged-gazette-candlelight.jpg)
+
+Every image is a "plate": a double-ruled frame under a sepia filter, hover revealing the original, the lightbox always unfiltered. The logo never appears as a logo — only as a wax-red rubber stamp, rotated a few degrees and blended into the paper. Each article carries its own generated ornament, a divider rail on a fixed 360×26 viewBox stored in frontmatter as bare SVG path data. A regex in the content schema is the trust boundary: a model writes those strings, and the schema stops one becoming markup.
+
+![An article body — a plate under the sepia filter, with a generated ornament rail between sections](/_img/articles/fakehistory/gazette-plates-ornament.jpg)
+
+**A strong design system is what lets you generate at volume without it looking generated.** The machine decides what is in the picture; the house decides, once, what a picture looks like on the page.
+
+There is also a page nothing links to: the forty-three faces the site's woodcut bear wears, each with a true biography and a quip labelled as invented. Out of the sitemap, noindex, findable only by being told.
+
+![The unlinked menagerie page — every face the site's bear wears, with a true biography each](/_img/articles/fakehistory/bureau-menagerie.jpg)
+
+## Act two — the newsroom
+
+**One big prompt is where quality goes to die.** The first generator asked one model for prose, captions, image briefs and component data in a single reply. Attention ran out before the last field: the component slot came back null in *every* article ever generated.
+
+The replacement is a masthead of small role agents — each a name, a model, a system prompt and a JSON schema, sharing about thirty lines of helper code. No framework.
+
+- A **researcher** turns an idea into vetted, genuinely real references. The stories are fake, the sources are not, and every article on the site carries a set.
+- A **managing editor** writes the assignment sheet: section outline, word targets, which section earns a Timeline or a Quiz, and one art commission for the whole piece so twelve plates do not arrive in twelve styles.
+- A **staff writer** turns the sheet into prose against the planned beats.
+- A **feature desk** fills one component at a time, holding nothing but that component's prop shape and the paragraph it annotates.
+- A **senior editor** reads the assembled draft and either passes it or sends it back.
+- A **standards desk** that is code, not a model: it parses the MDX and checks every component tag and prop against the manifest.
+
+The managing editor and the feature desk are the new hires, and they are what closed the component gap. Two further splits — one writer call per section, and an editor returning a patch list instead of a pass-or-regenerate verdict — are specified and not yet wired.
+
+Text runs on local models throughout — a 27B creative model, a smaller one for review, a light one for captions, overridable per role — with our own multi-GPU image fleet behind them. Finished, that is ten to twenty model calls per article against about four: free, locally, and it costs minutes.
+
+![The pipeline view mid-run — plan, draft, features and image stages with per-stage detail](/_img/articles/fakehistory/newsroom-pipeline.jpg)
+
+**The writer never invents a file path.** Wherever a picture belongs it emits a marker: an MDX comment carrying the image brief. The article reads as finished prose while the text is under review, so a reviewer can move, retune or delete a plate before a GPU second is spent on it. A second phase cashes the markers in and splices the real paths.
+
+**Code builds the JSX, not the model.** The feature desk originally returned finished MDX. On one apostrophe-heavy article, six of seven fills died on a parse error: two components dropped, one of three planned reached the page. The desk now returns props as JSON and a serialiser assembles the tag, which cannot produce a syntax error. Every generated asset also writes a re-runnable recipe into the article's frontmatter: prompt, seed, workflow, engine, sidecar path.
+
+## Act three — the editor that refuses to round-trip
+
+**We forked our own block editor and then threw away its core architecture.** It parses a document into a block model and re-serialises the whole thing on save — the obvious design, and it silently lost content three times.
+
+The replacement never round-trips. The raw MDX stays the single source of truth, and every edit — prose, a component prop, an accepted AI rewrite — splices exactly one byte range into it. No document model can forget a paragraph, because there is no document model.
+
+![The composer — contextual panel on the left, the live site in an iframe as the canvas](/_img/articles/fakehistory/gazette-composer.jpg)
+
+Two dividends follow. The preview is not a re-implementation of the design system — it is the real site in an iframe, with a dev-only plugin stamping source line numbers into the markup and a bridge posting clicks back. Undo is free: the splice journal records every start, end, old and new, so Ctrl+Z replays inverses.
+
+## The honest position
+
+**A small model will not reliably fill an optional field across several nested objects.** The first planner schema asked for a null component on most sections and a name on a few. It returned nulls twice in a row, while naming its chosen components in the surrounding prose. Rewriting the contract as an explicit list — return exactly N of these — fixed it on the same model.
+
+**A quota derived from the model's own reply is a quota of zero.** The section count arrives with the plan, so deriving the feature quota from it meant the first attempt was always told to return an empty list. It looked like model flakiness. It was our own instruction.
+
+**The automated art director kept deciding that zero images belonged in the reading flow.** One article came out with seven plates, none between the paragraphs. The count is floored in code now: the model may tune within the house band, not abandon it.
+
+**The automated vision check was rejecting images for historical implausibility — on a site whose entire genre is deliberate anachronism.** It refused a hero plate for containing the modern figures the brief had asked for, then refused the retry for lacking them. Its verdict is now restricted to two questions: does the image show what the brief describes, and is it fit to print.
+
+One thing is emphatically **not built**: the audio and video programme. Narration, interviews, a podcast feed — designed, declared in the configuration, not wired. The backend has the endpoints; the pipeline does not call them.
+
+The pattern across all of it: the model was rarely the broken part. The contract we handed it was.
+
+## Why this matters to an architecture client
+
+Structured contracts instead of prose instructions, review automated but never final, a human gate before anything ships, every asset carrying the recipe that made it — that is the same discipline running our production image pipeline for client renders, which the [technical companion](/articles/inside-archupgrade-technical/) covers in detail. A site with a joke premise is just somewhere to break those ideas in the open, with no client deadline.
+
+If you are wiring AI into real production work, that is where we can help: [the AI services we run](/services/advanced-ai-services/) and the [pipeline auditing and automation](/services/workflow-optimization/) that grew out of building tools like this. If you would rather compare notes, [get in touch](/contact/) — the first conversation is free.

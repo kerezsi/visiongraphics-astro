@@ -17,9 +17,13 @@ export interface CarouselSlide {
 interface Props {
   slides: CarouselSlide[];
   lang?: Locale;
+  /** Localized accessible names — plain strings only (pre-flattened by the template). */
+  labels?: { prev: string; next: string; slides: string };
 }
 
-export default function HomeCarousel({ slides, lang = DEFAULT_LOCALE }: Props) {
+const DEFAULT_LABELS = { prev: 'Previous project', next: 'Next project', slides: 'Featured projects' };
+
+export default function HomeCarousel({ slides, lang = DEFAULT_LOCALE, labels = DEFAULT_LABELS }: Props) {
   const [current, setCurrent] = useState(0);
   const [paused,  setPaused]  = useState(false);
   const timer = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -27,9 +31,11 @@ export default function HomeCarousel({ slides, lang = DEFAULT_LOCALE }: Props) {
   const next = useCallback(() => setCurrent(c => (c + 1) % slides.length), [slides.length]);
   const prev = useCallback(() => setCurrent(c => (c - 1 + slides.length) % slides.length), [slides.length]);
 
-  // Randomize starting slide after hydration (avoids SSR mismatch)
+  // Randomize starting slide after hydration (avoids SSR mismatch).
+  // Users who asked for reduced motion get no autoplay at all.
   useEffect(() => {
     setCurrent(Math.floor(Math.random() * slides.length));
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) setPaused(true);
   }, []);
 
   useEffect(() => {
@@ -37,6 +43,12 @@ export default function HomeCarousel({ slides, lang = DEFAULT_LOCALE }: Props) {
     timer.current = setInterval(next, 5000);
     return () => { if (timer.current) clearInterval(timer.current); };
   }, [paused, next]);
+
+  // Keyboard: ← / → while the carousel has focus
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'ArrowLeft')  { e.preventDefault(); prev(); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); next(); }
+  };
 
   const { style: _swipeStyle, ...swipe } = useSwipe({ onSwipeLeft: next, onSwipeRight: prev });
 
@@ -49,6 +61,12 @@ export default function HomeCarousel({ slides, lang = DEFAULT_LOCALE }: Props) {
       style={{ height: 'clamp(380px, 65vh, 900px)', touchAction: 'pan-y', userSelect: 'none' }}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
+      onBlur={() => setPaused(false)}
+      onKeyDown={onKeyDown}
+      role="region"
+      aria-roledescription="carousel"
+      aria-label={labels.slides}
       {...swipe}
     >
       {/* Slides — positioned/faded via components.css (.hc-slide / .hc-slide.active) */}
@@ -111,7 +129,7 @@ export default function HomeCarousel({ slides, lang = DEFAULT_LOCALE }: Props) {
           el.style.color        = 'rgba(255,255,255,0.7)';
         }}
         onClick={prev}
-        aria-label="Previous project"
+        aria-label={labels.prev}
       >
         <svg className="w-[1.1rem] h-[1.1rem]" viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <path d="M15 19l-7-7 7-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -138,7 +156,7 @@ export default function HomeCarousel({ slides, lang = DEFAULT_LOCALE }: Props) {
           el.style.color        = 'rgba(255,255,255,0.7)';
         }}
         onClick={next}
-        aria-label="Next project"
+        aria-label={labels.next}
       >
         <svg className="w-[1.1rem] h-[1.1rem]" viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <path d="M9 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -150,7 +168,7 @@ export default function HomeCarousel({ slides, lang = DEFAULT_LOCALE }: Props) {
       <div
         className="hc-dots absolute bottom-4 flex gap-[0.4rem] z-10"
         role="tablist"
-        aria-label="Carousel slides"
+        aria-label={labels.slides}
       >
         {slides.map((s, i) => (
           <button

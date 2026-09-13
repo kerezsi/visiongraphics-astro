@@ -78,7 +78,7 @@ Az összetett MAX fájlokban idővel felhalmozódnak a hibák: sérült objektum
   { title: { en: "Asset Management Tools", hu: "Asset-kezelő eszközök (Asset Management)" }, desc: { en: "Track, relink, and consolidate external assets across complex scenes. Prevent the missing-texture problem before it hits production. Batch replace and export materials.", hu: "Külső hivatkozások nyomon követése, újracsatolása és konszolidálása összetett jelenetekben. Előzze meg a hiányzó textúrák problémáját, mielőtt azok elérnék a produkciós fázist. Anyagok kötegelt cseréje és exportálása." } },
   { title: { en: "Custom UI Panels",       hu: "Egyedi felhasználói felületek (UI)" },     desc: { en: "Rollout panels and toolbars putting your most-used operations one click away — built for how your team actually works, not for a generic MAX user.", hu: "Olyan egyedi vezérlőpanelek és eszköztárak (rollout panelek), amelyek egyetlen kattintásra helyezik a leggyakrabban használt műveleteket – kifejezetten a csapata munkafolyamatára szabva, nem egy átlagos MAX-felhasználóra tervezve." } },
   { title: { en: "Material Processing",    hu: "Anyagok feldolgozása (Material Processing)" }, desc: { en: "Batch replace, update, or export materials across a project series. Particularly useful for large BIM imports where standardization matters.", hu: "Anyagok kötegelt cseréje, frissítése vagy exportálása teljes projektsorozatokon keresztül. Különösen hasznos nagy méretű BIM importoknál, ahol kulcsfontosságú a szabványosítás." } },
-  { title: { en: "Python Integration",     hu: "Python integráció" },                      desc: { en: "Connect 3ds Max to external systems — file servers, project management tools, render farm APIs, and AI services — via Python scripts that run from within MAX.", hu: "Kösse össze a 3ds Max-ot külső rendszerekkel – fájlszerverekkel, projektmenedzsment-eszközökkel, renderfarm API-kkal és AI-szolgáltatásokkal – közvetlenül a Max-ból futtatható Python szkriptek segítségével." } },
+  { title: { en: "Python Integration",     hu: "Python integráció" },                      desc: { en: "Connect 3ds Max to external systems — file servers, project management tools, render farm APIs, and AI services — via Python scripts that run from within MAX, including bridges out to VR tour publishing and to other 3D applications.", hu: "Kösse össze a 3ds Max-ot külső rendszerekkel – fájlszerverekkel, projektmenedzsment-eszközökkel, renderfarm API-kkal és AI-szolgáltatásokkal – közvetlenül a Max-ból futtatható Python szkriptek segítségével, beleértve a VR-túrák publikálása és más 3D-alkalmazások felé vezető átjárókat is." } },
 ]} />
 
 <SectionBanner image="/_img/banners/banner-workflow.jpg" label={{ en: "Process", hu: "Folyamat" }} title={{ en: "How Scripting Work Goes", hu: "Hogyan zajlik a szkriptelési munka?" }} />
@@ -165,6 +165,27 @@ A Planet 2023 projekthez nagyméretű, ívelt bútorelemek és falfelületek nyo
     {"src":"/_img/services/3ds-max-tools/case-studies/planet2023-ui-04.jpg","alt":"Planet 2023 print-back tool — final artwork mapped onto 3D surfaces"}
   ]}
 />
+
+<SectionBanner image="/_img/banners/banner-arch-viz.jpg" label={{ en: "Our Own Toolkit", hu: "Saját eszközkészletünk" }} title={{ en: "The Tools We Run Our Studio On", hu: "Az eszközök, amelyekkel a saját stúdiónkat működtetjük" }} />
+
+<Lang code="en">
+Everything above was built for a client. This part was built for us. It runs every working day in 3ds Max 2025 with V-Ray 7 — MAXScript where the code has to touch the scene directly, Python and pymxs behind PySide6 interfaces for everything else. Many of the problems a custom tool has to solve, we have met in our own production first.
+
+The same Python layer also connects 3ds Max outward: it pushes floorplans and camera positions into our VR tour pipeline, and exports scene data toward Blender where a project needs it. None of it is a product you can buy. It is working infrastructure — and it is where the experience behind your tool comes from.
+</Lang>
+
+<Lang code="hu">
+A fentiek mind megrendelésre készültek. Ez a rész viszont magunknak épült. Minden munkanapon fut, 3ds Max 2025 és V-Ray 7 alatt: MAXScript ott, ahol a kódnak közvetlenül a jelenethez kell nyúlnia, Python és pymxs PySide6-alapú felületek mögött minden máshoz. Azok közül a problémák közül, amelyeket egy egyedi eszköznek meg kell oldania, sokkal a saját produkciónkban találkoztunk először.
+
+Ugyanez a Python-réteg köti össze a 3ds Max-ot kifelé is: alaprajzokat és kamerapozíciókat ad át a VR-bejárás rendszerünknek, és jelenetadatokat exportál a Blender felé, ha a projekt úgy kívánja. Ezek egyike sem megvásárolható termék, hanem működő infrastruktúra – és innen származik az a tapasztalat, amelyet az Ön eszközének fejlesztésébe viszünk.
+</Lang>
+
+<DeliverableGrid columns={2} items={[
+  { title: { en: "Procedural Building Generator", hu: "Procedurális épületgenerátor" }, desc: { en: "Walls, roofs, openings, materials, interiors and gardens generated from parameters, so massing studies and background architecture stop being hand-modeled. Roof tiling is procedural too, driven by a parametric array system.", hu: "Falak, tetők, nyílászárók, anyagok, belső terek és kertek paraméterekből generálva – így a tömegvázlatok és a háttérépítészet nem kézi modellezés kérdése. A tetőfedés is procedurálisan, parametrikus array-rendszerre épülve készül." } },
+  { title: { en: "Batch Camera Rendering", hu: "Kötegelt kamerarenderelés" }, desc: { en: "Every camera in a scene — or a whole folder of scenes — submitted in one pass, with consistent output naming and per-camera settings.", hu: "Egy jelenet összes kamerája – vagy akár egy teljes mappányi jelenet – egyetlen menetben feladva, egységes fájlelnevezéssel és kameránként külön beállításokkal." } },
+  { title: { en: "Lighting & Camera Setup", hu: "Fény- és kamerabeállítás" }, desc: { en: "Sun, sky, HDRI and camera utilities in one place. Standardized setups applied consistently, instead of rebuilt scene by scene.", hu: "Nap, égbolt, HDRI és kamerabeállítás egy helyről. Szabványosított beállítások, amelyeket nem kell jelenetről jelenetre újraépíteni." } },
+  { title: { en: "Garden & Planting Design", hu: "Kert- és növénytelepítés" }, desc: { en: "A planting tool for gardens, landscape and surroundings, so the space around the building gets the same treatment as the building.", hu: "Növénytelepítő eszköz kertekhez, tereprendezéshez és a környezet kialakításához – hogy az épület körüli terület ugyanolyan kidolgozott legyen, mint maga az épület." } },
+]} />
 
 <Lang code="en">
 Scripts are built against your actual files and workflow, tested in your environment, and documented so your team can use and maintain them. We can teach you to extend them, or we can handle maintenance on a retainer. Pricing is by scope — simple scene-cleanup scripts start at €500, complex multi-tool automation systems are quoted on the brief.

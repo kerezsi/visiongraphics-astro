@@ -1,0 +1,69 @@
+---
+title: "The 3ds Max Toolkit We Built for Ourselves"
+date: 2026-08-12
+excerpt: "Thirty years in one piece of software, distilled into the tools we reach for every day: a procedural building generator, a batch camera renderer, sun and camera utilities, a garden planner — and the engineering discipline that keeps studio scripts alive once real work depends on them."
+tags: ["tools", "maxscript", "automation", "workflow", "architectural-visualization"]
+published: false
+coverImage: /_img/articles/max-toolkit/generated-street.jpg
+---
+
+Every project starts with the same half hour of nothing. Name the cameras. Set the resolutions. Rebuild the sun. Copy the exposure from the last job because it was roughly right. Then, hours before delivery, one camera in sixty renders at the wrong size because a single checkbox differed — and you find out from the output folder, not from the software.
+
+We have been working in 3ds Max since version 1, and the fix for each of those small losses accumulated into a toolkit: a building suite of about 10,800 lines of MAXScript loaded as one compile unit, a batch renderer of another 9,300, and roughly 16,000 lines of Python for the planner and its PySide6 interfaces, all on 3ds Max 2025 with V-Ray 7 and in daily use here.
+
+## A building generator, not a building library
+
+The largest piece takes one closed footprint spline and returns a complete detached house — walls, openings, rooms, furniture, roof, terraces, steps, driveway and materials — as one parametric object that rebuilds when you change it. More splines give it the site: a terrace to cut in or attach as a deck, a garage gate line whose length sets the driveway and door width, a sidewalk the front door turns towards.
+
+![Several generated houses on a street, rendered with V-Ray — different roofs, materials and gardens from one generator](/_img/articles/max-toolkit/generated-street.jpg)
+
+With automatic mode on, a Python planner designs the house rather than decorating it: rooms laid out against EU dwelling standards — day zone and night zone, minimum widths, reachability — then windows and doors per room, then furniture with clearances respected. One weighted guidelines engine ranks competing layouts, then drives the checker that says what a plan got wrong.
+
+![The 2D plan editor — rooms, doors and windows on layers, with live stats and a rule check](/_img/articles/max-toolkit/floor-plan-editor.jpg)
+
+**Parametric background architecture earns its keep on the second revision, not the first.** Hand-modelled filler houses are a sunk cost: move the road and you remodel. Generated ones are a re-run. One button deals eight styled houses along a street spline, alternating sides, colours and roof types randomized, a quarter of them two-storey. Each house holds its own recipe, so a render node rebuilds it from parameters in pure MAXScript, no interface loaded.
+
+The roof pass covers nineteen forms — the gable and hip families, mansard, gambrel, saltbox, monitor, butterfly, Dutch gable, jerkinhead, flat and combinations. What sells them at close range is the hardware: fascia, soffit, gutters and downspouts, ridge caps, barge boards, snow guards, chimneys, and dormers and skylights that genuinely cut the roof skins. Solar panels grid at 176 × 104 cm onto planes within 45 degrees of south.
+
+![Nineteen roof forms built on identical footprints in one grid](/_img/articles/max-toolkit/roof-lineup.jpg)
+
+Real 3D tiling — ten tile families measured off the tile models — lives in a separate RailClone tool the generator calls only on request: a tiled roof is thousands of faces per house.
+
+The garden is a second planner of the same shape. A plot spline goes in; zones come out in one of five styles — modern, family, formal, cottage, mediterranean — as lawn, beds, hedge lines, tree positions, paths and a firepit. The builder makes the hardscape real and emits every planting zone as Forest Pack-ready splines and helpers, pre-bound to a fifteen-object library. Seed and parameters live on an anchor helper, so a batch pass runs a whole street of plots.
+
+![Garden output in the viewport — hardscape meshes plus green planting-zone splines and tree markers ready for Forest Pack](/_img/articles/max-toolkit/garden-zones.jpg)
+
+## The unglamorous half: cameras, suns, batches
+
+**The tedium is where the errors live, so that is where automation pays best.** The batch camera renderer — a long-running fork of Sergo Pogosyan's open-source Batch Camera Render — keeps resolution, frame range, output path, render elements, V-Ray settings, layer-set state and sun selection on each camera itself, as AppData against an ID registry in one JSON file. It submits locally or to Backburner, including multi-stage dependent jobs, so a three-pass animated GI chain becomes a dependency graph rather than three submissions in the right order.
+
+![The batch camera renderer — camera list with per-camera settings, output paths and submission options](/_img/articles/max-toolkit/batch-camera-render.jpg)
+
+A companion spreadsheet puts every V-Ray physical camera on a row across seventeen columns for bulk exposure, white balance and lens-shift edits. It also picks each camera a sun by angle to the camera axis, writing it into the same AppData IDs the renderer reads — which is why the two behave as one.
+
+The lighting side lists every V-Ray sun across 22 columns — direction, elevation, multiplier, filter colour, sky model, cloud parameters — and can create one from a month, day and hour. The HDRI variant builds a dome and paired sun from a file, then finds the brightest pixel in the map and orients the sun to it. One version runs off a Novation LaunchControl XL 3 over MIDI, a 15 ms timer pushing fader moves into the selected suns.
+
+![The sun manager — every V-Ray sun in the scene as a row with its full parameter set](/_img/articles/max-toolkit/sun-manager.jpg)
+
+## Why we treat scripts like software
+
+Most studio scripts are a folder of `.ms` files edited in place on a network share. Ours started there. What changed:
+
+- **It ships by protocol** — copy-only outside one sanctioned mirror, every file SHA1-verified, an annotated tag per publish, a refreshed backup bundle.
+- **A lint gate runs before every commit.** Every rule is a bug that actually bit: functions used before their definition (on a fresh Max that binds a dead slot and throws even after the callee loads), reserved words as local names, duplicate functions drifted apart across files, Python that no longer parses.
+- **A smoke test runs after every reload**, building four representative houses on temporary nodes and printing their face counts. Any failure means Max needs restarting — File ▸ Reset does not clear a corrupted MAXScript heap.
+- **Encodings are pinned per file** — UTF-8-with-BOM, ANSI and ASCII mixed — because the older tools carry Hungarian comments that one careless save turns to mojibake.
+
+That pays out when something load-bearing turns out wrong. A winding bug in the footprint handling was silently dropping garage doors on clockwise splines; the fix was verifiable because we could rebuild a 124-house scene and compare. 121 came out byte-identical, two clockwise houses gained the garage door and ramp they should always have had, one was a known orphan. Without a repeatable build that is not a claim, it is a hope. The building object exposes 406 parameters — a number we know only because a script parses the sources and maps each to where it can be edited.
+
+![The building generator's modifier panel beside a generated house in the viewport](/_img/articles/max-toolkit/building-generator-panel.jpg)
+
+## The honest position
+
+**Some things should not be automated, and we do not automate them.** Camera choice, composition, which hour of the day a building looks like itself — none of that is a parameter. The generator exists for background architecture: the neighbours, the street, the block behind the site. The building a client is paying for gets modelled from drawings, by hand.
+
+**A script is the wrong answer more often than script authors admit.** If a task will happen twice, do it twice. Automation earns its place when a step is frequent, mechanical and dull enough that a human reliably gets it wrong on the sixtieth repetition — and not before.
+
+**A tool only one person can fix is a liability as well as an asset.** Every convenience is another thing that can break on a deadline, in a language where a two-letter variable name can silently clobber a live one. That is the real reason for the lint gate, the smoke test and the ship protocol — not craftsmanship, insurance. Parts of the suite are unfinished and the numbered ledger says so: a copy-and-paste context menu started and abandoned, a parameter-copy panel laid out but never wired up, a render manager address still hardcoded in job strings. Written down, those are survivable; undocumented, they are a trap for whoever opens the file next.
+
+If your studio keeps losing the same hour to the same manual step, that is work we do for others too — [custom 3ds Max tools and scripting](/services/3ds-max-tools/) built against your pipeline rather than a generic plugin that almost fits. [Tell us where the time goes](/contact/) and we will say honestly whether a script is the right answer.

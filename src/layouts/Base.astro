@@ -2,6 +2,8 @@
 // src/layouts/Base.astro
 // Root HTML shell — used by all pages
 
+import { LOCALES, localeFromPath, swapLocale, type Locale } from '../lib/i18n';
+
 interface Props {
   title:       string;
   description?: string;
@@ -21,6 +23,15 @@ const fullTitle = title === 'Vision Graphics'
   ? 'Vision Graphics Kft. — Architectural Visualization, Budapest'
   : `${title} | Vision Graphics Kft.`;
 
+// Active locale — set by page templates via Astro.locals.lang; fall back to
+// the URL prefix so <html lang> and hreflang alternates are always right.
+const lang: Locale = (Astro.locals as { lang?: Locale })?.lang ?? localeFromPath(Astro.url.pathname);
+const OG_LOCALE: Record<Locale, string> = { en: 'en_US', hu: 'hu_HU' };
+const alternates = LOCALES.map(l => ({
+  hreflang: l,
+  href: new URL(swapLocale(Astro.url.pathname, l), Astro.site).toString(),
+}));
+
 // Build-time cache-buster. Cloudflare Pages content-addresses uploaded assets
 // by hash — when dedupe thinks a hash is already uploaded but the edge blob is
 // missing/corrupted, the canonical URL serves a 500 with empty body. Including
@@ -30,7 +41,7 @@ const buildStamp = new Date().toISOString();
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
 <head>
   <!-- Theme: apply before first paint to avoid flash of wrong theme -->
   <script is:inline>
@@ -49,6 +60,8 @@ const buildStamp = new Date().toISOString();
   <title>{fullTitle}</title>
   <meta name="description" content={description} />
   <link rel="canonical" href={canonical} />
+  {alternates.map(a => <link rel="alternate" hreflang={a.hreflang} href={a.href} />)}
+  <link rel="alternate" hreflang="x-default" href={alternates[0].href} />
   {noIndex && <meta name="robots" content="noindex, nofollow" />}
 
   <!-- Open Graph -->
@@ -58,6 +71,8 @@ const buildStamp = new Date().toISOString();
   <meta property="og:url"         content={canonical} />
   <meta property="og:type"        content="website" />
   <meta property="og:site_name"   content="Vision Graphics Kft." />
+  <meta property="og:locale"      content={OG_LOCALE[lang]} />
+  {LOCALES.filter(l => l !== lang).map(l => <meta property="og:locale:alternate" content={OG_LOCALE[l]} />)}
 
   <!-- Twitter -->
   <meta name="twitter:card"        content="summary_large_image" />
@@ -78,16 +93,9 @@ const buildStamp = new Date().toISOString();
     href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;500&family=DM+Mono:wght@400&display=swap"
   />
 
-  <!-- Global Styles -->
-  <link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
 </head>
 <body>
   <slot />
-
-  <!-- Pagefind (loaded async, only activates on search pages) -->
-  <script>
-    // Pagefind is initialized per-page — see search components
-  </script>
 
   <!-- PhotoSwipe — auto-scans [data-pswp-gallery] containers -->
   <script>

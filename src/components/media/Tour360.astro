@@ -55,12 +55,16 @@ const ariaLaunch   = lang === 'hu' ? `360°-os túra indítása: ${titleStr}`   
   import { scrollMediaIntoCenter } from '../../lib/media-scroll';
 
   document.querySelectorAll<HTMLElement>('.tour-wrap').forEach(wrap => {
-    const btn = wrap.querySelector('.tour-launch-btn');
+    const btn = wrap.querySelector<HTMLButtonElement>('.tour-launch-btn');
     if (!btn) return;
 
-    btn.addEventListener('click', () => {
+    // The whole cover shows a pointer cursor, so the whole cover launches —
+    // not only the button. `launched` guards the button→wrap double bubble.
+    let launched = false;
+    const launch = () => {
       const url = wrap.dataset.tourUrl;
-      if (!url) return;
+      if (!url || launched) return;
+      launched = true;
 
       scrollMediaIntoCenter(wrap);
 
@@ -69,12 +73,13 @@ const ariaLaunch   = lang === 'hu' ? `360°-os túra indítása: ${titleStr}`   
       iframe.src = url;
       iframe.allow = 'fullscreen; gyroscope; accelerometer';
       iframe.allowFullscreen = true;
-      iframe.title = 'Interactive 360° Tour';
+      iframe.title = btn.getAttribute('aria-label') || '360°';
       iframe.style.cssText = 'width:100%;height:100%;border:none;display:block;';
       wrap.innerHTML = '';
       wrap.appendChild(iframe);
       wrap.classList.add('tour-wrap--active');
-    });
+    };
+    wrap.addEventListener('click', launch);
   });
 </script>
 

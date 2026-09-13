@@ -16,6 +16,8 @@ interface Props {
   services: ServiceItem[];
   /** Label for the "Explore this service" link. Default: "Explore this service". */
   exploreLabel?: string;
+  /** Accessible name of the tab list (localized). */
+  tabsLabel?: string;
   /** URL prefix for service detail links — defaults to "/services/" but should
    *  be passed as the locale-prefixed path (e.g. "/hu/services/") so toggling
    *  language keeps the user on the right tree. */
@@ -25,6 +27,7 @@ interface Props {
 export default function ServicesTabs({
   services,
   exploreLabel = 'Explore this service',
+  tabsLabel = 'Services',
   servicesUrlPrefix = '/services/',
 }: Props) {
   const [active, setActive] = useState(0);
@@ -32,15 +35,34 @@ export default function ServicesTabs({
 
   if (!svc) return null;
 
+  // Arrow-key navigation between tabs (WAI-ARIA tabs pattern)
+  const onKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>, i: number) => {
+    const n = services.length;
+    let target = -1;
+    if (e.key === 'ArrowDown' || e.key === 'ArrowRight') target = (i + 1) % n;
+    if (e.key === 'ArrowUp'   || e.key === 'ArrowLeft')  target = (i - 1 + n) % n;
+    if (e.key === 'Home') target = 0;
+    if (e.key === 'End')  target = n - 1;
+    if (target < 0) return;
+    e.preventDefault();
+    setActive(target);
+    (e.currentTarget.parentElement?.children[target] as HTMLElement | undefined)?.focus();
+  };
+
   return (
     <div className="st-root grid min-h-[420px] border border-line bg-surface">
 
       {/* Sidebar */}
-      <nav className="st-sidebar flex flex-col overflow-y-auto border-r border-line"
-           aria-label="Services">
+      <div className="st-sidebar flex flex-col overflow-y-auto border-r border-line"
+           role="tablist"
+           aria-label={tabsLabel}>
         {services.map((s, i) => (
           <button
             key={s.slug}
+            id={`st-tab-${s.slug}`}
+            aria-controls="st-panel"
+            tabIndex={i === active ? 0 : -1}
+            onKeyDown={e => onKeyDown(e, i)}
             className={[
               'st-tab relative flex items-baseline gap-3 px-5 py-[1.1rem]',
               'bg-transparent border-none border-b border-line',
@@ -61,12 +83,14 @@ export default function ServicesTabs({
             </span>
           </button>
         ))}
-      </nav>
+      </div>
 
       {/* Content panel */}
       <div className="st-panel relative flex flex-col justify-center overflow-hidden"
            style={{ padding: 'clamp(2rem, 4vw, 3.5rem) clamp(2rem, 5vw, 4rem)' }}
            role="tabpanel"
+           id="st-panel"
+           aria-labelledby={`st-tab-${svc.slug}`}
            key={svc.slug}>
 
         {svc.image && (

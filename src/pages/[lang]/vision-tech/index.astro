@@ -15,21 +15,22 @@ Astro.locals.lang = lang;
 const allTech = await getCollection('vision-tech', e => e.data.published !== false);
 const techniques = allTech.sort((a, b) => tStr(a.data.title, lang).localeCompare(tStr(b.data.title, lang)));
 
-const techniques_vals = [...new Set(techniques.map(t => t.data.technique).filter(Boolean))].sort();
+const techniques_vals = [...new Set(techniques.map(t => t.data.technique).filter((v): v is NonNullable<typeof v> => !!v))].sort();
 const costs_vals      = ['€','€€','€€€','€€€€','€€€€€'];
 const model3d_vals    = [...new Set(techniques.map(t => t.data.model3d))].sort();
 const complexity_vals = ['1 - Basic','2 - Intermediate','3 - Advanced','4 - Expert','5 - Cutting-Edge'];
-const reality_vals    = ['Pure Reality','Enhanced Reality','Hybrid Reality-Vision','Conceptual Reality','Pure Vision'];
+// Order = spectrum (must stay a subset of the `reality` Zod enum in content/config.ts)
+const reality_vals    = ['Pure Reality','Hybrid Reality-Vision','Conceptual Reality','Pure Vision'];
 const purpose_vals    = [...new Set(techniques.flatMap(t => t.data.purpose))].sort();
 
 const fLabel = (v: string) => vtLabel(v, lang);
 
 const COPY = {
   en: {
-    metaTitle:        'Technologies | Vision Graphics',
-    metaDescription:  '26 visualization techniques — photorealistic rendering, VR, 360° tours, AI workflows and more.',
-    bannerLabel:      'See Your Ideas',
-    bannerTitle:      'Tech Gets It Done',
+    metaTitle:        'Technologies',
+    metaDescription:  `${techniques.length} visualization techniques — photorealistic rendering, VR, 360° tours, AI workflows and more. Filter by cost, complexity and purpose.`,
+    bannerLabel:      'Techniques & Tools',
+    bannerTitle:      'The Right Technique for the Job',
     filtersBtn:       'Filters',
     showingAll:       (n: number) => `Showing all ${n} techniques`,
     showingSome:      (v: number, n: number) => `Showing ${v} of ${n} techniques`,
@@ -60,10 +61,10 @@ const COPY = {
     },
   },
   hu: {
-    metaTitle:        'Technológiák | Vision Graphics',
-    metaDescription:  '26 látványterv-technika — fotórealisztikus renderelés, VR, 360°-os túrák, AI-munkafolyamatok és még sok más.',
-    bannerLabel:      'Tegye láthatóvá az ötleteit',
-    bannerTitle:      'A technológia elvégzi',
+    metaTitle:        'Technológiák',
+    metaDescription:  `${techniques.length} látványterv-technika — fotórealisztikus renderelés, VR, 360°-os túrák, AI-munkafolyamatok és még sok más. Szűrhető költség, összetettség és cél szerint.`,
+    bannerLabel:      'Technikák és eszközök',
+    bannerTitle:      'Minden feladathoz a megfelelő technika',
     filtersBtn:       'Szűrők',
     showingAll:       (n: number) => `Mind a ${n} technika látható`,
     showingSome:      (v: number, n: number) => `${v} / ${n} technika látható`,
@@ -299,19 +300,37 @@ const tools = [
     resetBtns.forEach(b => { if (b) b.hidden = !hasFilter; });
   }
 
+  // Filter state lives in the URL (?technique=…&cost=…) so a filtered view can
+  // be shared or reloaded — same convention as the portfolio filter.
+  function syncUrl() {
+    const p = new URLSearchParams();
+    Object.entries(active).forEach(([k, v]) => p.set(k, v));
+    const qs = p.toString();
+    history.replaceState({}, '', qs ? `${location.pathname}?${qs}` : location.pathname);
+  }
+
+  function setPill(group: Element, pill: Element | null) {
+    group.querySelectorAll('.vt-pill').forEach(p => {
+      const on = p === pill;
+      p.classList.toggle('active', on);
+      p.setAttribute('aria-pressed', String(on));
+    });
+  }
+
   document.querySelectorAll('.vt-pills').forEach(group => {
     const filterKey = (group as HTMLElement).dataset.filter!;
     group.querySelectorAll('.vt-pill').forEach(pill => {
+      pill.setAttribute('aria-pressed', 'false');
       pill.addEventListener('click', () => {
         const val = (pill as HTMLElement).dataset.val!;
         if (active[filterKey] === val) {
           delete active[filterKey];
-          pill.classList.remove('active');
+          setPill(group, null);
         } else {
-          group.querySelectorAll('.vt-pill').forEach(p => p.classList.remove('active'));
           active[filterKey] = val;
-          pill.classList.add('active');
+          setPill(group, pill);
         }
+        syncUrl();
         applyFilters();
       });
     });
@@ -319,10 +338,31 @@ const tools = [
 
   function reset() {
     Object.keys(active).forEach(k => delete active[k]);
-    document.querySelectorAll('.vt-pill').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.vt-pills').forEach(g => setPill(g, null));
+    syncUrl();
     applyFilters();
   }
   resetBtns.forEach(b => b?.addEventListener('click', reset));
+
+  // Restore filters from the URL on load
+  const initial = new URLSearchParams(location.search);
+  let restored = false;
+  document.querySelectorAll('.vt-pills').forEach(group => {
+    const key = (group as HTMLElement).dataset.filter!;
+    const val = initial.get(key);
+    if (!val) return;
+    const pill = group.querySelector<HTMLElement>(`.vt-pill[data-val="${CSS.escape(val)}"]`);
+    if (!pill) return;
+    active[key] = val;
+    setPill(group, pill);
+    restored = true;
+  });
+  if (restored) {
+    filtersBody.hidden = false;
+    toggleBtn.setAttribute('aria-expanded', 'true');
+    toggleBtn.classList.add('open');
+    applyFilters();
+  }
 </script>
 
 <style>

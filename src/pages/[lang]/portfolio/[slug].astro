@@ -25,6 +25,7 @@ import SingleImage from '../../../components/mdx/SingleImage.astro';
 import Lang from '../../../components/i18n/Lang.astro';
 import { getCollection, getEntry } from 'astro:content';
 import { localizedPaths, localeUrl, t, tStr, type Locale } from '../../../lib/i18n';
+import { thumbUrl } from '../../../lib/image-url';
 import { ui } from '../../../i18n/strings';
 
 export async function getStaticPaths() {
@@ -68,6 +69,22 @@ const sorted = allProjects.sort((a, b) => b.data.year - a.data.year);
 const currentIndex = sorted.findIndex(p => p.slug === project.slug);
 const prevProject = sorted[currentIndex + 1] ?? null;
 const nextProject = sorted[currentIndex - 1] ?? null;
+
+// Related projects — share a category, ranked by overlap then recency.
+// ponytail: simple overlap score; add service/technique weighting if it ever matters.
+const myCats = new Set(data.categories.map(c => c.id));
+const relatedProjects = sorted
+  .filter(p => p.slug !== project.slug && !!p.data.coverImage)
+  .map(p => ({ p, score: p.data.categories.filter(c => myCats.has(c.id)).length }))
+  .filter(x => x.score > 0)
+  .sort((a, b) => b.score - a.score || b.p.data.year - a.p.data.year)
+  .slice(0, 4)
+  .map(({ p }) => ({
+    slug:  p.slug,
+    title: tStr(p.data.displayTitle, lang) || tStr(p.data.title, lang),
+    year:  p.data.year,
+    cover: p.data.coverImage,
+  }));
 
 // Format a technique slug for display: "360-tour" → "360 TOUR"
 function formatTech(slug: string): string {
@@ -208,8 +225,33 @@ const resolvedTechniques = (data.techniques ?? []).map((slug: string) => {
       <a href={localeUrl('/contact/', lang)} class="btn btn-primary">{L.cta.talkToUs}</a>
     </div>
 
+    <!-- Related projects (same category) -->
+    {relatedProjects.length > 0 && (
+      <section class="related-section" aria-labelledby="related-heading">
+        <p class="section-label">{L.portfolio.relatedHeading}</p>
+        <h2 id="related-heading" class="related-heading">{L.portfolio.relatedSub}</h2>
+        <div class="related-grid">
+          {relatedProjects.map(r => (
+            <a href={localeUrl(`/portfolio/${r.slug}/`, lang)} class="related-card pf-card">
+              <img
+                src={thumbUrl(r.cover)}
+                alt={r.title}
+                loading="lazy"
+                decoding="async"
+                onerror={`this.onerror=null;this.src='${r.cover}'`}
+              />
+              <div class="related-body">
+                <span class="related-year">{r.year}</span>
+                <span class="related-title">{r.title}</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
     <!-- Project navigation -->
-    <nav class="project-nav" aria-label="Project navigation">
+    <nav class="project-nav" aria-label={L.a11y.projectNav}>
       {prevProject && (
         <a href={localeUrl(`/portfolio/${prevProject.slug}/`, lang)} class="project-nav-link project-nav-link--prev">
           <span class="nav-dir">{L.cta.previous}</span>
@@ -474,6 +516,79 @@ const resolvedTechniques = (data.techniques ?? []).map((slug: string) => {
     color: var(--color-text-muted);
     margin-bottom: 1rem;
     max-width: none;
+  }
+
+  /* =====================
+     Related projects
+     ===================== */
+  .related-section {
+    margin-top: var(--space-12);
+    padding-top: var(--space-8);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .related-heading {
+    font-family: var(--font-display);
+    font-size: var(--fs-h5);
+    font-weight: 300;
+    color: var(--color-text);
+    margin: var(--space-2) 0 var(--space-6);
+    letter-spacing: -0.01em;
+  }
+
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-4);
+  }
+
+  .related-card {
+    display: block;
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border: 1px solid;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    transition: border-color 250ms ease;
+  }
+
+  .related-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 400ms ease;
+  }
+  .related-card:hover img { transform: scale(1.05); }
+
+  .related-body {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: var(--space-1);
+    padding: var(--space-4);
+    background: linear-gradient(to top, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.2) 55%, transparent 100%);
+  }
+
+  .related-year {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    color: rgba(255,255,255,0.6);
+    line-height: 1;
+  }
+
+  .related-title {
+    font-family: var(--font-body);
+    font-size: var(--fs-small);
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.25;
+  }
+
+  @media (max-width: 900px) {
+    .related-grid { grid-template-columns: repeat(2, 1fr); }
   }
 
   /* =====================

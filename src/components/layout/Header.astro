@@ -42,17 +42,18 @@ function isActive(href: string): boolean {
 }
 ---
 
+<a href="#content" class="skip-link">{L.a11y.skipToContent}</a>
 <header class="site-header" id="site-header">
   <div class="container header-inner">
 
     <!-- Logo -->
-    <a href={localeUrl('/', lang)} class="logo" aria-label="Vision Graphics — Home">
+    <a href={localeUrl('/', lang)} class="logo" aria-label={L.a11y.home}>
       <img src="/logo.png"   alt="Vision Graphics Kft." class="logo-img logo-dark"  width="160" height="39" />
       <img src="/logo_b.png" alt=""                      class="logo-img logo-light" width="160" height="39" aria-hidden="true" />
     </a>
 
     <!-- Desktop Nav -->
-    <nav class="desktop-nav" aria-label="Main navigation">
+    <nav class="desktop-nav" aria-label={L.a11y.mainNav}>
       {navItems.map(item => (
         <a
           href={item.href}
@@ -76,7 +77,7 @@ function isActive(href: string): boolean {
       id="mobile-menu-btn"
       aria-expanded="false"
       aria-controls="mobile-nav"
-      aria-label="Toggle navigation"
+      aria-label={L.a11y.toggleNav}
     >
       <span class="hamburger"></span>
     </button>
@@ -84,7 +85,7 @@ function isActive(href: string): boolean {
   </div>
 
   <!-- Mobile Nav -->
-  <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation" hidden>
+  <nav class="mobile-nav" id="mobile-nav" aria-label={L.a11y.mobileNav} hidden>
     {navItems.map(item => (
       <a
         href={item.href}
@@ -101,10 +102,10 @@ function isActive(href: string): boolean {
       id="mobile-nav-theme"
       role="button"
       tabindex="0"
-      aria-label="Toggle light/dark mode"
+      aria-label={L.a11y.toggleTheme}
     >
       <ThemeToggle />
-      <span class="mobile-nav-theme-label">{lang === 'hu' ? 'Világos / sötét mód' : 'Toggle light/dark'}</span>
+      <span class="mobile-nav-theme-label">{L.a11y.toggleTheme}</span>
     </div>
   </nav>
 </header>
@@ -160,6 +161,23 @@ function isActive(href: string): boolean {
 </script>
 
 <style>
+  /* Skip link — visually hidden until focused (keyboard / screen-reader users) */
+  .skip-link {
+    position: absolute;
+    top: var(--space-2);
+    left: var(--space-2);
+    z-index: 200;
+    padding: var(--space-2) var(--space-4);
+    background: var(--color-accent);
+    color: #fff;
+    font-family: var(--font-body);
+    font-size: var(--fs-small);
+    border-radius: var(--radius-sm);
+    transform: translateY(-200%);
+    transition: transform 150ms ease;
+  }
+  .skip-link:focus { transform: translateY(0); outline-offset: 2px; }
+
   .site-header {
     position: sticky;
     top: 0;
@@ -317,12 +335,13 @@ function isActive(href: string): boolean {
     margin-top: var(--space-2);
   }
 
-  /* Responsive */
-  @media (min-width: 901px) {
+  /* Responsive — HU labels ("SZOLGÁLTATÁSOK", "TECHNOLÓGIÁK") plus the lang/theme
+     controls overflow the bar below ~1150px, so the drawer kicks in there, not at 900. */
+  @media (min-width: 1151px) {
     .mobile-nav { display: none !important; }
   }
 
-  @media (max-width: 900px) {
+  @media (max-width: 1150px) {
     .desktop-nav             { display: none; }
     .desktop-header-controls { display: none; }
     .mobile-menu-btn { display: flex; align-items: center; }

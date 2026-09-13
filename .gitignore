@@ -6,6 +6,7 @@ node_modules/
 # Build output
 dist/
 .astro/
+storybook-static/
 
 # Env files
 .env
@@ -27,11 +28,8 @@ Thumbs.db
 # Pagefind (generated at build time)
 public/pagefind/
 
-# Storybook build output
-storybook-static/
-
 # Images — stored in Cloudflare R2, not Git
-# Upload with: upload-images.bat
+# Upload via the VG Editor "↑ R2" button (rclone)
 public/portfolio/
 public/vision-tech/
 public/banners/

@@ -109,7 +109,15 @@ Is AI right for your project?
 - Large batches of repeat renders (variants, angles, seasons): yes, very effective
 - One-off hero images: depends on complexity — we'll tell you honestly
 
-**Our own pipelines, custom tools for clients.** We built the technology behind ai.visiongraphics.eu. If your project needs a special AI workflow, we'll build it. If data sensitivity means the AI processing has to stay on your machines, on your network — we'll build the tool and deploy it locally.
+**Our own pipelines, custom tools for clients.** We built the technology behind ai.visiongraphics.eu. It runs entirely on our own hardware — client data never goes out to a third-party service — and it is built for repeatability rather than lucky results:
+
+- Structured, parameterised prompts instead of ad-hoc prompt text, so the same result can be produced again.
+- A version tree: every variation traces back to its source image and its settings, and any image can be re-run exactly.
+- Automated review — a local vision model scores every generated image on several criteria before a human sees it, and anything that fails is regenerated.
+- A weighted multi-GPU farm that spreads work across several cards in parallel, so a batch of hundreds of images is a session, not a week.
+- Scheduled agents that run generation and review unattended, overnight.
+
+We track new open-source AI tooling continuously — over 115 models and tools assessed for licence terms, hardware requirements, and production fitness — so what we deploy is chosen on evidence, not on release-week hype. If your project needs a special AI workflow, we'll build it. If data sensitivity means the AI processing has to stay on your machines, on your network — we'll build the tool and deploy it locally.
 </Lang>
 
 <Lang code="hu">
@@ -122,7 +130,15 @@ Megfelelő-e az AI a projektjéhez?
 - Ismétlődő render-kötegek (változatok, szögek, évszakok): igen, nagyon hatékony
 - Egyedi hero-képek: bonyolultságfüggő — őszintén megmondjuk
 
-**Saját pipeline-ok és egyedi eszközök ügyfeleknek.** Az ai.visiongraphics.eu mögötti technológiát mi fejlesztettük. Ha az Ön projektje speciális AI-munkafolyamatot igényel, megépítjük. Ha az adatok érzékenysége miatt az AI-feldolgozásnak az Ön gépein, az Ön hálózatán kell maradnia — felépítjük az eszközt, és telepítjük helyben.
+**Saját pipeline-ok és egyedi eszközök ügyfeleknek.** Az ai.visiongraphics.eu mögötti technológiát mi fejlesztettük. Teljes egészében a saját hardverünkön fut — az ügyféladatok nem kerülnek ki külső szolgáltatóhoz —, és nem a szerencsés találatokra, hanem az ismételhetőségre épül:
+
+- Strukturált, paraméterezett promptok eseti prompt-szövegek helyett, így ugyanaz az eredmény újra előállítható.
+- Verziófa: minden változat visszavezethető a forrásképére és a beállításaira, és bármelyik kép pontosan újrafuttatható.
+- Automatikus ellenőrzés: minden generált képet helyben futó képelemző modell pontoz több szempont szerint, mielőtt ember látná — ami megbukik, azt a rendszer újragenerálja.
+- Súlyozott, több GPU-s farm: a munka párhuzamosan oszlik el több videokártya között, így több száz képből álló köteg egy munkamenet, nem egy hét.
+- Ütemezett ágensek, amelyek a generálást és az ellenőrzést felügyelet nélkül, éjszaka futtatják.
+
+Az új nyílt forráskódú AI-eszközöket folyamatosan követjük és értékeljük — eddig több mint 115 modellt és eszközt vizsgáltunk meg licencfeltételek, hardverigény és éles használhatóság szempontjából —, így amit bevezetünk, azt tények alapján választjuk, nem a megjelenéskori felhajtás alapján. Ha az Ön projektje speciális AI-munkafolyamatot igényel, megépítjük. Ha az adatok érzékenysége miatt az AI-feldolgozásnak az Ön gépein, az Ön hálózatán kell maradnia — felépítjük az eszközt, és telepítjük helyben.
 </Lang>
 
 <ImageCompare before="/_img/services/advanced-ai-services/novus-liget-k-ls-15-summer-daytime.jpg" after="/_img/services/advanced-ai-services/novus-liget-k-ls-15-summer-blue-hour.jpg" beforeLabel="Daytime" afterLabel="Blue hour" />

@@ -16,7 +16,8 @@ Astro.locals.lang = lang;
 const L = ui(lang);
 const allProjects = await getCollection('projects', ({ data }) => data.published);
 const allCategories = await getCollection('categories');
-const catMap = new Map(allCategories.map(c => [c.id, tStr(c.data.title, lang)]));
+// Content-type collection: `c.id` is "residential.md", references carry the slug.
+const catMap = new Map(allCategories.map(c => [c.slug, tStr(c.data.title, lang)]));
 
 // Resolve a reference field to its display title (locale-aware)
 async function resolveTitle(ref: { id: string; collection: string } | undefined): Promise<string | undefined> {
@@ -67,7 +68,7 @@ const maxYear = Math.max(...years);
   <div class="portfolio-page">
     <div class="portfolio-header container">
       <p class="section-label">{lang === 'hu' ? 'Munkáink' : 'Our Work'}</p>
-      <h2 class="display-lg">{lang === 'hu' ? 'Válogatott projektek' : 'Selected Projects'}</h2>
+      <h1 class="display-lg">{lang === 'hu' ? 'Válogatott projektek' : 'Selected Projects'}</h1>
       <p class="portfolio-sub">
         {lang === 'hu'
           ? '30 év. 500+ projekt. Válogatás szektorok és léptékek szerint.'
@@ -81,6 +82,7 @@ const maxYear = Math.max(...years);
         minYear={minYear}
         maxYear={maxYear}
         lang={lang}
+        labels={L.portfolio}
         client:load
       />
     </div>

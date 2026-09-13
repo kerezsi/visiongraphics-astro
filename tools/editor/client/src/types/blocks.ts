@@ -17,7 +17,16 @@ export type BlockType =
   | 'body-lead'
   | 'body-text'
   | 'results-list'
-  | 'rich-text';
+  | 'rich-text'
+  | 'section-label'
+  | 'diff-block'
+  | 'cta-section'
+  | 'button-group'
+  | 'sidebar-block'
+  // Layout/container blocks
+  | 'section-container'
+  | 'two-col'
+  | 'service-body-grid';
 
 export type BlockData =
   | { id: string; type: 'SectionBanner';    props: SectionBannerProps }
@@ -34,7 +43,15 @@ export type BlockData =
   | { id: string; type: 'body-lead';        props: { text: string } }
   | { id: string; type: 'body-text';        props: { text: string } }
   | { id: string; type: 'results-list';     props: ResultsListProps }
-  | { id: string; type: 'rich-text';        props: { html: string } };
+  | { id: string; type: 'rich-text';        props: { html: string } }
+  | { id: string; type: 'section-label';    props: { text: string } }
+  | { id: string; type: 'diff-block';       props: DiffBlockProps }
+  | { id: string; type: 'cta-section';      props: CtaSectionProps }
+  | { id: string; type: 'button-group';     props: ButtonGroupProps }
+  | { id: string; type: 'sidebar-block';    props: SidebarBlockProps }
+  | { id: string; type: 'section-container'; props: SectionContainerProps }
+  | { id: string; type: 'two-col';          props: TwoColProps }
+  | { id: string; type: 'service-body-grid'; props: ServiceBodyGridProps };
 
 export interface SectionBannerProps {
   image: string;
@@ -47,6 +64,7 @@ export interface SectionBannerProps {
 export interface HeadingProps {
   text: string;
   level: 'h2' | 'h3';
+  className?: string;
 }
 
 export interface ResultsListProps {
@@ -74,6 +92,8 @@ export interface SingleImageProps {
 
 export interface ImageGalleryProps {
   images: Array<{ src: string; alt: string }>;
+  /** Gallery title (Localized). Maps to `title` prop on <ImageGallery> / <ImageLightbox>. */
+  title?: import('../lib/localized.ts').LocalizedValue;
   /** Red header above the gallery (Localized). Maps to `label` prop on <ImageGallery>. */
   label?: import('../lib/localized.ts').LocalizedValue;
   /** White subtitle line under the label (Localized). Maps to `subtitle` prop on <ImageGallery>. */
@@ -110,6 +130,41 @@ export interface Tour360Props {
 export interface YouTubeEmbedProps {
   url: string;
   title?: string;
+}
+
+export interface DiffBlockProps {
+  label: string;
+  text: string;
+}
+
+export interface CtaSectionProps {
+  heading: string;
+  subtext: string;
+  buttonLabel: string;
+  buttonHref: string;
+}
+
+export interface ButtonGroupProps {
+  buttons: Array<{ label: string; href: string; variant: string }>;
+}
+
+export interface SidebarBlockProps {
+  label: string;
+  content: string;
+}
+
+export interface SectionContainerProps {
+  children: BlockData[];
+}
+
+export interface TwoColProps {
+  left: BlockData[];
+  right: BlockData[];
+}
+
+export interface ServiceBodyGridProps {
+  main: BlockData[];
+  sidebar: BlockData[];
 }
 
 export interface BlockRegistryEntry {

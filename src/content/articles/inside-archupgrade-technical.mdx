@@ -1,0 +1,76 @@
+---
+title: "Inside ArchUpgrade: How We Built a Production AI Pipeline for Archviz"
+date: 2026-06-13
+excerpt: "A technical look at our render-to-photorealistic system: a FastAPI backend driving a multi-GPU ComfyUI farm, a version-tree data model, structured prompt assembly, and a local LLM that quality-scores every image. No cloud, no subscriptions, no client data leaving the studio."
+tags:
+  - ai
+  - tools
+  - workflow
+  - comfyui
+published: false
+coverImage: /_img/articles/archupgrade/archupgrade-before-after.jpg
+---
+
+In a [companion article](/articles/from-render-to-photograph-archupgrade/) we showed what our in-house AI enhancement pipeline does for clients. This one is for the technically curious: how it's actually built, and the engineering decisions that made it production-grade instead of a demo.
+
+ArchUpgrade is a full-stack system that takes working 3D renders and produces photorealistic, quality-scored image sets. It has been in daily production use in our studio since spring 2026. Everything runs locally — the models, the GPUs, the quality reviewer. No client image ever leaves our network.
+
+## The stack
+
+- **Backend:** Python / FastAPI with an async SQLite database. One process orchestrates everything: job queues, render dispatch, file management, delivery packaging.
+- **Frontend:** React with a numbered workflow — Ingest → Generate → Versioning → Queue → Review → Upscale → Deliver — so an operator always knows where a project stands.
+- **Rendering:** SwarmUI instances driving ComfyUI on multiple GPU machines. The image-to-image enhancement is built on Qwen-Image-Edit with a custom-trained photorealism LoRA; specialized workflows handle upscaling, relighting, outpainting, and 3D-aware camera moves.
+- **Quality control:** a local vision LLM (via Ollama) that scores every generated image — no API keys, no per-image cloud costs.
+
+The central screen is the Versioning page: source images on the left, iteration parameters in the middle, and a live preview of the exact structured prompt that will be sent to the model on the right:
+
+![The Versioning page — parameter axes and live structured prompt preview](/_img/articles/archupgrade/archupgrade-versioning.jpg)
+
+## Structured prompts, not prompt soup
+
+Early on we learned that image-edit models respond much better to terse, keyed instructions than to walls of prose. The prompt assembler merges multiple sources — per-image notes, per-directory context, reusable preset cards, parameter categories like season or budget tier — into a single structured JSON payload with deterministic ordering. The same inputs always produce the same prompt, which makes results reproducible and debuggable.
+
+Parameters are organized into iteration axes. Select two lighting moods, three furnishing styles, and five seeds, and the planner expands the cartesian product into thirty versions — each with a label that encodes exactly how it was made.
+
+## The version tree
+
+Every output gets a label like `g03_i_s02_e01`: generation 3, iteration code, seed 2, edit 1. Retries, mutations, manual edits, upscales, crops, and camera moves each append their own suffix, so any image's full ancestry is readable from its filename. Re-queueing always bumps the generation number — nothing on disk is ever overwritten.
+
+The review screen renders this as a tree: the source render at the root, generations as children, and every derived operation branching below. You can see the quality scores climb across generations as parameters get refined:
+
+![The version tree — source render at top, scored generations below](/_img/articles/archupgrade/archupgrade-version-tree.jpg)
+
+This sounds like bookkeeping until a client says "we liked the third version from last month, but can we see it with evening lighting?" — and you branch from exactly that node instead of reconstructing settings from memory.
+
+## Automated review: five scores per image
+
+Every completed render is evaluated by a local vision LLM against the source image and the prompt. It returns five independent 0–10 scores — aesthetics, fidelity, prompt adherence, technical quality, and style match — plus written notes and a list of missing elements. An image passes only if *every* aspect clears its threshold; failures are retried automatically with correction notes fed back into the prompt.
+
+The same data is surfaced in the lightbox, where the operator sees the full-size image alongside its scores, the reviewer's notes, and the exact prompt that produced it:
+
+![The lightbox — full-size result with QA score, reviewer notes, and the exact prompt](/_img/articles/archupgrade/archupgrade-qa-lightbox.jpg)
+
+A built-in compare slider overlays any version on its source for pixel-level inspection:
+
+![In-app before/after compare — source render against the generated version](/_img/articles/archupgrade/archupgrade-before-after.jpg)
+
+The scores are advisory, not authoritative — a human still picks the final images. But they invert the economics of review: instead of inspecting 300 images, the operator inspects the 40 that passed, sorted by score. On a recent 18-view interior project, the system generated over 300 versions; the LLM filtered, a human picked 18.
+
+## A weighted multi-GPU farm
+
+Render dispatch runs across multiple SwarmUI/ComfyUI backends with weighted round-robin scheduling. Each machine declares roles — image editing, text-to-image, upscaling, 3D, video — with per-role priorities, so a 24 GB card handles heavy upscales while smaller cards chew through enhancement batches. Health checks gate offline machines out of the rotation automatically, and a crash recovery sweep on startup means a power blip never leaves the queue in a corrupted state.
+
+## Delivery is part of the pipeline
+
+The final step packages picked versions with clean sequential filenames, while a metadata file preserves the full internal labels and generation parameters. Per-category quotas ("15 exteriors, 3 interiors") are enforced before the package can ship:
+
+![The Deliver page — picked versions, rename template, quota check, delivery history](/_img/articles/archupgrade/archupgrade-deliver.jpg)
+
+## What we'd tell anyone building something similar
+
+- **Determinism is the feature.** Seeded generation, snapshot-at-queue-time configuration, and labels that encode ancestry — those are what make an AI pipeline production-usable rather than a slot machine.
+- **Score with a local model.** Quality review is the highest-volume LLM call in the system. Running it locally makes per-image cost zero, so you never hesitate to review everything.
+- **Plan for failure everywhere.** GPUs go offline, processes restart mid-batch, JSON files get corrupted at the worst moment. Atomic writes, per-cell failure isolation, and mark-failed-never-auto-retry recovery policies are unglamorous and essential.
+- **The model is maybe a fifth of the system.** The rest is version management, prompt assembly, queueing, review UX, and delivery — the unglamorous machinery that turns a great demo into a tool a studio actually uses every day.
+
+ArchUpgrade is internal tooling, not a product. But the workflow thinking behind it — and the [pipeline auditing and automation work](/services/workflow-optimization/) that grew out of it — is exactly the kind of engineering we do for other studios. If you're wiring AI into a real production pipeline and want to compare notes, [we're happy to talk](/contact/).

@@ -19,7 +19,9 @@ import DeliverableGrid from '../../../components/mdx/DeliverableGrid.astro';
 import TimelineTable from '../../../components/mdx/TimelineTable.astro';
 import PhaseMatrix from '../../../components/mdx/PhaseMatrix.astro';
 import SingleImage from '../../../components/mdx/SingleImage.astro';
-import { localizedPaths, type Locale } from '../../../lib/i18n';
+import { localizedPaths, localeUrl, tStr, type Locale } from '../../../lib/i18n';
+import { ui } from '../../../i18n/strings';
+import { formatDate, readingTime } from '../../../lib/article-meta';
 
 export async function getStaticPaths() {
   const articles = await getCollection('articles', ({ data }) => data.published);
@@ -29,17 +31,30 @@ export async function getStaticPaths() {
 const { lang, slug } = Astro.params as { lang: Locale; [k: string]: string | undefined };
 Astro.locals.lang = lang;
 Astro.locals.pageType = 'article';
+const L = ui(lang);
 const allArticles = await getCollection('articles', ({ data }) => data.published);
 const article = allArticles.find(a => a.slug === slug);
-if (!article) return Astro.redirect('/articles/');
+if (!article) return Astro.redirect(localeUrl('/articles/', lang));
 const { data } = article;
 const { Content } = await article.render();
+const minutes = readingTime(article.body);
+// Articles are EN-only plain strings today, but the schema allows {en,hu} — flatten (§4.1).
+const title   = tStr(data.title, lang);
+const excerpt = tStr(data.excerpt, lang);
 
-function formatDate(date: Date): string {
-  return new Intl.DateTimeFormat('en-GB', {
-    day: 'numeric', month: 'long', year: 'numeric',
-  }).format(date);
-}
+// Article JSON-LD — author/publisher facts mirror the sidebar and footer.
+const articleJsonLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description: excerpt,
+  datePublished: data.date.toISOString(),
+  inLanguage: 'en',
+  image: data.coverImage ? new URL(data.coverImage, Astro.site).toString() : undefined,
+  author: { '@type': 'Person', name: 'László Kerezsi' },
+  publisher: { '@type': 'Organization', name: 'Vision Graphics Kft.', url: 'https://visiongraphics.eu/' },
+  mainEntityOfPage: new URL(Astro.url.pathname, Astro.site).toString(),
+});
 
 // Adjacent articles for navigation
 const sorted = [...allArticles].sort((a, b) =>
@@ -51,27 +66,29 @@ const nextArticle = sorted[currentIndex - 1] ?? null;
 ---
 
 <Page
-  title={data.title}
-  description={data.excerpt}
+  title={title}
+  description={excerpt}
   image={data.coverImage}
   fullBleed
 >
+  <script type="application/ld+json" set:html={articleJsonLd} is:inline />
   <div class="article-page">
   <div class="container article-inner">
 
     <!-- Breadcrumb -->
-    <div class="article-breadcrumb">
-      <a href="/articles/">Articles</a>
-      <span>→</span>
-      <span>{data.title}</span>
-    </div>
+    <nav class="article-breadcrumb" aria-label={L.a11y.breadcrumb}>
+      <a href={localeUrl('/articles/', lang)}>{L.articles.breadcrumbRoot}</a>
+      <span aria-hidden="true">→</span>
+      <span aria-current="page" lang="en">{title}</span>
+    </nav>
 
-    <!-- Header -->
-    <header class="article-header">
+    <!-- Header — articles are authored in English; mark the prose as such on /hu/ -->
+    <header class="article-header" lang="en">
       <div class="article-meta">
         <time class="article-date" datetime={data.date.toISOString()}>
-          {formatDate(data.date)}
+          {formatDate(data.date, lang)}
         </time>
+        <span class="article-date">{L.articles.readingTime.replace('{n}', String(minutes))}</span>
         {data.tags.length > 0 && (
           <div class="article-tags">
             {data.tags.map(tag => (
@@ -80,19 +97,19 @@ const nextArticle = sorted[currentIndex - 1] ?? null;
           </div>
         )}
       </div>
-      <h1 class="display-lg article-h1">{data.title}</h1>
-      <p class="article-excerpt">{data.excerpt}</p>
+      <h1 class="display-lg article-h1">{title}</h1>
+      <p class="article-excerpt">{excerpt}</p>
     </header>
 
     {data.coverImage && (
       <div class="article-cover">
-        <img src={data.coverImage} alt={data.title} loading="eager" />
+        <img src={data.coverImage} alt={title} loading="eager" />
       </div>
     )}
 
     <!-- Content -->
     <div class="article-layout">
-      <div class="article-content prose">
+      <div class="article-content prose" lang="en">
         <Content components={{ SectionBanner, ImageGallery, ImageCompare, SingleImage, Tour360, FilmEmbed, YouTubeEmbed, YoutubeEmbed: YouTubeEmbed, ProcessFlow, SpecTable, CompareTable, NotableGrid, DeliverableGrid, TimelineTable, PhaseMatrix }} />
         <ArticleImageCompareMounter client:load />
         <ArticleGalleryMounter client:load />
@@ -100,34 +117,31 @@ const nextArticle = sorted[currentIndex - 1] ?? null;
 
       <aside class="article-sidebar">
         <div class="sidebar-block">
-          <h3 class="sidebar-label">About the author</h3>
-          <p class="sidebar-author-name">László Kerezsi</p>
-          <p class="sidebar-author-bio">
-            Founder, Vision Graphics Kft. 30 years in architectural visualization,
-            3ds Max since version 1, AI integration since it became useful.
-          </p>
+          <h3 class="sidebar-label">{L.articles.aboutAuthor}</h3>
+          <p class="sidebar-author-name">{lang === 'hu' ? 'Kerezsi László' : 'László Kerezsi'}</p>
+          <p class="sidebar-author-bio">{L.articles.authorBio}</p>
         </div>
 
         <div class="sidebar-block">
-          <h3 class="sidebar-label">Contact</h3>
-          <a href="/contact/" class="btn btn-primary sidebar-btn">Start a Project</a>
+          <h3 class="sidebar-label">{L.articles.contact}</h3>
+          <a href={localeUrl('/contact/', lang)} class="btn btn-primary sidebar-btn">{L.articles.startProject}</a>
         </div>
       </aside>
     </div>
 
     <!-- Navigation -->
-    <nav class="article-nav" aria-label="Article navigation">
+    <nav class="article-nav" aria-label={L.a11y.articleNav}>
       {prevArticle && (
-        <a href={`/articles/${prevArticle.slug}/`} class="article-nav-link article-nav-link--prev">
-          <span class="nav-dir">← Older</span>
-          <span class="nav-title">{prevArticle.data.title}</span>
+        <a href={localeUrl(`/articles/${prevArticle.slug}/`, lang)} class="article-nav-link article-nav-link--prev">
+          <span class="nav-dir">{L.articles.older}</span>
+          <span class="nav-title" lang="en">{tStr(prevArticle.data.title, lang)}</span>
         </a>
       )}
-      <a href="/articles/" class="article-nav-link article-nav-link--all">All Articles</a>
+      <a href={localeUrl('/articles/', lang)} class="article-nav-link article-nav-link--all">{L.articles.allArticles}</a>
       {nextArticle && (
-        <a href={`/articles/${nextArticle.slug}/`} class="article-nav-link article-nav-link--next">
-          <span class="nav-dir">Newer →</span>
-          <span class="nav-title">{nextArticle.data.title}</span>
+        <a href={localeUrl(`/articles/${nextArticle.slug}/`, lang)} class="article-nav-link article-nav-link--next">
+          <span class="nav-dir">{L.articles.newer}</span>
+          <span class="nav-title" lang="en">{tStr(nextArticle.data.title, lang)}</span>
         </a>
       )}
     </nav>

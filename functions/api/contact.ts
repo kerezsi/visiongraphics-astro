@@ -39,6 +39,7 @@ export const onRequestPost: PagesFunction<Env> = async (ctx) => {
     const projectType = str(data.get('project_type'));
     const message     = str(data.get('message'));
     const deadline    = str(data.get('deadline'));
+    const lang        = str(data.get('lang')).slice(0, 5) || 'en';
 
     if (!name || !email || !message) {
       return json({ ok: false, error: 'Missing required fields' }, 400);
@@ -51,10 +52,11 @@ export const onRequestPost: PagesFunction<Env> = async (ctx) => {
     }
 
     const subjectSuffix = projectType ? prettyProjectType(projectType) : 'general enquiry';
-    const subject = `Contact form — ${subjectSuffix}`;
+    const subject = `Contact form (${lang.toUpperCase()}) — ${subjectSuffix}`;
 
     const text = [
       `From:        ${name} <${email}>`,
+      `Language:    ${lang}`,
       company     ? `Company:     ${company}`                       : null,
       projectType ? `Project:     ${prettyProjectType(projectType)}` : null,
       deadline    ? `Deadline:    ${deadline}`                      : null,
@@ -65,6 +67,7 @@ export const onRequestPost: PagesFunction<Env> = async (ctx) => {
 
     const html = [
       `<p><strong>From:</strong> ${esc(name)} &lt;${esc(email)}&gt;</p>`,
+      `<p><strong>Language:</strong> ${esc(lang)}</p>`,
       company     ? `<p><strong>Company:</strong> ${esc(company)}</p>` : '',
       projectType ? `<p><strong>Project type:</strong> ${esc(prettyProjectType(projectType))}</p>` : '',
       deadline    ? `<p><strong>Deadline:</strong> ${esc(deadline)}</p>` : '',

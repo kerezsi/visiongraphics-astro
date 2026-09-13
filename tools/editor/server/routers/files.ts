@@ -70,7 +70,7 @@ router.get('/content/:collection', async (req: Request, res: Response) => {
             slug,
             title: data.title ?? slug,
             date: data.date ?? data.pubDate ?? null,
-            published: data.published ?? data.draft === false ?? true,
+            published: data.published ?? (data.draft === false),
             ...(data.excerpt !== undefined && { excerpt: data.excerpt }),
             ...(data.coverImage !== undefined && { coverImage: data.coverImage }),
             ...(data.year !== undefined && { year: data.year }),

@@ -47,7 +47,7 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // ---------------------------------------------------------------------------
 // Serve staged images at their R2 URL paths
-// e.g. GET /_img/portfolio/koki_foodcourt/01.jpg → tools/editor/.staging/koki_foodcourt/01.jpg
+// e.g. GET /_img/portfolio/koki_foodcourt/01.jpg → tools/editor/.staging/portfolio/koki_foodcourt/01.jpg
 // This allows MDX image paths to be previewed in the editor before pushing to R2.
 // ---------------------------------------------------------------------------
 
@@ -59,10 +59,9 @@ app.use('/_img', (req, res, next) => {
   // URL: /_img/portfolio/slug/file.jpg → /_img/vision-tech/slug/file.jpg etc.
   // Check staging first (locally uploaded images); if not found, proxy-redirect to R2.
   const parts = req.path.split('/').filter(Boolean);
-  if (parts.length >= 2) {
-    const slug = parts[parts.length - 2];
-    const file = parts[parts.length - 1];
-    const stagingFile = path.join(stagingRoot, slug, file);
+  // Staging mirrors the R2 layout: .staging/<collection>/<slug>/<file>
+  const stagingFile = path.join(stagingRoot, ...parts);
+  if (parts.length >= 2 && stagingFile.startsWith(stagingRoot)) {
     res.sendFile(stagingFile, (err) => {
       if (err) {
         // Not in staging — redirect to Cloudflare R2 public URL for preview

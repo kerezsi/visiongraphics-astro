@@ -60,13 +60,13 @@ const links = (navConfig as Array<{ label: string; href: string; enabled: boolea
 
       <!-- Brand column -->
       <div class="footer-brand">
-        <a href={localeUrl('/', lang)} class="footer-logo" aria-label="Vision Graphics — Home">
+        <a href={localeUrl('/', lang)} class="footer-logo" aria-label={L.a11y.home}>
           <img src="/logo.png"   alt="Vision Graphics Kft." class="footer-logo-img footer-logo-dark"  width="140" height="34" />
           <img src="/logo_b.png" alt=""                      class="footer-logo-img footer-logo-light" width="140" height="34" aria-hidden="true" />
         </a>
         <p class="footer-bio">
           {lang === 'hu'
-            ? 'Építészeti látványtervezés és több.\nBudapest, globálisan dolgozunk 1996 óta.'
+            ? 'Építészeti látványtervezés – és még több.\nBudapest, 1996 óta a világ minden táján.'
             : 'Architectural visualization & more.\nBudapest, working globally since 1996.'}
         </p>
         <address class="footer-address">
@@ -82,7 +82,7 @@ const links = (navConfig as Array<{ label: string; href: string; enabled: boolea
       <!-- Services column -->
       <div class="footer-col">
         <h4 class="footer-col-title">{L.nav.services}</h4>
-        <nav aria-label="Services links">
+        <nav aria-label={L.a11y.servicesLinks}>
           {services.map(s => (
             <a href={s.href} class="footer-link">{s.label}</a>
           ))}
@@ -92,7 +92,7 @@ const links = (navConfig as Array<{ label: string; href: string; enabled: boolea
       <!-- Quick links column -->
       <div class="footer-col">
         <h4 class="footer-col-title">{lang === 'hu' ? 'Stúdió' : 'Studio'}</h4>
-        <nav aria-label="Studio links">
+        <nav aria-label={L.a11y.studioLinks}>
           {links.map(l => (
             <a href={l.href} class="footer-link">{l.label}</a>
           ))}
@@ -110,7 +110,7 @@ const links = (navConfig as Array<{ label: string; href: string; enabled: boolea
         <a href={localeUrl('/impressum/', lang)}>{L.nav.impressum}</a>
       </span>
       <span class="footer-bottom-right">
-        Budapest · Est. 1996
+        {lang === 'hu' ? 'Budapest · Alapítva 1996' : 'Budapest · Est. 1996'}
       </span>
     </div>
 

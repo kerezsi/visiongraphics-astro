@@ -94,7 +94,6 @@ const L = ui(lang);
           data-status-sending={L.contact.statusSending}
           data-status-ok={L.contact.statusOk}
           data-status-err={L.contact.statusErr}
-          novalidate
         >
           <div class="form-row">
             <div class="form-field">
@@ -173,8 +172,11 @@ const L = ui(lang);
             />
           </div>
 
+          <!-- Which locale the enquiry came from — shown in the email so replies match -->
+          <input type="hidden" name="lang" value={lang} />
+
           <!-- Honeypot (spam prevention) -->
-          <input type="text" name="_gotcha" style="display:none" tabindex="-1" />
+          <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true" />
 
           <button type="submit" class="btn btn-primary form-submit">
             {L.contact.fSubmit}
@@ -207,7 +209,10 @@ const L = ui(lang);
     const data = new FormData(form);
     const submitBtn = form.querySelector<HTMLButtonElement>('[type="submit"]');
     if (submitBtn) submitBtn.disabled = true;
-    if (status) status.textContent = msgSending;
+    if (status) {
+      status.classList.remove('form-status--ok', 'form-status--err');
+      status.textContent = msgSending;
+    }
 
     try {
       const res = await fetch(form.action, {

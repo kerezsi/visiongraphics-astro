@@ -1,998 +1,732 @@
-# CLAUDE.md — Vision Graphics Kft. Website
+# CLAUDE.md — Vision Graphics operating manual
 
-## Project Overview
+Company website for **Vision Graphics Kft.** (visiongraphics.eu) — Budapest architectural
+visualization studio, founded 1996, solo operator **László Kerezsi** (30+ years 3ds Max,
+deep AI integration, Unreal VR, custom scripting). Astro 5 static site on Cloudflare Pages,
+bilingual EN/HU, custom block editor in `tools/editor/`.
 
-Company website for **Vision Graphics Kft.** (visiongraphics.eu).
-Budapest-based architectural visualization studio, founded 1996.
-Solo operator: **László Kerezsi** — 30+ years in 3ds Max, deep AI integration,
-Unreal Engine VR, custom scripting/automation.
+**How to use this file.** Sections 1–5 are rules — read them as constraints, not suggestions.
+Section 6 gives per-deliverable acceptance checklists. Section 7 tells you exactly when to act
+and when to ask. Section 8 is lookup reference. Three procedures live as skills, invoke them
+instead of improvising: `/add-mdx-component`, `/translate-hu`, `/write-article`.
 
-Live dev reference: https://dev.visiongraphics.eu (WordPress prototype — do NOT copy its bugs)
-Target: rebuild in Astro, deploy to Cloudflare Pages.
-
----
-
-## Tech Stack
-
-| Layer | Choice |
-|---|---|
-| Framework | Astro 5.x (static output in prod, server in dev) |
-| Styling | Tailwind CSS v3 |
-| Interactivity | React islands (`client:load`) |
-| Content | Astro Content Collections + Keystatic CMS |
-| Content format | MDX (all collections) + YAML metadata (reference collections) |
-| Search | Pagefind (post-build, static) |
-| Lightbox | PhotoSwipe v5 — auto-mounted on `[data-pswp-gallery]` containers via `src/lib/photoswipe.ts` |
-| Inline carousel | Embla Carousel v8 (`embla-carousel-react`) — used by `ImageLightbox.tsx` for the inline gallery viewer |
-| Hosting | Cloudflare Pages (staging: visiongraphics-astro.pages.dev) |
-| Image Storage | Cloudflare R2 bucket: `visiongraphics-images` |
-| CI/CD | GitHub → Cloudflare Pages (auto-deploy on push to master) |
+Old WordPress prototype at https://dev.visiongraphics.eu is a *content reference only* — do not
+copy its markup, patterns, or bugs.
 
 ---
 
-## Commands
+## 1. Mental model
+
+- **Everything renders twice.** Every page exists at `/en/...` and `/hu/...`, built from one
+  template in `src/pages/[lang]/...`. Any value you print may be a plain string **or** an
+  `{ en, hu }` object. The single most common failure in this repo is printing that object raw.
+- **Two translation channels, never mixed:** UI chrome (nav, buttons, form labels) lives in
+  `src/i18n/strings.ts` and resolves via `ui(lang)`. Content (MDX frontmatter + props) resolves
+  via `t()`/`tStr()` from `src/lib/i18n.ts`; body prose uses paired `<Lang code="en|hu">` blocks.
+  Articles are the deliberate exception: **EN-only, plain strings, no Lang blocks.**
+- **Files are the source of truth.** Content = MDX/MD files in `src/content/`. The Zod schemas
+  in `src/content/config.ts` are the contract. `keystatic.config.ts` has drifted from reality
+  (flat strings vs `{en,hu}` files, unregistered components) — never "fix" content to match
+  Keystatic; it's a legacy/fallback editor.
+- **Two editors:** VG Editor (custom, `localhost:4323`, primary) and Keystatic
+  (`localhost:4321/keystatic`, fallback). The VG Editor server (`localhost:4322`) also runs the
+  git push/promote flows and image/thumbnail pipelines.
+- **Prod is static, dev is server.** `npm run dev` → `output:'server'` + Node adapter + Keystatic
+  + R2 dev proxy. `npm run build` → `output:'static'` + Pagefind. Pages Functions
+  (`functions/api/contact.ts`) exist outside Astro and only run on Cloudflare (or `wrangler pages dev`).
+- **Images are not in git.** They live in R2 (`visiongraphics-images`), referenced as
+  `/_img/<collection>/<slug>/<file>`, served via `public/_redirects` 302s in prod and a Vite
+  proxy in dev. Thumbs are generated WebP in `public/thumbs/` (also not committed).
+- **Branch discipline:** all work happens on `develop`. `master` = production, written to only
+  by the editor's ↑ Live promote flow (or its documented plumbing equivalent). Never edit master.
+
+---
+
+## 2. Environment & daily workflow
 
 ```bash
-npm run dev          # dev server (localhost:4321) — server mode, Keystatic at /keystatic
-npm run build        # production static build + Pagefind index
-npm run preview      # preview built output
+npm run dev            # Astro dev server :4321 (server mode, Keystatic at /keystatic)
+npm run editor:server  # VG Editor API :4322 (tsx watch)
+npm run editor:client  # VG Editor UI  :4323 (vite)
+npm run build          # static build + Pagefind index
+npm run preview        # preview built output
+npm run check          # astro check (types + content schemas)
 ```
 
-**Dev vs Prod output:**
-- `dev` → `output: 'server'` + Node adapter (required for Keystatic write API)
-- `build` → `output: 'static'` (Cloudflare Pages compatible, Keystatic excluded)
+- `npm run check` needs `@astrojs/check`, which is deliberately **not** a project dependency
+  (Astro prompts to install it). Run `npm i --no-save @astrojs/check` once per checkout, then
+  `NODE_OPTIONS=--max-old-space-size=8192 npx astro check` — the language server needs the
+  extra heap. Pre-existing errors: 13× `ts(2322)` in `keystatic.config.ts` (known drift, §4.17).
+
+- `start-dev.bat` launches all three in separate terminals **and wipes `node_modules/.vite`
+  first** (stale-dep guard). When starting servers yourself, use the `preview_start` tool with
+  the configs in `.claude/launch.json` (`visiongraphics-dev`, `editor-server`, `editor-client`).
+- **"restart servers"** (user shorthand): stop all preview servers → delete `node_modules/.vite`
+  → start again → verify with a real HTTP request. No confirmation needed.
+- `push.bat` and `upload-images.bat` are **retired**. Never run them (`push.bat` does
+  `git add -A` + direct push to master — both forbidden below).
+- Git commits follow `scope: lowercase summary` — scopes in use: `editor:`, `i18n:`, `seo:`,
+  `legal:`, `build:`, `docs:`, `content:`, or the content area (`vision-tech:`). The editor
+  auto-commits as `editor: update <slug>`.
+- Production deploy chain: push to `master` → GitHub → Cloudflare Pages build (`npm run build`,
+  dist, Node 20) → visiongraphics.eu. Push to `develop` → develop.visiongraphics-astro.pages.dev.
 
 ---
 
-## Content Management
-
-Two editors are available in dev mode:
-- **VG Editor** (primary) — `http://localhost:4323/` — custom block-based editor with R2 image upload
-- **Keystatic CMS** (fallback) — `http://localhost:4321/keystatic` — schema-driven MDX editor
-
-VG Editor runs two processes: `npm run editor:server` (API, port varies) + `npm run editor:client` (UI, port 4323).
-Image uploads via VG Editor go to local `.staging/<slug>/`, then "↑ R2" pushes to R2 via rclone.
-
-### VG Editor — AI Tab
-
-The left panel **AI** tab integrates two local AI services:
-
-**Ollama** (text generation)
-- Status dot shows availability; model dropdown populated from Ollama's tag list.
-- Quick actions: generate excerpt from page content, free-form prompt.
-- The selected model here is also used by the SwarmUI panel's ✦ Generate block workflow.
-
-**SwarmUI** (image generation)
-- Connects to a SwarmUI instance (not ComfyUI directly — SwarmUI wraps the backend).
-- **Model** — text input with datalist autocomplete from SwarmUI's model list (`f.name` — the internal filename identifier, not display title); saved models persist in `editor-config.json`. "↻ Fetch models" pulls the list from SwarmUI.
-- **Steps / CFG / Sampler / Scheduler** — generation parameters shown in a compact row below the model field. Defaults: steps = 4, CFG = 1, sampler = euler, scheduler = simple (tuned for LCM/Lightning/Turbo models).
-- **Size** — base resolution: 1024 / 1328 / 1536 / 2048. Total pixel count equals `base²` (same megapixel budget as 1:1 at that size).
-- **Format** — aspect ratio: 21:9 / 2:1 / 16:9 / 1:1 / 9:16. Both dimensions calculated from `sqrt(area × ratio)`, rounded to nearest 8px.
-- **Style** — saved named styles (positive prompt suffixes). Appended to the prompt at generation time, not mixed into the textarea. Save current prompt as a new style; load style text into prompt via ↓.
-- **Prompt** — textarea. "Save…" names and saves the prompt to `swarmPrompts` in config. "Load prompt…" dropdown restores a saved prompt.
-- **☰ Blocks / ✦ Generate** — Ollama-powered banner subject workflow:
-  - "☰ Blocks" activates **AI block selection mode** on the canvas. A green banner appears at the top of the canvas; blocks get checkbox overlays; normal drag/toolbar is hidden.
-  - Click blocks in the canvas to toggle selection (green border + tint = selected). Click "✕ Exit" in the banner or "☰ Blocks" again to cancel.
-  - "✦ Generate" sends the selected blocks' extracted text to Ollama (using the model selected in the Ollama panel above). The result is written into the SwarmUI prompt field.
-  - When blocks are selected, **only block text is sent** — page meta (title/description/tags) is intentionally excluded so the LLM derives from the actual selection. Falls back to page meta only if no blocks are selected.
-  - If no text can be extracted from the selected blocks, an error is shown rather than hallucinating from meta.
-  - While Ollama is processing, a preview of the extracted text (first 120 chars) is shown below "Asking Ollama…" so you can verify what was sent.
-- **Generated images** are downloaded from SwarmUI and saved to `tools/editor/.swarmui-output/YYYY-MM-DD_HH-MM-SS.jpg` (JPEG, no EXIF). Served at `/api/swarmui/output/<filename>`. Last 12 thumbnails shown as a gallery strip; click to re-display.
-
-**Block text extraction** (`extractText` in `ComfyUIPanel.tsx`):
-Handles `props.text`, `props.html` (strips tags), `props.label`, `props.title`, `props.heading`, `props.content`, `props.desc`, `props.caption`. Recurses into `children`, `left`, `right`, `items`, `rows`, `blocks`. Plain strings in arrays (e.g. `results-list` items) are handled directly. Falls back to the raw object if no `props` wrapper.
-
-**Prompt Settings** (collapsible section in the AI tab)
-- **System Prompts** — named, saved system prompts. One can be active at a time. The active system prompt is prepended to both the banner-subject generation and the Ollama chat, overriding the task-specific prompt. Dropdown to select active; textarea to edit; Update / Save as… / ✕ delete. Changing the active selection saves immediately.
-- **Task Prompts** — per-endpoint editable system instructions. Each row shows `default` or `✎ custom` (red) and can be expanded to edit. Clicking Save overwrites; Reset to default clears back to built-in. Endpoints covered:
-  - `bannerSubject` — system instruction for block → image prompt generation. Default: *"Extract the essence of the following text, and synthetize it as an image. Describe the subject of this image in 3-4 sentences. Only write about the subject, and nothing about the style and the composition."*
-  - `chat` — system context for the free-form Ollama chat panel
-  - `excerpt` — instruction for excerpt generation
-  - `caption` — instruction for SectionBanner label + title suggestions (must keep LABEL:/TITLE: format)
-  - `paragraph` — system context for paragraph writing/rewriting
-  - `summaryDescription` / `summaryStory` / `summaryTasks` — per-field instructions for summary generation
-
-**AI Settings** (collapsible section at the bottom of the AI tab)
-- Ollama address (default `http://localhost:11434`)
-- SwarmUI address (default `http://localhost:7801`)
-- "Save & reconnect" writes to `tools/editor/editor-config.json` and re-checks service availability.
-
-**`tools/editor/editor-config.json`** — persists all AI settings between server restarts:
-```json
-{
-  "ollamaBase": "http://localhost:11434",
-  "swarmBase":  "http://192.168.x.x:7801",
-  "swarmBases": ["http://192.168.x.x:7801", "http://second-machine:7801"],
-  "swarmModels":  ["modelName/file.safetensors"],
-  "swarmStyles":  [{ "name": "Cinematic BW", "text": "black and white, cinematic..." }],
-  "swarmPrompts": [{ "name": "Glass Tower", "text": "lone glass tower at dusk..." }],
-  "ollamaSystemPrompts": [{ "name": "Art Director", "text": "You are an art director..." }],
-  "activeSystemPromptName": "Art Director",
-  "ollamaTaskPrompts": { "bannerSubject": "...", "chat": "...", "excerpt": "..." }
-}
-```
-
-`swarmBases` is the active list of backends (added 2026-05). `swarmBase` is kept for backward compatibility — when only `swarmBase` is set, the server treats it as a single-element list. The AI Settings panel writes both fields on save (`swarmBase` mirrors the first entry of `swarmBases`).
-
-**SwarmUI setup requirements:**
-- Host must listen on `0.0.0.0` (not `127.0.0.1`) to accept network connections.
-- Default port: 7801. Set the editor's SwarmUI address accordingly.
-- No WS bridge — generation uses SwarmUI's blocking HTTP API (`POST /API/GenerateText2Image`), so long generations simply hold the HTTP connection open (up to 3 min timeout).
-- Model identifiers must be the internal `name` field from `ListModels` (the filename path), not the display `title`.
-
-**Multi-backend SwarmUI:**
-- Multiple `swarmBases` entries are addressed round-robin per image when a multi-image request is generated. E.g. with 2 backends and 4 images, each backend gets 2 generation jobs in parallel.
-- `/api/swarmui/status` pings every backend in parallel and returns `{ available: <any-up>, backends: [{ base, available }] }`.
-- `/api/swarmui/models` walks the list and returns the first reachable backend's model list (assumes a shared model set).
-- If any backend returns an error, that backend's images are skipped and the others still complete; the response includes a `warnings` field listing per-backend failures.
-
-**Async generate in the AI panel:**
-- The Generate button is no longer disabled while a generation is in flight. Clicking again queues another concurrent generation; with multi-backend setups these run in parallel on different machines.
-- The button label flips to `Generate · N running…` while jobs are active; the count below shows how many are queued. Each completed job appends its images to the output panel (rather than replacing — click "Clear" to reset).
-
-**Lightbox in the AI panel:**
-- Clicking any output image or any thumbnail in the Recent gallery opens a full-window lightbox overlay. Click outside the image, click ✕, or press Escape to close.
-- Shift-click a gallery thumbnail to load it back into the output panel above (preserves the old click behaviour).
-
-**Ollama NDJSON quirk:** Ollama sometimes returns streaming NDJSON even with `stream: false`. All server-side Ollama calls use `ollamaGenerate()` which aggregates all chunk `response` fields when multiple lines are returned, ensuring the full response is captured regardless of streaming behaviour.
-
-**VG Editor block palette — auto-registry:**
-The block palette is filtered per page type based on what components are actually registered
-in the Astro page templates. The editor server exposes `GET /api/registry` which scans
-the four content templates (`portfolio/[slug].astro`, `services/[slug].astro`,
-`vision-tech/[slug].astro`, `articles/[slug].astro`) at request time, extracts the
-`<Content components={{ ... }}>` prop, and maps component names → editor block types.
-The palette fetches this on load and shows only blocks valid for the open page type.
-Falls back to showing all blocks if no document is open or the fetch fails.
-
-When adding a new MDX component to the editor:
-1. Create the Astro `.astro` component
-2. Import and add it to `<Content components={{ ... }}>` in the relevant template(s)
-3. Add the VG Editor block: client types, client registry, server types, block-mapper, codegen, UI component, blocks/index.tsx
-4. Add the component name → block type mapping to `tools/editor/server/lib/astro-registry-scanner.ts`
-The palette will automatically show the new block only on page types where its Astro component is registered.
-
-**VG Editor toolbar tabs:**
-- **Editor** — block-based content editor (default view)
-- **Pages** — enable/disable and reorder nav items (drag-to-reorder, saved to `src/data/nav-config.json`)
-- **Pricing** — edit everything on `/pricing/`. Two sections:
-  - *Pricing Packages* — the three cards (name, price, description, included bullets, CTA, highlight flag); add/remove/reorder. Saved to `src/data/pricing-packages.json`.
-  - *Reference Pricing* — the line-item price table below the cards. Editable: intro, footer note, categories (title + reorder + add/remove), and per-row code/item/value with reorder + add/remove. Saved to `src/data/pricing-reference.json`.
-- **Projects** — batch toggle Published / Featured per project; Open button loads file into editor
-- **Articles** — batch toggle Published, inline tag editor; Open button loads file into editor; ⟳ per-row thumb generation
-- **Services** — batch toggle Published; Open button loads file into editor; ⟳ per-row thumb generation
-- **Vision-Tech** — batch toggle Published; Open button loads file into editor; ⟳ per-row thumb generation
-- **Collections** — manage reference collections (clients, designers, cities, countries, client-types, categories)
-
-**VG Editor toolbar push buttons:**
-- **↑ Git** — always commits any pending changes and pushes to the **`develop` branch** (regardless of currently checked-out branch — switches to develop first if needed). Updates the staging URL `develop.visiongraphics-astro.pages.dev` (and `staging.visiongraphics.eu` once the custom domain is wired up).
-- **↑ Live** — promotes `develop` → `master` (publish to production). Yellow-bordered button with a confirmation dialog. Sequence (NO `git checkout` — tsx watch must stay alive): fetch origin → commit any pending edits on develop → push develop → compare local `develop` with `origin/master`. Three cases:
-  1. **Equal** — early exit, nothing to promote.
-  2. **Fast-forward** (master is an ancestor of develop) — push develop's tip directly to `refs/heads/master`.
-  3. **Diverged** (typical: pre-existing `release: ...` merge commits on master) — build a merge commit via plumbing (`git commit-tree` with develop's tree, parents `[origin/master, develop]`, message `release: forward to develop (<m>..<d>)`) and push that commit to `refs/heads/master`.
-
-  Then `git update-ref` fast-forwards the local master ref to match origin/master (pure ref write — no working-tree change). The master push triggers a Cloudflare Pages production deploy to `visiongraphics.eu`.
-
-The `master` branch should never be edited directly from the editor — always go through `develop` and use **↑ Live** when ready to publish.
-
-**Why the plumbing dance?** The editor server runs under `tsx watch`. Any `git checkout master` reverts the working tree to master's older code, tsx kills the running process mid-sequence, and the promote aborts in an unsafe state. A previous fix tried a naive `git push origin develop:master` refspec — but that's rejected as non-fast-forward as soon as master has any commit develop doesn't (e.g. the `release: ...` merge commits this very flow creates). The `commit-tree` approach keeps history clean, never touches the working tree, and works regardless of divergence direction.
-
-### Collections
-
-| Collection | Path | Format | Notes |
-|---|---|---|---|
-| Articles | `src/content/articles/*.mdx` | MDX | Blog posts with components |
-| Services | `src/content/services/*.mdx` | MDX | Service detail pages (full-width, no sidebar) |
-| Projects | `src/content/projects/*.mdx` | MDX | Portfolio projects |
-| Vision-Tech | `src/content/vision-tech/*.mdx` | MDX | Technology detail pages |
-| Clients | `src/content/clients/*.yaml` | YAML | Reference collection |
-| Designers | `src/content/designers/*.yaml` | YAML | Reference collection |
-| Cities | `src/content/cities/*.yaml` | YAML | Reference collection |
-| Countries | `src/content/countries/*.yaml` | YAML | Reference collection |
-| Client Types | `src/content/client-types/*.yaml` | YAML | Reference collection |
-| Categories | `src/content/categories/*.yaml` | YAML | Reference collection |
-
-### Keystatic Config
-
-`keystatic.config.ts` in project root. Defines all collection schemas.
-
-**CRITICAL — Keystatic projects MDX field has NO components registered.**
-Registering `fields.array(fields.object())` schemas (e.g. `imageGalleryComponent`) in
-`content: fields.mdx({ components: {...} })` for the projects collection causes a
-ProseMirror `createAndFill` crash that blocks the entire editor page. Root cause: the
-inline JSX prop format used in existing MDX files (`images={[{...}]}`) is incompatible
-with Keystatic's internal ProseMirror node representation of array/object schemas.
-**Do not add component schemas back to the projects `fields.mdx({})` call.**
-Body text and all frontmatter fields are still fully editable; component blocks appear
-as opaque embeds (preserved on save, not visually editable in Keystatic UI).
-
-### MDX Components (for use in content files)
-
-```
-src/components/mdx/
-  SectionBanner.astro       — section divider with label + title + background image
-  ImageGallery.astro        — inline Embla carousel + PhotoSwipe lightbox
-  ImageCompare.astro        — before/after slider
-  DeliverableGrid.astro     — card grid for services (2 or 3 columns)
-  TimelineTable.astro       — project phase table for services
-  NotableGrid.astro         — two-column list of notable projects
-  ProcessFlow.astro         — horizontal step diagram with optional feedback arc (services + vision-tech)
-  PhaseMatrix.astro         — dot matrix: deliverable types × project phases (services)
-  SingleImage.astro         — single image with click-to-fullscreen (PhotoSwipe)
-  MediaLabel.astro          — shared red label + optional white subtitle, used internally by media components
-  SpecTable.astro           — 2-column spec table: label | value (vision-tech)
-  CompareTable.astro        — multi-column comparison table: feature × option (vision-tech)
-  ProjectDescription.astro  — description text block (children, no props)
-  ProjectStory.astro        — story/background section (heading prop + children)
-  ProjectTasks.astro        — tasks text block (children, no props)
-```
-
-Also usable in project MDX (registered in portfolio template):
-```
-Tour360      — click-to-load 360° iframe
-YoutubeEmbed — click-to-load YouTube facade
-FilmEmbed    — Vimeo facade
-```
-
-Also usable in service MDX (registered in service template):
-```
-Tour360      — click-to-load 360° iframe
-YoutubeEmbed — click-to-load YouTube facade
-ProcessFlow  — workflow diagram
-PhaseMatrix  — phase × deliverable matrix
-NotableGrid  — two-column list of notable projects
-ImageGallery — lightbox image grid
-ImageCompare — before/after slider
-```
-
-Also usable in vision-tech MDX (registered in vision-tech template):
-```
-Tour360      — click-to-load 360° iframe
-YoutubeEmbed — click-to-load YouTube facade
-ImageCompare — before/after slider
-ImageGallery — lightbox image grid
-ProcessFlow  — workflow diagram
-SpecTable    — 2-column spec table: rows={[{ label, value }]} caption?
-CompareTable — multi-column comparison: headers={[...]} rows={[{ label, values:[...] }]} caption?
-```
-
-Usage in MDX:
-```jsx
-<SectionBanner image="/_img/banners/banner-general.jpg" label="Label" title="Title" />
-<DeliverableGrid columns={3} items={[{ title: "...", desc: "..." }]} />
-<TimelineTable rows={[{ scope: "...", deliverables: "..." }]} />
-<NotableGrid items={[{ name: "...", year: "..." }]} />
-<ImageGallery images={[{ src: "...", alt: "..." }]} />
-<SingleImage src="/_img/..." alt="..." />
-<SingleImage src="/_img/..." alt="..." caption="Optional caption" />
-<Tour360 url="https://pano.visiongraphics.eu/SLUG/" title="Description" />
-<YoutubeEmbed url="https://www.youtube.com/watch?v=ID" title="Description" />
-
-{/* Project text blocks — use children, NOT a text prop */}
-<ProjectTasks>
-Tasks paragraph one.
-
-Tasks paragraph two.
-</ProjectTasks>
-
-<ProjectStory heading="The Story:">
-Background paragraph one.
-</ProjectStory>
-```
-
-**CRITICAL — ProjectStory/ProjectTasks/ProjectDescription use children, not props.**
-Never write `<ProjectStory text={`...`} />` — Keystatic will corrupt it on save.
-Always use the opening/closing tag form with content as children.
-
-MDX components must be passed via the `components` prop in the page template:
-```astro
-const { Content } = await entry.render();
-<Content components={{ SectionBanner, DeliverableGrid, ProjectStory, ProjectTasks, ... }} />
-```
-
-**Note on `YoutubeEmbed` casing:** The component file is `YouTubeEmbed.astro` but MDX
-content uses `<YoutubeEmbed>`. Both are registered in templates via alias:
-`{ YouTubeEmbed, YoutubeEmbed: YouTubeEmbed }`.
-
-### Multi-Section Project MDX Pattern
-
-Complex projects (hotels, residential with multiple unit types, multi-building schemes)
-use repeated `SectionBanner + ImageGallery + Tour360` blocks to group content:
-
-```mdx
-{/* Opening gallery — no banner needed */}
-<ImageGallery images={[...exterior images...]} />
-
-{/* Each section: banner → gallery → optional tour */}
-<SectionBanner image="/_img/portfolio/slug/30.jpg" label="Apartment" title="C-401" />
-<ImageGallery images={[...apartment images...]} />
-<Tour360 url="https://pano.visiongraphics.eu/SLUG_C401/" title="Apartment C-401 — 360°" />
-```
-
-Image numbering: R2 images are sequential (`01.jpg`, `02.jpg`… `09.jpg`, `10.jpg`…
-`99.jpg`, `100.jpg`). Section split points map directly to this sequence.
-Use the dev site to count images per section.
-
-### Media labels (red heading + optional white subtitle)
-
-Each media MDX component renders an auto-labelled `<MediaLabel>` above it.
-The red label is fixed per media type; the white subtitle is opt-in.
-
-| Component | Default red label (en / hu) | Auto-shown? |
-|---|---|---|
-| `ImageGallery` | "Gallery:" / "Galéria:" | **only on portfolio pages** |
-| `ImageCompare` | "Compare:" / "Összehasonlítás:" | everywhere |
-| `Tour360`      | "360° tour:" / "360° túra:"      | everywhere |
-| `YoutubeEmbed` / `FilmEmbed` | "Film:" / "Film:" | everywhere |
-| `SingleImage`  | (none — never labelled) | n/a |
-
-Props (all five media types accept these in addition to their existing props):
-- `label?: Localized<string> \| false` — overrides the default red text. Pass
-  `false` to suppress the label entirely (e.g. when galleries are sequential).
-- `subtitle?: Localized<string>` — optional white subtitle, mixed case. Empty
-  string / undefined → the line is omitted (no reserved space).
-
-Both label resolution and the page-type-aware default rely on
-`Astro.locals.pageType` (`'portfolio' | 'service' | 'article' | 'vision-tech'`),
-set by each `[slug].astro` template. New page templates that render MDX content
-must set this so labels behave correctly.
-
-### Viewport size cap (wide-short windows)
-
-Media containers (`.tour-wrap`, `.yt-embed`, `.film-embed`, `.embla-viewport`)
-cap their height to `calc(100vh - 6.5rem)` with a matching `max-width` derived
-from `× 16/9`. This keeps 16:9 media fitting on inside very wide / very short
-browser windows (e.g. 1920×500) instead of overflowing off-screen.
-
-### Smooth scroll on media launch
-
-Clicking a 360 tour / YouTube / Vimeo facade calls `scrollMediaIntoCenter()`
-from `src/lib/media-scroll.ts` before swapping in the iframe. This centers
-the media on the visible area (accounting for the sticky header) but only
-when it's partially off-screen — no scroll if already fully visible.
-
----
-
-## Internationalization (i18n)
-
-Site supports **English (default)** and **Hungarian** with symmetric URL prefixes
-(`/en/...` and `/hu/...`). Designed so adding `de` later is a 3-file change.
-
-### Locale list — single source of truth in 3 places
-
-To add or remove a locale, update **all three** in lockstep:
-1. `src/lib/i18n.ts` — `LOCALES` constant + `Locale` type
-2. `src/content/config.ts` — the `localizedString()` helper's object branch
-3. `tools/editor/client/src/lib/localized.ts` — `LOCALES` constant
-4. `astro.config.mjs` — `i18n.locales` array
-
-### Routing
-
-All page templates live under `src/pages/[lang]/...`. The bare-root
-`src/pages/index.astro` redirects 308 → `/en/`. Legacy non-prefixed URLs
-(`/portfolio/foo/`, `/services/x/`, etc.) are 308-redirected to `/en/...`
-in `public/_redirects` (Cloudflare Pages only).
-
-### Polymorphic content schema
-
-Translatable fields accept **either** a plain string (legacy / single-language
-content) **or** a `{ en, hu }` object:
-
-```yaml
-title: Hotel Lycium                    # plain string — treated as default-locale
-title:                                 # localized object — both locales
-  en: Hotel Lycium
-  hu: Lycium Hotel
-```
-
-This means **all existing single-language MDX still validates unchanged**.
-New translated content uses the object form. The `localizedString()` helper
-in `src/content/config.ts` accepts both.
-
-Translatable fields by collection:
-- **Projects** — title, displayTitle, description, story, tasks, tour360.title, films.title, images.alt
-- **Services** — title, description, tagline, startRequirements, pricing, sidebarLabel, sidebarContent
-- **Articles** — title, excerpt
-- **Vision-Tech** — title, description, body[]
-- **Reference collections** (categories, client-types, clients, designers, cities, countries) — title
-
-Per-block (MDX components) translatable props:
-- `SectionBanner` — label, title, imageAlt
-- `SingleImage` — alt, caption
-- `ImageGallery` — title (gallery title only; per-image alt is per-block-mapper TBD)
-- `Tour360`, `YoutubeEmbed`, `FilmEmbed` — title
-
-### Site runtime — `src/lib/i18n.ts`
-
-```ts
-LOCALES                               // ['en', 'hu']
-DEFAULT_LOCALE                        // 'en'
-t(value, lang)                        // resolve Localized<T> → T | undefined (falls back to default locale)
-tStr(value, lang)                     // same as t() but returns '' instead of undefined
-localeUrl(path, lang)                 // '/portfolio/foo' + 'hu' → '/hu/portfolio/foo/'
-swapLocale(pathname, lang)            // change locale segment in current URL
-localeFromPath(pathname)              // parse first segment, default to DEFAULT_LOCALE
-staticLocalePaths()                   // getStaticPaths() helper for pages with no other dynamic params
-localizedPaths(items, paramsOf)       // cartesian product locales × items, for [slug] etc.
-```
-
-### `<Lang>` component for prose blocks in MDX
-
-`src/components/i18n/Lang.astro` — slot-based component that renders only when its
-`code` prop matches the active locale. Used inside MDX bodies for prose that needs
-per-locale variants:
-
-```mdx
-<ProjectStory>
-  <Lang code="en">
-  Background paragraph in English.
-  </Lang>
-  <Lang code="hu">
-  Háttér bekezdés magyarul.
-  </Lang>
-</ProjectStory>
-```
-
-Page templates must register `Lang` in the `<Content components={{ ... }}>` prop
-to make it available inside MDX. Already wired into the portfolio template.
-
-### Page templates — required boilerplate
-
-Every page under `src/pages/[lang]/` does:
-
-```ts
-const { lang, slug } = Astro.params as { lang: Locale; ... };
-Astro.locals.lang = lang;
-const L = ui(lang);                          // UI strings for this locale
-const titleStr = tStr(data.title, lang);     // resolve any localized field
-const refTitle = tStr(refEntry?.data.title, lang);  // resolve refs
-```
-
-All internal links use `localeUrl('/portfolio/foo', lang)` — never bare `/portfolio/foo`.
-React islands MUST receive plain strings (use `tStr()` to flatten before crossing
-the server/client boundary; React throws on object children).
-
-### UI strings — `src/i18n/strings.ts`
-
-Hardcoded labels (nav, CTAs, section headings, footer columns) live here keyed by
-locale. EN and HU objects are TypeScript-checked for structural equality so a
-missing key in HU is a compile error. Use `ui(lang).nav.portfolio` etc.
-
-Content from MDX frontmatter is resolved via `t()` separately — that's a
-different path (per-document data, not chrome).
-
-### Language switcher
-
-`src/components/layout/LangSwitcher.astro` — chip toggle (EN | HU) in the header
-desktop controls and mobile nav. Pure HTML, no JS, server-renders correct hrefs
-via `swapLocale(currentPath, targetLocale)`.
-
-### VG Editor — localized fields
-
-The editor inspector renders fields marked translatable as a **`LocalizedTextField`**:
-two stacked inputs (EN | HU), with a per-locale **✦ Translate** button on non-default
-locales. Currently localized in the editor UI:
-
-- **MetaPanel (frontmatter)** — title, displayTitle, description, story, tasks,
-  tagline, sidebarLabel, sidebarContent, startRequirements, pricing (all collection types)
-- **Block inspector** — SectionBanner (label, title, imageAlt), SingleImage (alt, caption),
-  ImageGallery (title), Tour360/YoutubeEmbed/FilmEmbed (title)
-
-When you write to a non-default locale on a previously-scalar field, the value is
-auto-promoted to a `{ en, hu }` object preserving the existing string under `en`.
-When all non-default-locale entries become empty again, the value collapses back
-to a plain string. This keeps untranslated content simple in the YAML/MDX.
-
-**Block-preview rendering of localized props.** Every canvas block component that
-displays text from `block.props` must coerce values through `readLocale(value,
-DEFAULT_LOCALE)` (from `tools/editor/client/src/lib/localized.ts`) before
-rendering — otherwise React throws *"Objects are not valid as a React child"* when
-content has been translated. Same applies to `value={…}` on `<input>` /
-`<textarea>`. This is wired into: Tour360, YouTubeEmbed, FilmEmbed,
-SectionBanner, SingleImage, DeliverableGrid, TimelineTable, NotableGrid,
-ResultsList, ButtonGroup, SidebarBlock, DiffBlock, CtaSection, RichText, Heading,
-BodyText, BodyLead, SectionLabel — plus the Toolbar's title display.
-
-The codegen emits localized props as JSX object literals:
-```mdx
-<SectionBanner label={{"en":"Interior","hu":"Belső"}} title={{"en":"Lobby","hu":"Lobby"}} />
-```
-And localized frontmatter as block-style YAML:
-```yaml
-title:
-  en: Hotel Lycium
-  hu: Lycium Hotel
-```
-
-The block-mapper round-trips both back into `{ en, hu }` JS objects via the existing
-`new Function()` JSX-expression evaluator (no parser changes required).
-
-### Translation engine — editor server `/api/translate`
-
-`POST /api/translate` body: `{ text, from, to, engine?, model? }` →
-`{ translation, engine, model }`.
-
-`POST /api/translate/batch` for multiple strings in one request (sequential
-internally).
-
-Engine selection (set in **AI Settings → Translation**):
-- **`ollama`** (default) — uses `ollamaBase` URL + `translationOllamaModel`
-  (auto-picks llama3 if unset). Free, local, fast; quality on Hungarian is mediocre
-  unless you run a 70B+ model.
-- **`claude`** — uses Anthropic Messages API. **API key MUST be in
-  `process.env.ANTHROPIC_API_KEY`** — NOT stored in `editor-config.json` (that file
-  is checked into git). Set it in your shell or a `.env` file consumed by the editor
-  server start script. Quality is excellent for Hungarian; cost is negligible for a
-  small site (~$0.01 per page).
-
-The system prompt template is editable in **AI Settings → Translation → System prompt**.
-Placeholders `{{from}}` and `{{to}}` are substituted with locale display names.
-
-### Reference collections translation
-
-Curated Hungarian translations for `categories` and `client-types` collections
-applied via `scripts/translate-reference-collections.mjs`. These collections
-have small fixed vocabularies; running the script once populates `title:
-{en, hu}` objects in every YAML file. Cities, countries, clients, designers
-stay as-is (proper nouns).
-
-### Adding a new locale (e.g. `de`)
-
-1. **`src/lib/i18n.ts`** — append `'de'` to `LOCALES`; add display name to
-   `LOCALE_NAMES`/`LOCALE_SHORT`.
-2. **`src/content/config.ts`** — add `de: z.string().optional()` to the
-   `localizedString()` object branch.
-3. **`tools/editor/client/src/lib/localized.ts`** — append `'de'` to `LOCALES`.
-4. **`astro.config.mjs`** — append `'de'` to `i18n.locales`.
-5. **`src/i18n/strings.ts`** — add a sibling `de` object mirroring the EN shape.
-6. **`scripts/translate-reference-collections.mjs`** — add `de` translations
-   for category/client-type titles, regenerate.
-7. **`tools/editor/server/routers/translate.ts`** — add `de: 'German'` to
-   `LOCALE_NAMES` for the system prompt substitution.
-8. Translate UI labels in `src/components/layout/Header.astro`,
-   `Footer.astro`, and any home-page hardcoded copy.
-
-The schema, codegen, block-mapper, and editor inspector all auto-pick up the
-new locale — no further structural changes required.
-
----
-
-## Deployment
-
-- Platform: Cloudflare Pages
-- Staging URL: https://visiongraphics-astro.pages.dev
-- GitHub repo: https://github.com/kerezsi/visiongraphics-astro
-- Build command: `npm run build`
-- Output directory: `dist`
-- Node version: 20
-
-### Image Hosting (Cloudflare R2)
-
-Images are NOT in Git. They live in R2 bucket `visiongraphics-images`.
-Public R2 URL: `https://pub-681025dcca3b4bad99aa4a4d65ecc023.r2.dev`
-
-URL structure:
-- Portfolio images: `/_img/portfolio/[project-slug]/[filename]` → 302 redirect → R2
-- Service images:  `/_img/services/[slug]/[filename]` → 302 redirect → R2
-- Article images:  `/_img/articles/[slug]/[filename]` → 302 redirect → R2
-- Tech images:     `/_img/vision-tech/[slug]/[filename]` → 302 redirect → R2
-- Root images:     `/hero-bg.jpg` etc. → 302 redirect → R2 root
-
-Redirects defined in `public/_redirects` (Cloudflare Pages only).
-Dev proxy in `astro.config.mjs` (`r2DevProxy`) handles `/_img/*` locally by fetching from R2.
-
-R2 bucket path structure (no `_img/` prefix inside bucket):
-- `portfolio/<slug>/<file>`, `services/<slug>/<file>`, `articles/<slug>/<file>`, `vision-tech/<slug>/<file>`
-
-To upload images: use VG Editor image picker → "↑ R2" button (calls rclone via editor server API).
-All uploads go to R2 via the editor. `upload-images.bat` is retired.
-
-### 360 Tour Hosting (`pano.visiongraphics.eu`)
-
-Pano2VR 360° tours are NOT served from Cloudflare Pages. They live on
-the tarhely shared host under `/public_html/PANO/`, exposed via the
-subdomain `pano.visiongraphics.eu` (DocRoot points to `/PANO/`).
-
-URL pattern in MDX: `https://pano.visiongraphics.eu/<TOUR_SLUG>/`
-(no `/PANO/` segment — the subdomain is rooted there).
-
-Backward compatibility: `public/_redirects` 301-redirects any old
-`visiongraphics.eu/PANO/X/` request to `pano.visiongraphics.eu/X/`,
-so external links shared in the past keep working.
-
-### Thumbnails
-
-Thumbnails are WebP files stored in `public/thumbs/` locally and in R2 under `thumbs/`.
-They are **not committed to git** — generated locally, pushed to R2 via "↑ R2 all", served via `_redirects`.
-
-**Sizes:**
-- `card`  — 600px wide — portfolio grid, service cards, article cards, gallery thumbnail strip
-- `large` — 1600px wide — gallery main viewer, lightbox fallback
-
-**Path structure:**
-```
-public/thumbs/card/<collection>/<slug>/filename.webp
-public/thumbs/large/<collection>/<slug>/filename.webp
-```
-Collections: `portfolio`, `services`, `articles`, `vision-tech`
-
-**Generating thumbnails:**
-```bash
-node scripts/generate-thumbs.mjs                          # all images (R2 + staging)
-node scripts/generate-thumbs.mjs --slug portfolio/hotel-lycium  # single folder
-node scripts/generate-thumbs.mjs --force                  # regenerate existing
-```
-Sources: R2 bucket (all 4 collections) + `tools/editor/.staging/` (locally staged images).
-Output goes to `public/thumbs/` (local only — not committed). Run before "↑ R2 all" in the editor.
-
-**`thumbUrl(src, size?)` — `src/lib/image-url.ts`:**
-```ts
-thumbUrl('/_img/portfolio/slug/01.jpg')          // → /thumbs/card/portfolio/slug/01.webp
-thumbUrl('/_img/services/slug/01.jpg', 'large')  // → /thumbs/large/services/slug/01.webp
-thumbUrl(undefined)                              // → '' (safe — projects without coverImage)
-```
-Default size is `'card'`. Gallery main viewer uses `'large'`. Lightbox fullscreen uses the original `src` directly.
-`src` accepts `string | undefined | null` — returns `''` for falsy input. Always filter out
-empty strings before rendering `<img>` tags.
-
-### Contact Form
-
-The `/contact/` form posts to **`/api/contact`**, a Cloudflare Pages Function defined
-in `functions/api/contact.ts`. The function validates the payload, runs the honeypot
-check, and forwards the message as email via the **Resend** API.
-
-**Required Cloudflare Pages env vars** (Settings → Environment variables → Production):
-
-| Variable | Value |
-|---|---|
-| `RESEND_API_KEY` | API key from resend.com — set as a **secret** |
-| `CONTACT_TO` | `info@visiongraphics.hu` |
-| `CONTACT_FROM` | `contact@visiongraphics.hu` (must be on a Resend-verified domain) |
-
-**One-time Resend setup:**
-1. Create a Resend account, add `visiongraphics.hu` as a sending domain.
-2. Add the DKIM/SPF DNS records Resend provides to the `visiongraphics.hu` zone.
-3. Wait for verification (usually < 5 min once DNS propagates).
-4. Generate an API key, paste into the `RESEND_API_KEY` Pages secret.
-
-**Local testing** (optional — function does not run under `astro dev`):
-```bash
-npm run build
-npx wrangler pages dev dist \
-  --binding RESEND_API_KEY=re_xxx \
-  --binding CONTACT_TO=info@visiongraphics.hu \
-  --binding CONTACT_FROM=contact@visiongraphics.hu
-```
-
-The Pages Function lives **outside** Astro's `src/` tree and is bundled by Cloudflare's
-build step automatically — no Astro config changes needed. The static build (`output:
-'static'`) is unaffected.
-
-### Vite dev cache gotcha — "504 Outdated Optimize Dep"
-
-If React islands on a page render but their content stays empty (galleries
-show only their red label / no thumbnails; image-compare slots are blank;
-lightbox doesn't open), check the browser console for:
-
-```
-[astro-island] Error hydrating /src/components/media/Article*Mounter.tsx
-  TypeError: Failed to fetch dynamically imported module: …
-```
-
-…and the network panel for:
-
-```
-GET /node_modules/.vite/deps/embla-carousel-react.js?v=<hash> → 504 Outdated Optimize Dep
-```
-
-This is Vite's pre-bundled dep cache going stale — the HTML still references
-the old `?v=<hash>` but Vite has re-optimized under a new hash. Happens after
-`npm install`, branch switches that change `package.json`, or sometimes just
-across long-running dev sessions. **Production builds are not affected** —
-this only manifests under `npm run dev`.
-
-Fix: stop the dev server, delete `node_modules/.vite`, restart. `start-dev.bat`
-does this automatically on every launch, so it usually only bites you if you
-restart Astro alone with `npm run dev` after pulling new dependencies.
-
-### Cloudflare Pages cache-buster (DO NOT REMOVE)
-
-Cloudflare Pages content-addresses every uploaded asset by hash and dedupes
-across deploys. When its dedupe layer treats a hash as "already uploaded" but
-the underlying edge KV blob is actually missing or corrupted, the route serves
-**HTTP 500 with empty body** — only `Server: cloudflare` and `CF-RAY` in the
-response headers, no `Content-Type`, no body. The deployment is still reported
-as successful. Symptom on production: detail pages 500, or pages render but
-React islands (galleries, image-compare, lightbox) silently fail to hydrate
-because their JS chunks 500. Fetching `…/index.html` or `…/foo.js` directly
-returns a 308 to the canonical URL — Cloudflare *knows* the file exists, the
-blob fetch is what fails.
-
-Two cache-busters force fresh content hashes on every build so the dedupe
-condition can't apply:
-
-1. **HTML files** — `src/layouts/Base.astro` emits `<meta name="x-build" content={buildStamp}>`
-   where `buildStamp = new Date().toISOString()`. Every HTML page's content
-   (and thus its blob hash) changes on every build.
-2. **JS chunks** — `astro.config.mjs` injects `__BUILD_STAMP__` via Vite
-   `define`. `src/lib/build-stamp.ts` reads it and assigns to `window.__VG_BUILD`
-   (real side effect, prevents Rollup tree-shaking). Every React island root
-   (`HomeCarousel`, `PortfolioFilter`, `ServicesTabs`, `ImageLightbox`,
-   `ArticleGalleryMounter`, `ArticleImageCompareMounter`) imports it. The
-   `build-stamp.<hash>.js` shared chunk's hash changes per build, so every
-   chunk that imports it gets a fresh hash too.
-
-**When adding a new React island** (anything used as `client:load` /
-`client:idle` / `client:visible` in `.astro` templates), add
-`import '../path/to/lib/build-stamp';` at the top of its entry file. Without
-this, the new chunk's hash is stable across builds — fine until its content
-changes for the first time, at which point it can hit the dedupe bug.
-
-CSS chunks haven't shown this bug in practice, so no equivalent buster is
-needed there.
-
-If the bug recurs anyway (e.g. on a non-island JS asset), the universal
-recovery is: hard-reset `master` to the last known-good commit, force-push,
-let Cloudflare redeploy. Then on `develop`, make any small content change to
-the affected file's source (forces a new hash next deploy) and `↑ Live`.
-
----
-
-## Design System
-
-### Aesthetic Direction
-**Dark luxury editorial** (default). Light mode available via toggle — warm off-white, not clinical white.
-
-### Theme System
-- Toggle: `src/components/ui/ThemeToggle.astro` — sun/moon button in header (desktop + mobile nav)
-- Switching: sets `document.documentElement.dataset.theme = 'light'` / removes it for dark
-- Persistence: `localStorage` key `vg-theme`; fallback to `prefers-color-scheme`
-- Flash prevention: inline `<script is:inline>` in `Base.astro` `<head>` applies theme before first paint
-- Light mode tokens defined under `[data-theme="light"]` in `global.css`
-
-### Color Palette (`src/styles/global.css`)
-
-Dark mode (default `:root`):
-```css
---color-bg: #1a1a1a;   --color-surface: #121212;  --color-surface-2: #0f0f0f;
---color-border: #333333;  --color-accent: #da1313;
---color-text: #f0f0f1;  --color-text-muted: #c8c8c8;  --color-text-faint: #8a8a8a;
---color-header-bg: rgba(26, 26, 26, 0.95);
-```
-
-Light mode (`[data-theme="light"]`):
-```css
---color-bg: #f7f5f2;   --color-surface: #eeeae5;  --color-surface-2: #e5e1da;
---color-border: #d0cbc3;  --color-accent: #c41010;
---color-text: #18160f;  --color-text-muted: #47433b;  --color-text-faint: #8a8075;
---color-header-bg: rgba(247, 245, 242, 0.95);
-```
-
-**`--color-header-bg`** — use this variable for the header background, NOT a hardcoded rgba. It automatically switches between themes.
-
-### Layout
-
-- Max content width: **2400px** (`.container`)
-- Fluid via single clamp: `html { font-size: clamp(1rem, 0.737rem + 0.842vw, 2rem) }`
-- Never use static breakpoint overrides for font sizes or spacing
-
-### Typography
-
-**Work Sans** exclusively.
-
-```css
---fs-h1: 2.986rem;  --fs-h2: 2.488rem;  --fs-h3: 2.074rem;
---fs-h4: 1.728rem;  --fs-h5: 1.44rem;   --fs-h6: 1.2rem;
---fs-body: 1rem;    --fs-small: 0.833rem;  --fs-xs: 0.694rem;
-```
-
-### Spacing Scale
-
-```css
---space-1: 0.25rem;  --space-2: 0.5rem;   --space-4: 1rem;
---space-6: 1.5rem;   --space-8: 2rem;     --space-12: 3rem;
---space-16: 4rem;    --size-header: 4.5rem;  --size-logo: 2.25rem;
-```
-
-### Global CSS Gotchas
-
-**`p { max-width: 65ch }`** — `global.css` applies a global max-width to all `<p>` elements.
-Any page template that uses full-width prose (MDX body content, etc.) must override this with
-`max-width: none` in its scoped `p` selector. Example:
-```css
-.my-body-content :global(p) { max-width: none; }
-```
-Without this override, body paragraphs sit narrow inside a wide container while block components
-(ProcessFlow, SpecTable, tables, etc.) span full width — creating an inconsistent layout.
-
----
-
-## Site Structure
-
-**Nav:** driven by `src/data/nav-config.json` — edit via VG Editor → Pages tab or directly in the file.
-Currently enabled: Portfolio · Services · Technologies · About · Contact
-Currently disabled: FAQ · Pricing · Blog (toggle on when pages are ready)
-
-```
-src/pages/
-  index.astro
-  portfolio/index.astro, [slug].astro, category/[cat].astro
-  services/index.astro, [slug].astro
-  vision-tech/index.astro, [slug].astro
-  articles/index.astro, [slug].astro
-  faq/index.astro
-  pricing/index.astro
-  about/index.astro
-  contact/index.astro
-```
-
----
-
-## Component Architecture
-
-```
-src/components/
-  layout/    Header.astro, Footer.astro, Nav.astro, MobileNav.tsx
-  ui/        Button.astro, Tag.astro, SectionLabel.astro, SectionBanner.astro, ThemeToggle.astro
-  portfolio/ PortfolioGrid.astro, PortfolioFilter.tsx, ProjectCard.astro, ProjectGallery.astro
-  media/     Tour360.astro, FilmEmbed.astro, YouTubeEmbed.astro, ImageLightbox.tsx,
-             ArticleGalleryMounter.tsx, ArticleImageCompareMounter.tsx
-  mdx/       SectionBanner.astro, ImageGallery.astro, ImageCompare.astro,
-             DeliverableGrid.astro, TimelineTable.astro, NotableGrid.astro,
-             ProcessFlow.astro, PhaseMatrix.astro, SpecTable.astro, CompareTable.astro,
-             ProjectDescription.astro, ProjectStory.astro, ProjectTasks.astro
-  blocks/    BlockRenderer.astro  (legacy — kept for reference, no longer used)
-```
-
-`src/components/ui/SectionBanner.astro` = page-level hero/section divider (used in templates).
-`src/components/mdx/SectionBanner.astro` = in-body banner (used via MDX content files).
-
----
-
-## Content Collection Schemas
-
-See `src/content/config.ts` for full Zod schemas.
-
-### Projects (MDX)
-Frontmatter fields: title, displayTitle, year, description (SEO/cards only),
-client (reference), designer (reference), city (reference), country (reference),
-clientType (reference), categories (array of references), features (array),
-techniques (array of vision-tech slugs), services (array of service slugs),
-tags (array), coverImage, has360 (boolean), hasFilm (boolean), published, featured.
-
-**`services` field** — which services this project demonstrates. Used for bidirectional
-service↔project navigation: service pages show a carousel of projects that list them.
-Set via the Keystatic multiselect or VG Editor Projects overview. Valid values match
-the service collection slugs: `architectural-visualization`, `product-visualization`,
-`large-scale-projects`, `advanced-ai-services`, `workflow-optimization`,
-`3ds-max-tools`, `custom-rendering`.
-
-**`story` and `tasks` are NO LONGER frontmatter fields.** They live in the MDX body
-as `<ProjectStory>` and `<ProjectTasks>` children components.
-
-**MDX body order (standard):**
-1. `<ProjectTasks>` — what was done
-2. `<ImageGallery>` / `<Tour360>` / `<FilmEmbed>` / `<YoutubeEmbed>` — media
-3. `<ProjectStory heading={{ en: "The Story:", hu: "A sztori:" }}>` — background narrative (at the end)
-
-`ProjectStory`'s `heading` prop is a `Localized<string>`. Pass either a plain
-string (legacy) or a `{ en, hu }` object. The component resolves it via `tStr()`
-against the active locale.
-
-Gallery/compare require `ArticleGalleryMounter` + `ArticleImageCompareMounter` client islands.
-
-**Techniques chips on portfolio pages** are resolved from each technique slug to
-the corresponding vision-tech entry's localized title (uppercased), so HU pages
-show Hungarian technique names. Falls back to the formatted slug if the entry
-has no title.
-
-**Portfolio page layout** (`[slug].astro`):
-- **"The Project:"** (red heading) → description text → data line (Field / Date / Location / Client / Architect)
-- **"The Task:"** (red heading) → techniques bar (`|` separated) → services bar (links to service pages) → MDX body content
-- **"The Story:"** (red heading, editable per project) → story text — rendered by `<ProjectStory>`
-
-The services bar only renders when `services` frontmatter is non-empty.
-
-**Filter detection:** `has360` and `hasFilm` are manual boolean checkboxes in the editor.
-Tick them when adding a `<Tour360>` or `<FilmEmbed>`/`<YoutubeEmbed>` to a project.
-
-**Valid category values:** `architectural-visualization`, `residential`, `commercial`,
-`office`, `airport`, `infrastructure`, `urban`, `hospitality`, `industrial`,
-`product-visualization`, `vr-experience`, `animation`, `exhibition`,
-`education`, `healthcare`, `sports`, `civic`, `agriculture`, `renovation`, `transportation`
-
-**YAML gotcha:** If `description` contains a colon followed by a space, wrap in double
-quotes or use a block scalar (`|`).
-
-### Services (MDX)
-Frontmatter: title, description, tagline, bannerImage, order, published,
-startRequirements, pricing, sidebarLabel, sidebarContent, techniques (array of vision-tech slugs).
-MDX body: SectionBanner, DeliverableGrid, TimelineTable, NotableGrid, ImageGallery, ImageCompare,
-ProcessFlow, PhaseMatrix, Tour360, YoutubeEmbed.
-
-Note: the reverse link (which projects belong to this service) comes from the **project's** `services`
-array — there is no `services` field on the service schema itself.
-
-**Service detail page layout** (`src/pages/services/[slug].astro`):
-- Full-width, no sidebar. Layout: banner → breadcrumb → tagline → meta strip → MDX body → techniques chips → related projects carousel → CTAs.
-- **Meta strip** — horizontal flex row showing `pricing`, `startRequirements`, and optionally `sidebarLabel`+`sidebarContent`. Only renders when at least one field exists.
-- **Techniques chip row** — rendered from `techniques` frontmatter array (vision-tech slugs). Links to `/vision-tech/[slug]/`.
-- **Related projects carousel** — projects whose `services` array includes this service slug. Drag-to-scroll, gradient overlay cards.
-- **`DeliverableGrid` `href` prop** — optional; when provided, the card title becomes a link (use for vision-tech cross-links).
-
-**ServicesTabs active indicator** — uses `shadow-[inset_3px_0_0_var(--color-accent)]`, NOT `border-l-*`. Reason: `border-none` on the button element suppresses all border-style, making border-l invisible.
-
-### Vision-Tech (MDX)
-Frontmatter: title, description, image, technique, cost, model3d, complexity, reality,
-purpose (array), gallery (array of image URLs), relatedCategories (array), relatedFeatures (array),
-published (boolean, default true).
-
-`published: false` hides the page from the index and redirects the slug to `/vision-tech/`.
-Currently hidden: `cultural-context-integration` (no real projects yet).
-
-**Two AI-only tech pages link to an external platform:**
-- `ai-animation` — AI video from stills, links to [ai.visiongraphics.eu](https://ai.visiongraphics.eu)
-- `ai-render-upgrade` — photorealistic variations from existing renders, links to [ai.visiongraphics.eu](https://ai.visiongraphics.eu)
-
-**Vision-tech page template** (`src/pages/vision-tech/[slug].astro`) registers:
-`Tour360`, `FilmEmbed`, `YouTubeEmbed`, `YoutubeEmbed` (alias), `ImageCompare`, `ImageGallery`,
-`ProcessFlow`, `SpecTable`, `CompareTable` — plus `ArticleGalleryMounter` and
-`ArticleImageCompareMounter` as client islands.
-
-**Body text sizing in vision-tech template:** paragraphs and list items use `var(--fs-body)` (not
-`var(--fs-small)`), and `max-width: none` overrides the global `p { max-width: 65ch }` rule.
-
-### Articles (MDX)
-Frontmatter: title, date, excerpt, tags, coverImage, published.
-MDX body: prose + SectionBanner, ImageGallery, ImageCompare.
-
-### Reference Collections
-clients, designers, cities, countries, client-types, categories — title field only.
-Managed via Keystatic. Used as `reference()` in projects schema.
-
----
-
-## Portfolio Filter
-
-`src/components/portfolio/PortfolioFilter.tsx` — React island (`client:load`).
-Filters: category multi-select, features multi-select, year range, text search,
-360 toggle, film toggle, sort. All AND logic. State in URL params.
-
-360/film toggles read `has360` / `hasFilm` boolean fields from frontmatter (not derived
-from MDX body). Set these manually in the editor when a project has tours or films.
-
----
-
-## Keeping CLAUDE.md Current
-
-This file is the single source of truth for how the project works. **Update it whenever:**
-- A workflow changes (editors, image upload, deployment, thumbnail generation)
-- A new MDX component is added or an existing one is renamed/removed
-- A content schema field is added, removed, or repurposed
-- A new tool, script, or npm command is introduced
-- A hard rule is added or relaxed
-- The site structure or URL patterns change
-- A best practice is established through trial and error (especially "we got burned by X")
-
-Updates should be made **in the same commit** as the code change they document.
-If Claude made the change, Claude updates this file. If you made the change manually, note it here.
-
----
-
-## DO NOT / HARD RULES
-
-1. No fake testimonials.
-2. No raw AI prompts as visible text.
+## 3. Hard rules (never break, no exceptions)
+
+1. No fake testimonials, and no invented facts about real projects, clients, or dates.
+   Facts come from existing content, dev.visiongraphics.eu, or the user — nowhere else.
+2. No raw AI prompts as visible site text.
 3. No newsletter widget anywhere.
-4. No `localStorage`/`sessionStorage` — use URL params.
-5. No `<form>` tags in React components.
-6. No WordPress patterns.
-7. No personal project links (FakeHistory.eu) on main site.
-8. No FTP — GitHub → Cloudflare Pages only.
-9. Work Sans exclusively — no other fonts.
-10. No hardcoded font-size or spacing — use `var(--fs-*)` and `var(--space-*)`.
-11. Vimeo: facade pattern only — never auto-embed iframe on page load.
-12. 360 tours: click-to-load — never auto-load iframe.
-13. Contact page required at /contact/.
-14. Services are content collection files — no static `.astro` service pages.
-15. MDX components must be passed via `<Content components={{...}} />`.
+4. No `localStorage`/`sessionStorage` in site code — state goes in URL params.
+   (Sole existing exception: the theme toggle's `vg-theme` key. Do not add more.)
+5. No `<form>` tags inside React components.
+6. Work Sans exclusively. No other fonts (DM Mono is loaded for code in articles only).
+7. No hardcoded font sizes or spacing — `var(--fs-*)` / `var(--space-*)` only.
+8. Vimeo/YouTube: facade pattern, click-to-load. 360 tours: click-to-load. Never auto-embed.
+9. Services/projects/articles/vision-tech are content-collection files — no static `.astro`
+   detail pages for them.
+10. MDX components render only if passed via `<Content components={{...}}>` in the template.
+11. Never commit to or push `master`. Never `git push --force` anywhere (documented CF-recovery
+    with the user driving is the sole exception).
+12. Never `git add -A` / `git add .` — stage explicit paths. (The editor server's own flow uses
+    `add -A` internally; that's its business, not yours.)
+13. Never edit EN copy during a HU translation pass.
+14. Never use PowerShell `Get-Content | Set-Content` (or `Out-File`) on repo text files.
+15. No FTP. GitHub → Cloudflare Pages is the only deploy path.
+16. `published: false → true` flips only on explicit user instruction.
+
+---
+
+## 4. Named failure modes
+
+Each of these has actually happened here or is one naive edit away. Learn the name, apply the rule.
+
+### 4.1 The `[object Object]` render
+**Trigger:** printing a frontmatter field or block prop directly (`{data.title}`, `alt={image.alt}`).
+**What happens:** localized fields are `{en,hu}` objects; Astro prints `[object Object]`, React
+throws *"Objects are not valid as a React child"*. `portfolio/category/[category].astro`
+shipped this way to production for months before it was caught — the raw object rendered
+without any build error.
+**Rule:** every value that could be `Localized<T>` passes through `tStr(value, lang)` (site) or
+`readLocale(value, DEFAULT_LOCALE)` (editor canvas/inputs) before hitting JSX, attributes, or
+React islands. React islands receive pre-flattened plain strings only.
+
+### 4.2 The silent component
+**Trigger:** using an MDX component in a collection whose template doesn't register it.
+**What happens:** no error — the tag renders as nothing/escaped text. Hours lost staring at MDX.
+**Rule:** before using a component in `src/content/<collection>/`, confirm it's in that
+template's `<Content components={{...}}>` map (§8.6 lists all four maps). Adding a new
+component = `/add-mdx-component`, which wires all registration points.
+
+### 4.3 The mojibake pipe
+**Trigger:** PowerShell 5.1 text round-trip on UTF-8 files (`Get-Content | Set-Content`).
+**What happens:** Hungarian accents and `€` double-encode (`ó`→`Ã³`, `€`→`â‚¬`), a BOM is
+prepended, Astro's schema validation crashes the dev server.
+**Rule:** hard rule 14. Use the Edit tool; for bulk mechanical edits, a Node script
+(`readFileSync/writeFileSync` with `'utf8'`). Recovery: `git checkout <paths>`, redo with Edit.
+
+### 4.4 The EN drive-by
+**Trigger:** improving English copy "while you're in there" during a HU translation pass.
+**What happens:** EN is the canonical authored copy; unrequested changes get reverted, trust lost.
+**Rule:** hard rule 13. Translation passes edit `hu:` values only. Diff before commit must show
+zero EN-side changes. Full procedure: `/translate-hu`.
+
+### 4.5 The bare href
+**Trigger:** writing `href="/portfolio/foo/"` in a template.
+**What happens:** link drops the locale; user bounces from /hu/ to /en/ via the legacy redirect.
+**Rule:** in templates, all internal links go through `localeUrl(path, lang)`. In MDX bodies the
+existing convention is bare paths (`/vision-tech/exterior/`) — they resolve to EN via
+`_redirects`; that's known debt (§8.10). Follow the convention; don't invent per-file fixes.
+
+### 4.6 The 65ch squeeze
+**Trigger:** new prose area looks mysteriously narrow next to full-width block components.
+**What happens:** `global.css` sets `p { max-width: 65ch }` globally.
+**Rule:** any full-width prose container overrides with `.my-body :global(p) { max-width: none; }`.
+
+### 4.7 The stale dep cache
+**Trigger:** dev-mode React islands render their red label but no content (empty galleries,
+dead lightbox); console shows `[astro-island] Error hydrating ...`; network shows
+`504 Outdated Optimize Dep`.
+**What happens:** Vite's pre-bundle cache went stale (after `npm install`, branch switches, long
+sessions). Production is unaffected.
+**Rule:** run the "restart servers" procedure (§2). After a `.vite` wipe, pre-warm one
+island-bearing page, wait ~4s, then test the page you care about — the first load can race
+Vite's re-optimization.
+
+### 4.8 The phantom 500
+**Trigger:** production page or JS chunk serves HTTP 500 with an empty body (`Server: cloudflare`,
+no Content-Type), while the deploy reported success.
+**What happens:** Cloudflare Pages content-addresses assets and dedupes across deploys; when its
+edge blob for a "known" hash is missing, the route 500s. Symptom: detail pages die, or islands
+silently fail to hydrate because their chunks 500.
+**Rule:** two cache-busters force fresh hashes every build — never remove either:
+(1) `Base.astro` emits `<meta name="x-build">`; (2) `astro.config.mjs` injects `__BUILD_STAMP__`
+consumed by `src/lib/build-stamp.ts`. **Every new React island** (`client:*` in a template) adds
+`import '../lib/build-stamp';` at the top of its entry file. Currently in exactly six islands
+(§8.5). Recovery if it recurs: hard-reset master to last-good with the user driving, force-push,
+redeploy; then touch the affected source on develop and promote.
+
+### 4.9 The checkout suicide
+**Trigger:** running `git checkout <branch>` / anything that rewrites tracked files while the
+editor server is running.
+**What happens:** the server runs under `tsx watch`; a working-tree rewrite restarts it
+mid-operation. This is why ↑ Live promotes via `git commit-tree` + `push develop:refs/heads/master`
++ `update-ref` — pure plumbing, no checkout.
+**Rule:** stay on `develop`. Never add checkout/reset to editor server flows; don't "simplify"
+`commands.ts` promote logic or `spawn-detached.ts`. If you must switch branches, stop the editor
+server first, and expect a Vite cache wipe after (§4.7).
+
+### 4.10 The Keystatic corruption
+**Trigger A:** writing `<ProjectStory text={`...`} />` style props.
+**Rule:** `ProjectStory` / `ProjectTasks` / `ProjectDescription` take **children**, never a text
+prop — Keystatic corrupts the prop form on save.
+**Trigger B:** registering component schemas in the projects collection's `fields.mdx({})`.
+**Rule:** never — inline JSX props (`images={[...]}`) crash Keystatic's ProseMirror
+(`createAndFill`) and brick the whole editor page. The empty components map is deliberate.
+
+### 4.11 The YAML colon
+**Trigger:** frontmatter string containing `: ` unquoted (`description: NextNest: a project`).
+**What happens:** YAML parse error, page vanishes from the collection.
+**Rule:** quote such strings or use a block scalar (`|`). The editor's codegen always-quotes for
+this reason — keep that behavior.
+
+### 4.12 The trusting preview
+**Trigger:** `preview_start` returns success, you assume the server is up.
+**What happens:** it reports success on process *spawn*. Astro's content-schema validation runs
+after startup; on error the process dies silently seconds later.
+**Rule:** after starting or restarting, verify with a real request (`curl localhost:4321/en/`)
+or `preview_logs` before concluding anything about your change.
+
+### 4.13 The debris commit
+**Trigger:** broad staging in a tree that carries migration leftovers.
+**What happens:** `storybook-static/` (untracked build output), scraped WP pages, `tmp/` etc.
+end up in history.
+**Rule:** hard rule 12 — explicit paths only. Before committing, read `git status` and account
+for every file you stage.
+
+### 4.14 The locale desync
+**Trigger:** adding a UI string, a locale, or a vision-tech enum value in one place.
+**What happens:** the value exists in N of the M places that must agree; some page silently
+falls back or a filter matches nothing (an "Enhanced Reality" pill once shipped in the
+vision-tech filter with no matching enum value — it could never match anything).
+**Rule:** these lists have multiple owners — update all or none:
+- **Locale set** (`en`/`hu` → adding `de`): §8.4 recipe, 8+ files.
+- **UI strings:** every key added to `en` must be added to `hu` in `src/i18n/strings.ts`
+  (the `Widen<typeof en>` type makes a missing key a compile error — run `npm run check`).
+- **Vision-tech enums:** `src/content/config.ts` Zod enums ↔ `vision-tech/index.astro`
+  filter arrays ↔ `src/lib/vision-tech-labels.ts` HU labels.
+- **Nav:** `src/data/nav-config.json` hrefs ↔ `NAV_LABEL_KEY` maps duplicated in
+  `Header.astro` *and* `Footer.astro` ↔ `Footer.astro` `SERVICE_LABELS`.
+- **Editor block types:** client `types/blocks.ts` ↔ server `types/blocks.ts` (hand-synced).
+
+### 4.15 The two SectionBanners
+**Trigger:** editing "the SectionBanner component".
+**What happens:** there are two. `src/components/ui/SectionBanner.astro` (page heroes, class
+`.section-banner`) is *also* what the **services** template registers as the MDX `SectionBanner`.
+`src/components/mdx/SectionBanner.astro` (class `.article-section-banner`) is what portfolio,
+vision-tech, and articles register. Same MDX tag, different markup per collection.
+**Rule:** before touching either, check which one the affected template imports. Never merge them
+without user sign-off.
+
+### 4.16 The block-type mirage
+**Trigger:** adding an editor block type to some but not all of its registration points.
+**What happens:** worst case is *silent data loss*: a block type missing from `blockToMdx()` in
+`mdx-codegen.ts` hits `default: return null` and is **dropped on save**. Eight orphaned types
+already exist in this state (§8.10) — never instantiate them.
+**Rule:** a new block type is all 11 wiring steps in `/add-mdx-component` or none. The palette
+not showing a block usually means the registry scanner mapping (step 9) is missing, not a UI bug.
+
+### 4.17 The schema mirage
+**Trigger:** noticing `keystatic.config.ts` disagrees with content files (flat `title` vs
+`{en,hu}`, `beforeLabel` vs `label`, unregistered `ProcessFlow`...).
+**What happens:** a "helpful" mass-normalization rewrites 200+ files against the wrong contract.
+**Rule:** `src/content/config.ts` (Zod) + the files themselves are the truth. Keystatic drift is
+known and tolerated. Never mass-edit content to reconcile it. Same for style inconsistencies
+(two `ProjectStory heading` forms, two JSX-object quoting styles, one out-of-order project):
+leave existing files alone; follow the *newer* convention in new work (§5.3).
+
+### 4.18 The invented URL
+**Trigger:** a tour/video URL or image path you don't actually know.
+**What happens:** dead embeds shipped to production.
+**Rule:** use the established placeholder convention — `TODO_<NAME>` inside the URL
+(`https://pano.visiongraphics.eu/TODO_PLANET_2023/`) — and list every placeholder you leave in
+your final report. Grep for `TODO_` before any publish step.
+
+### 4.19 The direct content write (editor code only)
+**Trigger:** "simplifying" `tools/editor/server/lib/fs-utils.ts` (temp-file + rename + 300ms
+settle + serialized queue) into a plain `fs.writeFile`.
+**What happens:** rapid writes into `src/content/` race Astro's collection watcher and crash the
+dev server with empty collections.
+**Rule:** all editor server writes go through `fs-utils.writeFile` and stay inside its
+`validatePath` allow-list (`src/`, `public/`, `tools/editor/`). Not negotiable.
+
+---
+
+## 5. Conventions
+
+### 5.1 Templates (`src/pages/[lang]/...`)
+
+Every page template starts with this boilerplate — copy it, don't re-derive it:
+
+```ts
+// static page:
+export const getStaticPaths = staticLocalePaths;
+const { lang } = Astro.params as { lang: Locale };
+Astro.locals.lang = lang;
+const L = ui(lang);
+
+// dynamic detail page:
+export async function getStaticPaths() {
+  const items = await getCollection('projects', ({ data }) => data.published);
+  return localizedPaths(items, (p) => ({ slug: p.slug }));
+}
+const { lang, slug } = Astro.params as { lang: Locale; slug: string };
+Astro.locals.lang = lang;
+Astro.locals.pageType = 'portfolio';   // 'portfolio' | 'service' | 'article' | 'vision-tech'
+```
+
+- `Astro.locals.pageType` is **required** on any template that renders MDX content — media
+  labels and gallery defaults key off it.
+- Unknown locale segments (`/foo/`, `/xx/portfolio/`) are rewritten to `src/pages/404.astro`
+  by `src/middleware.ts`. The dev server's own 404 fallback bypasses middleware and resolves
+  `/404` through `[lang]/index.astro`, so that template also guards `lang ∉ LOCALES` itself —
+  keep both. `404.astro` is bilingual on one page (no locale in a failed URL) and becomes
+  `dist/404.html`, which Cloudflare Pages serves for every unmatched route.
+- `Base.astro` emits `<html lang>`, `hreflang` alternates (+ `x-default` → EN) and `og:locale`
+  from `Astro.locals.lang` — every template must set it (the boilerplate above does).
+- Page-specific copy: `const COPY = { en: {...}, hu: {...} } as const; const c = COPY[lang];`
+- Internal links: `localeUrl('/portfolio/foo', lang)`. Always trailing slash.
+- Any template rendering MDX with galleries/compares must mount both islands:
+  `<ArticleGalleryMounter client:load />` + `<ArticleImageCompareMounter client:load />`.
+- MDX components in `.astro` files resolve locale as:
+  `const lang: Locale = (Astro.locals as { lang?: Locale })?.lang ?? DEFAULT_LOCALE;` then `tStr()`.
+
+### 5.2 Styling
+
+- Design language: dark luxury editorial (default), warm-light mode via `[data-theme="light"]`.
+  All tokens in `src/styles/global.css` (§8.9). Header background uses `var(--color-header-bg)`,
+  never a hardcoded rgba.
+- Fluid scaling: `html { font-size: clamp(...) }` makes every rem viewport-scaled 16→32px.
+  This is why hard rule 7 exists — a hardcoded `px` opts out of the whole system.
+- Media containers (`.tour-wrap`, `.yt-embed`, `.film-embed`, `.embla-viewport`) cap height at
+  `calc(100vh - 6.5rem)` with matching 16/9 max-width, so media fits wide-short windows.
+- Media facades call `scrollMediaIntoCenter()` (`src/lib/media-scroll.ts`) before swapping in
+  the iframe.
+- Tailwind custom utilities (`bg-page`, `text-content`, `border-line`, `text-h1..h6`, ...) are
+  defined in `tailwind.config.mjs` and map to the CSS vars — renaming either side breaks the other.
+- React-island CSS lives in `global.css` (scoped Astro styles can't reach island DOM).
+
+### 5.3 Content authoring (current conventions — use these for new work)
+
+**Projects** (`src/content/projects/*.mdx`, ~204 files):
+- Frontmatter `title`/`description`: always `{en,hu}` block YAML. References (`client`,
+  `designer`, `city`, `country`, `clientType`) are slugs into the reference collections —
+  omit when unknown, never guess. `categories` ≥ 1. `services`/`techniques` are slug arrays
+  driving cross-navigation. `has360`/`hasFilm` are **manual** booleans — set them when adding
+  a `<Tour360>`/film, that's what the portfolio filter reads.
+- Body order (canonical): `<ProjectTasks>` → media (`SectionBanner`+`ImageGallery` groups,
+  `Tour360`) → `<ProjectStory heading={{ en: "The Story:", hu: "A sztori:" }}>`
+  (all 15 localized-heading files use "A sztori:"; the `strings.ts` `theStory: 'A történet:'`
+  string is apparently unused by templates — don't take it as the content convention).
+- All body prose sits in paired `<Lang code="en">` / `<Lang code="hu">` blocks — never bare.
+- Multi-section projects: repeat `<SectionBanner image label={{en,hu}} title={{en,hu}} />` +
+  `<ImageGallery images={[...]} />` (+ optional `<Tour360>`) per themed group. Banner `image`
+  = that section's lead image. R2 images are sequential `01.jpg`, `02.jpg`, ...
+- `ImageGallery` images are single-line JSON arrays; project image `alt` is `""` by convention.
+- Tour URLs: `https://pano.visiongraphics.eu/<SLUG>/` (subdomain-rooted, no `/PANO/` segment)
+  with `coverImage` prop.
+- New-work style: localized `heading` objects (not the older plain `"The Story:"`), unquoted
+  JS-object keys (`{{ en: "...", hu: "..." }}`).
+
+**Services** (7 files): localized frontmatter (`title`, `description`, `tagline`,
+`startRequirements`, `pricing`, `sidebarLabel`, `sidebarContent`) + `bannerImage`, `order`,
+`techniques[]`. Sidebar comes in two valid shapes: `startRequirements`+`pricing` OR
+`sidebarLabel`+`sidebarContent`(+`pricing`). Body: intro `<Lang>` (may contain `##` headings)
+→ `ProcessFlow` → `SectionBanner`+content groups (`DeliverableGrid` with optional `href` to
+vision-tech, `ImageGallery`, `YoutubeEmbed`, `Tour360`, `ImageCompare`) → `PhaseMatrix` →
+closing `<Lang>`. Reverse project links come from the **projects'** `services` arrays.
+
+**Vision-tech** (27 files): localized `title`/`description`; structural enums (`technique`,
+`cost` €–€€€€€, `model3d`, `complexity`, `reality`, `purpose[]`) — values must match the Zod
+enums in `config.ts` (see §4.14). Body: alternating `<Lang>` blocks each holding at most one
+`## H2`, interleaved with `SpecTable`/`CompareTable`/`ImageGallery`/`Tour360`/`YoutubeEmbed`.
+`published: false` hides from index and redirects the slug. `ai-animation` and
+`ai-render-upgrade` link out to ai.visiongraphics.eu.
+
+**Articles** (EN-only): plain-string frontmatter (`title`, `date`, `excerpt`, `tags[]`,
+`coverImage`, `published`), plain-Markdown body, images as `![alt](/_img/articles/<topic>/x.jpg)`,
+no `<Lang>`, no MDX components in practice. House voice and full procedure: `/write-article`.
+
+**Reference collections** (`clients`, `designers`, `cities`, `countries`, `client-types`,
+`categories`): **`.md` files** with YAML frontmatter, empty body (not `.yaml` — Keystatic's
+`format: {data:'yaml'}` still writes `.md`). `categories` and `client-types` have `{en,hu}`
+titles; `cities`/`countries`/`clients`/`designers` are proper nouns, plain strings, never
+translated.
+
+### 5.4 MDX component usage
+
+Registered-per-template maps are in §8.6. Props quick reference:
+
+| Component | Key props (Localized unless noted) | Notes |
+|---|---|---|
+| `SectionBanner` | `image` (str), `label`, `title` | **Two implementations** — §4.15 |
+| `ImageGallery` | `images:[{src,alt}]` (str), `label\|false`, `subtitle` | Needs mounters; auto-label "Gallery:" only on portfolio |
+| `ImageCompare` | `before`,`after` (str), `beforeAlt`,`afterAlt`,`label`,`subtitle`,`beforeText`,`afterText` | Needs mounters |
+| `SingleImage` | `src` (str), `alt`, `caption` | Self-mounts PhotoSwipe; never auto-labelled |
+| `Tour360` | `url`,`coverImage` (str), `title`,`label`,`subtitle` | Click-to-load |
+| `YoutubeEmbed` | `url` (str), `title`,`label`,`subtitle` | File is `YouTubeEmbed.astro`; registered under **both** spellings |
+| `FilmEmbed` | `vimeoId` (str), `title` | Build-time Vimeo thumbnail fetch; currently unused in content |
+| `ProjectTasks` / `ProjectDescription` | children only | Never a text prop (§4.10) |
+| `ProjectStory` | `heading` + children | Default heading is EN-only — always pass `{en,hu}` |
+| `DeliverableGrid` | `columns:2\|3`, `items:[{title,desc,href?}]` | `href` links card title |
+| `ProcessFlow` | `steps:[{label,sub}]`, `feedback:[{from,to,label}]`, `title` | `from`/`to` 0-based |
+| `PhaseMatrix` | `columns[]`, `rows:[{label,sub,values:['primary'\|'secondary'\|'none']}]`, `title` | |
+| `SpecTable` | `rows:[{label,value}]`, `caption` | value may embed Markdown links |
+| `CompareTable` | `headers[]`, `rows:[{label,values[]}]`, `caption` | |
+| `NotableGrid` | `items:[{name,year}]` | |
+| `TimelineTable` | `rows:[{scope,deliverables}]` | |
+
+Media label defaults (red kicker above media): Gallery/Compare/360/Film labels are fixed per
+type and locale, `label={false}` suppresses, `subtitle` adds a white line. Driven by
+`Astro.locals.pageType`.
+
+### 5.5 Editor codebase (`tools/editor/`)
+
+- Express server (:4322) + React/Vite client (:4323), Zustand state, no tests currently
+  (vitest installed, `tools/editor/tests/` empty — the deleted suite covered only the removed
+  legacy pipeline).
+- Live pipeline: `POST /api/import/md` (`mdx-import/parser.ts` + `block-mapper.ts`) → blocks →
+  `POST /api/codegen/save` (`codegen/mdx-codegen.ts`). Frontmatter YAML is hand-serialized
+  (always-quoting) — deliberately, see §4.11.
+- Three registries that must agree per block type: palette (`client/src/lib/block-registry.ts`),
+  render map (`client/src/components/blocks/index.tsx`), availability scanner
+  (`server/lib/astro-registry-scanner.ts`, re-scans the four page templates per request).
+- Canvas block components and inspector inputs render localized props via
+  `readLocale(value, DEFAULT_LOCALE)` from `client/src/lib/localized.ts` — §4.1 applies.
+- `writeLocale` auto-promotes scalar→`{en,hu}` on first non-default write and collapses back
+  when HU empties. Don't fight it.
+- ↑ Git = commit-all + push `develop`. ↑ Live = promote develop→master via plumbing (§4.9).
+  Both 409 unless the repo is on `develop`.
+- "ComfyUIPanel" actually drives **SwarmUI**. `comfyBase` in editor-config.json is dead.
+- `ANTHROPIC_API_KEY` is env-only — never write it into `editor-config.json` (that file is
+  committed).
+
+### 5.6 Conventions added by this manual
+
+Previously unwritten; now binding:
+- Explicit-path staging only (hard rule 12) and the `TODO_` placeholder convention (§4.18).
+- Files-over-Keystatic truth rule and the no-mass-normalization rule (§4.17).
+- New-work content style: localized heading objects, unquoted JSX object keys, articles
+  require `coverImage`.
+- Every fix or feature that changes a workflow updates this file **in the same commit**
+  (was already policy) — and if it invalidates a skill in `.claude/skills/`, updates that too.
+- Known bugs (§8.10) are fixed only when the user asks; when your work touches adjacent code,
+  flag them in your report instead of silently fixing.
+
+---
+
+## 6. Quality bars — checkable acceptance criteria
+
+**Baseline for every change** (applies always):
+- [ ] `npm run check` introduces no new errors (pre-existing errors: note them, don't fix unasked).
+- [ ] Dev server serves the affected page with HTTP 200 — verified by request, not by
+      `preview_start` return (§4.12).
+- [ ] `git status` reviewed; only intended files changed; staged by explicit path.
+- [ ] No hard rule (§3) violated; no named failure mode (§4) triggered.
+- [ ] CLAUDE.md updated in the same commit if a workflow/schema/component/rule changed.
+
+**Edited or new content entry (project / service / vision-tech):**
+- [ ] Frontmatter validates (page loads without `InvalidContentEntryDataError`).
+- [ ] Localized fields are `{en,hu}` objects; body prose is inside paired `<Lang>` blocks.
+- [ ] Body order matches the collection convention (§5.3).
+- [ ] Every image path is `/_img/<collection>/<slug>/<file>`; images exist in R2 or `.staging`.
+- [ ] Thumbs generated (`node scripts/generate-thumbs.mjs --slug <collection>/<slug>`).
+- [ ] Renders at **both** `/en/...` and `/hu/...` — zero `[object Object]`, zero raw `{en,hu}`.
+- [ ] Galleries open the lightbox; tours/videos are facades (click-to-load).
+- [ ] References (client/designer/city/...) point at existing reference-collection slugs.
+- [ ] `has360`/`hasFilm` reflect actual body content.
+- [ ] No `TODO_` placeholder left unreported.
+
+**New article:** run `/write-article`; its checklist is the bar.
+
+**Translation pass:** run `/translate-hu`; its checklist is the bar. Additionally:
+- [ ] `git diff` shows no EN-side edits.
+
+**New MDX component / editor block:** run `/add-mdx-component`; its checklist is the bar.
+
+**New React island:**
+- [ ] `import '../lib/build-stamp';` (path-adjusted) at the top of the entry file (§4.8).
+- [ ] Receives only plain-string props (pre-flattened with `tStr`).
+- [ ] No `<form>`, no storage APIs; state in URL params if shareable.
+- [ ] Island CSS added to `global.css`, using tokens.
+- [ ] Hydrates in dev with an empty console (check `preview_console_logs`).
+
+**New page template:**
+- [ ] Lives under `src/pages/[lang]/`; full boilerplate from §5.1 including `Astro.locals.lang`
+      (+ `pageType` if it renders MDX).
+- [ ] `getStaticPaths` via `staticLocalePaths` or `localizedPaths`.
+- [ ] All internal links via `localeUrl`.
+- [ ] Renders under both locales; LangSwitcher swaps correctly on it.
+- [ ] Full-width prose overrides the 65ch cap (§4.6).
+- [ ] If it renders MDX: components map complete, both mounters present.
+
+**Editor (tools/editor) change:**
+- [ ] All writes stay behind `fs-utils.writeFile` + `validatePath` (§4.19).
+- [ ] No git working-tree mutation added to any server flow (§4.9).
+- [ ] Client/server `types/blocks.ts` still mirror each other.
+- [ ] Localized props still render through `readLocale` everywhere they're displayed.
+- [ ] Both dev processes restart clean (`tsx watch` output + client console error-free).
+
+**Build/deploy-affecting change:**
+- [ ] `npm run build` completes locally; spot-check `dist/` output for the affected route.
+- [ ] Neither cache-buster removed or weakened (§4.8).
+- [ ] `public/_redirects` still covers `/_img/*`, `/thumbs/*`, legacy paths, `/PANO/*`.
+- [ ] Deploy verified on the staging URL before any production promote.
+
+---
+
+## 7. When uncertain — escalation rules
+
+**Act without asking** (reversible, on develop, in scope of the request):
+- Reading anything; running dev servers; `npm run check`/`build`; generating thumbs.
+- Content edits the user asked for, including creating files in `src/content/`.
+- The "restart servers" procedure on its trigger phrase.
+- Leaving `TODO_` placeholders for facts you can't source (then report them).
+
+**Verify first, then act** (evidence gate, still no permission needed):
+- Anything touching a Zod schema: run `npm run check` + load one affected page per collection.
+- Mechanical edits across ≤ ~10 files: list the files in your report.
+- Deleting code *you created this session*.
+
+**Ask first** (one concise question, options offered):
+- Any `git push` (even develop, unless the user said "push"/"↑ Git"). Any production promote.
+- Flipping `published`, deleting/renaming existing content entries, changing slugs/URLs.
+- Schema changes in `src/content/config.ts`; anything in `public/_redirects`; locale additions.
+- New npm dependencies.
+- Bulk rewrites > ~10 files, or *any* normalization of existing inconsistencies (§4.17).
+- Touching: editor git flows, `fs-utils.ts`, build-stamp machinery, the promote plumbing.
+- Fixing a known bug from §8.10 when the user didn't ask about it.
+
+**Never** (without the user explicitly directing it in this conversation):
+- Hard rules §3. Editing `master`. Force-push. `git add -A`. Publishing drafts.
+
+**Uncertainty about facts** (project names, years, clients, URLs): check existing content →
+check https://dev.visiongraphics.eu → then ask or leave `TODO_`. Never fabricate.
+
+**Uncertainty about Hungarian wording:** the user is a native speaker. For anything
+user-visible where register/nuance matters, propose your best translation and flag it for
+review rather than silently shipping — see `/translate-hu`.
+
+**Conflicting instructions** (this file vs user): the user wins; note the conflict in one line.
+**Anything not covered:** follow the *newest* existing example in the repo, and say which file
+you patterned it on.
+
+---
+
+## 8. Reference
+
+### 8.1 URLs & infrastructure
+
+| Thing | Value |
+|---|---|
+| Production | https://visiongraphics.eu (Cloudflare Pages, auto-deploy on `master` push) |
+| Staging | https://visiongraphics-astro.pages.dev · develop.visiongraphics-astro.pages.dev |
+| Repo | https://github.com/kerezsi/visiongraphics-astro |
+| Build | `npm run build`, output `dist`, Node 20 |
+| R2 bucket | `visiongraphics-images`, public: `https://pub-681025dcca3b4bad99aa4a4d65ecc023.r2.dev` |
+| 360 tours | `https://pano.visiongraphics.eu/<SLUG>/` (tarhely host, `/public_html/PANO/` docroot) |
+| AI product | https://ai.visiongraphics.eu (external — linked from ai-* vision-tech pages) |
+| WP reference | https://dev.visiongraphics.eu (content reference only) |
+
+Contact form: `/api/contact` Pages Function (`functions/api/contact.ts`), Resend API.
+Env vars (Cloudflare Pages → Production): `RESEND_API_KEY` (secret), `CONTACT_TO`
+(info@visiongraphics.hu), `CONTACT_FROM` (contact@visiongraphics.hu, Resend-verified domain).
+Honeypot field `_gotcha`. Local test: `npm run build` then
+`npx wrangler pages dev dist --binding RESEND_API_KEY=... --binding CONTACT_TO=... --binding CONTACT_FROM=...`.
+Functions have their own `functions/tsconfig.json` (workers types); root tsconfig excludes them.
+
+### 8.2 Images & thumbnails
+
+- URL shape: `/_img/<collection>/<slug>/<file>` where collection ∈ portfolio, services,
+  articles, vision-tech. Root images (`/hero-bg.jpg` etc.) redirect to R2 root. Inside the
+  bucket there is **no** `_img/` prefix.
+- Prod: `public/_redirects` 302 → R2. Dev: `r2DevProxy` in `astro.config.mjs` checks
+  `tools/editor/.staging/<path>` first, then fetches R2.
+- Upload path: VG Editor image picker → `.staging/<collection>/<slug>/` → "↑ R2" (rclone).
+- Thumbs: WebP, `card` 600px / `large` 1600px, at `public/thumbs/<size>/<collection>/<slug>/x.webp`
+  (not committed; pushed to R2 by "↑ R2 all").
+  Generate: `node scripts/generate-thumbs.mjs [--slug portfolio/hotel-lycium] [--force]`.
+- `thumbUrl(src, size?)` from `src/lib/image-url.ts` maps `/_img/...jpg` → `/thumbs/...webp`;
+  returns `''` for falsy input — filter before rendering `<img>`.
+- Gallery viewer uses `large`, cards use `card`, lightbox full-screen uses the original `src`.
+
+### 8.3 i18n API (`src/lib/i18n.ts`)
+
+```ts
+LOCALES = ['en','hu']; DEFAULT_LOCALE = 'en';
+type Localized<T> = T | Partial<Record<Locale, T>>;
+t(value, lang)         // resolve, fall back to default locale, else undefined
+tStr(value, lang)      // like t() but '' fallback — use for anything printed
+localeUrl(path, lang)  // '/portfolio/foo' + 'hu' → '/hu/portfolio/foo/'
+swapLocale(pathname, lang) · localeFromPath(pathname)
+staticLocalePaths()    // getStaticPaths for param-less pages
+localizedPaths(items, paramsOf, propsOf?)  // locales × items
+```
+UI strings: `ui(lang)` from `src/i18n/strings.ts` — `hu` is typed `Widen<typeof en>` so a
+missing key is a compile error (keys must match; text may differ). Sections: `nav`, `cta`,
+`project`, `listing`, `meta`, `langSwitch`, `a11y` (aria-labels, skip link), `portfolio`
+(filter island labels — passed as a plain-string `labels` prop, `{n}`/`{v}` placeholders),
+`category`, `articles` (list/detail chrome; articles themselves stay EN — HU shows
+`enOnlyNote`), `about`, `contact`. Article date/reading-time helpers: `src/lib/article-meta.ts`.
+`<Lang code="en|hu">` (`src/components/i18n/Lang.astro`) renders its slot only for the active
+locale; must be registered in the template's components map to work inside MDX.
+`App.Locals` (see `src/env.d.ts`): `{ lang?: Locale; pageType?: 'portfolio'|'service'|'article'|'vision-tech' }`.
+
+### 8.4 Adding a locale (e.g. `de`) — full sync list
+
+1. `src/lib/i18n.ts` — `LOCALES`, `LOCALE_NAMES`, `LOCALE_SHORT`.
+2. `src/content/config.ts` — `localizedString()` / `localizedStringArray()` object keys.
+3. `tools/editor/client/src/lib/localized.ts` — `LOCALES`.
+4. `astro.config.mjs` — `i18n.locales` **and** the sitemap `i18n.locales` map.
+5. `src/i18n/strings.ts` — sibling locale object (type-enforced) + `STRINGS` map.
+6. Every inline `COPY = {en,hu}` block: `[lang]/index.astro`, `services/index.astro`,
+   `vision-tech/index.astro`, `services/[slug].astro`, `vision-tech/[slug].astro`,
+   `privacy/index.astro`, `impressum/index.astro` — plus `lang==='hu'` ternaries in
+   `portfolio/index.astro`, `Header.astro`, `Footer.astro`.
+7. `src/lib/vision-tech-labels.ts` — label map. `Footer.astro` — `SERVICE_LABELS`.
+8. `tools/editor/server/routers/translate.ts` — `LOCALE_NAMES`.
+9. `scripts/translate-reference-collections.mjs` — dictionaries; re-run for categories/client-types.
+
+### 8.5 Cache-buster island list (§4.8)
+
+`build-stamp` is currently imported by exactly: `HomeCarousel.tsx`, `PortfolioFilter.tsx`,
+`ServicesTabs.tsx`, `media/ImageLightbox.tsx`, `media/ArticleGalleryMounter.tsx`,
+`media/ArticleImageCompareMounter.tsx`. (`ui/ImageCompare.tsx` is covered via its mounter.)
+Add every future island to this list — and to this paragraph.
+
+### 8.6 Template component maps (what MDX can use where)
+
+- `portfolio/[slug].astro` — SectionBanner(=mdx), SingleImage, ImageGallery, ImageCompare,
+  Tour360, YouTubeEmbed+YoutubeEmbed, FilmEmbed, ProjectDescription, ProjectStory,
+  ProjectTasks, Lang.
+- `services/[slug].astro` — SectionBanner(**=ui**), DeliverableGrid, TimelineTable, NotableGrid,
+  ImageGallery, ImageCompare, ProcessFlow, PhaseMatrix, Tour360, YouTubeEmbed+YoutubeEmbed, Lang.
+- `vision-tech/[slug].astro` — SectionBanner(=mdx), ImageGallery, ImageCompare, ProcessFlow,
+  SpecTable, CompareTable, Tour360, FilmEmbed, YouTubeEmbed+YoutubeEmbed, Lang.
+- `articles/[slug].astro` — SectionBanner(=mdx), SingleImage, ImageGallery, ImageCompare —
+  **no Lang** (articles are EN-only).
+All four templates also mount `ArticleGalleryMounter` + `ArticleImageCompareMounter`.
+The editor palette mirrors these maps automatically via `GET /api/registry`
+(`astro-registry-scanner.ts` re-scans the templates per request).
+
+### 8.7 VG Editor map
+
+**Processes:** server :4322 (`tsx watch tools/editor/server/index.ts`), client :4323 (vite).
+Client proxies `/api` with no timeout (rclone/thumb jobs run minutes).
+
+**Toolbar:** view tabs Editor · Pages (nav-config) · Pricing (pricing-*.json) · Projects ·
+Articles · Services · Vision-Tech (batch publish/feature toggles, per-row thumbs) ·
+Collections (reference CRUD). Buttons: ↑ R2 / ↑ R2 all (rclone staging→R2), ⟳ Thumbs /
+⟳ Thumbs all (spawns generate-thumbs detached), ↑ Git (commit+push develop), ↑ Live
+(promote develop→master, confirmation dialog), Preview MDX, Save (Ctrl-S).
+
+**Server endpoints (prefix `/api`):** `/health`; `/registry`; `files/` pages·content·read·
+write·delete·exists; `images/` upload·list·delete·push-to-r2·push-all-to-r2; `content/`
+listings·collections CRUD·frontmatter patch·nav-config·pricing-packages·pricing-reference;
+`ollama/` models·chat·generate·alt-text·excerpt·caption·paragraph·summary·banner-subject;
+`swarmui/` status·models·generate·gallery·output; `config/` get·merge; `import/md`;
+`codegen/` preview·save; `commands/` generate-thumbs·git-push·git-promote;
+`translate` + `translate/batch` (engine `ollama` | `claude`; Claude key from env only).
+
+**AI tab:** Ollama (status, model dropdown, excerpt/free-form; selected model also powers
+block→prompt generation) + SwarmUI (model datalist from `ListModels` — use the internal `name`
+filename, not display title; steps/CFG/sampler/scheduler defaults 4/1/euler/simple for
+LCM-class models; Size 1024–2048 & Format 21:9…9:16 compute WxH from `sqrt(area×ratio)`
+rounded to 8px; saved styles/prompts; ☰ Blocks select-mode + ✦ Generate sends selected block
+text to Ollama — block text only, no page meta, error if empty; outputs saved to
+`tools/editor/.swarmui-output/`, last 12 as gallery, lightbox on click, shift-click loads back).
+Generate is async — clicking again queues concurrent jobs, round-robined across `swarmBases`
+(multi-backend; per-backend failures reported in `warnings`, others complete).
+Prompt Settings: named system prompts (one active, overrides task prompts) + per-endpoint task
+prompts (`bannerSubject`, `chat`, `excerpt`, `caption`, `paragraph`, `summaryDescription/Story/Tasks`).
+AI Settings: Ollama address (default :11434), SwarmUI address(es) (default :7801), translation
+engine/model/prompt. SwarmUI hosts must listen on 0.0.0.0; generation is a blocking HTTP call
+(3 min timeout), no websocket. Ollama NDJSON quirk: responses may stream despite
+`stream:false` — server aggregates chunks (`ollamaGenerate()`), keep that.
+
+**Config:** `tools/editor/editor-config.json` (committed!) — `ollamaBase`, `swarmBases[]`
+(+legacy `swarmBase` mirror), `swarmModels`, `swarmStyles`, `swarmPrompts`,
+`ollamaSystemPrompts`, `activeSystemPromptName`, `ollamaTaskPrompts`, `translation*`.
+Secrets never go here (env only).
+
+### 8.8 Scripts (`scripts/`)
+
+Live maintenance:
+| Script | Purpose |
+|---|---|
+| `generate-thumbs.mjs [--slug c/s] [--force]` | WebP thumbs from R2 + `.staging` → `public/thumbs/` |
+| `translate-projects.mjs [--slug s] [--dry-run] [--skip-ai]` | HU for project frontmatter + banner/tour labels (Claude API if `ANTHROPIC_API_KEY`) |
+| `translate-reference-collections.mjs [--dry-run]` | curated HU titles for categories + client-types |
+| `split-lang-blocks.mjs <file>\|--all` | split `<Lang>` pairs at `##` boundaries (vision-tech) |
+| `populate-tour360-cover.mjs [--dry-run]` | add `coverImage` to bare `<Tour360>` in projects |
+
+Everything else in `scripts/` (`convert-*`, `migrate-*`, `i18n-*`, `generate-projects.js`,
+`fetch-images.js`, `extract-tech-content.mjs`) is one-shot WordPress-migration history —
+already applied, don't re-run.
+
+### 8.9 Design tokens (`src/styles/global.css`)
+
+Dark (`:root`): bg `#1a1a1a` · surface `#121212` · surface-2 `#0f0f0f` · border `#333` ·
+accent `#da1313` · text `#f0f0f1` · muted `#c8c8c8` · faint `#8a8a8a` ·
+header-bg `rgba(26,26,26,.95)`.
+Light (`[data-theme="light"]`): bg `#f7f5f2` · surface `#eeeae5` · surface-2 `#e5e1da` ·
+border `#d0cbc3` · accent `#c41010` · text `#18160f` · muted `#47433b` · faint `#8a8075` ·
+header-bg `rgba(247,245,242,.95)`.
+Type scale: `--fs-h1 2.986rem` … `--fs-h6 1.2rem`, `--fs-body 1rem`, `--fs-small .833rem`,
+`--fs-xs .694rem`. Spacing: `--space-1..16` (0.25–4rem), `--size-header 4.5rem`.
+Container max 2400px. Theme toggle: `ThemeToggle.astro`, `localStorage 'vg-theme'`, pre-paint
+inline script in `Base.astro`.
+ServicesTabs active indicator uses `shadow-[inset_3px_0_0_var(--color-accent)]` — `border-l-*`
+is invisible under `border-none`; don't "fix" it back.
+
+### 8.10 Known bugs & debt register (flag, don't fix unasked — §5.6)
+
+1. **Articles are EN-only by design; the templates' chrome is now localized** (links via
+   `localeUrl`, dates via `formatDate(date, lang)`, labels from `strings.ts articles`, prose
+   marked `lang="en"`). `Lang` is still not registered in `articles/[slug].astro` — localizing
+   an article body requires adding it (and `{en,hu}` frontmatter support in the template).
+2. **`faq/` and `pricing/`** ignore `lang` entirely (EN content on /hu/ URLs). Both nav-disabled,
+   but `services/index.astro` still links "See Pricing" → `/pricing/`.
+3. **Eight orphaned editor block types** (`section-label`, `diff-block`, `cta-section`,
+   `button-group`, `sidebar-block`, `section-container`, `two-col`, `service-body-grid`):
+   render+inspector exist, but absent from palette registry and from `blockToMdx` — saving a
+   doc containing one **silently deletes it** (§4.16).
+4. **`3ds-max-tools.mdx` ships `TODO_` media URLs** (Hungexpo gala, Rubik, Planet 2023 tour).
+5. **Dead code — do not wire new work to it:** `ui/PageHero.astro` (unused), `comfyBase`
+   config key + "ComfyUIPanel" misnomer, editor ImportDialog (unreachable), `FilmEmbed`
+   (registered, unused; `hasFilm` flags exist with no embeds), projects `features`/`tags`
+   (always empty — the portfolio filter hides its "Output type" group until they aren't),
+   `components.css` double-import, mounter comments referencing nonexistent remark plugins.
+   Pagefind is still indexed at build time but nothing on the site consumes it (no search UI).
+6. **MDX body links are locale-blind** (bare `/vision-tech/x/` → redirects to `/en/...` even
+   from HU pages) — accepted debt, consistent across all content.
+7. **Editor live pipeline has zero tests** (vitest wired but `tools/editor/tests/` empty).
+   A future suite should round-trip `documentToMdx` → `parseMdx` → `mapMdxToBlocks`.
+8. **Working tree carries teardown debris:** `storybook-static/` is untracked build output.
+   It is gitignored again, but delete it — `astro check` walks it otherwise (tsconfig now
+   excludes it too).
+9. **YouTubeEmbed nests a `<button>` inside a `role="button"` div** — works, but double
+   announces to screen readers. Fix = drop the outer role and make the inner button the target.
+10. **Light-mode `--color-border` is `#9a9088` in `global.css`** while §8.9 documents `#d0cbc3`;
+    the CSS is what ships. Reconcile when the light palette is next touched.
+
+### 8.11 Keeping this file current
+
+Update CLAUDE.md **in the same commit** whenever: a workflow changes; an MDX component or
+editor block is added/renamed/removed (tables §5.4, §8.6, and the skill); a schema field
+changes; a script or npm command appears; a rule is added or relaxed; URL patterns change; a
+new "we got burned" lesson lands (add it to §4 with a name); a §8.10 bug is fixed (remove it).
+If Claude made the change, Claude updates this file — and the affected skill under
+`.claude/skills/` if the procedure changed.
