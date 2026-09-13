@@ -1,5 +1,8 @@
 import type { BlockData, PageType } from './blocks.ts';
 
+// Re-export so consumers can treat document.ts as the document-types barrel.
+export type { PageType };
+
 export interface ArticleMeta {
   title: string;
   date: string;

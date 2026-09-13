@@ -1,0 +1,55 @@
+---
+title: "From Render to Photograph: Our In-House AI Enhancement Pipeline"
+date: 2026-06-13
+excerpt: "We built our own production system that turns working 3D renders into photorealistic images — with dozens of controlled variations and automated quality checks on every single output. Here's what it does for your project."
+tags:
+  - ai
+  - workflow
+  - architectural-visualization
+published: false
+coverImage: /_img/articles/archupgrade/atrium-after.jpg
+---
+
+Every architectural visualization project hits the same wall: the 3D model is accurate, the camera angles are approved, the layout is final — and then the polishing begins. Materials, lighting, vegetation, people, atmosphere. Traditionally, that last stretch from "correct render" to "image that sells the project" is where most of the time and budget goes.
+
+Over the past year we built an in-house production system — we call it ArchUpgrade — that changes the economics of that last stretch. It takes our working 3D renders and transforms them into photorealistic images, in controlled variations, with automated quality scoring on every output. It runs on our own hardware, on our own render farm, with our own quality standards baked in.
+
+Drag the slider to see what it does. The left side is the working render straight out of 3ds Max. The right side is the same image after the pipeline — same geometry, same camera, same layout.
+
+![Before: working 3D render of a bank branch interior](/_img/articles/archupgrade/bank-branch-1-before.jpg)
+![After: photorealistic AI-enhanced version of the same view](/_img/articles/archupgrade/bank-branch-1-after.jpg)
+
+Nothing about the design changed. The furniture is where the designer put it. The signage, the screens, the partition glass, the little green poufs in the kids' corner — all preserved. What changed is everything that makes an image read as a photograph: material response, light falloff, soft shadows, reflections, the sense that a camera was actually standing in the room.
+
+## Why this matters for your project
+
+**You see more options, earlier.** The system generates systematic variations — different lighting moods, seasons, furnishing styles, budget tiers — from the same base render. Where we used to show you two or three polished images, we can now show you a curated selection from dozens of candidates. These four images are variations of the same source render, generated in one batch:
+
+![Variation 1 of the same bank branch render](/_img/articles/archupgrade/variation-s01.jpg)
+![Variation 2 of the same bank branch render](/_img/articles/archupgrade/variation-s02.jpg)
+![Variation 3 of the same bank branch render](/_img/articles/archupgrade/variation-s03.jpg)
+![Variation 4 of the same bank branch render](/_img/articles/archupgrade/variation-s04.jpg)
+
+**Every image is quality-checked before a human ever picks it.** Each generated image is scored by an AI reviewer on five independent aspects — aesthetics, fidelity to the source design, prompt adherence, technical quality, and style match. Images that don't meet the thresholds are automatically retried. The review screen shows every candidate with its scores, so the final selection is made from a field that already passed inspection:
+
+![The ArchUpgrade review screen — every generated image carries its quality scores](/_img/articles/archupgrade/archupgrade-review-grid.jpg)
+
+**The design stays under control.** This is the part we care most about, and the part most "AI rendering" services get wrong. The pipeline works *from our accurate 3D model* — it enhances, it doesn't invent. Walls don't move. Proportions don't drift. The brand colours stay the brand colours. When a generated image deviates from the source design, the fidelity score catches it and the image is rejected.
+
+Here is a larger space — an office atrium — through the same pipeline:
+
+![Before: working render of an office atrium](/_img/articles/archupgrade/atrium-before.jpg)
+![After: the photorealistic version delivered to the client](/_img/articles/archupgrade/atrium-after.jpg)
+
+## What a project looks like with this in the loop
+
+1. **We build the 3D scene as always.** Accurate model from your plans, approved camera angles, correct proportions. This part doesn't change — it's the foundation everything else depends on.
+2. **The pipeline generates candidates.** For each approved view, the system produces a set of photorealistic versions across the moods and styles we agreed on. A version renders in about a minute on one GPU, and the farm runs many in parallel.
+3. **Machines filter, humans choose.** Automated scoring removes the failures; we review what's left and pick the strongest images — and you can be part of that selection round if you want to be.
+4. **Delivery is organized.** The picked images are delivered in a clean, numbered package, with the full generation history archived on our side. If you come back in three months and want "that version, but in evening light" — we can branch from exactly that version.
+
+## The honest position
+
+This system doesn't replace 3D work — it's built on top of it. The accuracy still comes from the model. The judgment about which image tells the right story is still human. What the pipeline changes is the iteration count: more variations, tighter quality control, and faster turnaround on the polishing stretch that used to consume the end of every schedule.
+
+We built it because we render every day and we know exactly where the time goes. If you want to see what it does on your project, [get in touch](/contact/) — the first conversation is free.

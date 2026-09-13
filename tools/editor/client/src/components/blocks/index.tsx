@@ -16,6 +16,14 @@ import BodyTextBlock from './BodyTextBlock.tsx';
 import ResultsListBlock from './ResultsListBlock.tsx';
 import RichTextBlock from './RichTextBlock.tsx';
 import SingleImageBlock from './SingleImageBlock.tsx';
+import SectionLabelBlock from './SectionLabelBlock.tsx';
+import DiffBlockBlock from './DiffBlockBlock.tsx';
+import CtaSectionBlock from './CtaSectionBlock.tsx';
+import ButtonGroupBlock from './ButtonGroupBlock.tsx';
+import SidebarBlockBlock from './SidebarBlockBlock.tsx';
+import SectionContainerBlock from './SectionContainerBlock.tsx';
+import TwoColBlock from './TwoColBlock.tsx';
+import ServiceBodyGridBlock from './ServiceBodyGridBlock.tsx';
 
 export const blockComponentMap: Record<BlockType, React.ComponentType<{ block: BlockData }>> = {
   'SectionBanner':    SectionBannerBlock    as React.ComponentType<{ block: BlockData }>,
@@ -33,4 +41,12 @@ export const blockComponentMap: Record<BlockType, React.ComponentType<{ block: B
   'body-text':        BodyTextBlock         as React.ComponentType<{ block: BlockData }>,
   'results-list':     ResultsListBlock      as React.ComponentType<{ block: BlockData }>,
   'rich-text':        RichTextBlock         as React.ComponentType<{ block: BlockData }>,
+  'section-label':    SectionLabelBlock     as React.ComponentType<{ block: BlockData }>,
+  'diff-block':       DiffBlockBlock        as React.ComponentType<{ block: BlockData }>,
+  'cta-section':      CtaSectionBlock       as React.ComponentType<{ block: BlockData }>,
+  'button-group':     ButtonGroupBlock      as React.ComponentType<{ block: BlockData }>,
+  'sidebar-block':    SidebarBlockBlock     as React.ComponentType<{ block: BlockData }>,
+  'section-container': SectionContainerBlock as React.ComponentType<{ block: BlockData }>,
+  'two-col':          TwoColBlock           as React.ComponentType<{ block: BlockData }>,
+  'service-body-grid': ServiceBodyGridBlock as React.ComponentType<{ block: BlockData }>,
 };
