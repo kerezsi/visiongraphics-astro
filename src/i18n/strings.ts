@@ -87,6 +87,88 @@ const en = {
     hu:      'Magyar',
   },
 
+  // ── Accessibility / chrome labels ────────────────────────────
+  a11y: {
+    skipToContent:   'Skip to content',
+    home:            'Vision Graphics — Home',
+    servicesLinks:   'Services links',
+    studioLinks:     'Studio links',
+    mainNav:         'Main navigation',
+    mobileNav:       'Mobile navigation',
+    toggleTheme:     'Toggle light/dark mode',
+    toggleNav:       'Toggle navigation',
+    carouselPrev:    'Previous project',
+    carouselNext:    'Next project',
+    carouselSlides:  'Featured projects',
+    servicesTabs:    'Services',
+    projectNav:      'Project navigation',
+    articleNav:      'Article navigation',
+    breadcrumb:      'Breadcrumb',
+  },
+
+  // ── Portfolio filter island (plain strings only — crosses into React) ──
+  portfolio: {
+    searchPlaceholder: 'Search by project, client, location…',
+    searchLabel:       'Search projects',
+    clearSearch:       'Clear search',
+    sortLabel:         'Sort projects',
+    sortNewest:        'Newest first',
+    sortOldest:        'Oldest first',
+    sortAz:            'A – Z',
+    filters:           'Filters',
+    countAll:          '{n} projects',
+    countSome:         '{v} of {n}',
+    category:          'Category',
+    outputType:        'Output type',
+    year:              'Year',
+    fromYear:          'From year',
+    toYear:            'To year',
+    tour360:           '360° Tour',
+    film:              'Film',
+    reset:             'Reset filters',
+    noMatch:           'No projects match those filters.',
+    resetAll:          'Reset all filters',
+    relatedHeading:    'Related projects',
+    relatedSub:        'More work in the same field.',
+  },
+
+  // ── Portfolio category pages ─────────────────────────────────
+  category: {
+    label:       'Portfolio',
+    countOne:    '1 project in this category.',
+    countMany:   '{n} projects in this category.',
+    browseAll:   'Browse all →',
+    allProjects: '← All Projects',
+    startProject:'Start a Project',
+    metaSuffix:  '— Portfolio',
+    metaDesc:    '{label} projects by Vision Graphics Kft. {n} projects. Budapest-based, working globally since 1996.',
+  },
+
+  // ── Articles (EN-only content, but the chrome follows the locale) ──
+  articles: {
+    metaTitle:     'Articles',
+    metaDesc:      'Insights on architectural visualization, AI in production workflows, 3ds Max, V-Ray, and the business of building imagery. Vision Graphics Kft.',
+    bannerLabel:   'Insights & Notes',
+    bannerTitle:   'Articles',
+    sectionLabel:  'Writing',
+    intro:         'Notes from 30 years in architectural visualization — on tools, workflows, AI integration, and the business of making imagery that works.',
+    enOnlyNote:    '',
+    readArticle:   'Read article →',
+    readingTime:   '{n} min read',
+    emptyTitle:    'Articles coming soon.',
+    emptyPrefix:   'In the meantime, ',
+    emptyLink:     'get in touch',
+    emptySuffix:   ' directly.',
+    breadcrumbRoot:'Articles',
+    aboutAuthor:   'About the author',
+    authorBio:     'Founder, Vision Graphics Kft. 30 years in architectural visualization, 3ds Max since version 1, AI integration since it became useful.',
+    contact:       'Contact',
+    startProject:  'Start a Project',
+    older:         '← Older',
+    newer:         'Newer →',
+    allArticles:   'All Articles',
+  },
+
   // ── About page ───────────────────────────────────────────────
   about: {
     metaTitle:        'About',
@@ -104,7 +186,7 @@ const en = {
     founderRole:      'Visualization Director',
     founderBio1:      'László started Vision Graphics in 1996. Before AI was a buzzword, he was writing custom MAXScript tools to solve production problems. Before VR was mainstream, he was building walkthrough experiences for real estate clients.',
     founderBio2:      'He works directly on every client project — from initial brief through final delivery. No layers of project managers between you and the person making decisions about your visuals.',
-    founderBio3:      'Currently: integrating AI tools into production workflows, building custom desktop utilities for visualization pipelines, and preparing a presentation on AI-driven disruption in architectural visualization for the Ybl Conference 2026.',
+    founderBio3:      'Currently: building and running the production AI pipelines behind our image work, and developing the studio\'s own tools — render-farm control, VR tour authoring, batch automation in 3ds Max — in Python, MAXScript, and TypeScript.',
     founderPhoneLabel:'Phone',
     founderEmailLabel:'Email',
     founderPhotoAlt:  'László Kerezsi — Founder, Vision Graphics',
@@ -220,7 +302,12 @@ const en = {
 } as const;
 
 // Type-safe Hungarian object — must mirror the EN shape exactly.
-type Strings = typeof en;
+// `en` is `as const`, so `typeof en` carries literal string values. We widen
+// those literals back to `string` so sibling locales are checked for the same
+// KEY structure (a missing key is a compile error) without being forced to
+// repeat the English text verbatim.
+type Widen<T> = T extends string ? string : { [K in keyof T]: Widen<T[K]> };
+type Strings = Widen<typeof en>;
 const hu: Strings = {
   nav: {
     portfolio:   'Portfólió',
@@ -240,7 +327,7 @@ const hu: Strings = {
     fullPortfolio:  'Teljes portfólió',
     allServices:    'Összes szolgáltatás',
     aboutStudio:    'A stúdióról',
-    getInTouch:     'Lépjen kapcsolatba',
+    getInTouch:     'Lépjen velünk kapcsolatba',
     backToPortfolio:'← Portfólió',
     allProjects:    'Összes projekt',
     previous:       '← Előző',
@@ -280,6 +367,84 @@ const hu: Strings = {
     hu:      'Magyar',
   },
 
+  a11y: {
+    skipToContent:   'Ugrás a tartalomra',
+    home:            'Vision Graphics — Kezdőlap',
+    servicesLinks:   'Szolgáltatások linkjei',
+    studioLinks:     'Stúdió linkjei',
+    mainNav:         'Főmenü',
+    mobileNav:       'Mobil menü',
+    toggleTheme:     'Világos / sötét mód váltása',
+    toggleNav:       'Menü megnyitása',
+    carouselPrev:    'Előző projekt',
+    carouselNext:    'Következő projekt',
+    carouselSlides:  'Kiemelt projektek',
+    servicesTabs:    'Szolgáltatások',
+    projectNav:      'Projektek közötti navigáció',
+    articleNav:      'Cikkek közötti navigáció',
+    breadcrumb:      'Navigációs útvonal',
+  },
+
+  portfolio: {
+    searchPlaceholder: 'Keresés projekt, megbízó vagy helyszín szerint…',
+    searchLabel:       'Keresés a projektek között',
+    clearSearch:       'Keresés törlése',
+    sortLabel:         'Projektek rendezése',
+    sortNewest:        'Legújabb elöl',
+    sortOldest:        'Legrégebbi elöl',
+    sortAz:            'A – Z',
+    filters:           'Szűrők',
+    countAll:          '{n} projekt',
+    countSome:         '{v} / {n}',
+    category:          'Kategória',
+    outputType:        'Kimenet típusa',
+    year:              'Év',
+    fromYear:          'Évtől',
+    toYear:            'Évig',
+    tour360:           '360°-os túra',
+    film:              'Film',
+    reset:             'Szűrők törlése',
+    noMatch:           'Nincs a szűrőknek megfelelő projekt.',
+    resetAll:          'Összes szűrő törlése',
+    relatedHeading:    'Kapcsolódó projektek',
+    relatedSub:        'További munkáink ugyanebből a területből.',
+  },
+
+  category: {
+    label:       'Portfólió',
+    countOne:    '1 projekt ebben a kategóriában.',
+    countMany:   '{n} projekt ebben a kategóriában.',
+    browseAll:   'Összes megtekintése →',
+    allProjects: '← Összes projekt',
+    startProject:'Projekt indítása',
+    metaSuffix:  '— Portfólió',
+    metaDesc:    '{label} projektek a Vision Graphics Kft.-től. {n} projekt. Budapesti székhely, 1996 óta globálisan dolgozunk.',
+  },
+
+  articles: {
+    metaTitle:     'Cikkek',
+    metaDesc:      'Gondolatok az építészeti látványtervezésről, az AI produkciós használatáról, a 3ds Maxról, a V-Rayről és a képkészítés üzleti oldaláról. Vision Graphics Kft.',
+    bannerLabel:   'Jegyzetek és tapasztalatok',
+    bannerTitle:   'Cikkek',
+    sectionLabel:  'Írások',
+    intro:         'Jegyzetek 30 év építészeti látványtervezésből — eszközökről, munkafolyamatokról, AI-integrációról és arról, hogyan készül olyan kép, ami működik.',
+    enOnlyNote:    'Cikkeink jelenleg csak angol nyelven érhetők el.',
+    readArticle:   'Cikk olvasása →',
+    readingTime:   '{n} perc olvasás',
+    emptyTitle:    'Hamarosan érkeznek a cikkek.',
+    emptyPrefix:   'Addig is ',
+    emptyLink:     'vegye fel velünk a kapcsolatot',
+    emptySuffix:   ' közvetlenül.',
+    breadcrumbRoot:'Cikkek',
+    aboutAuthor:   'A szerzőről',
+    authorBio:     'A Vision Graphics Kft. alapítója. 30 év építészeti látványtervezés, 3ds Max az 1-es verzió óta, AI-integráció azóta, hogy valóban hasznossá vált.',
+    contact:       'Kapcsolat',
+    startProject:  'Projekt indítása',
+    older:         '← Korábbi',
+    newer:         'Újabb →',
+    allArticles:   'Összes cikk',
+  },
+
   about: {
     metaTitle:        'Rólunk',
     metaDescription:  'Vision Graphics Kft. — budapesti építészeti látványterv-stúdió, amelyet Kerezsi László alapított 1996-ban. 30 év, több mint 500 projekt négy kontinensen.',
@@ -296,7 +461,7 @@ const hu: Strings = {
     founderRole:      'Vizualizációs igazgató',
     founderBio1:      'László 1996-ban alapította a Vision Graphics stúdiót. Még mielőtt az AI divatszóvá vált volna, ő már egyedi MAXScript eszközöket írt a produkciós kihívások megoldására. Mielőtt a VR elterjedt volna a fősodorban, már interaktív bejárásokat készített ingatlanfejlesztő ügyfelei számára.',
     founderBio2:      'Közvetlenül részt vesz minden egyes projektben – az első egyeztetéstől kezdve a végleges átadásig. Nincsenek felesleges projektmenedzseri rétegek Ön és a látványtervekről döntéseket hozó szakember között.',
-    founderBio3:      'Jelenleg: AI-eszközök integrálása a produkciós munkafolyamatokba, egyedi asztali segédprogramok fejlesztése a vizualizációs pipeline-hoz, valamint az építészeti vizualizáció AI-alapú átalakulásáról szóló előadásának előkészítése a 2026-os Ybl Konferenciára.',
+    founderBio3:      'Jelenleg: a képi munkánk mögött álló produkciós AI-pipeline-ok fejlesztése és üzemeltetése, valamint a stúdió saját eszközeinek építése — renderfarm-vezérlés, VR-bejárások szerkesztése, kötegelt automatizálás 3ds Maxban — Pythonban, MAXScriptben és TypeScriptben.',
     founderPhoneLabel:'Telefon',
     founderEmailLabel:'E-mail',
     founderPhotoAlt:  'Kerezsi László — alapító, Vision Graphics',
@@ -336,7 +501,7 @@ const hu: Strings = {
 
     ctaHeading:       'Készen áll a közös munkára?',
     ctaSub:           '30 perces konzultáció. Ingyenes. Kötelezettség nélkül.',
-    ctaBtn:           'Lépjen kapcsolatba',
+    ctaBtn:           'Lépjen velünk kapcsolatba',
 
     specialists: [
       { role: '3D szkennelési specialista',  desc: 'Épületek és tárgyak részletes digitális másolatának elkészítése szkennereszközökkel.' },

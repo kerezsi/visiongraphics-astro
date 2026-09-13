@@ -1,12 +1,14 @@
 ---
-// src/pages/portfolio/category/[category].astro
-// Pre-built category pages for SEO
+// src/pages/[lang]/portfolio/category/[category].astro
+// Pre-built category pages for SEO. Every value that could be Localized<T>
+// (category titles, project titles, reference titles) goes through tStr().
 
 import Page from '../../../../layouts/Page.astro';
 import SectionBanner from '../../../../components/ui/SectionBanner.astro';
 import { getCollection, getEntry } from 'astro:content';
 import { thumbUrl } from '../../../../lib/image-url';
-import { localizedPaths, localeUrl, type Locale } from '../../../../lib/i18n';
+import { localizedPaths, localeUrl, tStr, type Locale } from '../../../../lib/i18n';
+import { ui } from '../../../../i18n/strings';
 
 export async function getStaticPaths() {
   const allProjects = await getCollection('projects', ({ data }) => data.published);
@@ -16,35 +18,50 @@ export async function getStaticPaths() {
 
 const { lang, category } = Astro.params as { lang: Locale; [k: string]: string | undefined };
 Astro.locals.lang = lang;
+const L = ui(lang);
 const allProjects = await getCollection('projects', ({ data }) => data.published);
 const allCategories = await getCollection('categories');
-const catMap = new Map(allCategories.map(c => [c.id, c.data.title]));
-const label = catMap.get(category) ?? category;
+// Content-type collection: `c.id` is "residential.md", references carry the slug.
+const catMap = new Map(allCategories.map(c => [c.slug, tStr(c.data.title, lang)]));
+const label = catMap.get(category!) || category!;
 const projects = allProjects
   .filter(p => p.data.categories.some(c => c.id === category))
   .sort((a, b) => b.data.year - a.data.year);
 if (!projects.length) return Astro.redirect(localeUrl('/portfolio/', lang));
 
-// Resolve client names and locations for all projects
-const projectMeta = await Promise.all(
+const fill = (tmpl: string, vars: Record<string, string | number>) =>
+  tmpl.replace(/\{(\w+)\}/g, (_, k) => String(vars[k] ?? ''));
+
+// Resolve titles + client/location for every card (locale-aware)
+const cards = await Promise.all(
   projects.map(async p => {
-    const client  = p.data.client  ? (await getEntry('clients',   p.data.client.id))?.data.title  : undefined;
-    const city    = p.data.city    ? (await getEntry('cities',    p.data.city.id))?.data.title    : undefined;
-    const country = p.data.country ? (await getEntry('countries', p.data.country.id))?.data.title : undefined;
-    const location = [city, country].filter(Boolean).join(', ') || undefined;
-    return { client, location };
+    const client  = p.data.client  ? tStr((await getEntry('clients',   p.data.client.id))?.data.title,  lang) : '';
+    const city    = p.data.city    ? tStr((await getEntry('cities',    p.data.city.id))?.data.title,    lang) : '';
+    const country = p.data.country ? tStr((await getEntry('countries', p.data.country.id))?.data.title, lang) : '';
+    const location = [city, country].filter(Boolean).join(', ');
+    return {
+      slug:  p.slug,
+      title: tStr(p.data.displayTitle, lang) || tStr(p.data.title, lang),
+      year:  p.data.year,
+      cover: p.data.coverImage,
+      sub:   client || location,
+    };
   })
 );
+
+const countText = projects.length === 1
+  ? L.category.countOne
+  : fill(L.category.countMany, { n: projects.length });
 ---
 
 <Page
-  title={`${label} — Portfolio`}
-  description={`${label} projects by Vision Graphics Kft. ${projects.length} projects. Budapest-based, working globally since 1996.`}
+  title={`${label} ${L.category.metaSuffix}`}
+  description={fill(L.category.metaDesc, { label, n: projects.length })}
   fullBleed
 >
   <SectionBanner
     image="/_img/banners/banner-arch-viz.jpg"
-    label="Portfolio"
+    label={L.category.label}
     title={label}
     size="page"
     headingLevel="h1"
@@ -52,48 +69,44 @@ const projectMeta = await Promise.all(
   <div class="category-page">
 
     <div class="category-header container">
-      <div class="category-breadcrumb">
-        <a href={localeUrl('/portfolio/', lang)}>Portfolio</a>
-        <span>→</span>
-        <span>{label}</span>
-      </div>
-      <p class="section-label">Portfolio</p>
-      <h2 class="display-lg category-h1">{label}</h2>
+      <nav class="category-breadcrumb" aria-label={L.a11y.breadcrumb}>
+        <a href={localeUrl('/portfolio/', lang)}>{L.nav.portfolio}</a>
+        <span aria-hidden="true">→</span>
+        <span aria-current="page">{label}</span>
+      </nav>
       <p class="category-sub">
-        {projects.length} project{projects.length !== 1 ? 's' : ''} in this category.
-        <a href={localeUrl('/portfolio/', lang)}>Browse all →</a>
+        {countText}
+        <a href={localeUrl('/portfolio/', lang)}>{L.category.browseAll}</a>
       </p>
     </div>
 
     <div class="category-grid container">
-      {projects.map((project, i) => (
-        <a href={localeUrl(`/portfolio/${project.slug}/`, lang)} class="cat-card">
+      {cards.map((card, i) => (
+        <a href={localeUrl(`/portfolio/${card.slug}/`, lang)} class="cat-card pf-card">
           <div class="cat-card-image">
             <img
-              src={thumbUrl(project.data.coverImage)}
-              alt={project.data.title}
+              src={thumbUrl(card.cover)}
+              alt={card.title}
               loading={i < 4 ? 'eager' : 'lazy'}
               decoding="async"
-              onerror={`this.onerror=null;this.src='${project.data.coverImage}'`}
+              onerror={`this.onerror=null;this.src='${card.cover}'`}
             />
           </div>
           <div class="cat-card-body">
             <div class="cat-card-meta">
               <span class="cat-card-cat">{label}</span>
-              <span class="cat-card-year">{project.data.year}</span>
+              <span class="cat-card-year">{card.year}</span>
             </div>
-            <h2 class="cat-card-title">{project.data.title}</h2>
-            {(projectMeta[i].client || projectMeta[i].location) && (
-              <span class="cat-card-sub">{projectMeta[i].client || projectMeta[i].location}</span>
-            )}
+            <h2 class="cat-card-title">{card.title}</h2>
+            {card.sub && <span class="cat-card-sub">{card.sub}</span>}
           </div>
         </a>
       ))}
     </div>
 
     <div class="category-cta container">
-      <a href={localeUrl('/portfolio/', lang)} class="btn btn-secondary">← All Projects</a>
-      <a href={localeUrl('/contact/', lang)} class="btn btn-primary">Start a Project</a>
+      <a href={localeUrl('/portfolio/', lang)} class="btn btn-secondary">{L.category.allProjects}</a>
+      <a href={localeUrl('/contact/', lang)} class="btn btn-primary">{L.category.startProject}</a>
     </div>
 
   </div>
@@ -102,22 +115,20 @@ const projectMeta = await Promise.all(
 <style>
   .category-page { padding-block: clamp(3rem, 6vw, 5rem); }
 
-  .category-header { margin-bottom: 3rem; }
+  .category-header { margin-bottom: var(--space-12); }
 
   .category-breadcrumb {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: var(--space-2);
     font-family: var(--font-body);
     font-size: var(--fs-xs);
     color: var(--color-text-faint);
-    margin-bottom: 1.5rem;
+    margin-bottom: var(--space-4);
   }
 
   .category-breadcrumb a { color: var(--color-text-muted); text-decoration: none; transition: color 200ms; }
   .category-breadcrumb a:hover { color: var(--color-accent); }
-
-  .category-h1 { margin: 0.5rem 0 1rem; }
 
   .category-sub {
     font-size: var(--fs-small);
@@ -129,30 +140,30 @@ const projectMeta = await Promise.all(
     color: var(--color-accent);
     text-decoration: underline;
     text-underline-offset: 2px;
-    margin-left: 0.5rem;
+    margin-left: var(--space-2);
   }
 
-  /* Grid — matches vt-grid */
+  /* Grid — matches the portfolio filter grid */
   .category-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 3rem;
+    grid-template-columns: repeat(auto-fill, minmax(max(280px, 22%), 1fr));
+    gap: var(--space-6);
+    margin-bottom: var(--space-12);
   }
 
-  /* Portfolio card — white border */
+  /* Card — border colours come from the shared .pf-card rules in global.css */
   .cat-card {
     display: flex;
     flex-direction: column;
     background: var(--color-surface);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border: 1px solid;
     border-radius: var(--radius-sm);
     overflow: hidden;
     text-decoration: none;
     transition: border-color 250ms ease, transform 250ms ease;
   }
 
-  .cat-card:hover { border-color: rgba(255, 255, 255, 0.35); transform: translateY(-2px); }
+  .cat-card:hover { transform: translateY(-2px); }
 
   .cat-card-image {
     aspect-ratio: 16/9;
@@ -170,10 +181,10 @@ const projectMeta = await Promise.all(
   .cat-card:hover .cat-card-image img { transform: scale(1.04); }
 
   .cat-card-body {
-    padding: 1rem 1.1rem 1.2rem;
+    padding: var(--space-4) var(--space-4) var(--space-5);
     display: flex;
     flex-direction: column;
-    gap: 0.45rem;
+    gap: var(--space-2);
     flex: 1;
   }
 
@@ -213,9 +224,9 @@ const projectMeta = await Promise.all(
     color: var(--color-text-muted);
   }
 
-  /* CTA */
   .category-cta {
     display: flex;
-    gap: 0.75rem;
+    gap: var(--space-3);
+    flex-wrap: wrap;
   }
 </style>

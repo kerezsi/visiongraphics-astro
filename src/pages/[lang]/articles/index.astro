@@ -5,36 +5,33 @@ import Page from '../../../layouts/Page.astro';
 import SectionBanner from '../../../components/ui/SectionBanner.astro';
 import { getCollection } from 'astro:content';
 import { thumbUrl } from '../../../lib/image-url';
-import { staticLocalePaths, type Locale } from '../../../lib/i18n';
+import { staticLocalePaths, localeUrl, tStr, type Locale } from '../../../lib/i18n';
+import { ui } from '../../../i18n/strings';
+import { formatDate, readingTime } from '../../../lib/article-meta';
 
 export const getStaticPaths = staticLocalePaths;
 
 
 const { lang } = Astro.params as { lang: Locale };
 Astro.locals.lang = lang;
+const L = ui(lang);
 const allArticles = await getCollection('articles', ({ data }) => data.published);
 const articles = allArticles.sort((a, b) =>
   new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
 );
-
-function formatDate(date: Date): string {
-  return new Intl.DateTimeFormat('en-GB', {
-    day: 'numeric', month: 'long', year: 'numeric',
-  }).format(date);
-}
 ---
 
 <Page
-  title="Articles"
-  description="Insights on architectural visualization, AI in production workflows, 3ds Max, V-Ray, and the business of building imagery. Vision Graphics Kft."
+  title={L.articles.metaTitle}
+  description={L.articles.metaDesc}
   fullBleed
 >
   <div class="articles-page">
 
     <SectionBanner
       image="/_img/banners/banner-general.jpg"
-      label="Insights & Notes"
-      title="Articles"
+      label={L.articles.bannerLabel}
+      title={L.articles.bannerTitle}
       size="page"
       headingLevel="h1"
     />
@@ -43,22 +40,20 @@ function formatDate(date: Date): string {
     <div class="container">
 
     <div class="articles-header">
-      <p class="section-label">Writing</p>
-      <p class="articles-intro">
-        Notes from 30 years in architectural visualization — on tools, workflows,
-        AI integration, and the business of making imagery that works.
-      </p>
+      <p class="section-label">{L.articles.sectionLabel}</p>
+      <p class="articles-intro">{L.articles.intro}</p>
+      {L.articles.enOnlyNote && <p class="articles-note">{L.articles.enOnlyNote}</p>}
     </div>
 
     {articles.length > 0 ? (
       <div class="articles-list">
         {articles.map((article, i) => (
-          <a href={`/articles/${article.slug}/`} class:list={['article-item', { 'article-item--featured': i === 0 }]}>
+          <a href={localeUrl(`/articles/${article.slug}/`, lang)} lang="en" class:list={['article-item', { 'article-item--featured': i === 0 }]}>
             {article.data.coverImage && (
               <div class="article-image">
                 <img
                   src={thumbUrl(article.data.coverImage)}
-                  alt={article.data.title}
+                  alt={tStr(article.data.title, lang)}
                   loading={i === 0 ? 'eager' : 'lazy'}
                   onerror={`this.onerror=null;this.src='${article.data.coverImage}'`}
                 />
@@ -67,8 +62,9 @@ function formatDate(date: Date): string {
             <div class="article-body">
               <div class="article-meta">
                 <time class="article-date" datetime={article.data.date.toISOString()}>
-                  {formatDate(article.data.date)}
+                  {formatDate(article.data.date, lang)}
                 </time>
+                <span class="article-date">{L.articles.readingTime.replace('{n}', String(readingTime(article.body)))}</span>
                 {article.data.tags.length > 0 && (
                   <div class="article-tags">
                     {article.data.tags.slice(0, 3).map(tag => (
@@ -77,19 +73,18 @@ function formatDate(date: Date): string {
                   </div>
                 )}
               </div>
-              <h2 class="article-title">{article.data.title}</h2>
-              <p class="article-excerpt">{article.data.excerpt}</p>
-              <span class="article-read-more">Read article →</span>
+              <h2 class="article-title">{tStr(article.data.title, lang)}</h2>
+              <p class="article-excerpt">{tStr(article.data.excerpt, lang)}</p>
+              <span class="article-read-more">{L.articles.readArticle}</span>
             </div>
           </a>
         ))}
       </div>
     ) : (
       <div class="articles-empty">
-        <p>Articles coming soon.</p>
+        <p>{L.articles.emptyTitle}</p>
         <p class="articles-empty-sub">
-          In the meantime, see our <a href="/faq/">FAQ</a> for answers to common questions,
-          or <a href="/contact/">get in touch</a> directly.
+          {L.articles.emptyPrefix}<a href={localeUrl('/contact/', lang)}>{L.articles.emptyLink}</a>{L.articles.emptySuffix}
         </p>
       </div>
     )}
@@ -111,6 +106,15 @@ function formatDate(date: Date): string {
     max-width: 55ch;
     line-height: 1.7;
     margin: 0;
+  }
+
+  /* HU-only notice: articles are published in English */
+  .articles-note {
+    font-size: var(--fs-xs);
+    color: var(--color-text-faint);
+    margin: var(--space-3) 0 0;
+    padding-left: var(--space-3);
+    border-left: 2px solid var(--color-accent);
   }
 
   /* List */

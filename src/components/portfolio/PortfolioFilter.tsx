@@ -31,11 +31,32 @@ export interface ProjectMeta {
   hasFilm:     boolean;
 }
 
+/** UI labels — plain strings, pre-flattened by the template from strings.ts `portfolio`. */
+export interface PortfolioLabels {
+  searchPlaceholder: string; searchLabel: string; clearSearch: string;
+  sortLabel: string; sortNewest: string; sortOldest: string; sortAz: string;
+  filters: string; countAll: string; countSome: string;
+  category: string; outputType: string; year: string; fromYear: string; toYear: string;
+  tour360: string; film: string; reset: string; noMatch: string; resetAll: string;
+}
+
+const EN_LABELS: PortfolioLabels = {
+  searchPlaceholder: 'Search by project, client, location…', searchLabel: 'Search projects', clearSearch: 'Clear search',
+  sortLabel: 'Sort projects', sortNewest: 'Newest first', sortOldest: 'Oldest first', sortAz: 'A – Z',
+  filters: 'Filters', countAll: '{n} projects', countSome: '{v} of {n}',
+  category: 'Category', outputType: 'Output type', year: 'Year', fromYear: 'From year', toYear: 'To year',
+  tour360: '360° Tour', film: 'Film', reset: 'Reset filters', noMatch: 'No projects match those filters.', resetAll: 'Reset all filters',
+};
+
+const fmt = (tmpl: string, vars: Record<string, number>) =>
+  tmpl.replace(/\{(\w+)\}/g, (_, k) => String(vars[k] ?? ''));
+
 interface Props {
   projects: ProjectMeta[];
   minYear:  number;
   maxYear:  number;
   lang?:    Locale;
+  labels?:  PortfolioLabels;
 }
 
 type SortOption = 'newest' | 'oldest' | 'az';
@@ -51,7 +72,7 @@ function setParams(params: URLSearchParams) {
 }
 
 // ─── Main Component ───────────────────────────────────────────────
-export default function PortfolioFilter({ projects, minYear, maxYear, lang = DEFAULT_LOCALE }: Props) {
+export default function PortfolioFilter({ projects, minYear, maxYear, lang = DEFAULT_LOCALE, labels: t = EN_LABELS }: Props) {
   // ── Derive available filter options from data ──
   const allCategories = useMemo(() => {
     const seen = new Map<string, CategoryRef>();
@@ -175,16 +196,16 @@ export default function PortfolioFilter({ projects, minYear, maxYear, lang = DEF
             <input
               type="search"
               className="pf-search w-full bg-surface-2 border border-line rounded-token-sm py-[0.6rem] pr-8 pl-9 font-body text-[0.85rem] text-content transition-[border-color] duration-200"
-              placeholder="Search by project, client, location…"
+              placeholder={t.searchPlaceholder}
               value={searchText}
               onChange={e => setSearchText(e.target.value)}
-              aria-label="Search projects"
+              aria-label={t.searchLabel}
             />
             {searchText && (
               <button
                 className="absolute right-2 top-1/2 -translate-y-1/2 bg-transparent border-none text-faint text-[1.1rem] cursor-pointer px-1 leading-none"
                 onClick={() => setSearchText('')}
-                aria-label="Clear search"
+                aria-label={t.clearSearch}
               >×</button>
             )}
           </div>
@@ -193,11 +214,11 @@ export default function PortfolioFilter({ projects, minYear, maxYear, lang = DEF
             className="pf-sort bg-surface-2 border border-line rounded-token-sm py-[0.6rem] px-4 font-body text-[0.8rem] text-muted cursor-pointer whitespace-nowrap transition-[border-color] duration-200"
             value={sort}
             onChange={e => setSort(e.target.value as SortOption)}
-            aria-label="Sort projects"
+            aria-label={t.sortLabel}
           >
-            <option value="newest">Newest first</option>
-            <option value="oldest">Oldest first</option>
-            <option value="az">A – Z</option>
+            <option value="newest">{t.sortNewest}</option>
+            <option value="oldest">{t.sortOldest}</option>
+            <option value="az">{t.sortAz}</option>
           </select>
 
           <button
@@ -205,7 +226,7 @@ export default function PortfolioFilter({ projects, minYear, maxYear, lang = DEF
             onClick={() => setFiltersOpen(v => !v)}
             aria-expanded={filtersOpen}
           >
-            Filters
+            {t.filters}
             {(hasActiveFilters && !filtersOpen) ? (
               <span className="w-[6px] h-[6px] rounded-full bg-accent flex-shrink-0" />
             ) : null}
@@ -219,8 +240,8 @@ export default function PortfolioFilter({ projects, minYear, maxYear, lang = DEF
 
           <span className="font-mono text-[0.75rem] text-faint whitespace-nowrap flex-shrink-0">
             {filtered.length === projects.length
-              ? `${projects.length} projects`
-              : `${filtered.length} of ${projects.length}`}
+              ? fmt(t.countAll,  { n: projects.length })
+              : fmt(t.countSome, { v: filtered.length, n: projects.length })}
           </span>
         </div>
 
@@ -230,7 +251,7 @@ export default function PortfolioFilter({ projects, minYear, maxYear, lang = DEF
             {/* Category pills */}
             <div className="flex flex-col gap-[0.6rem]">
               <span className="font-body text-[0.65rem] font-medium tracking-[0.15em] uppercase text-faint">
-                Category
+                {t.category}
               </span>
               <div className="flex flex-wrap gap-[0.4rem]">
                 {allCategories.map(cat => (
@@ -251,10 +272,12 @@ export default function PortfolioFilter({ projects, minYear, maxYear, lang = DEF
               </div>
             </div>
 
-            {/* Feature pills */}
+            {/* Feature pills — `features` is empty on every project today (§8.10),
+                so the group is hidden until real data appears. */}
+            {allFeatures.length > 0 && (
             <div className="flex flex-col gap-[0.6rem]">
               <span className="font-body text-[0.65rem] font-medium tracking-[0.15em] uppercase text-faint">
-                Output type
+                {t.outputType}
               </span>
               <div className="flex flex-wrap gap-[0.4rem]">
                 {allFeatures.map(feat => (
@@ -274,12 +297,13 @@ export default function PortfolioFilter({ projects, minYear, maxYear, lang = DEF
                 ))}
               </div>
             </div>
+            )}
 
             {/* Year range + toggles row */}
             <div className="pf-bottom-row flex items-center gap-6 flex-wrap border-t border-line pt-5">
               <div className="flex items-center gap-3">
                 <span className="font-body text-[0.65rem] font-medium tracking-[0.15em] uppercase text-faint">
-                  Year
+                  {t.year}
                 </span>
                 <div className="flex items-center gap-[0.4rem]">
                   <input
@@ -287,8 +311,8 @@ export default function PortfolioFilter({ projects, minYear, maxYear, lang = DEF
                     className="pf-year-input w-20 bg-surface-2 border border-line rounded-token-sm py-[0.4rem] px-2 font-mono text-[0.8rem] text-content text-center"
                     min={minYear} max={yearRange[1]}
                     value={yearRange[0]}
-                    onChange={e => setYearRange([parseInt(e.target.value), yearRange[1]])}
-                    aria-label="From year"
+                    onChange={e => { const v = parseInt(e.target.value); if (!Number.isNaN(v)) setYearRange([v, yearRange[1]]); }}
+                    aria-label={t.fromYear}
                   />
                   <span className="text-faint text-[0.8rem]">–</span>
                   <input
@@ -296,8 +320,8 @@ export default function PortfolioFilter({ projects, minYear, maxYear, lang = DEF
                     className="pf-year-input w-20 bg-surface-2 border border-line rounded-token-sm py-[0.4rem] px-2 font-mono text-[0.8rem] text-content text-center"
                     min={yearRange[0]} max={maxYear}
                     value={yearRange[1]}
-                    onChange={e => setYearRange([yearRange[0], parseInt(e.target.value)])}
-                    aria-label="To year"
+                    onChange={e => { const v = parseInt(e.target.value); if (!Number.isNaN(v)) setYearRange([yearRange[0], v]); }}
+                    aria-label={t.toYear}
                   />
                 </div>
               </div>
@@ -313,7 +337,7 @@ export default function PortfolioFilter({ projects, minYear, maxYear, lang = DEF
                   onClick={() => setOnly360(!only360)}
                   aria-pressed={only360}
                 >
-                  360° Tour
+                  {t.tour360}
                 </button>
                 <button
                   className={`font-body text-[0.72rem] font-medium border rounded-token-sm py-[0.35rem] px-3 cursor-pointer transition-all duration-200 tracking-[0.05em] ${
@@ -325,7 +349,7 @@ export default function PortfolioFilter({ projects, minYear, maxYear, lang = DEF
                   onClick={() => setOnlyFilm(!onlyFilm)}
                   aria-pressed={onlyFilm}
                 >
-                  Film
+                  {t.film}
                 </button>
               </div>
 
@@ -335,7 +359,7 @@ export default function PortfolioFilter({ projects, minYear, maxYear, lang = DEF
                     className="font-body text-[0.72rem] text-accent bg-transparent border-none cursor-pointer p-0 underline underline-offset-2 hover:text-content"
                     onClick={resetAll}
                   >
-                    Reset filters
+                    {t.reset}
                   </button>
                 </div>
               )}
@@ -400,13 +424,13 @@ export default function PortfolioFilter({ projects, minYear, maxYear, lang = DEF
       ) : (
         <div className="py-20 px-8 text-center border border-line">
           <p className="text-[0.9rem] text-muted m-0 mx-auto mb-6">
-            No projects match those filters.
+            {t.noMatch}
           </p>
           <button
             className="font-body text-[0.85rem] font-medium text-accent bg-transparent border border-accent rounded-token-sm py-[0.65rem] px-6 cursor-pointer transition-all duration-200 hover:bg-accent hover:text-page"
             onClick={resetAll}
           >
-            Reset all filters
+            {t.resetAll}
           </button>
         </div>
       )}

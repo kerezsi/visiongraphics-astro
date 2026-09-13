@@ -7,13 +7,41 @@ import Footer from '../../components/layout/Footer.astro';
 import Icon from '../../components/ui/Icon.astro';
 import HomeCarousel from '../../components/HomeCarousel';
 import { getCollection, getEntry } from 'astro:content';
-import { staticLocalePaths, localeUrl, tStr, type Locale } from '../../lib/i18n';
+import { staticLocalePaths, localeUrl, tStr, LOCALES, type Locale } from '../../lib/i18n';
+import { ui } from '../../i18n/strings';
 
 export const getStaticPaths = staticLocalePaths;
 
 
 const { lang } = Astro.params as { lang: Locale };
+// Dev-server 404 fallback resolves "/404" through this catch-all route
+// (lang="404") without running middleware — bail out instead of crashing.
+if (!(LOCALES as readonly string[]).includes(lang)) return new Response(null, { status: 404 });
 Astro.locals.lang = lang;
+const L = ui(lang);
+
+// Structured data — lets search engines show the studio as a local business
+// (name, address, phone, founding year). Facts mirror the footer/contact page.
+const orgJsonLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: 'Vision Graphics Kft.',
+  url: 'https://visiongraphics.eu/',
+  logo: 'https://visiongraphics.eu/logo.png',
+  foundingDate: '1996',
+  founder: { '@type': 'Person', name: 'László Kerezsi' },
+  telephone: '+36 30 945 4179',
+  email: 'info@visiongraphics.hu',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Hollósy Simon utca 15.',
+    postalCode: '1126',
+    addressLocality: 'Budapest',
+    addressCountry: 'HU',
+  },
+  areaServed: 'Worldwide',
+  knowsAbout: ['Architectural visualization', '3D rendering', 'VR walkthroughs', '360° tours', 'AI-enhanced rendering', '3ds Max'],
+});
 // Featured projects for homepage carousel — flatten Localized<T> to plain
 // strings before crossing into the React island (otherwise React renders
 // `[object Object]` and throws).
@@ -39,7 +67,7 @@ const carouselSlides = await Promise.all(
 // Services teaser — first 4 by order
 const allServices = await getCollection('services', ({ data }) => data.published);
 const teaserServices = allServices
-  .sort((a, b) => a.data.order - b.data.order)
+  .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99))
   .slice(0, 4);
 
 // ── Per-locale homepage copy ─────────────────────────────────────────────
@@ -95,7 +123,7 @@ const COPY = {
   hu: {
     metaTitle:       'Vision Graphics',
     metaDescription: 'Professzionális 3D építészeti látványtervezés. 30 év, 500+ projekt. Budapesti székhellyel, globális ügyfélkörrel. Állóképek, animáció, VR, AI-támogatott munkafolyamatok.',
-    heroLabel:       '30 év tapasztalat · több, mint 500 sikeres projekt · Budapest',
+    heroLabel:       '30 év tapasztalat · több mint 500 projekt · Budapest',
     heroH1Lines:     ['Az építészet', 'jobb látványt', 'érdemel'],
     heroSub:         'Az összetett építészeti tervekből olyan látványterveket készítünk, amelyek elősegítik a projekt jóváhagyását, az ingatlan értékesítését és az érintett partnerek egyetértését. Budapesti székhely. 1996 óta dolgozunk a világ minden táján.',
     seeWork:         'Munkáink',
@@ -135,7 +163,7 @@ const COPY = {
     ],
     ctaH2:           'Beszéljünk a projektjéről',
     ctaSub:          '30 perces konzultáció. Ingyenes. Kötelezettség nélkül.',
-    getInTouch:      'Lépjünk kapcsolatba',
+    getInTouch:      'Lépjen velünk kapcsolatba',
   },
 } as const;
 
@@ -147,6 +175,8 @@ const c = COPY[lang];
   description={c.metaDescription}
 >
   <Header />
+
+  <script type="application/ld+json" set:html={orgJsonLd} is:inline />
 
   <main id="content">
 
@@ -187,7 +217,12 @@ const c = COPY[lang];
           </div>
           <a href={localeUrl('/portfolio/', lang)} class="btn btn-secondary">{c.fullPortfolio}</a>
         </div>
-        <HomeCarousel slides={carouselSlides} lang={lang} client:load />
+        <HomeCarousel
+          slides={carouselSlides}
+          lang={lang}
+          labels={{ prev: L.a11y.carouselPrev, next: L.a11y.carouselNext, slides: L.a11y.carouselSlides }}
+          client:load
+        />
       </section>
     )}
 

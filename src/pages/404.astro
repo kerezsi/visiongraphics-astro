@@ -1,0 +1,60 @@
+---
+// src/pages/404.astro
+// Branded not-found page. Emitted as dist/404.html, which Cloudflare Pages
+// serves for any unmatched URL. Locale-less by nature (the URL that failed
+// has no reliable prefix), so both languages are shown. In dev it also stops
+// Astro's /404 lookup from falling into [lang]/index.astro with lang="404".
+import Base from '../layouts/Base.astro';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import { localeUrl } from '../lib/i18n';
+
+Astro.locals.lang = 'en';
+---
+
+<Base title="Page not found" description="The page you were looking for does not exist." noIndex>
+  <Header />
+  <main id="content" class="nf-main">
+    <div class="container nf-inner">
+      <p class="section-label">404</p>
+
+      <section class="nf-block" lang="en">
+        <h1 class="nf-title">This page doesn't exist.</h1>
+        <p class="nf-body">The link may be outdated, or the project may have moved. The portfolio and services are all still here.</p>
+        <div class="nf-ctas">
+          <a href={localeUrl('/portfolio/', 'en')} class="btn btn-primary">Portfolio</a>
+          <a href={localeUrl('/', 'en')} class="btn btn-secondary">Home</a>
+        </div>
+      </section>
+
+      <hr class="nf-rule" />
+
+      <section class="nf-block" lang="hu">
+        <h2 class="nf-title">Ez az oldal nem létezik.</h2>
+        <p class="nf-body">A link elavulhatott, vagy a projekt máshová került. A portfólió és a szolgáltatások továbbra is elérhetők.</p>
+        <div class="nf-ctas">
+          <a href={localeUrl('/portfolio/', 'hu')} class="btn btn-primary">Portfólió</a>
+          <a href={localeUrl('/', 'hu')} class="btn btn-secondary">Kezdőlap</a>
+        </div>
+      </section>
+    </div>
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .nf-main { min-height: 60vh; display: flex; align-items: center; }
+  .nf-inner { padding-block: var(--space-16); max-width: 60ch; }
+  .nf-block { margin-top: var(--space-6); }
+  .nf-title {
+    font-family: var(--font-display);
+    font-size: var(--fs-h3);
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+    margin-bottom: var(--space-4);
+  }
+  .nf-body { font-size: var(--fs-body); color: var(--color-text-muted); margin-bottom: var(--space-6); }
+  .nf-ctas { display: flex; gap: var(--space-3); flex-wrap: wrap; }
+  .nf-rule { margin-block: var(--space-10); }
+</style>
