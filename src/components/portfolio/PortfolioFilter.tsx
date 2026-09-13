@@ -37,7 +37,7 @@ export interface PortfolioLabels {
   sortLabel: string; sortNewest: string; sortOldest: string; sortAz: string;
   filters: string; countAll: string; countSome: string;
   category: string; outputType: string; year: string; fromYear: string; toYear: string;
-  tour360: string; film: string; reset: string; noMatch: string; resetAll: string;
+  tour360: string; film: string; mixed: string; reset: string; noMatch: string; resetAll: string;
 }
 
 const EN_LABELS: PortfolioLabels = {
@@ -45,7 +45,7 @@ const EN_LABELS: PortfolioLabels = {
   sortLabel: 'Sort projects', sortNewest: 'Newest first', sortOldest: 'Oldest first', sortAz: 'A – Z',
   filters: 'Filters', countAll: '{n} projects', countSome: '{v} of {n}',
   category: 'Category', outputType: 'Output type', year: 'Year', fromYear: 'From year', toYear: 'To year',
-  tour360: '360° Tour', film: 'Film', reset: 'Reset filters', noMatch: 'No projects match those filters.', resetAll: 'Reset all filters',
+  tour360: '360° Tour', film: 'Film', mixed: 'Mixed', reset: 'Reset filters', noMatch: 'No projects match those filters.', resetAll: 'Reset all filters',
 };
 
 const fmt = (tmpl: string, vars: Record<string, number>) =>
@@ -403,7 +403,7 @@ export default function PortfolioFilter({ projects, minYear, maxYear, lang = DEF
               <div className="px-[1.1rem] pt-4 pb-5 flex flex-col gap-[0.45rem] flex-1">
                 <div className="flex items-center justify-between">
                   <span className="font-body text-[0.64rem] font-semibold tracking-[0.1em] uppercase text-muted">
-                    {project.categories[0]?.title ?? ''}
+                    {project.categories.length > 1 ? t.mixed : (project.categories[0]?.title ?? '')}
                   </span>
                   <span className="font-mono text-[0.75rem] text-faint">
                     {project.year}

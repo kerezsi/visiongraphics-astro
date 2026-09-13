@@ -45,6 +45,7 @@ const cards = await Promise.all(
       year:  p.data.year,
       cover: p.data.coverImage,
       sub:   client || location,
+      field: p.data.categories.length > 1 ? L.portfolio.mixed : label,
     };
   })
 );
@@ -94,7 +95,7 @@ const countText = projects.length === 1
           </div>
           <div class="cat-card-body">
             <div class="cat-card-meta">
-              <span class="cat-card-cat">{label}</span>
+              <span class="cat-card-cat">{card.field}</span>
               <span class="cat-card-year">{card.year}</span>
             </div>
             <h2 class="cat-card-title">{card.title}</h2>
