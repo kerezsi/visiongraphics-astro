@@ -239,7 +239,7 @@ const L = ui(lang);
     }
   });
 
-  // Hand-off from the estimator on /pricing/#estimate: ?quote=<text> prefills the message.
+  // Hand-off from the price calculator (/pricing/estimate/): ?quote=<text> prefills the message.
   const quoteText = new URLSearchParams(location.search).get('quote');
   const messageEl = document.getElementById('message') as HTMLTextAreaElement | null;
   if (quoteText && messageEl && !messageEl.value) messageEl.value = quoteText;

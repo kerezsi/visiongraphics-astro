@@ -52,6 +52,7 @@ for (const it of data.items) {
   for (const s of it.tech ?? []) assert.ok(tech.has(s), `${it.code}: tech ${s}`);
 }
 for (const f of data.families) for (const s of f.services ?? []) assert.ok(svcs.has(s), `${f.code}: service ${s}`);
+for (const tb of data.calculator.tabs) for (const s of tb.services ?? []) assert.ok(svcs.has(s), `tab ${tb.key}: service ${s}`);
 for (const tb of data.calculator.tabs) for (const r of tb.rows) assert.ok(item(data, r.code) && !item(data, r.code).custom, `tab ${tb.key}: ${r.code}`);
 const cv = calcView(data);
 assert.deepEqual(Object.keys(cv.multipliers), ['source']);

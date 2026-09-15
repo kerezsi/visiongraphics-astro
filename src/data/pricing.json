@@ -2414,7 +2414,7 @@
     }
   },
   "calculator": {
-    "_readme": "On-page estimator tabs (one per service). rows = list codes with the typical starting quantity; source = show the MOD source-data picker; types = show the unit-types input (PLAN.UNIT ratio). Shared rows (MOD.S/M/L) are the same quantity in every tab.",
+    "_readme": "On-page estimator tabs (one per service). rows = list codes with the typical starting quantity; source = show the MOD source-data picker; types = show the unit-types input (PLAN.UNIT ratio). Shared rows (MOD.S/M/L) are the same quantity in every tab. services = service-page slugs that embed the tab.",
     "tabs": [
       {
         "key": "ext",
@@ -2464,6 +2464,9 @@
             "code": "EXT.CLAY",
             "default": 0
           }
+        ],
+        "services": [
+          "architectural-visualization"
         ]
       },
       {
@@ -2506,6 +2509,9 @@
             "code": "EXT.CLAY",
             "default": 0
           }
+        ],
+        "services": [
+          "architectural-visualization"
         ]
       },
       {
@@ -2558,6 +2564,9 @@
             "code": "INT.FLAT.3BED",
             "default": 0
           }
+        ],
+        "services": [
+          "architectural-visualization"
         ]
       },
       {
@@ -2608,6 +2617,10 @@
             "code": "WEB.GUIDE",
             "default": 0
           }
+        ],
+        "services": [
+          "architectural-visualization",
+          "large-scale-projects"
         ]
       },
       {
@@ -2638,6 +2651,9 @@
             "code": "PLAN.ASSY",
             "default": 20
           }
+        ],
+        "services": [
+          "architectural-visualization"
         ]
       },
       {
@@ -2713,6 +2729,10 @@
             "code": "FILM.FRAME",
             "default": 0
           }
+        ],
+        "services": [
+          "architectural-visualization",
+          "large-scale-projects"
         ]
       },
       {
@@ -2742,6 +2762,9 @@
             "code": "AI.CROP",
             "default": 0
           }
+        ],
+        "services": [
+          "advanced-ai-services"
         ]
       },
       {
@@ -2783,6 +2806,10 @@
             "code": "WEB.HEADSET",
             "default": 0
           }
+        ],
+        "services": [
+          "architectural-visualization",
+          "large-scale-projects"
         ]
       },
       {
@@ -2800,6 +2827,9 @@
             "code": "PROD.HERO",
             "default": 1
           }
+        ],
+        "services": [
+          "product-visualization"
         ]
       }
     ]

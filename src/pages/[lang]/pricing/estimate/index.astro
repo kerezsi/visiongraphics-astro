@@ -1,0 +1,33 @@
+---
+// src/pages/[lang]/pricing/estimate/index.astro — the full price calculator (every service tab).
+import Page from '../../../../layouts/Page.astro';
+import SectionBanner from '../../../../components/ui/SectionBanner.astro';
+import Estimator from '../../../../components/pricing/Estimator.astro';
+import { staticLocalePaths, localeUrl, type Locale } from '../../../../lib/i18n';
+
+export const getStaticPaths = staticLocalePaths;
+const { lang } = Astro.params as { lang: Locale };
+Astro.locals.lang = lang;
+
+const COPY = {
+  en: { metaTitle: 'Price calculator', metaDescription: 'Estimate your architectural visualization project line by line from the public price list: exterior and interior stills, 360° tours, film, floor plans, AI images, interactive tools.', bannerLabel: 'Investment', bannerTitle: 'Price calculator', back: '← Price list' },
+  hu: { metaTitle: 'Árkalkulátor', metaDescription: 'Becsülje meg építészeti látványtervezési projektjét tételről tételre a nyilvános árlistából: külső és belső képek, 360°-os túrák, film, alaprajzok, AI képek, interaktív eszközök.', bannerLabel: 'Befektetés', bannerTitle: 'Árkalkulátor', back: '← Árlista' },
+} as const;
+const c = COPY[lang];
+---
+
+<Page title={c.metaTitle} description={c.metaDescription} fullBleed>
+  <SectionBanner image="/_img/banners/banner-general.jpg" label={c.bannerLabel} title={c.bannerTitle} size="page" headingLevel="h1" />
+  <section class="section">
+    <div class="container">
+      <p class="est-back"><a href={localeUrl('/pricing/', lang)}>{c.back}</a></p>
+      <Estimator lang={lang} />
+    </div>
+  </section>
+</Page>
+
+<style>
+  .section { padding-block: clamp(3rem, 5vw, 5rem); }
+  .est-back { font-size: var(--fs-xs); margin: 0 0 var(--space-6); }
+  .est-back a { color: var(--color-accent); text-decoration: none; }
+</style>

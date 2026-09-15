@@ -22,7 +22,7 @@
   {
     "label": "Pricing",
     "href": "/pricing/",
-    "enabled": false
+    "enabled": true
   },
   {
     "label": "Blog",
