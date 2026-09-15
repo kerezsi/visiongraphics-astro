@@ -92,11 +92,22 @@ published: false
   images = variation grid.
 - After images land: `node scripts/generate-thumbs.mjs --slug articles/<topic>`, then push
   thumbs via the editor's "↑ R2 all" (or note it for the user).
+- **Illustrations:** generate through ArchUpgrade's render facade (CLAUDE.md §8.2 — text-to-image
+  for editorial heroes, `time_of_day` relights of existing portfolio renders for honest
+  before/after pairs), and reuse site images by their existing `/_img/portfolio/...` paths.
+  Generated images say so in their alt text ("Illustration: …"); never pass one off as a
+  screenshot of a real tool. Real tool screenshots: headless Chrome over CDP works for public
+  and LAN pages; crop out sidebars that carry internal project codenames.
+- Before/after pairs go in `<ImageCompare>` (registered in the articles template), variation
+  sets in `<ImageGallery label={false} subtitle="…">` — plain markdown images are just `<img>`,
+  there is no remark plugin turning adjacent images into anything.
 
 ## Phase 5 — Verify & (on instruction) publish
 
 Draft checklist:
-- [ ] `npm run check` clean; article renders at `/en/articles/<slug>/` (draft renders in dev).
+- [ ] `npm run check` clean; article renders at `/en/articles/<slug>/`. Drafts do **not** render in
+      dev (the template filters `published`) — verify by flipping the flag locally and reverting in
+      the same script, never by committing it.
 - [ ] No invented facts; every `TODO_` reported; no raw prompts; no testimonial-like quotes.
 - [ ] Voice check: opens with pain, bold benefit lead-ins, "honest position" present (if the
       topic claims capabilities), CTA closes with `/contact/` link.

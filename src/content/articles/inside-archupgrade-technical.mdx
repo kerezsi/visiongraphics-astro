@@ -1,7 +1,7 @@
 ---
 title: "Inside ArchUpgrade: How We Built a Production AI Pipeline for Archviz"
-date: 2026-06-13
-excerpt: "A technical look at our render-to-photorealistic system: a FastAPI backend driving a multi-GPU ComfyUI farm, a version-tree data model, structured prompt assembly, and a local LLM that quality-scores every image. No cloud, no subscriptions, no client data leaving the studio."
+date: 2026-09-16
+excerpt: "A technical look at our render-to-photorealistic system: a FastAPI backend driving a multi-GPU ComfyUI farm, a version-tree data model, structured prompt assembly, a local LLM that quality-scores every image — and, a year in, the parts that turned out to matter more than the models: licences, provenance, observability, and a client loop. No cloud, no subscriptions, no client data leaving the studio."
 tags:
   - ai
   - tools
@@ -11,16 +11,17 @@ published: false
 coverImage: /_img/articles/archupgrade/archupgrade-before-after.jpg
 ---
 
-In a [companion article](/articles/from-render-to-photograph-archupgrade/) we showed what our in-house AI enhancement pipeline does for clients. This one is for the technically curious: how it's actually built, and the engineering decisions that made it production-grade instead of a demo.
+In a [companion article](/articles/from-render-to-photograph-archupgrade/) we showed what our in-house AI enhancement pipeline does for clients. This one is for the technically curious: how it's actually built, the engineering decisions that made it production-grade instead of a demo, and what a year of daily use changed about the design.
 
-ArchUpgrade is a full-stack system that takes working 3D renders and produces photorealistic, quality-scored image sets. It has been in daily production use in our studio since spring 2026. Everything runs locally — the models, the GPUs, the quality reviewer. No client image ever leaves our network.
+ArchUpgrade is a full-stack system that takes working 3D renders and produces photorealistic, quality-scored image sets. It has been in daily production use in our studio since spring 2026, and it has grown: about 200,000 lines of code, 91 workflow graphs, and a test suite of roughly 750 backend and 560 frontend tests as of September. Everything runs locally — the models, the GPUs, the quality reviewer. No client image ever leaves our network.
 
 ## The stack
 
-- **Backend:** Python / FastAPI with an async SQLite database. One process orchestrates everything: job queues, render dispatch, file management, delivery packaging.
-- **Frontend:** React with a numbered workflow — Ingest → Generate → Versioning → Queue → Review → Upscale → Deliver — so an operator always knows where a project stands.
-- **Rendering:** SwarmUI instances driving ComfyUI on multiple GPU machines. The image-to-image enhancement is built on Qwen-Image-Edit with a custom-trained photorealism LoRA; specialized workflows handle upscaling, relighting, outpainting, and 3D-aware camera moves.
+- **Backend:** Python 3.11 / FastAPI with an async SQLite database. One process orchestrates everything: job queues, render dispatch, file management, delivery packaging, and the WebSocket stream the interfaces watch.
+- **Frontends:** three Vite/React apps — the operator UI with its numbered workflow (Ingest → Configure → Queue → Review → Upscale → Deliver, plus the tool pages), a client order portal, and an admin portal.
+- **Rendering:** SwarmUI instances driving ComfyUI on the GPU nodes. The image-to-image enhancement is built on the Qwen image-edit family with our own photorealism LoRA; sibling graphs cover text-to-image, multi-reference editing, seven upscalers, five lighting tools, camera-angle passes, inpainting and outpainting, mesh and Gaussian-splat generation, video, and speech and music.
 - **Quality control:** a local vision LLM (via Ollama) that scores every generated image — no API keys, no per-image cloud costs.
+- **Hardware:** a small farm of our own GPU nodes, from 16 GB cards that chew through enhancement batches to a 48 GB card that takes the heavy upscales and video. The farm doubles as the render farm at night; [a separate tool switches the nodes between the two jobs](/articles/running-a-render-farm-from-a-browser-tab/).
 
 The central screen is the Versioning page: source images on the left, iteration parameters in the middle, and a live preview of the exact structured prompt that will be sent to the model on the right:
 
@@ -28,13 +29,13 @@ The central screen is the Versioning page: source images on the left, iteration 
 
 ## Structured prompts, not prompt soup
 
-Early on we learned that image-edit models respond much better to terse, keyed instructions than to walls of prose. The prompt assembler merges multiple sources — per-image notes, per-directory context, reusable preset cards, parameter categories like season or budget tier — into a single structured JSON payload with deterministic ordering. The same inputs always produce the same prompt, which makes results reproducible and debuggable.
+Early on we learned that image-edit models respond much better to terse, keyed instructions than to walls of prose. The prompt assembler merges multiple sources — per-image notes, per-directory context, reusable preset cards, parameter categories like season or budget tier — into a single structured payload with deterministic ordering. The same inputs always produce the same prompt, which makes results reproducible and debuggable. The rendered prompt is stored on every version as the exact string that was sent — never reconstructed from templates after the fact.
 
 Parameters are organized into iteration axes. Select two lighting moods, three furnishing styles, and five seeds, and the planner expands the cartesian product into thirty versions — each with a label that encodes exactly how it was made.
 
 ## The version tree
 
-Every output gets a label like `g03_i_s02_e01`: generation 3, iteration code, seed 2, edit 1. Retries, mutations, manual edits, upscales, crops, and camera moves each append their own suffix, so any image's full ancestry is readable from its filename. Re-queueing always bumps the generation number — nothing on disk is ever overwritten.
+Every output gets a label like `g03_i_s02_e01`: generation 3, iteration code, seed 2, edit 1. Retries, mutations, manual edits, upscales, crops, relights and camera moves each append their own letter, so any image's full ancestry is readable from its filename. Re-queueing always bumps the generation number — nothing on disk is ever overwritten.
 
 The review screen renders this as a tree: the source render at the root, generations as children, and every derived operation branching below. You can see the quality scores climb across generations as parameters get refined:
 
@@ -56,13 +57,40 @@ A built-in compare slider overlays any version on its source for pixel-level ins
 
 The scores are advisory, not authoritative — a human still picks the final images. But they invert the economics of review: instead of inspecting 300 images, the operator inspects the 40 that passed, sorted by score. On a recent 18-view interior project, the system generated over 300 versions; the LLM filtered, a human picked 18.
 
+Two rules we learned the expensive way, now baked into every judge in the system: ask about *presence*, not absence — "is there a visible defect?" is answered far more reliably than "is this good" — and turn the model's thinking mode off for fixed-format answers, which took a verdict from twenty-five seconds to under one.
+
+## Passes on the finished image
+
+The enhancement is one graph among many. Once a version is picked, the operator can run targeted passes on it without going back to the 3D scene: five lighting tools (a scene-locked time-of-day relight, light migration from a reference photo, a multi-angle key light, studio delight and light restoration), sky replacement and material swap, generative expand to a new aspect ratio, upscaling, and a camera-angle pass for a slightly different viewpoint. Each is its own letter in the version tree and its own row in the queue.
+
+<ImageCompare before="/_img/portfolio/avalon-business-center/03.jpg" after="/_img/articles/archupgrade/avalon-night.jpg" beforeAlt="Avalon Business Center — daytime render from the archive" afterAlt="The same render after the scene-locked time-of-day pass: night, interior and exterior lights on" beforeText="Archive render" afterText="Time-of-day pass" label={false} />
+
+The relight above was produced on the studio farm through the same API our automation uses, from an eight-year-old render in our archive, in about half a minute once the model was loaded. The prompt the tool assembles opens with a scene-lock clause that pins the viewpoint before it says a word about light — that clause, learned from a dozen drifting outputs, is most of the engineering.
+
 ## A weighted multi-GPU farm
 
-Render dispatch runs across multiple SwarmUI/ComfyUI backends with weighted round-robin scheduling. Each machine declares roles — image editing, text-to-image, upscaling, 3D, video — with per-role priorities, so a 24 GB card handles heavy upscales while smaller cards chew through enhancement batches. Health checks gate offline machines out of the rotation automatically, and a crash recovery sweep on startup means a power blip never leaves the queue in a corrupted state.
+Render dispatch runs across the SwarmUI/ComfyUI backends with weighted round-robin scheduling. Each machine declares roles — image editing, text-to-image, upscaling, 3D, video — with per-role weights, so the 48 GB card handles heavy upscales while smaller cards chew through enhancement batches. Health checks gate offline machines out of the rotation automatically, and a crash recovery sweep on startup means a power blip never leaves the queue in a corrupted state. Eight runners share one rule: acquire the GPU semaphore *before* popping the queue, so the "pending" count is honest.
+
+![Part of the GPU farm — the machines are ours, the models are open-weight](/_img/articles/archupgrade/farm.jpg)
+
+## Licences and provenance are data, not policy
+
+Every model, LoRA, checkpoint and external tool in the system carries a licence class — permissive, copyleft, non-commercial or unlicensed — declared once in its configuration. Every produced asset records the worst-case class of any tool that touched it, plus the list of tools, on the database row and in a JSON sidecar next to the file. A single deployment switch, `allow_noncommercial`, hides every non-permissive backend from the interface and refuses it at the API: flipped off, the system is in commercial-delivery mode and physically cannot ship an image made with a research-only model. We track licences for a reason — several of the most impressive open models are non-commercial, and [our tool-vetting database](/articles/how-we-vet-the-ai-tool-flood/) exists to catch that before a model ever reaches this pipeline.
+
+## The parts a demo never needs
+
+A year of daily use added the machinery that turns a tool into infrastructure:
+
+- **Observability.** One immutable row per terminal render attempt, from every runner's `finally:` block; VRAM and queue-depth samples from every node every five minutes; per-node roll-ups and a "retry everything that failed for a safe reason" button.
+- **Retention and backups.** Sandbox output older than a retention window is reconciled and cleared through a dry-run → checked list → apply flow, with the rule that the delivery tree is unreachable written in code rather than configuration. The database is backed up with SQLite's online backup API and integrity-checked, never file-copied.
+- **A disk guard** at every runner's enqueue — the one real choke point — that refuses new renders below a free-space floor rather than corrupting a batch halfway.
+- **Auth and a client loop.** Principals and roles (owner, studio, service, client), bearer tokens for automation, per-order links for clients, watermarked previews, one open revision per order, pin comments normalised to the image, and a client zip that carries no studio paths. A LAN peer with no credential is still the owner, so the studio's trust model did not change — every one of the existing tests passed untouched when auth landed.
+- **A render facade.** One path-in, path-out API through which every other process in the studio renders — our scheduled agents, scripts, other repositories — with no database rows and no UI state. That boundary is why the [agents](/articles/agents-that-work-the-night-shift/) could move into their own project without importing a line of this one.
+- **Two machines.** The dev box runs `main`; the production server runs a `stable` branch off a shared output store. Promotion is a deploy script, not a `git pull` on the box clients depend on.
 
 ## Delivery is part of the pipeline
 
-The final step packages picked versions with clean sequential filenames, while a metadata file preserves the full internal labels and generation parameters. Per-category quotas ("15 exteriors, 3 interiors") are enforced before the package can ship:
+The final step packages picked versions with clean sequential filenames, while a metadata file preserves the full internal labels, generation parameters and provenance. Per-category quotas ("15 exteriors, 3 interiors") are enforced before the package can ship:
 
 ![The Deliver page — picked versions, rename template, quota check, delivery history](/_img/articles/archupgrade/archupgrade-deliver.jpg)
 
@@ -71,6 +99,8 @@ The final step packages picked versions with clean sequential filenames, while a
 - **Determinism is the feature.** Seeded generation, snapshot-at-queue-time configuration, and labels that encode ancestry — those are what make an AI pipeline production-usable rather than a slot machine.
 - **Score with a local model.** Quality review is the highest-volume LLM call in the system. Running it locally makes per-image cost zero, so you never hesitate to review everything.
 - **Plan for failure everywhere.** GPUs go offline, processes restart mid-batch, JSON files get corrupted at the worst moment. Atomic writes, per-cell failure isolation, and mark-failed-never-auto-retry recovery policies are unglamorous and essential.
-- **The model is maybe a fifth of the system.** The rest is version management, prompt assembly, queueing, review UX, and delivery — the unglamorous machinery that turns a great demo into a tool a studio actually uses every day.
+- **Licences are a schema field.** If the licence class is not on the row, it is not in the delivery, and someone will find out after the brochure is printed.
+- **Verify on real hardware.** Mock mode proves the UI-to-queue-to-database circuit. It proves nothing about the render. Six shipped features had no interface until an audit found them, and a generative-expand tool was dark for two months because it sent a mask to the wrong graph — both found by running the real path and looking at the picture.
+- **The model is maybe a fifth of the system.** The rest is version management, prompt assembly, queueing, review UX, delivery, licences, observability — the unglamorous machinery that turns a great demo into a tool a studio actually uses every day.
 
-ArchUpgrade is internal tooling, not a product. But the workflow thinking behind it — and the [pipeline auditing and automation work](/services/workflow-optimization/) that grew out of it — is exactly the kind of engineering we do for other studios. If you're wiring AI into a real production pipeline and want to compare notes, [we're happy to talk](/contact/).
+ArchUpgrade is internal tooling, not a product — though its finishing pass is now something we run for other studios' renders through [ai.visiongraphics.eu](https://ai.visiongraphics.eu/). The workflow thinking behind it, and the [pipeline auditing and automation work](/services/workflow-optimization/) that grew out of it, is exactly the kind of engineering we do for other studios. If you're wiring AI into a real production pipeline and want to compare notes, [we're happy to talk](/contact/).

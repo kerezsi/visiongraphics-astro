@@ -1,6 +1,6 @@
 ---
 title: "Running the Render Farm From a Browser Tab: The Tool We Built to Stop Walking to Every PC"
-date: 2026-08-12
+date: 2026-09-16
 excerpt: "One operator, a farm of up to fifteen machines, and a deadline. We wrote a small agent for each PC and a dashboard that talks to all of them — start and stop render and AI services, push models to every node, tail the logs, and stop walking to the machine room."
 tags:
   - tools
@@ -8,7 +8,7 @@ tags:
   - render-farm
   - comfyui
 published: false
-coverImage: /_img/articles/render-farm/farm-dashboard-overview.jpg
+coverImage: /_img/articles/render-farm/hero.jpg
 ---
 
 A batch has to go out tonight and half the machines are sitting there with a dead render service. Each one is a thirty-second fix: wake the screen, find the window, start the process. The thirty seconds is not the problem — the walk is, once per machine, every time. And a new model file has to be on every GPU node before the batch starts, the copy finished before you press go.
@@ -33,13 +33,13 @@ A service counts as running when something is listening on its port — 7861 for
 
 ## The same hardware, two different jobs
 
-**A render farm and an AI-generation farm are now the same boxes doing different work at different hours.** The GPU workstation generating images during the day is a render node overnight, and the two do not coexist politely — they want the same VRAM and the same CPU.
+**A render farm and an AI-generation farm are now the same boxes doing different work at different hours.** The GPU workstation generating images for [the finishing pipeline](/articles/inside-archupgrade-technical/) during the day is a V-Ray render node overnight, and the two do not coexist politely — they want the same VRAM and the same CPU.
 
 So the summary bar has two buttons for dual-role machines: Render and Swarm. One click stops the AI backend on every dual node and brings the render service up; the other does the reverse, skipping any node already in the target state.
 
 ![Switching every dual-role node from AI generation to render work in one click](/_img/articles/render-farm/dual-node-switch.jpg)
 
-That is the honest shape of what AI changed for a small studio: it is an operations problem before it is a creative one.
+That is the honest shape of what AI changed for a small studio: it is an operations problem before it is a creative one. The pipeline, for its part, polls the same nodes for health and pulls an offline machine out of its rotation on its own — but somebody still has to bring the service up, and that somebody used to walk.
 
 ## Keeping every machine identical
 

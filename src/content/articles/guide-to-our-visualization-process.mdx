@@ -1,53 +1,74 @@
 ---
-title: "How We Work: The Visualization Process"
-date: 2025-02-14
-excerpt: "From first call to final delivery — what happens at each stage, what we need from you, and where the time goes."
+title: "How We Work: The Visualization Process in 2026"
+date: 2026-09-16
+excerpt: "From first call to final delivery — what happens at each stage, what we need from you, where the time goes, and where the AI finishing pass now sits in the schedule."
 tags:
   - process
   - guide
   - workflow
 published: true
+coverImage: /_img/articles/process/hero.jpg
 ---
 
-Every deliverable — stills, animations, 360° tours, VR experiences — comes from the same foundation: a detailed 3D model. Understanding how that model gets built and what branches from it makes the whole process easier to navigate.
+Every deliverable — stills, animations, 360° tours, VR, a web viewer — comes from the same foundation: a detailed 3D model. Understanding how that model gets built, and what branches from it, makes the whole process easier to navigate. One stage is new since we last wrote this guide: the AI finishing pass that now turns the working render into the delivered image.
 
-<SectionBanner label="Stage 1" title="First Conversation" />
+<SectionBanner image="/_img/articles/process/brief.jpg" label="Stage 1" title="First conversation" />
 
-We talk about what you need. Bring whatever you have — plans, sketches, a PDF, a rough brief. We'll help clarify the right outputs for your specific situation: what type of visualization, how many views, what timeline is realistic, what it'll cost.
+We talk about what you need. Bring whatever you have — plans, sketches, a PDF, a rough brief. We help clarify the right outputs for your situation: what type of visualization, how many views, what timeline is realistic, what it will cost.
 
-This is also when we catch scope issues early. A project that starts with "a few exterior renders" sometimes needs interior views, a 360 tour, or animation context to actually do its job. Better to know that at the start than three weeks in.
+This is also when we catch scope issues early. A project that starts as "a few exterior renders" sometimes needs interior views, a 360 tour or a short film to actually do its job. Better to know at the start than three weeks in. Since 2026 there is a public [price list](/pricing/) and an [estimator](/pricing/estimate/) — most first conversations start from a package on that page and adjust it.
 
-<SectionBanner label="Stage 2" title="3D Model Creation" />
+<SectionBanner image="/_img/articles/process/model.jpg" label="Stage 2" title="3D model" />
 
-This is where the work begins. We build a detailed 3D model from your materials — structural elements, main architectural features, space planning. Everything that follows (stills, animation, VR) derives from this single source file.
+This is where the work begins. We build a detailed 3D model from your materials — structure, main architectural features, space planning. Everything that follows derives from this single source file.
 
-What we need from you at this stage: floor plans, elevations, sections, material specifications if available, and any reference images that give a sense of desired character or finish. If you have existing 3D data (Revit, ArchiCAD, SketchUp, .dwg), we can work from that and reduce modeling time accordingly.
+What we need from you: floor plans, elevations, sections, material specifications if available, and reference images for the desired character. If you have 3D data (Revit, ArchiCAD, SketchUp, DWG) we work from that and the modelling cost drops accordingly — the price list halves the modelling line for a supplied 3D model and doubles it for a PDF or sketch.
 
-<SectionBanner label="Stage 3" title="Draft Review" />
+<SectionBanner image="/_img/articles/archupgrade/atrium-before.jpg" label="Stage 3" title="Draft review" />
 
-We produce initial views using the base model. Basic materials, main camera angles, rough lighting — enough to confirm the layout, proportions, and composition are correct before we invest in detail.
+We produce initial views from the base model: basic materials, the main camera angles, rough lighting — enough to confirm layout, proportions and composition before we invest in detail.
 
-This is the right moment to flag anything that doesn't look right. A correction to the model at draft stage costs a fraction of what it costs after final materials and lighting are in.
+![Draft-stage working render of an office atrium — correct geometry, camera and layout, nothing polished yet](/_img/articles/archupgrade/atrium-before.jpg)
 
-<SectionBanner label="Stage 4" title="Refinement" />
+This is the right moment to flag anything that looks wrong. A correction to the model at draft stage costs a fraction of what it costs after final materials, lighting and the finishing pass are in.
 
-We update the model based on your feedback, then build it out fully — architectural details, accurate materials, environmental context, precise lighting. This refined model becomes the master file for all outputs.
+<SectionBanner image="/_img/portfolio/adria-pearl/01.jpg" label="Stage 4" title="Refinement and rendering" />
 
-<SectionBanner label="Stage 5" title="Final Output" />
+We update the model from your feedback, then build it out: architectural details, accurate materials, environmental context, precise lighting. This refined model becomes the master file for every output. V-Ray renders come out of it at the agreed resolution, and this is where the computation time goes — high-resolution stills and animation frames take real hours on the farm, which is why the timeline matters.
 
-With the refined model, we produce the agreed deliverables at full quality. V-Ray rendering, post-production processing, format preparation. This is where the hours go — rendering high-resolution images and animation frames takes real computation time, which is why timeline matters.
+<ImageGallery label={false} subtitle="Refined-model renders — Hotel Adria Pearl. Every surface, plant and reflection is a decision made in the 3D scene." images={[{"src":"/_img/portfolio/adria-pearl/01.jpg","alt":"Hotel Adria Pearl — indoor pool"},{"src":"/_img/portfolio/adria-pearl/04.jpg","alt":"Hotel Adria Pearl — terrace and pool from above"},{"src":"/_img/portfolio/adria-pearl/09.jpg","alt":"Hotel Adria Pearl — reception"},{"src":"/_img/portfolio/adria-pearl/11.jpg","alt":"Hotel Adria Pearl — street elevation"}]} />
 
-**If stills are the final output:** Detailed materials, correct lighting, environment detail, post-production. Delivered as high-res TIFF/JPG plus web-optimized versions.
+<SectionBanner image="/_img/articles/archupgrade/atrium-after.jpg" label="Stage 5" title="AI finishing and variants" />
 
-**If animation is next:** We add camera paths, animate the sequence, render frames, edit and deliver the finished film in your required format.
+This stage did not exist two years ago. The working render goes through our in-house AI pipeline, which produces photorealistic versions of every approved view — same geometry, same camera, same layout — in controlled variations: lighting mood, season, time of day, furnishing style. Each candidate is scored automatically on fidelity to the source, technical quality and style before a human looks at it. We pick from what passed; you can be part of that selection round if you want to be.
 
-**If interactive or VR is next:** We optimize the model for real-time performance, set up the Unreal Engine environment, configure interactive features, and package for the target platform (web, desktop, VR headset).
+<ImageCompare before="/_img/articles/archupgrade/atrium-before.jpg" after="/_img/articles/archupgrade/atrium-after.jpg" beforeAlt="Working render of the office atrium" afterAlt="The delivered photorealistic version of the same view" beforeText="Working render" afterText="Delivered" label={false} />
 
-## Final Delivery
+What this changes for you: more options, earlier, and a shorter polishing stretch at the end of the schedule — the part that used to run late. A night or dusk variant of an approved view, or a different season, is a fraction of the cost of a new view. The details are in [From Render to Photograph](/articles/from-render-to-photograph-archupgrade/).
 
-You receive everything in formats that work for your use case — print, web, presentations, or handoff to your marketing team. Source files included where contracted. We archive project files for at least five years; the model can be updated for future phases or additional outputs without starting from scratch.
+<ImageGallery label={false} subtitle="Four variations of one source render, generated in one batch and scored before review." images={[{"src":"/_img/articles/archupgrade/variation-s01.jpg","alt":"Variation 1 of the same bank branch render"},{"src":"/_img/articles/archupgrade/variation-s02.jpg","alt":"Variation 2 of the same bank branch render"},{"src":"/_img/articles/archupgrade/variation-s03.jpg","alt":"Variation 3 of the same bank branch render"},{"src":"/_img/articles/archupgrade/variation-s04.jpg","alt":"Variation 4 of the same bank branch render"}]} />
 
-## Typical Timelines
+<SectionBanner image="/_img/portfolio/szombathely_lovas/01.jpg" label="Stage 6" title="Final output" />
+
+With the refined model and the picked images, we produce the agreed deliverables at full quality.
+
+**If stills are the final output:** upscaled to print resolution where needed, post-produced, delivered as high-resolution TIFF/JPG plus web-optimised versions.
+
+**If animation is next:** camera paths, animated sequence, rendered frames, edit, music and narration — AI-composed music and AI narration are standard line items now, human voice and composition on request — delivered in your required format. For social and sales-office loops, [AI motion from stills](/vision-tech/ai-animation/) is the faster, cheaper route.
+
+**If a 360° tour is next:** viewpoints are marked in the same 3D scene and the tour is generated from it — floor plan, links between rooms and all — so a re-render after a design change re-publishes the tour rather than rebuilding it. [How we built that](/articles/building-our-own-vr-tour-engine/).
+
+**If interactive or VR is next:** we optimise the model for real time, build the Unreal Engine environment, configure the interactive features and package for web, desktop or headset.
+
+<ImageGallery label={false} subtitle="Outputs from one model: a film frame, a 360° tour, a VR walkthrough." images={[{"src":"/_img/portfolio/szombathely_lovas/09.jpg","alt":"Equestrian Center — frame from the animation"},{"src":"/_img/vision-tech/360-tour/2211-mage-style-use-grey-colors-only-very-s.jpg","alt":"A 360° tour viewer with floor plan navigation"},{"src":"/_img/vision-tech/virtual-reality-vr-experience/01.jpeg","alt":"VR experience — a real-time lobby walkthrough"}]} />
+
+## Final delivery
+
+You receive everything in the formats your use case needs — print, web, presentation, or a hand-off package for your marketing team. Source files are included where contracted. Every delivered image carries a record of how it was made — including which AI tools touched it — so a version can be reproduced or branched later: "that one, but in evening light" is a re-run from the exact version, not a reconstruction from memory.
+
+We archive project files for at least five years. The model can be updated for future phases or additional outputs without starting from scratch.
+
+## Typical timelines
 
 - Single exterior render: 3–5 days
 - Multi-view package (5–10 stills): 1–2 weeks
@@ -55,4 +76,13 @@ You receive everything in formats that work for your use case — print, web, pr
 - Animation (1.5 min): 3–4 weeks
 - VR / interactive: 4–6 weeks
 
-Rush timelines are possible with advance notice — and sometimes without it, depending on current project load.
+The AI finishing pass shortens the last stretch of these, not the modelling. Rush timelines are possible with advance notice — and sometimes without it, depending on current load; the price list carries a rush multiplier so there is no surprise.
+
+## What we need from you, in one list
+
+1. Drawings — the more complete, the closer the first draft lands to the final result.
+2. Material and finish intent, even rough.
+3. A decision on what the images are *for* — planning, sales, an investor deck. It changes the camera, the hour of the day and the level of finish.
+4. One person who can say yes.
+
+If you have a project in mind, [get in touch](/contact/) — a thirty-minute call is usually enough to scope it, and it is free.

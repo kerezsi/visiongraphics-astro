@@ -1,6 +1,6 @@
 ---
 title: "A Local AI Music Workbench: Notes From an Unfinished Side Project"
-date: 2026-08-12
+date: 2026-09-16
 excerpt: "A side project, openly labelled as one. A small local server that wires half a dozen open music models into a single browser workbench, held together by nothing more than a shared output folder. What works, what does not, and why an archviz studio built it at all."
 tags:
   - ai
@@ -8,14 +8,14 @@ tags:
   - workflow
   - side-project
 published: false
-coverImage: /_img/articles/music-workbench/sketchpad-progression.jpg
+coverImage: /_img/articles/music-workbench/hero.jpg
 ---
 
-This one is a side project, and we are labelling it as such before the first paragraph ends. It is not a service, it is not on the price list, and we are not offering to score anyone's film. It is a prototype on one machine in the studio, and it is worth writing up only because building it taught us things about local models that transfer to the work we are paid for.
+This one is a side project, and we are labelling it as such before the first paragraph ends. It is not a service, it is not on the price list, and we are not offering to score anyone's film. It is a prototype on one machine in the studio — its browser-only half is public as [Musiccer](https://musiccer.visiongraphics.eu/) in our [Labs](https://labs.visiongraphics.eu/), the model-backed half is not — and it is worth writing up only because building it taught us things about local models that transfer to the work we are paid for.
 
 The itch is real enough. An architectural film gets cut, graded and approved, and then it needs thirty to ninety seconds of music. The options are a stock library — pay per project, and spend an afternoon rejecting the same six corporate-uplifting tracks everyone else is using — or a composer, which is right for a big film and overkill for a lobby loop. Which licence covers which use is a recurring small annoyance rather than a crisis: exactly the shape of problem a studio starts poking at on a Sunday.
 
-**The transferable part is the discipline, not the music.** We already run image models entirely on our own hardware, as much for client confidentiality as for cost. Audio turns out to be the same engineering problem in a different hat: a handful of open models, each with its own Python environment and its own idea of what a file is, and a great deal of unglamorous plumbing between them. Getting the plumbing right is the whole job — it was on the image side too.
+**The transferable part is the discipline, not the music.** We already run image models entirely on our own hardware — [the whole finishing pipeline](/articles/inside-archupgrade-technical/) — as much for client confidentiality as for cost. Audio turns out to be the same engineering problem in a different hat: a handful of open models, each with its own Python environment and its own idea of what a file is, and a great deal of unglamorous plumbing between them. Getting the plumbing right is the whole job — it was on the image side too.
 
 ## The stack
 
@@ -36,27 +36,27 @@ The models above all run on the machine, with two exceptions: Magenta's GrooVAE 
 
 The front page is a music sketchpad — chord progression editor, melody lane, drum grid, key and scale selection across sixty-two scales, cadence labelling, reharmonisation suggestions, negative-harmony mirroring, a lyrics lane, and Web MIDI in and out so a keyboard or a DAW can join in.
 
-![The sketchpad: chord progression blocks along the bottom, melody lane above, scale keyboard at the side](/_img/articles/music-workbench/sketchpad-progression.jpg)
+![The sketchpad — chord wheel on the left, progression and melody lanes in the middle, the scale keyboard along the bottom](/_img/articles/music-workbench/sketchpad-progression.jpg)
+
+The drum lane is its own page: a Euclidean step editor per voice, the pattern drawn as rings, and two buttons that hand the bar to GrooVAE to humanise or re-play it.
+
+![The drum page — a Euclidean step editor per voice, the pattern as rings, and two model-backed groove buttons](/_img/articles/music-workbench/drum-grid.jpg)
 
 Attached to it is the piece nobody needed: a world map. Scales, drum patterns and time signatures are pinned to where they come from, and a Songs tab carries fifty-five traditional songs from forty-six countries and regions, each loadable into the sketchpad as a working progression with its melody. It began as a way to make an unfamiliar scale mean something.
 
-![The world atlas — scales, beats, time signatures and traditional songs pinned to a map](/_img/articles/music-workbench/atlas-map.jpg)
-
 From there the material moves to a song editor: a canvas timeline with MIDI and audio tracks, clips you can move, trim, split and loop, waveform peaks drawn per clip, a metronome and count-in, project save and undo. The transport runs on integer ticks at 480 per quarter note, with a 25 ms scheduler filling a 150 ms lookahead window — the standard two-clocks arrangement, which is what makes editing during playback free.
 
-![The song editor arrangement view — MIDI and audio clips on a canvas timeline with waveform peaks](/_img/articles/music-workbench/song-editor-arrangement.jpg)
-
 The same page carries a second view over the same model: a session grid, borrowed wholesale from Ableton's behaviour rather than reinvented. One playing clip per track, launches quantised to a bar or a beat, scenes as rows, a QWERTY grid across four scenes and eight tracks. Bouncing renders the MIDI tracks server-side with FluidSynth, sums them against the audio clips in an `OfflineAudioContext`, and drops the mix back into `output/`.
-
-![The session view — clip slots in a grid, scenes as rows, quantised launch](/_img/articles/music-workbench/session-grid.jpg)
 
 ## The output folder is the message bus
 
 The one design decision we would defend is the least clever one. Every producer writes a job directory with a small `manifest.json` — what made it, when, from which parent job, and whatever metadata it knows, like BPM and key. Every consumer accepts a path relative to `output/` instead of demanding an upload. That is the entire interoperability layer: files as IPC, no database, no schema registry.
 
+![Files as the message bus — every job is a folder with a small manifest, and every tool reads folders](/_img/articles/music-workbench/output-folder.jpg)
+
 What it buys is disproportionate. A picker lists recent jobs with their provenance chain, so "stems ← song ← sketch" reads at a glance. Every result grows a "Send to" menu whose targets are one line each in a routing table. A `BroadcastChannel` lets a result finished in one tab announce itself to the others, so the song editor can offer to import it instead of losing it.
 
-![The file picker — recent jobs with provenance chains, filtered to MIDI or audio](/_img/articles/music-workbench/output-picker.jpg)
+![The Labs index — the browser-only half of this and two dozen other small tools live there, no accounts, no uploads](/_img/articles/music-workbench/labs-index.jpg)
 
 ## The honest position
 
@@ -68,6 +68,6 @@ The unfinished parts are specific. The sketchpad was deliberately not migrated o
 
 None of that is a bug list waiting to be cleared. They are ceilings chosen on purpose to get something working, each written down next to the code that imposes it. The thing plays, it generates, it round-trips, and it is nowhere near being a product.
 
-Nothing from it has gone into a delivered film. It may never. What it has produced is a much better feel for how far local audio models have come, where they still fall over, and how much of "AI tooling" is actually file management — roughly the answer the image side gave too.
+Nothing from it has gone into a delivered film. It may never. AI-composed music *is* a line item on our [price list](/pricing/) now — but it comes out of the production pipeline's music engines, behind the same render facade as everything else we deliver, not out of this workbench. What it has produced is a much better feel for how far local audio models have come, where they still fall over, and how much of "AI tooling" is actually file management — roughly the answer the image side gave too.
 
 If you build things like this on your own evenings and want to compare notes, [say hello](/contact/).

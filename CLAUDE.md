@@ -198,6 +198,12 @@ this reason — keep that behavior.
 after startup; on error the process dies silently seconds later.
 **Rule:** after starting or restarting, verify with a real request (`curl localhost:4321/en/`)
 or `preview_logs` before concluding anything about your change.
+**Corollary (2026-09-16):** if `preview_start` reports a port other than 4321, a dev server
+is already running on this checkout (another session). Use *that* one — a second Astro dev
+process on the same tree races the first on `.astro/data-store.json` and the pages start
+serving `UnknownFilesystemError` overlays. Also: draft articles (`published: false`) 302 to
+the index in dev, the template filters them — verify drafts by flipping the flag locally and
+reverting in the same script, never by committing the flip (hard rule 16).
 
 ### 4.13 The debris commit
 **Trigger:** broad staging in a tree that carries migration leftovers.
@@ -576,6 +582,23 @@ Rules: internal multipliers (framework, rush, source…) are quote-only — `pub
 - `thumbUrl(src, size?)` from `src/lib/image-url.ts` maps `/_img/...jpg` → `/thumbs/...webp`;
   returns `''` for falsy input — filter before rendering `<img>`.
 - Gallery viewer uses `large`, cards use `card`, lightbox full-screen uses the original `src`.
+- **Article illustrations via ArchUpgrade (added 2026-09-16).** The studio's AI pipeline
+  (`E:\CLAUDE\archupgrade`, production on 192.168.0.2) renders through its render facade —
+  `POST /api/render/t2i` `{prompt, workflow, width, height}` for text-to-image (permissive
+  workflows only, e.g. `API_generate_Z_turbo_001`; never a `(!)` non-commercial one),
+  `POST /api/render/lighting` `{tool:"time_of_day", source_path, params:{time_bin, sky,
+  interior_lights, exterior_lights}}` for scene-locked relights of existing site renders
+  (upload the source first with `POST /api/i2i/upload` multipart), then `GET /api/file?path=`
+  to fetch the output. Auth: the backend on `:7788` refuses LAN callers, but the Vite dev
+  server on `:5173` proxies `/api` from loopback, which the backend treats as owner — use
+  `http://192.168.0.2:5173/api/...` (and tell the user this is an open door on the LAN).
+  A render needs a SwarmUI node online: `GET /api/status` lists them; bring one up with
+  farm-control (`POST http://<node>:7700/swarmui/start`, node E = 192.168.0.69 is the
+  48 GB card) only on a node whose Backburner is idle. Site images for "before" halves are
+  referenced by their existing `/_img/portfolio/<slug>/NN.jpg` paths, never re-uploaded;
+  generated and relit outputs go to `articles/<topic>/` in R2 via `.staging` + rclone.
+  Generated images are labelled as illustrations in alt text — never presented as
+  screenshots of a real tool.
 
 ### 8.3 i18n API (`src/lib/i18n.ts`)
 
@@ -737,6 +760,16 @@ is invisible under `border-none`; don't "fix" it back.
    announces to screen readers. Fix = drop the outer role and make the inner button the target.
 10. **Light-mode `--color-border` is `#9a9088` in `global.css`** while §8.9 documents `#d0cbc3`;
     the CSS is what ships. Reconcile when the light palette is next touched.
+11. **`ui/ImageCompare.tsx` reveals the *after* image on the left** (`clipPath: inset(0 X% 0 0)`
+    on the after-wrap) while its corner labels sit before-left / after-right and the prop
+    comments say "after — revealed on the right". Prose must not say "left side is the
+    before" — the articles now say "the labels on the image say which". Fix = flip the clip
+    side or the label sides, in the island, once, with the user's sign-off.
+12. **ArchUpgrade's Vite dev server (`192.168.0.2:5173`) is an unauthenticated owner door**:
+    it proxies `/api` from loopback, so any LAN peer is `owner` without a credential (the
+    `:7788` backend itself refuses them). Convenient for §8.2 illustrations; a security gap
+    on the production PC. Belongs to the archupgrade repo, noted here because the site
+    tooling relies on it.
 
 ### 8.11 Keeping this file current
 

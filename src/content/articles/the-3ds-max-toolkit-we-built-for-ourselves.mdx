@@ -1,49 +1,47 @@
 ---
 title: "The 3ds Max Toolkit We Built for Ourselves"
-date: 2026-08-12
+date: 2026-09-16
 excerpt: "Thirty years in one piece of software, distilled into the tools we reach for every day: a procedural building generator, a batch camera renderer, sun and camera utilities, a garden planner — and the engineering discipline that keeps studio scripts alive once real work depends on them."
 tags: ["tools", "maxscript", "automation", "workflow", "architectural-visualization"]
 published: false
-coverImage: /_img/articles/max-toolkit/generated-street.jpg
+coverImage: /_img/articles/max-toolkit/hero.jpg
 ---
 
 Every project starts with the same half hour of nothing. Name the cameras. Set the resolutions. Rebuild the sun. Copy the exposure from the last job because it was roughly right. Then, hours before delivery, one camera in sixty renders at the wrong size because a single checkbox differed — and you find out from the output folder, not from the software.
 
-We have been working in 3ds Max since version 1, and the fix for each of those small losses accumulated into a toolkit: a building suite of about 10,800 lines of MAXScript loaded as one compile unit, a batch renderer of another 9,300, and roughly 16,000 lines of Python for the planner and its PySide6 interfaces, all on 3ds Max 2025 with V-Ray 7 and in daily use here.
+We have been working in 3ds Max since version 1, and the fix for each of those small losses accumulated into a toolkit — lately written with AI assistants and, for some jobs, [driven by one](/articles/automation-maxscript-and-ai-in-3ds-max/): a building suite of about 10,800 lines of MAXScript loaded as one compile unit, a batch renderer of another 9,300, and roughly 16,000 lines of Python for the planner and its PySide6 interfaces, all on 3ds Max 2025 with V-Ray 7 and in daily use here.
 
 ## A building generator, not a building library
 
 The largest piece takes one closed footprint spline and returns a complete detached house — walls, openings, rooms, furniture, roof, terraces, steps, driveway and materials — as one parametric object that rebuilds when you change it. More splines give it the site: a terrace to cut in or attach as a deck, a garage gate line whose length sets the driveway and door width, a sidewalk the front door turns towards.
 
-![Several generated houses on a street, rendered with V-Ray — different roofs, materials and gardens from one generator](/_img/articles/max-toolkit/generated-street.jpg)
+![Illustration: a street of detached houses with different roofs and materials — the kind of background architecture the generator exists for](/_img/articles/max-toolkit/street.jpg)
 
 With automatic mode on, a Python planner designs the house rather than decorating it: rooms laid out against EU dwelling standards — day zone and night zone, minimum widths, reachability — then windows and doors per room, then furniture with clearances respected. One weighted guidelines engine ranks competing layouts, then drives the checker that says what a plan got wrong.
-
-![The 2D plan editor — rooms, doors and windows on layers, with live stats and a rule check](/_img/articles/max-toolkit/floor-plan-editor.jpg)
 
 **Parametric background architecture earns its keep on the second revision, not the first.** Hand-modelled filler houses are a sunk cost: move the road and you remodel. Generated ones are a re-run. One button deals eight styled houses along a street spline, alternating sides, colours and roof types randomized, a quarter of them two-storey. Each house holds its own recipe, so a render node rebuilds it from parameters in pure MAXScript, no interface loaded.
 
 The roof pass covers nineteen forms — the gable and hip families, mansard, gambrel, saltbox, monitor, butterfly, Dutch gable, jerkinhead, flat and combinations. What sells them at close range is the hardware: fascia, soffit, gutters and downspouts, ridge caps, barge boards, snow guards, chimneys, and dormers and skylights that genuinely cut the roof skins. Solar panels grid at 176 × 104 cm onto planes within 45 degrees of south.
 
-![Nineteen roof forms built on identical footprints in one grid](/_img/articles/max-toolkit/roof-lineup.jpg)
+![Illustration: roof forms on identical footprints — the generator covers nineteen, from gable and hip to mansard, saltbox and butterfly](/_img/articles/max-toolkit/roofs.jpg)
 
 Real 3D tiling — ten tile families measured off the tile models — lives in a separate RailClone tool the generator calls only on request: a tiled roof is thousands of faces per house.
 
 The garden is a second planner of the same shape. A plot spline goes in; zones come out in one of five styles — modern, family, formal, cottage, mediterranean — as lawn, beds, hedge lines, tree positions, paths and a firepit. The builder makes the hardscape real and emits every planting zone as Forest Pack-ready splines and helpers, pre-bound to a fifteen-object library. Seed and parameters live on an anchor helper, so a batch pass runs a whole street of plots.
 
-![Garden output in the viewport — hardscape meshes plus green planting-zone splines and tree markers ready for Forest Pack](/_img/articles/max-toolkit/garden-zones.jpg)
+![Illustration: a garden plan as the planner sees it — lawn, beds, hedge lines, tree positions, a path and a firepit](/_img/articles/max-toolkit/garden.jpg)
 
 ## The unglamorous half: cameras, suns, batches
 
 **The tedium is where the errors live, so that is where automation pays best.** The batch camera renderer — a long-running fork of Sergo Pogosyan's open-source Batch Camera Render — keeps resolution, frame range, output path, render elements, V-Ray settings, layer-set state and sun selection on each camera itself, as AppData against an ID registry in one JSON file. It submits locally or to Backburner, including multi-stage dependent jobs, so a three-pass animated GI chain becomes a dependency graph rather than three submissions in the right order.
 
-![The batch camera renderer — camera list with per-camera settings, output paths and submission options](/_img/articles/max-toolkit/batch-camera-render.jpg)
+<ImageGallery label={false} subtitle="What the batch renderer is for — one scene, one submission, many cameras, every one at its own resolution and sun. Cserje utca 11-13." images={[{"src":"/_img/portfolio/cserje-utca-11-13/01.jpg","alt":"Cserje utca — hillside villa, daytime"},{"src":"/_img/portfolio/cserje-utca-11-13/03.jpg","alt":"Cserje utca — aerial of the terraced site"},{"src":"/_img/portfolio/cserje-utca-11-13/04.jpg","alt":"Cserje utca — the same villa at dusk"},{"src":"/_img/portfolio/cserje-utca-11-13/07.jpg","alt":"Cserje utca — street approach"}]} />
 
 A companion spreadsheet puts every V-Ray physical camera on a row across seventeen columns for bulk exposure, white balance and lens-shift edits. It also picks each camera a sun by angle to the camera axis, writing it into the same AppData IDs the renderer reads — which is why the two behave as one.
 
 The lighting side lists every V-Ray sun across 22 columns — direction, elevation, multiplier, filter colour, sky model, cloud parameters — and can create one from a month, day and hour. The HDRI variant builds a dome and paired sun from a file, then finds the brightest pixel in the map and orients the sun to it. One version runs off a Novation LaunchControl XL 3 over MIDI, a 15 ms timer pushing fader moves into the selected suns.
 
-![The sun manager — every V-Ray sun in the scene as a row with its full parameter set](/_img/articles/max-toolkit/sun-manager.jpg)
+<ImageGallery label={false} subtitle="Suns, picked per camera — Avalon Business Center by day and at night from the same scene." images={[{"src":"/_img/portfolio/avalon-business-center/07.jpg","alt":"Avalon Business Center — daytime view"},{"src":"/_img/portfolio/avalon-business-center/08.jpg","alt":"Avalon Business Center — the night version of the scene"}]} />
 
 ## Why we treat scripts like software
 
@@ -55,8 +53,6 @@ Most studio scripts are a folder of `.ms` files edited in place on a network sha
 - **Encodings are pinned per file** — UTF-8-with-BOM, ANSI and ASCII mixed — because the older tools carry Hungarian comments that one careless save turns to mojibake.
 
 That pays out when something load-bearing turns out wrong. A winding bug in the footprint handling was silently dropping garage doors on clockwise splines; the fix was verifiable because we could rebuild a 124-house scene and compare. 121 came out byte-identical, two clockwise houses gained the garage door and ramp they should always have had, one was a known orphan. Without a repeatable build that is not a claim, it is a hope. The building object exposes 406 parameters — a number we know only because a script parses the sources and maps each to where it can be edited.
-
-![The building generator's modifier panel beside a generated house in the viewport](/_img/articles/max-toolkit/building-generator-panel.jpg)
 
 ## The honest position
 

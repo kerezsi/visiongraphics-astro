@@ -1,15 +1,15 @@
 ---
 title: "Agents That Work the Night Shift: The Boring Version of AI Automation"
-date: 2026-08-12
-excerpt: "Not autonomous AI. Scheduled jobs with a model in the loop, an automated check on the output, and a person reading the results in the morning — plus what building nine of them taught us about small local models."
+date: 2026-09-16
+excerpt: "Not autonomous AI. Scheduled jobs with a model in the loop, an automated check on the output, and a person reading the results in the morning — plus what building a few dozen of them taught us about small local models."
 tags: [ai, tools, workflow, automation]
 published: false
-coverImage: /_img/articles/creative-agents/creative-agents-today.jpg
+coverImage: /_img/articles/creative-agents/hero.jpg
 ---
 
 The word "agent" is doing a lot of work at the moment, and most of what it is asked to carry — software that plans and acts on your behalf while you sleep — is not something we would put near client work. What earns its keep is duller: a job that fires at a set time, calls a model, checks its own output, and leaves something for a human to read in the morning. A slot in the calendar, judgement in the middle, a person at the end.
 
-We built a small runner for exactly that. It grew inside our AI image pipeline, moved into its own project on 6 August 2026, and thirty-three commits later it runs nine agents on the studio server, three of them on a schedule by default.
+We built a small runner for exactly that. It grew inside [our AI image pipeline](/articles/inside-archupgrade-technical/), moved into its own project on 6 August 2026, and by mid-September carries about thirty agent recipes on the studio server, a handful of them on a schedule by default. Its outputs can now leave the machine as a rendered video file, an email digest, or an Instagram or YouTube upload — the channels are plumbing; the judgement about what goes out stays where it was.
 
 ![The morning view — every agent's output from today on one wall, with run and failure counts](/_img/articles/creative-agents/creative-agents-today.jpg)
 
@@ -17,7 +17,7 @@ We built a small runner for exactly that. It grew inside our AI image pipeline, 
 
 **Adding an agent means writing a file, not writing code.** The registry holds one entry per agent: key, label, description, category, a default schedule, a parameter schema, and the pipeline itself. The router, the scheduler, the run records and every knob in the interface are generic over that list — there is no per-agent front-end code and no per-agent endpoint anywhere, and there must never be.
 
-Seven of our nine agents are a single tracked JSON document each. The other two are code, because their pipelines are not graphs: a morning ops digest built from an analytics endpoint, and one that roasts a render in a comedy voice and ends with a genuinely useful improvement.
+Most of our agents are a single tracked JSON document each. Two are code, because their pipelines are not graphs: a morning ops digest built from an analytics endpoint, and one that roasts a render in a comedy voice and ends with a genuinely useful improvement.
 
 ![An agent document — key, parameters, schedule and the node list that forms its pipeline](/_img/articles/creative-agents/agent-declaration-json.jpg)
 
@@ -25,7 +25,7 @@ The pipeline inside the document is a graph: named nodes over one run-state dict
 
 ## Why it left the image pipeline
 
-**The runner is a client of our render service, not a part of it.** It talks over HTTP and nothing else — one endpoint for a text-to-image render, one for the aspect extension, one for the analytics counts — and a standing rule forbids importing the image pipeline's code at all. The payoff shows at deploy time: the two applications update independently, and a pipeline edit made on the server survives the next render-tooling update.
+**The runner is a client of our render service, not a part of it.** It talks over HTTP and nothing else — a path-in, path-out render facade with one endpoint per kind of job (text-to-image, multi-reference edit, relight, aspect extension, video, speech, music) plus one for the analytics counts — and a standing rule forbids importing the image pipeline's code at all. The payoff shows at deploy time: the two applications update independently, and a pipeline edit made on the server survives the next render-tooling update.
 
 ## Schedules are data, not cron
 
@@ -45,7 +45,7 @@ The judges are narrower still — one yes/no verdict and a one-line reason. Thei
 
 ## Loops you can see
 
-A judge node has two outputs, pass and fail, and the fail edge is a first-class retry edge carrying its own attempt bound. Six of our seven graphs have exactly one: render, let a judge look at the picture, and on a failure back to the render — three attempts, counted as renders rather than as back-edges. Exhausting the bound fails the run loudly unless the edge names a fallback output; the joke agent ships its last render, the composition check does not. A failed run beats an ugly image.
+A judge node has two outputs, pass and fail, and the fail edge is a first-class retry edge carrying its own attempt bound. Most of our graphs have exactly one: render, let a judge look at the picture, and on a failure back to the render — three attempts, counted as renders rather than as back-edges. Exhausting the bound fails the run loudly unless the edge names a fallback output; the joke agent ships its last render, the composition check does not. A failed run beats an ugly image.
 
 ![The graph canvas — nodes, the retry edge in its own lane below, and the loop body tinted](/_img/articles/creative-agents/agent-graph-canvas.jpg)
 

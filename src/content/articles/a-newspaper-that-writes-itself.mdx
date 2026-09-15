@@ -1,6 +1,6 @@
 ---
 title: "A Newspaper That Writes Itself: Three Acts from fakehistory.eu"
-date: 2026-08-12
+date: 2026-09-16
 excerpt: "We built a satirical history site that largely writes, illustrates and lays out its own articles — a design system, a newsroom of small AI agents, and an editor that never round-trips a document. Here is what broke, and what transfers straight into client work."
 tags:
   - ai
@@ -8,17 +8,19 @@ tags:
   - tools
   - design-systems
 published: false
-coverImage: /_img/articles/fakehistory/forged-gazette-front-page.jpg
+coverImage: /_img/articles/fakehistory/hero.jpg
 ---
 
 Generating one article with a language model is a party trick. Generating the fiftieth, on a schedule, without it reading like the forty-ninth is an engineering problem — the one a studio hits the first time it puts AI into production rather than a demo.
 
 {/* TODO_FAKEHISTORY_DNS — do not publish this article until fakehistory.eu serves the v2 Astro build.
-    Verified 2026-08-12: the apex domain still returns the old WordPress 1.0 site (generator "WordPress 7.0.3");
+    Re-verified 2026-09-16: the apex domain still returns the old WordPress site (generator "WordPress 7.1");
     the Forged Gazette build described below is deployed at https://fakehistory.pages.dev. Until the cutover,
     every link in this article lands readers on the design the article says was replaced. */}
 
-[fakehistory.eu](https://fakehistory.eu) is where we worked it out in public: a satirical history site published as The Forged Gazette, a 17th-century broadsheet that cheerfully admits it is a forgery. Fifty-six article files sit in the repository, forty-five live; fifty-two carry an ornament the machine drew for them, thirty-three carry re-runnable recipes for their artwork. A human approves every publish.
+[fakehistory.eu](https://fakehistory.eu) is where we worked it out in public: a satirical history site published as The Forged Gazette, a 17th-century broadsheet that cheerfully admits it is a forgery. When we took stock in August, fifty-six article files sat in the repository, forty-five live; fifty-two carried an ornament the machine drew for them, thirty-three carried re-runnable recipes for their artwork. A human approves every publish.
+
+![The Forged Gazette front page in its Daylight palette — foxed paper, brown ink, a wax-red masthead accent](/_img/articles/fakehistory/forged-gazette-front-page.jpg)
 
 ## Act one — the design system is what survives volume
 
@@ -28,7 +30,7 @@ The redesign came before the automation. Foxed paper, brown ink, sealing-wax red
 
 Every image is a "plate": a double-ruled frame under a sepia filter, hover revealing the original, the lightbox always unfiltered. The logo never appears as a logo — only as a wax-red rubber stamp, rotated a few degrees and blended into the paper. Each article carries its own generated ornament, a divider rail on a fixed 360×26 viewBox stored in frontmatter as bare SVG path data. A regex in the content schema is the trust boundary: a model writes those strings, and the schema stops one becoming markup.
 
-![An article body — a plate under the sepia filter, with a generated ornament rail between sections](/_img/articles/fakehistory/gazette-plates-ornament.jpg)
+![An article body mid-scroll — a plate under the sepia filter beside a drop-capped section](/_img/articles/fakehistory/gazette-plates-ornament.jpg)
 
 **A strong design system is what lets you generate at volume without it looking generated.** The machine decides what is in the picture; the house decides, once, what a picture looks like on the page.
 
@@ -51,9 +53,7 @@ The replacement is a masthead of small role agents — each a name, a model, a s
 
 The managing editor and the feature desk are the new hires, and they are what closed the component gap. Two further splits — one writer call per section, and an editor returning a patch list instead of a pass-or-regenerate verdict — are specified and not yet wired.
 
-Text runs on local models throughout — a 27B creative model, a smaller one for review, a light one for captions, overridable per role — with our own multi-GPU image fleet behind them. Finished, that is ten to twenty model calls per article against about four: free, locally, and it costs minutes.
-
-![The pipeline view mid-run — plan, draft, features and image stages with per-stage detail](/_img/articles/fakehistory/newsroom-pipeline.jpg)
+Text runs on local models throughout — a 27B creative model, a smaller one for review, a light one for captions, overridable per role — with [our own multi-GPU image fleet](/articles/inside-archupgrade-technical/) behind them, reached through the same render facade our other automation uses. Finished, that is ten to twenty model calls per article against about four: free, locally, and it costs minutes.
 
 **The writer never invents a file path.** Wherever a picture belongs it emits a marker: an MDX comment carrying the image brief. The article reads as finished prose while the text is under review, so a reviewer can move, retune or delete a plate before a GPU second is spent on it. A second phase cashes the markers in and splices the real paths.
 
@@ -64,8 +64,6 @@ Text runs on local models throughout — a 27B creative model, a smaller one for
 **We forked our own block editor and then threw away its core architecture.** It parses a document into a block model and re-serialises the whole thing on save — the obvious design, and it silently lost content three times.
 
 The replacement never round-trips. The raw MDX stays the single source of truth, and every edit — prose, a component prop, an accepted AI rewrite — splices exactly one byte range into it. No document model can forget a paragraph, because there is no document model.
-
-![The composer — contextual panel on the left, the live site in an iframe as the canvas](/_img/articles/fakehistory/gazette-composer.jpg)
 
 Two dividends follow. The preview is not a re-implementation of the design system — it is the real site in an iframe, with a dev-only plugin stamping source line numbers into the markup and a bridge posting clicks back. Undo is free: the splice journal records every start, end, old and new, so Ctrl+Z replays inverses.
 

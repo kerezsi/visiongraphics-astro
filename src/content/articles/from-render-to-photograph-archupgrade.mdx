@@ -1,7 +1,7 @@
 ---
 title: "From Render to Photograph: Our In-House AI Enhancement Pipeline"
-date: 2026-06-13
-excerpt: "We built our own production system that turns working 3D renders into photorealistic images — with dozens of controlled variations and automated quality checks on every single output. Here's what it does for your project."
+date: 2026-09-16
+excerpt: "We built our own production system that turns working 3D renders into photorealistic images — with dozens of controlled variations, relighting on demand and automated quality checks on every single output. In daily use since spring 2026. Here is what it does for your project."
 tags:
   - ai
   - workflow
@@ -12,23 +12,29 @@ coverImage: /_img/articles/archupgrade/atrium-after.jpg
 
 Every architectural visualization project hits the same wall: the 3D model is accurate, the camera angles are approved, the layout is final — and then the polishing begins. Materials, lighting, vegetation, people, atmosphere. Traditionally, that last stretch from "correct render" to "image that sells the project" is where most of the time and budget goes.
 
-Over the past year we built an in-house production system — we call it ArchUpgrade — that changes the economics of that last stretch. It takes our working 3D renders and transforms them into photorealistic images, in controlled variations, with automated quality scoring on every output. It runs on our own hardware, on our own render farm, with our own quality standards baked in.
+Over the past year and a half we built an in-house production system — we call it ArchUpgrade — that changes the economics of that last stretch. It takes our working 3D renders and transforms them into photorealistic images, in controlled variations, with automated quality scoring on every output. It has been in daily production use since spring 2026. It runs on our own hardware, on our own render farm, with our own quality standards baked in — and no client image ever leaves the building.
 
-Drag the slider to see what it does. The left side is the working render straight out of 3ds Max. The right side is the same image after the pipeline — same geometry, same camera, same layout.
+Drag the slider to compare. One side is the working render straight out of 3ds Max, the other is the same image after the pipeline — same geometry, same camera, same layout; the labels on the image say which is which.
 
-![Before: working 3D render of a bank branch interior](/_img/articles/archupgrade/bank-branch-1-before.jpg)
-![After: photorealistic AI-enhanced version of the same view](/_img/articles/archupgrade/bank-branch-1-after.jpg)
+<ImageCompare before="/_img/articles/archupgrade/bank-branch-1-before.jpg" after="/_img/articles/archupgrade/bank-branch-1-after.jpg" beforeAlt="Working 3D render of a bank branch interior" afterAlt="Photorealistic AI-enhanced version of the same view" beforeText="Working render" afterText="After the pipeline" label={false} />
 
 Nothing about the design changed. The furniture is where the designer put it. The signage, the screens, the partition glass, the little green poufs in the kids' corner — all preserved. What changed is everything that makes an image read as a photograph: material response, light falloff, soft shadows, reflections, the sense that a camera was actually standing in the room.
 
 ## Why this matters for your project
 
-**You see more options, earlier.** The system generates systematic variations — different lighting moods, seasons, furnishing styles, budget tiers — from the same base render. Where we used to show you two or three polished images, we can now show you a curated selection from dozens of candidates. These four images are variations of the same source render, generated in one batch:
+**You see more options, earlier.** The system generates systematic variations — different lighting moods, seasons, furnishing styles, budget tiers — from the same base render. Where we used to show you two or three polished images, we now show you a curated selection from dozens of candidates. These four images are variations of the same source render, generated in one batch:
 
-![Variation 1 of the same bank branch render](/_img/articles/archupgrade/variation-s01.jpg)
-![Variation 2 of the same bank branch render](/_img/articles/archupgrade/variation-s02.jpg)
-![Variation 3 of the same bank branch render](/_img/articles/archupgrade/variation-s03.jpg)
-![Variation 4 of the same bank branch render](/_img/articles/archupgrade/variation-s04.jpg)
+<ImageGallery label={false} subtitle="Four variations of one bank branch render, one batch." images={[{"src":"/_img/articles/archupgrade/variation-s01.jpg","alt":"Variation 1 of the same bank branch render"},{"src":"/_img/articles/archupgrade/variation-s02.jpg","alt":"Variation 2 of the same bank branch render"},{"src":"/_img/articles/archupgrade/variation-s03.jpg","alt":"Variation 3 of the same bank branch render"},{"src":"/_img/articles/archupgrade/variation-s04.jpg","alt":"Variation 4 of the same bank branch render"}]} />
+
+**The approved image can be relit without a re-render.** This is new since we first wrote about the system. A finished view can be taken to golden hour, blue hour or night — interior lights on, street lamps on, sky replaced — as a pass on the image, with the scene locked. The three pairs below are portfolio renders from our archive put through the current pipeline while writing this article; nothing was re-rendered.
+
+<ImageCompare before="/_img/portfolio/loft52/01.jpg" after="/_img/articles/archupgrade/loft52-blue-hour.jpg" beforeAlt="Loft 52 — daytime render" afterAlt="Loft 52 — blue hour with interior lights, produced by the relighting pass" beforeText="Daytime render" afterText="Blue hour" label={false} />
+
+<ImageCompare before="/_img/portfolio/avalon-business-center/03.jpg" after="/_img/articles/archupgrade/avalon-night.jpg" beforeAlt="Avalon Business Center — daytime plaza render" afterAlt="Avalon Business Center — night version from the relighting pass" beforeText="Daytime render" afterText="Night" label={false} />
+
+<ImageCompare before="/_img/portfolio/balatonszemes-hotel/02.jpg" after="/_img/articles/archupgrade/balaton-blue-hour.jpg" beforeAlt="Balatonszemes Hotel — daytime entrance render" afterAlt="Balatonszemes Hotel — blue hour with the building lit" beforeText="Daytime render" afterText="Blue hour" label={false} />
+
+These are look passes, not lighting simulations — the pipeline re-tints materials under the warm light it adds, so a daylight study still comes from the 3D model. For a sales brochure that needs the building at dusk, it is a fraction of the price of a night render. That difference is written into our [price list](/pricing/): a night or dusk variant of an existing view costs a fraction of a new view.
 
 **Every image is quality-checked before a human ever picks it.** Each generated image is scored by an AI reviewer on five independent aspects — aesthetics, fidelity to the source design, prompt adherence, technical quality, and style match. Images that don't meet the thresholds are automatically retried. The review screen shows every candidate with its scores, so the final selection is made from a field that already passed inspection:
 
@@ -38,18 +44,26 @@ Nothing about the design changed. The furniture is where the designer put it. Th
 
 Here is a larger space — an office atrium — through the same pipeline:
 
-![Before: working render of an office atrium](/_img/articles/archupgrade/atrium-before.jpg)
-![After: the photorealistic version delivered to the client](/_img/articles/archupgrade/atrium-after.jpg)
+<ImageCompare before="/_img/articles/archupgrade/atrium-before.jpg" after="/_img/articles/archupgrade/atrium-after.jpg" beforeAlt="Working render of an office atrium" afterAlt="The photorealistic version delivered to the client" beforeText="Working render" afterText="Delivered" label={false} />
+
+**Your material never leaves our network.** Every model in the system is open-weight and runs on our own GPU farm — nothing is uploaded to a third-party service, and there is no per-image cloud cost quietly shaping how many variations we are willing to try. Every model is also classified by licence, and anything non-commercial is locked out of paid deliverables at the configuration level. Each delivered file carries a record of the tools that touched it.
+
+![Part of the GPU farm behind the pipeline — our own machines, in our own building](/_img/articles/archupgrade/farm.jpg)
 
 ## What a project looks like with this in the loop
 
 1. **We build the 3D scene as always.** Accurate model from your plans, approved camera angles, correct proportions. This part doesn't change — it's the foundation everything else depends on.
 2. **The pipeline generates candidates.** For each approved view, the system produces a set of photorealistic versions across the moods and styles we agreed on. A version renders in about a minute on one GPU, and the farm runs many in parallel.
 3. **Machines filter, humans choose.** Automated scoring removes the failures; we review what's left and pick the strongest images — and you can be part of that selection round if you want to be.
-4. **Delivery is organized.** The picked images are delivered in a clean, numbered package, with the full generation history archived on our side. If you come back in three months and want "that version, but in evening light" — we can branch from exactly that version.
+4. **Finishing on the picked images.** Relighting, sky, generative expand to a new aspect ratio, upscaling to print resolution — passes on the chosen image rather than a return to the 3D scene.
+5. **Delivery is organized.** The picked images are delivered in a clean, numbered package, with the full generation history archived on our side. If you come back in three months and want "that version, but in evening light" — we branch from exactly that version.
+
+## Beyond stills
+
+The same system now carries the rest of a presentation package: AI motion from stills for short films, AI narration and AI-composed music for them, upscalers for print, and experimental 3D tools — mesh generation for props, Gaussian splats for captured context. Those are line items on the price list where they are production-ready and internal experiments where they are not; we say which is which.
 
 ## The honest position
 
 This system doesn't replace 3D work — it's built on top of it. The accuracy still comes from the model. The judgment about which image tells the right story is still human. What the pipeline changes is the iteration count: more variations, tighter quality control, and faster turnaround on the polishing stretch that used to consume the end of every schedule.
 
-We built it because we render every day and we know exactly where the time goes. If you want to see what it does on your project, [get in touch](/contact/) — the first conversation is free.
+We built it because we render every day and we know exactly where the time goes. It is also, since this year, something we run for other studios' renders — see [ai.visiongraphics.eu](https://ai.visiongraphics.eu/) — and the engineering behind it is described in the [technical companion article](/articles/inside-archupgrade-technical/). If you want to see what it does on your project, [get in touch](/contact/) — the first conversation is free.

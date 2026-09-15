@@ -1,55 +1,76 @@
 ---
-title: "AI in Architectural Visualization: What's Actually Useful"
-date: 2025-03-15
-excerpt: |
-  AI tools have changed how we work. Here's an honest assessment of where they help, where they don't, and what we actually use in production.
-  
+title: "AI in Architectural Visualization: What's Actually Useful in 2026"
+date: 2026-09-16
+excerpt: "Eighteen months ago we wrote that generative tools could not produce a deliverable render. That is no longer true — with one condition. Here is where AI sits in our production today, what it does for your project, and the honest list of what it still cannot do."
 tags:
   - ai
   - workflow
   - architectural-visualization
   - tools
 published: true
+coverImage: /_img/articles/ai-in-architectural-visualization/hero.jpg
 ---
 
-There's no shortage of articles claiming AI will replace architectural visualization. Having integrated these tools into an actual production workflow, I can offer a more practical perspective.
+In early 2025 we published a version of this article that said generative tools "cannot produce images that meet the accuracy standards required for architectural visualization". At the time that was correct. We are rewriting it because it stopped being correct — not because AI became magic, but because we changed where it sits in the pipeline.
 
-AI hasn't replaced the work. It's changed how some parts of it get done — and in specific areas, meaningfully improved speed and output quality. In others, it's a gimmick. Here's where the line is.
+The short version: AI does not build the picture. It finishes it. Everything that makes a visualization *right* — the geometry, the camera, the proportions, the brand colours, where the designer put the furniture — still comes from a 3D model built from your drawings. Everything that makes it *read as a photograph* — material response, light falloff, reflections, atmosphere, the sense that a camera stood in the room — is now largely done by an AI pass that runs on top of that model, on our own machines, checked by an automated reviewer before a human ever picks.
 
-## Where AI Genuinely Helps
+<ImageCompare before="/_img/articles/archupgrade/bank-branch-1-before.jpg" after="/_img/articles/archupgrade/bank-branch-1-after.jpg" beforeAlt="Working 3D render of a bank branch interior, straight out of 3ds Max" afterAlt="The same view after the AI finishing pass — same geometry, camera and layout" beforeText="3D render" afterText="AI finish" label={false} />
 
-Rendering speed. AI-powered denoising (NVIDIA OptiX, V-Ray's denoiser) cleans up noisy ray-traced renders and reduces the sampling needed for a clean result. What used to require long render times to eliminate noise now resolves in a fraction of the time. This is in active use on every project.
+Drag the slider to compare: one side is the working render straight out of 3ds Max, the other is the same image after our pipeline — the labels on the image say which. Nothing about the design changed — the partition glass, the screens, the green poufs in the kids' corner are all where the designer put them.
 
-Image upscaling. Rendering at lower resolution and upscaling with AI tools produces acceptable results for web delivery and reduces farm time. For print-quality finals, we still render at full resolution — but for previews and some marketing contexts, AI upscaling is useful.
+## Where AI genuinely helps today
 
-Concept exploration. Text-to-image and image-to-image tools (Stable Diffusion, Flux, ComfyUI pipelines) are genuinely useful in early design stages — generating quick mood explorations, material variations, or alternative compositions from a base render. They're concept tools, not delivery tools.
+**Finishing.** This is the big one. The last stretch from "correct render" to "image that sells the project" used to eat most of the schedule: materials, vegetation, people, atmosphere. Our in-house system — [ArchUpgrade](/articles/from-render-to-photograph-archupgrade/) — takes the working render and produces photorealistic versions in about a minute per image per GPU, in controlled variations, each scored by a local vision model on five criteria before anyone looks at it. On a recent 18-view interior project the system generated over 300 candidates, the reviewer filtered them, and a human picked 18.
 
-Script development. AI assistants have significantly accelerated MAXScript and Python development — code completion, error diagnosis, generating boilerplate. For custom automation tools, this is a real time saving.
+**Variants without re-rendering.** Season, time of day, weather, furnishing style, budget tier — from the same base render, geometry locked. Where we used to show you two polished options, we now show a curated selection from dozens. A night or dusk variant of an existing view is priced at a fraction of a new view on our [price list](/pricing/) precisely because of this.
 
-Batch processing. AI-assisted workflows for organizing, processing, and QC-checking large image sets (common on large-scale projects) reduce manual review time.
+<ImageCompare before="/_img/services/advanced-ai-services/novus-liget-k-ls-15-summer-daytime.jpg" after="/_img/services/advanced-ai-services/novus-liget-k-ls-15-summer-blue-hour.jpg" beforeAlt="Residential estate aerial, summer daytime" afterAlt="The same aerial relit to blue hour with interior lights on" beforeText="Daytime" afterText="Blue hour" label={false} />
 
-## Where It Falls Short
+**Relighting and sky work on finished images.** Time-of-day relighting, light migration from a reference photo, sky replacement and material swaps now run as targeted tools on a finished render rather than a full re-render. These are look passes, not physically measured ones — good for presentation, not for daylight studies.
 
-Final photorealistic renders. Current generative tools cannot produce images that meet the accuracy standards required for architectural visualization — correct geometry, precise lighting, real material behavior. They produce plausible-looking images that are wrong in ways clients will notice.
+**Interiors from an empty model.** For sales material, an empty 3D apartment can be furnished and finished by the pipeline from a viewpoint we set — a fraction of the cost of hand-dressing every flat type, and consistent across a whole building. The furniture is plausible, not specified; where a client sells a specific fit-out, we model it.
 
-3D model generation. Text-to-3D tools are not at a stage where they produce usable architectural geometry. The model still has to be built from plans, and that work requires knowledge of what you're building.
+**Renders from sketches and flat exports.** A pencil sketch, a SketchUp or ArchiCAD export, an old render from a previous phase — all usable as a starting point for a photorealistic image before any 3D work begins. Fast for competitions and early client conversations; see [AI Render Upgrade](/vision-tech/ai-render-upgrade/).
 
-Detail and precision. AI image tools tend toward soft, averaged-looking results. Architectural visualization requires hard, accurate edges, correct proportions, and material behavior that matches what will actually be built. These are in tension.
+<ImageCompare before="/_img/services/advanced-ai-services/bugyi-k-p-2-.jpg" after="/_img/services/advanced-ai-services/bugyi-k-p-2-g01-i-s01-daytime-g01-iab-s01-summer-daytime.jpg" beforeAlt="Flat white-model export of a family house" afterAlt="Photorealistic image generated from that export" beforeText="Software export" afterText="AI image" label={false} />
 
-Client-facing judgment. Knowing whether a visualization communicates clearly, whether the camera angle tells the right story, whether the lighting matches the design intent — these decisions still require human judgment and project context.
+**Motion from stills.** Camera moves, time-of-day and weather transitions generated from a still image, cut into 30-second to 5-minute films — [AI Animation](/vision-tech/ai-animation/). Right for social and sales-office loops; a complex flythrough through a building is still a 3D animation.
 
-## What We Actually Use in Production
+**Upscaling to print.** A 6-megapixel delivery upscaled to 4K or 8K with detail added rather than smeared, so an older render survives a hoarding-sized print.
 
-- V-Ray AI denoiser — every render
-- ComfyUI pipelines — concept batch generation, material exploration
-- AI upscaling — web delivery, previews
-- AI coding assistants — MAXScript and automation development
-- Real-time engines (Unreal Engine 5) — VR and interactive deliverables, with AI-enhanced global illumination and denoising
+**Everything around the picture.** AI narration and AI-composed music for films are now line items rather than a hunt for a stock library; batch quality checks catch a wrong-resolution frame before a client does; and the scripting that runs our 3ds Max pipeline is written with AI assistants — see [Automation, MaxScript and AI in 3ds Max](/articles/automation-maxscript-and-ai-in-3ds-max/).
 
-## The Honest Position
+![A contact sheet of render variations with one candidate circled — the job has moved from making one image to choosing among many](/_img/articles/ai-in-architectural-visualization/curator.jpg)
 
-AI tools are production-useful in our workflow. They're not production-complete on their own. The projects still require the same fundamentals: accurate 3D models, correct lighting physics, material knowledge, and judgment about what the image needs to communicate.
+## Where it still falls short
 
-What AI has changed is how quickly we can generate variations, how much render time we spend, and how fast we can build the automation tools that run the pipeline. That's meaningful — but it's an efficiency gain, not a replacement.
+**New viewpoints.** An AI pass works from one image. It cannot walk around the building, look through a door it cannot see, or add the elevation you forgot to render. That is what the 3D model is for.
 
-For clients: when we use AI tools on your project, we'll tell you. Where we're generating from your approved 3D model and using AI to accelerate part of the pipeline, that's transparent. Where we're using AI for concept exploration, that's clearly labeled as such. You'll always know what you're getting.
+**Material-exact finals.** The pipeline generates surface quality probabilistically. It will produce a convincing oak floor; it will not reproduce a specific oak floor from a specific supplier's catalogue unless we model it. For material-precise output — a manufacturer's own product, a listed facade — a full V-Ray render from the model is still the answer.
+
+**Geometry generation.** Text-to-3D and image-to-3D tools are in our toolkit for props and context, and they have improved a lot. They do not produce a building from a plan. The model is still built from the drawings, by someone who knows what a stair needs.
+
+**Long, consistent video.** AI clips are 3 to 8 seconds each and hold a camera move about that long. A ninety-second film is an edit of many clips; a continuous walkthrough with exact geometry through every frame is a 3D animation.
+
+**Judgement.** Which camera tells the story, which hour of the day the building looks like itself, whether an image will survive a planning committee — none of that is a parameter. Nobody has automated it, including us.
+
+## What actually runs in our production
+
+- **ArchUpgrade** — our own render-to-photograph system: multi-GPU ComfyUI farm, structured prompts, version tree, automated five-score review, delivery packaging. Daily use since spring 2026. The [technical write-up](/articles/inside-archupgrade-technical/) has the details.
+- **Relighting, sky and material tools, generative expand, upscalers, camera-angle passes** — the same system, on finished images.
+- **Local models only.** Every model we run is open-weight and runs on our hardware. No client image is uploaded anywhere. Each model is classified by licence, and anything non-commercial is locked out of paid deliverables at the configuration level — every delivered file carries a record of the tools that touched it.
+- **A vetting database** of 1,537 open AI tools, re-checked weekly for release state, licence and hardware needs, so what we deploy is chosen on evidence — [how we vet the flood](/articles/how-we-vet-the-ai-tool-flood/).
+- **Scheduled agents** that run generation and review unattended overnight, with a person reading the results in the morning — [the boring version of AI automation](/articles/agents-that-work-the-night-shift/).
+- **Unreal Engine 5** for VR and interactive deliverables, with AI denoising and upscaling in the real-time path.
+- **AI coding assistants** for every MAXScript and Python tool we build, plus an MCP server that lets an assistant drive 3ds Max directly.
+
+## The honest position
+
+We describe the change in one line: the job moved from *creator* to *curator*. The picture used to be made once, by hand, over days. Now it is made many times, by machine, in minutes — and the craft is in the model that anchors it, the constraints we put on the generator, and the choice of which result to show you.
+
+It still does not replace 3D work. It is built on top of it. The accuracy comes from the model. The judgement is human. What changed is the iteration count and where the hours go.
+
+For clients: when AI touches your project, we say so. An enhanced render from your approved model, an AI variant of an existing view, a concept image from a sketch — each is labelled as what it is, and each delivered file carries its provenance. You always know what you are getting.
+
+If you want to see what this does on your project, [get in touch](/contact/) — the first conversation is free.
