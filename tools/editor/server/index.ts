@@ -81,6 +81,15 @@ console.log(`[editor] Serving project public/ from ${projectPublicDir}`);
 console.log(`[editor] Staging dir: ${stagingRoot}`);
 
 // ---------------------------------------------------------------------------
+// Pricing admin tool — http://localhost:4322/pricing/ (tools/editor/pricing).
+// Served from here so it shares this origin and can call /api/files/write and
+// /api/commands/git-promote. It imports the shared math from /lib/pricing.mjs.
+// ---------------------------------------------------------------------------
+
+app.use('/pricing', express.static(path.join(PROJECT_ROOT, 'tools', 'editor', 'pricing')));
+app.use('/lib', express.static(path.join(PROJECT_ROOT, 'src', 'lib')));
+
+// ---------------------------------------------------------------------------
 // Static serve the built Vite client (when running without Vite dev server)
 // ---------------------------------------------------------------------------
 

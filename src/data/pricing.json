@@ -1,0 +1,2920 @@
+{
+  "_readme": "Master price list. Edit with the pricing admin tool (http://localhost:4322/pricing/ while the editor server runs) — it recomputes and publishes. Codes are FAMILY.ITEM[.VARIANT], stable once quoted, never reused; order = array order; see PRICING_CODES.md in E:/CLAUDE/Visiongraphics_strategies.",
+  "version": "2026.09",
+  "updated": "2026-09-15",
+  "peg": 360,
+  "vat": 0.27,
+  "lanes": {
+    "3d": {
+      "en": "3D lane",
+      "hu": "3D vonal"
+    },
+    "ai": {
+      "en": "AI lane",
+      "hu": "AI vonal"
+    }
+  },
+  "families": [
+    {
+      "code": "MOD",
+      "lane": "3d",
+      "name": {
+        "en": "3D model preparation",
+        "hu": "3D modell előkészítés"
+      },
+      "lede": {
+        "en": "One-off per project, one model version. Base = 2D CAD source; a usable 3D model is cheaper, PDF or sketch dearer. MOD.S–L cover the building and its immediate plot; MOD.SITE the wider site, quoted as a range; MOD.INT.EMPTY and MOD.INT.FURN any interior not covered by a residential package (offices, lobbies, gyms, retail, hospitality) — empty shell or fully furnished.",
+        "hu": "Projektenként egyszer, egy modellverzióra. Alap = 2D CAD forrás; használható 3D modellből olcsóbb, PDF-ből vagy vázlatból drágább. A MOD.S–L az épületet és közvetlen telkét fedi; a MOD.SITE a tágabb környezetet, ársávval; a MOD.INT.EMPTY és MOD.INT.FURN minden olyan belső teret, amelyet nem fed lakáscsomag (irodák, lobbik, edzőtermek, üzletek, vendéglátás) — üresen vagy teljesen berendezve."
+      },
+      "services": [
+        "architectural-visualization",
+        "large-scale-projects"
+      ]
+    },
+    {
+      "code": "EXT",
+      "lane": "3d",
+      "name": {
+        "en": "Exterior stills",
+        "hu": "Külső látványképek"
+      },
+      "lede": {
+        "en": "Photoreal, 4–6K, Photoshop finishing, two rounds. Requires a MOD line on the same quote. No small-project rate — the AI lane is the cheaper option. EXT.BASIC, EXT.ARCHSET and EXT.PHASES are raw renders for architects — permitting, competitions, design phases: no Photoshop, not for marketing, bulk discount every 5 views.",
+        "hu": "Fotorealisztikus, 4–6K, Photoshop-utómunkával, két körrel. Csak MOD tétellel együtt rendelhető. Nincs kisprojekt-ár — az olcsóbb út az AI vonal. Az EXT.BASIC, EXT.ARCHSET és EXT.PHASES nyers renderek építészeknek — engedélyezés, pályázat, tervfázisok: Photoshop nélkül, nem marketingcélra, mennyiségi kedvezmény 5 nézetenként."
+      },
+      "services": [
+        "architectural-visualization"
+      ]
+    },
+    {
+      "code": "INT",
+      "lane": "3d",
+      "name": {
+        "en": "Interiors",
+        "hu": "Belső látványképek"
+      },
+      "lede": {
+        "en": "INT.VIEW is the per-image price on a prepared interior model (MOD.INT.FURN). INT.FLAT.* are the bundled residential packages: modelling, furnishing, stills and the panorama tour of the same rooms, Photoshop finishing. +€400 per extra bedroom. Furnishing style is agreed up front: you pick photos of homes you like, we build a moodboard, and once it is approved we model the interiors. INT.AI is the light alternative: AI-furnished images on the empty model, one variation, no tour.",
+        "hu": "Az INT.VIEW az előkészített belső modell (MOD.INT.FURN) képenkénti ára. Az INT.FLAT.* a lakáscsomagok: modellezés, berendezés, látványképek és ugyanazon terek panorámatúrája, Photoshop-utómunkával. További hálószobánként +400 €. A berendezés stílusát előzetesen egyeztetjük (pl. fotók válogatása olyan lakásokról, amelyek tetszenek), ez alapján moodboardot készítünk, ennek egyeztetése és elfogadása után modellezzük a belsőket. Az INT.AI a könnyű változat: AI-berendezett képek az üres modellből, egy variáció, túra nélkül."
+      },
+      "services": [
+        "architectural-visualization"
+      ]
+    },
+    {
+      "code": "PANO",
+      "lane": "3d",
+      "name": {
+        "en": "Panoramas and tours",
+        "hu": "Panorámák és túrák"
+      },
+      "lede": {
+        "en": "Every tour includes navigation between viewpoints, a 2D floor-plan or map view with viewpoint selection and a view-direction radar, multiple levels and floors, fullscreen, mobile and VR modes. Hosting for 12 months included, no assembly fee. Block discount: 8 viewpoints €1,400 · 10 €1,750 · 20 €3,325 · 30 €4,725. Extra content hotspots at PANO.HOTSPOT.",
+        "hu": "Minden túra tartalmazza a nézőpontok közötti navigációt, a 2D alaprajz- vagy térképnézetet nézőpont-választással és nézésirány-radarral, több szint és emelet kezelését, a teljes képernyős, mobil és VR módot. 12 hónap tárhely az árban, összeállítási díj nincs. Mennyiségi kedvezmény: 8 nézőpont 1 400 € · 10 db 1 750 € · 20 db 3 325 € · 30 db 4 725 €. Extra tartalmi hotspotok: PANO.HOTSPOT."
+      },
+      "services": [
+        "architectural-visualization",
+        "large-scale-projects"
+      ]
+    },
+    {
+      "code": "PLAN",
+      "lane": "3d",
+      "name": {
+        "en": "Floor plans and sales materials",
+        "hu": "Alaprajzok és értékesítési anyagok"
+      },
+      "lede": {
+        "en": "One per-flat price; repetition is a multiplier. 160 flats / 20 types → ×0.34 · 40 flats / 30 types → ×0.81 · every flat unique → ×1.0. Level plans scale with flats per level around an average of 6.",
+        "hu": "Egy lakásonkénti ár; az ismétlődés szorzó. 160 lakás / 20 típus → ×0,34 · 40 lakás / 30 típus → ×0,81 · minden lakás egyedi → ×1,0. A szintrajzok a szintenkénti lakásszámmal skálázódnak, 6 lakás körüli átlaggal."
+      },
+      "services": [
+        "architectural-visualization"
+      ]
+    },
+    {
+      "code": "FILM",
+      "lane": "3d",
+      "name": {
+        "en": "Film",
+        "hu": "Film"
+      },
+      "lede": {
+        "en": "FILM.3D, FILM.WALK and FILM.AI include concept and camera design, previz for approval, rendering, editing, colour grade, stock music (web + social licence), basic titles, 1080p MP4 and two rounds per stage (previz → draft → final). Length in 15 s steps; mixed 3D + AI priced per segment. Square +25 %, second orientation +50 %. Broadcast or paid-ad music licences and human talent are pass-through +15 %.",
+        "hu": "A FILM.3D, FILM.WALK és FILM.AI tartalmazza a koncepciót és kameratervet, a jóváhagyásra szánt previzet, a renderelést, vágást, színkorrekciót, stock zenét (web + social licenc), egyszerű feliratokat, 1080p MP4-et és szakaszonként két kört (previz → vázlat → végleges). Hossz 15 mp-es lépésekben; vegyes 3D + AI szakaszonként árazva. Négyzetes +25 %, második orientáció +50 %. Sugárzási vagy fizetett hirdetési zenelicenc és emberi közreműködők: költség +15 %."
+      },
+      "services": [
+        "architectural-visualization",
+        "large-scale-projects"
+      ]
+    },
+    {
+      "code": "AI",
+      "lane": "ai",
+      "name": {
+        "en": "AI stills",
+        "hu": "AI látványképek"
+      },
+      "lede": {
+        "en": "Base + AI + light retouch. Every image includes one variation; more at AI.VAR, no minimum order. Manual editing or a special request moves the image to AI.EDIT. EXT.MONTAGE applies here too. Self-serve at ai.visiongraphics.eu.",
+        "hu": "Alap + AI + könnyű retusálás. Minden kép egy variációt tartalmaz; továbbiak AI.VAR áron, nincs minimális rendelés. Kézi szerkesztés vagy különleges kérés esetén a kép AI.EDIT-re vált. Az EXT.MONTAGE itt is érvényes. Önkiszolgáló rendelés: ai.visiongraphics.eu."
+      },
+      "services": [
+        "advanced-ai-services"
+      ]
+    },
+    {
+      "code": "WEB",
+      "lane": "3d",
+      "name": {
+        "en": "Interactive and web tools",
+        "hu": "Interaktív és webes eszközök"
+      },
+      "lede": {
+        "en": "The competence behind labs.visiongraphics.eu — 26 live browser apps, 100 % client-side, instant, mobile-first, bilingual, no accounts, no tracking — sold as bespoke tools for a project. Static hosting means near-zero running cost. Fixed anchors below; anything larger is scoped in expert days.",
+        "hu": "A labs.visiongraphics.eu mögötti tudás — 26 élő böngészős alkalmazás, 100 % kliensoldali, azonnali, mobil-először, kétnyelvű, fiók és követés nélkül — projektre szabott eszközként. A statikus tárhely közel nulla üzemeltetési költséget jelent. Fix árpontok alább; ami nagyobb, azt szakértői napokban árazzuk."
+      },
+      "services": [
+        "architectural-visualization",
+        "large-scale-projects"
+      ]
+    },
+    {
+      "code": "PROD",
+      "lane": "3d",
+      "name": {
+        "en": "Product visualisation",
+        "hu": "Termékvizualizáció"
+      },
+      "lede": {
+        "en": "Product model from client CAD, studio-lit angles and colour variants at print resolution. Larger suites are built from MOD.S + EXT lines.",
+        "hu": "Termékmodell az ügyfél CAD-jéből, stúdióvilágítású nézetek és színvariánsok nyomdai felbontásban. Nagyobb sorozatok MOD.S + EXT tételekből épülnek."
+      },
+      "services": [
+        "product-visualization"
+      ]
+    },
+    {
+      "code": "RATE",
+      "lane": "3d",
+      "name": {
+        "en": "Rates and services",
+        "hu": "Díjak és szolgáltatások"
+      },
+      "lede": {
+        "en": "Two rates: production (revisions, changes) and expert (AI pipeline, tooling, interactive, consulting). Audits, scripts and XL scoping are expert days. Pass-through items (drone, voice-over, music licence, photography): cost +15 %. Travel and hotel at cost, reimbursed by the client.",
+        "hu": "Két díj: gyártói (módosítások, változtatások) és szakértői (AI pipeline, eszközfejlesztés, interaktív, tanácsadás). Audit, szkript és XL-scoping szakértői napban. Továbbszámlázott tételek (drón, narráció, zenelicenc, fotózás): költség +15 %. Utazás és szállás költségen, az ügyfél téríti."
+      },
+      "services": [
+        "custom-rendering",
+        "workflow-optimization",
+        "3ds-max-tools"
+      ]
+    },
+    {
+      "code": "TRAIN",
+      "lane": "3d",
+      "name": {
+        "en": "Training and workshops",
+        "hu": "Képzés és workshopok"
+      },
+      "lede": {
+        "en": "Hands-on days on our pipeline — 3ds Max, Blender, AI tooling, panorama tours — at your studio or ours. Up to 6 seats per day; custom material prepared at the expert day rate. On-site premium and travel per RATE.",
+        "hu": "Gyakorlati napok a pipeline-unkról — 3ds Max, Blender, AI eszközök, panorámatúrák — nálatok vagy nálunk. Naponta legfeljebb 6 fő; egyedi tananyag szakértői napidíjon. Helyszíni felár és utazás a RATE szerint."
+      },
+      "services": [
+        "workflow-optimization"
+      ]
+    }
+  ],
+  "items": [
+    {
+      "code": "MOD.S",
+      "legacy": "A1",
+      "family": "MOD",
+      "name": {
+        "en": "Small — house, twin house, single product",
+        "hu": "Kicsi — családi ház, ikerház, egy termék"
+      },
+      "unit": {
+        "en": "project",
+        "hu": "projekt"
+      },
+      "base": 850,
+      "mult": [
+        "source"
+      ],
+      "help": {
+        "en": "One building up to a twin house, or a single product, built from your drawings to render-ready precision. Needed once per project before any 3D still, tour or film.",
+        "hu": "Egy épület ikerházig, vagy egyetlen termék, a rajzaitok alapján renderkész pontossággal. Projektenként egyszer kell, minden 3D kép, túra vagy film előtt."
+      }
+    },
+    {
+      "code": "MOD.M",
+      "legacy": "A2",
+      "family": "MOD",
+      "name": {
+        "en": "Medium — one residential or office block",
+        "hu": "Közepes — egy lakó- vagy irodaépület"
+      },
+      "unit": {
+        "en": "project",
+        "hu": "projekt"
+      },
+      "base": 2500,
+      "mult": [
+        "source"
+      ],
+      "help": {
+        "en": "One residential or office block with its immediate surroundings. Covers the typical developer launch; several blocks step up to MOD.L.",
+        "hu": "Egy lakó- vagy irodaépület a közvetlen környezetével. A tipikus fejlesztői indítás; több épületnél MOD.L."
+      }
+    },
+    {
+      "code": "MOD.L",
+      "legacy": "A3",
+      "family": "MOD",
+      "name": {
+        "en": "Large — complex, several buildings, masterplan block",
+        "hu": "Nagy — komplexum, több épület, beépítési tömb"
+      },
+      "unit": {
+        "en": "project",
+        "hu": "projekt"
+      },
+      "base": 3500,
+      "mult": [
+        "source"
+      ],
+      "help": {
+        "en": "A complex of several buildings or one masterplan block. Above this scale we scope in expert days (MOD.XL).",
+        "hu": "Több épületből álló együttes vagy egy beépítési tömb. E fölött szakértői napokban árazunk (MOD.XL)."
+      }
+    },
+    {
+      "code": "MOD.SITE",
+      "legacy": "A4",
+      "family": "MOD",
+      "name": {
+        "en": "Site and environment",
+        "hu": "Telek és környezet"
+      },
+      "desc": {
+        "en": "depends on the environment, the available sources and the area to cover — terrain, neighbouring buildings, streets, planting beyond the immediate plot",
+        "hu": "a környezettől, az elérhető forrásoktól és a lefedendő területtől függ — terep, szomszédos épületek, utcák, növényzet a közvetlen telken túl"
+      },
+      "unit": {
+        "en": "project",
+        "hu": "projekt"
+      },
+      "custom": {
+        "en": "custom quote",
+        "hu": "egyedi ajánlat"
+      },
+      "range": [
+        600,
+        2400
+      ],
+      "help": {
+        "en": "Terrain, neighbours, streets and planting beyond the plot. The band depends on what survey data, photos or models you can supply and how far the cameras see.",
+        "hu": "Terep, szomszédok, utcák, növényzet a telken túl. A sáv attól függ, milyen felmérés, fotó vagy modell áll rendelkezésre, és meddig látnak a kamerák."
+      }
+    },
+    {
+      "code": "MOD.XL",
+      "legacy": "A5",
+      "family": "MOD",
+      "name": {
+        "en": "XL — airport, large plaza, urban planning",
+        "hu": "XL — repülőtér, nagy tér, városrendezés"
+      },
+      "desc": {
+        "en": "custom quote, scoped in expert days",
+        "hu": "egyedi ajánlat, szakértői napokban felmérve"
+      },
+      "unit": {
+        "en": "project",
+        "hu": "projekt"
+      },
+      "custom": {
+        "en": "custom quote",
+        "hu": "egyedi ajánlat"
+      },
+      "help": {
+        "en": "Airport, large plaza or urban-planning scale. We scope the model in expert days after a short call and quote a fixed price.",
+        "hu": "Repülőtér, nagy tér vagy városrendezési lépték. Rövid egyeztetés után szakértői napokban mérjük fel, és fix árat adunk."
+      }
+    },
+    {
+      "code": "MOD.REV",
+      "legacy": "A7",
+      "family": "MOD",
+      "name": {
+        "en": "Second design phase or major model revision",
+        "hu": "Második tervfázis vagy jelentős modellmódosítás"
+      },
+      "desc": {
+        "en": "30 % of the affected MOD line · small changes at production hours",
+        "hu": "az érintett MOD tétel 30 %-a · kis változtatások gyártói óradíjon"
+      },
+      "unit": {
+        "en": "project",
+        "hu": "projekt"
+      },
+      "custom": {
+        "en": "30 % of the MOD line",
+        "hu": "a MOD tétel 30 %-a"
+      },
+      "help": {
+        "en": "A new design phase or a change that touches most of the model: 30 % of the original MOD line. Small edits go at production hours instead.",
+        "hu": "Új tervfázis vagy a modell nagy részét érintő módosítás: az eredeti MOD tétel 30 %-a. Kis javítás termelési óradíjon."
+      }
+    },
+    {
+      "code": "MOD.INT.EMPTY",
+      "family": "MOD",
+      "name": {
+        "en": "Interior model — empty",
+        "hu": "Belső modell — üres"
+      },
+      "desc": {
+        "en": "shell, fixed fittings, no loose furniture · per m² · first 50 m² full, 50–200 ×0.6, 200–1,000 ×0.25, above ×0.12 · × function × source",
+        "hu": "héj, beépített elemek, mobil bútor nélkül · m²-enként · első 50 m² teljes áron, 50–200 ×0,6, 200–1 000 ×0,25, felette ×0,12 · × funkció × forrás"
+      },
+      "unit": {
+        "en": "m²",
+        "hu": "m²"
+      },
+      "base": 12.5,
+      "mult": [
+        "source",
+        "fn"
+      ],
+      "tier": "sqm",
+      "help": {
+        "en": "Walls, floors, windows, doors and fixed fittings only. Enough for AI interior images (INT.AI) or a shell-and-core presentation.",
+        "hu": "Falak, padlók, nyílászárók és beépített elemek. Elég AI belső képekhez (INT.AI) vagy szerkezetkész bemutatáshoz."
+      },
+      "tech": [
+        "interior"
+      ]
+    },
+    {
+      "code": "MOD.INT.FURN",
+      "legacy": "A6",
+      "family": "MOD",
+      "name": {
+        "en": "Interior model — fully furnished",
+        "hu": "Belső modell — teljesen berendezett"
+      },
+      "desc": {
+        "en": "furniture, decor, lighting to an approved moodboard · per m² · same bands · × function × detail × source",
+        "hu": "bútor, dekoráció, világítás elfogadott moodboard alapján · m²-enként · azonos sávok · × funkció × részletesség × forrás"
+      },
+      "unit": {
+        "en": "m²",
+        "hu": "m²"
+      },
+      "base": 25,
+      "mult": [
+        "source",
+        "fn",
+        "detail"
+      ],
+      "tier": "sqm",
+      "help": {
+        "en": "Furniture, decor and lighting to a moodboard we agree first. Required for interior views (INT.VIEW) and interior panoramas.",
+        "hu": "Bútor, dekor és világítás előre egyeztetett moodboard alapján. Belső nézetekhez (INT.VIEW) és belső panorámákhoz szükséges."
+      },
+      "tech": [
+        "interior",
+        "interior-styling"
+      ]
+    },
+    {
+      "code": "EXT.DAY",
+      "legacy": "B1",
+      "family": "EXT",
+      "name": {
+        "en": "Exterior view, daytime",
+        "hu": "Külső nézet, nappali"
+      },
+      "desc": {
+        "en": "4–6K, people, vehicles, Photoshop finishing, 2 rounds",
+        "hu": "4–6K, emberek, járművek, Photoshop-utómunka, 2 kör"
+      },
+      "unit": {
+        "en": "view",
+        "hu": "nézet"
+      },
+      "base": 180,
+      "needs": "MOD",
+      "help": {
+        "en": "One finished marketing image: camera agreed on a preview, rendered at 4–6K, people and vehicles added, Photoshop finishing, two rounds of corrections.",
+        "hu": "Egy kész marketingkép: előnézeten egyeztetett kamera, 4–6K render, emberek és járművek, Photoshop utómunka, két korrekciós kör."
+      },
+      "tech": [
+        "exterior",
+        "photorealistic-rendering"
+      ]
+    },
+    {
+      "code": "EXT.NIGHT",
+      "legacy": "B2",
+      "family": "EXT",
+      "name": {
+        "en": "Night or dusk variant of an existing view",
+        "hu": "Éjszakai vagy alkonyati változat meglévő nézetből"
+      },
+      "unit": {
+        "en": "view",
+        "hu": "nézet"
+      },
+      "base": 75,
+      "needs": "MOD",
+      "help": {
+        "en": "The same camera as an existing daytime view, re-lit for dusk or night with interior lights on. Cheaper than a new view because camera and composition are reused.",
+        "hu": "Egy meglévő nappali nézet ugyanazon kamerája alkonyi vagy éjszakai fényben, világító belső terekkel. Olcsóbb egy új nézetnél, mert a kamera és a kompozíció újrahasznosul."
+      },
+      "tech": [
+        "night-renderings"
+      ]
+    },
+    {
+      "code": "EXT.VAR",
+      "legacy": "B3",
+      "family": "EXT",
+      "name": {
+        "en": "Material or design variant of an existing view",
+        "hu": "Anyag- vagy tervváltozat meglévő nézetből"
+      },
+      "unit": {
+        "en": "view",
+        "hu": "nézet"
+      },
+      "base": 75,
+      "needs": "MOD",
+      "help": {
+        "en": "A material, colour or design alternative of a view already delivered: same camera, same lighting, changed model or materials.",
+        "hu": "Egy már leadott nézet anyag-, szín- vagy tervváltozata: azonos kamera és fény, módosított modell vagy anyagok."
+      },
+      "tech": [
+        "exterior",
+        "architectural-styling"
+      ]
+    },
+    {
+      "code": "EXT.MONTAGE",
+      "legacy": "B4",
+      "family": "EXT",
+      "name": {
+        "en": "Photo, drone or aerial montage",
+        "hu": "Fotó-, drón- vagy légifelvétel-montázs"
+      },
+      "desc": {
+        "en": "client supplies the photo; also for AI images",
+        "hu": "a fotót az ügyfél adja; AI képekhez is"
+      },
+      "unit": {
+        "en": "view",
+        "hu": "nézet"
+      },
+      "base": 270,
+      "help": {
+        "en": "Your rendering placed into a photo, drone or aerial shot you supply, with matched perspective, light and colour. Also works for AI images.",
+        "hu": "A látványterv beillesztése az általatok adott fotóba, drón- vagy légifelvételbe, egyeztetett perspektívával, fénnyel és színnel. AI képekhez is."
+      },
+      "tech": [
+        "photo-integration",
+        "aerial-integration",
+        "drone-photography",
+        "aerial-photography"
+      ]
+    },
+    {
+      "code": "EXT.CROP",
+      "legacy": "B5",
+      "family": "EXT",
+      "name": {
+        "en": "Extra crop or aspect ratio",
+        "hu": "További kivágás vagy képarány"
+      },
+      "desc": {
+        "en": "re-render + finishing",
+        "hu": "újrarender + utómunka"
+      },
+      "unit": {
+        "en": "view",
+        "hu": "nézet"
+      },
+      "base": 85,
+      "help": {
+        "en": "A second aspect ratio of an existing view, re-rendered and re-finished: portrait for social, wide for billboards.",
+        "hu": "Egy meglévő nézet második képaránya, újrarenderelve és befejezve: álló a közösségi médiára, széles óriásplakátra."
+      },
+      "tech": [
+        "exterior"
+      ]
+    },
+    {
+      "code": "EXT.CLAY",
+      "legacy": "B6",
+      "family": "EXT",
+      "name": {
+        "en": "Clay / white-model diagram view",
+        "hu": "Fehérmodell (clay) diagramnézet"
+      },
+      "desc": {
+        "en": "no materials, ambient light · for architects and competition boards",
+        "hu": "anyagok nélkül, szórt fény · építészeknek, pályázati tablókra"
+      },
+      "unit": {
+        "en": "view",
+        "hu": "nézet"
+      },
+      "base": 25,
+      "needs": "MOD",
+      "help": {
+        "en": "White model under ambient light, no materials: reads as a diagram. Popular on competition boards and in concept phases.",
+        "hu": "Fehér modell szórt fényben, anyagok nélkül: diagramként hat. Pályázati tablókon és koncepciófázisban népszerű."
+      },
+      "tech": [
+        "non-photorealistic-render"
+      ]
+    },
+    {
+      "code": "EXT.BASIC",
+      "family": "EXT",
+      "name": {
+        "en": "Basic render — permitting and competitions",
+        "hu": "Alap render — engedélyezéshez és pályázatra"
+      },
+      "desc": {
+        "en": "raw render straight from the model, no Photoshop, not for marketing · for architects · views 1–5 full price, 6–10 −10 % … 26+ −50 %",
+        "hu": "nyers render a modellből, Photoshop nélkül, nem marketingcélra · építészeknek · 1–5. nézet teljes ár, 6–10. −10 % … 26-tól −50 %"
+      },
+      "unit": {
+        "en": "view",
+        "hu": "nézet"
+      },
+      "base": 90,
+      "needs": "MOD",
+      "tier": "bulk5",
+      "help": {
+        "en": "Straight out of the renderer: real materials and light, but no retouching, people or sky replacement. Meant for permit sets and competitions, not for sales. Every block of five views is 10 % cheaper, down to half price.",
+        "hu": "Közvetlenül a renderelőből: valós anyagok és fény, de retus, emberek és égcsere nélkül. Engedélyezési anyagokhoz és pályázatokhoz, nem értékesítéshez. Minden ötös blokk 10 %-kal olcsóbb, a fél árig."
+      },
+      "tech": [
+        "exterior"
+      ]
+    },
+    {
+      "code": "EXT.ARCHSET",
+      "family": "EXT",
+      "name": {
+        "en": "Elevations, sections and site plan — rendered set",
+        "hu": "Homlokzatok, metszetek, helyszínrajz — renderelt készlet"
+      },
+      "desc": {
+        "en": "4 elevations + 2 sections + site plan from the model · no Photoshop · for permit and competition boards",
+        "hu": "4 homlokzat + 2 metszet + helyszínrajz a modellből · Photoshop nélkül · engedélyezési és pályázati tablókra"
+      },
+      "unit": {
+        "en": "set",
+        "hu": "készlet"
+      },
+      "base": 350,
+      "needs": "MOD",
+      "help": {
+        "en": "Four elevations, two sections and a site plan rendered from the same model, in the drawing style the boards need. No Photoshop.",
+        "hu": "Négy homlokzat, két metszet és egy helyszínrajz ugyanabból a modellből, a tablókhoz szükséges rajzi stílusban. Photoshop nélkül."
+      },
+      "tech": [
+        "section",
+        "site-plan"
+      ]
+    },
+    {
+      "code": "EXT.PHASES",
+      "family": "EXT",
+      "name": {
+        "en": "Architect phase package — one camera through four phases",
+        "hu": "Építész tervfázis-csomag — egy kamera négy fázison át"
+      },
+      "desc": {
+        "en": "Concept → Schematic → Planning Application → Construction Documentation · up to 3 plan variations in each of the first three phases · same camera, photo and aerial insertions included · no Photoshop on base images · model updates between phases at MOD.REV · same bulk discount as EXT.BASIC",
+        "hu": "koncepcióterv → vázlatterv → engedélyezési terv → kiviteli terv · az első három fázisban legfeljebb 3 tervváltozat · azonos kamera, fotó- és légifelvétel-beillesztéssel · az alapképeken nincs Photoshop · modellfrissítés fázisok között MOD.REV áron · EXT.BASIC szerinti mennyiségi kedvezmény"
+      },
+      "unit": {
+        "en": "camera",
+        "hu": "kamera"
+      },
+      "base": 450,
+      "needs": "MOD",
+      "tier": "bulk5",
+      "help": {
+        "en": "One camera kept through concept, schematic, permit and construction documentation, with up to three plan variations in each of the first three phases. Photo and aerial insertions included; model updates between phases at MOD.REV.",
+        "hu": "Egy kamera végig a koncepció-, vázlat-, engedélyezési és kiviteli terven, az első három fázisban legfeljebb három tervváltozattal. Fotó- és légifelvétel-beillesztés benne; modellfrissítés a fázisok között MOD.REV szerint."
+      },
+      "tech": [
+        "exterior"
+      ]
+    },
+    {
+      "code": "INT.VIEW",
+      "legacy": "C1",
+      "family": "INT",
+      "name": {
+        "en": "Interior view",
+        "hu": "Belső nézet"
+      },
+      "desc": {
+        "en": "from a prepared interior model (MOD.INT.FURN) · Photoshop finishing · 2 rounds",
+        "hu": "előkészített belső modellből (MOD.INT.FURN) · Photoshop-utómunka · 2 kör"
+      },
+      "unit": {
+        "en": "view",
+        "hu": "nézet"
+      },
+      "base": 180,
+      "needs": "MOD",
+      "help": {
+        "en": "One finished interior image from a furnished interior model, with Photoshop finishing and two rounds of corrections.",
+        "hu": "Egy kész belső kép berendezett belső modellből, Photoshop utómunkával és két korrekciós körrel."
+      },
+      "tech": [
+        "interior",
+        "photorealistic-rendering"
+      ]
+    },
+    {
+      "code": "INT.FLAT.STUDIO",
+      "legacy": "C2",
+      "family": "INT",
+      "name": {
+        "en": "Residential package — studio",
+        "hu": "Lakáscsomag — garzon"
+      },
+      "desc": {
+        "en": "modelling + furnishing + 3–4 stills + 3–4 panorama viewpoints",
+        "hu": "modellezés + berendezés + 3–4 kép + 3–4 panoráma-nézőpont"
+      },
+      "unit": {
+        "en": "flat",
+        "hu": "lakás"
+      },
+      "base": 1900,
+      "mult": [
+        "stillsOnly"
+      ],
+      "help": {
+        "en": "Everything for one show flat: interior model, furnishing to a moodboard, three to four stills and three to four panorama viewpoints. Reused across identical unit types.",
+        "hu": "Minden egy mintalakáshoz: belső modell, berendezés moodboard alapján, három-négy állókép és három-négy panoráma nézőpont. Azonos lakástípusoknál újrahasznosítható."
+      },
+      "tech": [
+        "interior",
+        "360-renderings"
+      ]
+    },
+    {
+      "code": "INT.FLAT.1BED",
+      "legacy": "C3",
+      "family": "INT",
+      "name": {
+        "en": "Residential package — 1-bedroom",
+        "hu": "Lakáscsomag — 1 hálószobás"
+      },
+      "desc": {
+        "en": "5–7 stills + 5–7 panorama viewpoints",
+        "hu": "5–7 kép + 5–7 panoráma-nézőpont"
+      },
+      "unit": {
+        "en": "flat",
+        "hu": "lakás"
+      },
+      "base": 2300,
+      "mult": [
+        "stillsOnly"
+      ],
+      "help": {
+        "en": "One-bedroom show flat: model, furnishing, five to seven stills and five to seven panorama viewpoints.",
+        "hu": "Egyszobás mintalakás: modell, berendezés, öt-hét állókép és öt-hét panoráma nézőpont."
+      },
+      "tech": [
+        "interior",
+        "360-renderings"
+      ]
+    },
+    {
+      "code": "INT.FLAT.2BED",
+      "legacy": "C4",
+      "family": "INT",
+      "name": {
+        "en": "Residential package — 2-bedroom",
+        "hu": "Lakáscsomag — 2 hálószobás"
+      },
+      "desc": {
+        "en": "7–9 stills + 6–8 panorama viewpoints",
+        "hu": "7–9 kép + 6–8 panoráma-nézőpont"
+      },
+      "unit": {
+        "en": "flat",
+        "hu": "lakás"
+      },
+      "base": 2700,
+      "mult": [
+        "stillsOnly"
+      ],
+      "help": {
+        "en": "Two-bedroom show flat: model, furnishing, seven to nine stills and six to eight panorama viewpoints. The most common show-flat size.",
+        "hu": "Kétszobás mintalakás: modell, berendezés, hét-kilenc állókép és hat-nyolc panoráma nézőpont. A leggyakoribb mintalakás-méret."
+      },
+      "tech": [
+        "interior",
+        "360-renderings"
+      ]
+    },
+    {
+      "code": "INT.FLAT.3BED",
+      "legacy": "C5",
+      "family": "INT",
+      "name": {
+        "en": "Residential package — 3-bedroom",
+        "hu": "Lakáscsomag — 3 hálószobás"
+      },
+      "desc": {
+        "en": "8–11 stills + 7–9 panorama viewpoints",
+        "hu": "8–11 kép + 7–9 panoráma-nézőpont"
+      },
+      "unit": {
+        "en": "flat",
+        "hu": "lakás"
+      },
+      "base": 3100,
+      "mult": [
+        "stillsOnly"
+      ],
+      "help": {
+        "en": "Three-bedroom show flat: model, furnishing, eight to eleven stills and seven to nine panorama viewpoints.",
+        "hu": "Háromszobás mintalakás: modell, berendezés, nyolc-tizenegy állókép és hét-kilenc panoráma nézőpont."
+      },
+      "tech": [
+        "interior",
+        "360-renderings"
+      ]
+    },
+    {
+      "code": "INT.AI",
+      "legacy": "G2",
+      "family": "INT",
+      "name": {
+        "en": "AI interior image from the empty 3D model",
+        "hu": "AI belső kép a berendezetlen 3D modellből"
+      },
+      "desc": {
+        "en": "AI furnishing without detailed interior modelling · one variation · the same furnishing cannot be shown from very different viewpoints · no 360° tour this way",
+        "hu": "AI-berendezés részletes belső modellezés nélkül · egy variáció · ugyanarról a berendezésről nagyon eltérő nézőpont nem készülhet · 360°-os panorámatúra sem készül így"
+      },
+      "unit": {
+        "en": "image",
+        "hu": "kép"
+      },
+      "base": 115,
+      "needs": "MOD",
+      "help": {
+        "en": "AI adds the furnishing onto a render of the empty model, so no furniture modelling is needed. One variation included. Good for early sales material; not for a tour or for matching views of the same room.",
+        "hu": "Az AI az üres modell renderére helyezi a berendezést, így nem kell bútort modellezni. Egy változat benne. Korai értékesítési anyagra jó; túrához vagy ugyanazon szoba több nézetéhez nem."
+      },
+      "tech": [
+        "interior-styling",
+        "ai-render-upgrade"
+      ]
+    },
+    {
+      "code": "INT.AI.VAR",
+      "family": "INT",
+      "name": {
+        "en": "Furnishing, colour or style variant from the same viewpoint",
+        "hu": "Berendezés-, szín- vagy stílusváltozat ugyanabból a nézőpontból"
+      },
+      "unit": {
+        "en": "variant",
+        "hu": "változat"
+      },
+      "base": 30,
+      "help": {
+        "en": "Another furnishing, colour or style of an INT.AI image from the same viewpoint.",
+        "hu": "Egy INT.AI kép másik berendezése, színe vagy stílusa ugyanabból a nézőpontból."
+      },
+      "tech": [
+        "interior-styling"
+      ]
+    },
+    {
+      "code": "PANO.VP",
+      "legacy": "D1",
+      "family": "PANO",
+      "name": {
+        "en": "360° viewpoint from the 3D model",
+        "hu": "360°-os nézőpont a 3D modellből"
+      },
+      "desc": {
+        "en": "hosting 12 months included · viewpoints 1–10 full price, 11–20 −10 %, 21–30 −20 % … 51+ −50 %",
+        "hu": "12 hónap tárhely az árban · 1–10. nézőpont teljes ár, 11–20. −10 %, 21–30. −20 % … 51-től −50 %"
+      },
+      "unit": {
+        "en": "viewpoint",
+        "hu": "nézőpont"
+      },
+      "base": 175,
+      "tier": "pano",
+      "help": {
+        "en": "One 360° viewpoint rendered from the model and published in our tour player, hosting included for twelve months. Blocks of ten get progressively cheaper.",
+        "hu": "Egy 360°-os nézőpont a modellből renderelve, a túralejátszónkban közzétéve, tizenkét hónap tárhellyel. A tízes blokkok egyre olcsóbbak."
+      },
+      "tech": [
+        "360-renderings",
+        "360-tour",
+        "virtual-reality-vr-experience"
+      ]
+    },
+    {
+      "code": "PANO.HOTSPOT",
+      "family": "PANO",
+      "name": {
+        "en": "Extra content hotspot",
+        "hu": "Extra tartalmi hotspot"
+      },
+      "desc": {
+        "en": "info, HTML, image, video, PDF, gallery, before–after compare, external link, polygon area — popup or pinned in the scene · navigation hotspots are part of the tour",
+        "hu": "info, HTML, kép, videó, PDF, galéria, előtte–utána összehasonlítás, külső link, poligon terület — felugró vagy a térbe rögzítve · a navigációs hotspotok a túra részei"
+      },
+      "unit": {
+        "en": "hotspot",
+        "hu": "hotspot"
+      },
+      "base": 10,
+      "help": {
+        "en": "A content marker in the tour: text, image, video, PDF, gallery, before–after or a link, as a popup or pinned in the scene. Navigation between viewpoints is already included.",
+        "hu": "Tartalmi jelölő a túrában: szöveg, kép, videó, PDF, galéria, előtte–utána vagy link, felugró ablakban vagy a térbe tűzve. A nézőpontok közti navigáció eleve benne van."
+      },
+      "tech": [
+        "360-tour"
+      ]
+    },
+    {
+      "code": "PANO.BLEND",
+      "legacy": "D3",
+      "family": "PANO",
+      "name": {
+        "en": "Render blended into a photographed panorama",
+        "hu": "Render fotózott panorámába illesztve"
+      },
+      "unit": {
+        "en": "viewpoint",
+        "hu": "nézőpont"
+      },
+      "base": 110,
+      "help": {
+        "en": "Your building rendered into a 360° photo taken on site, so the real surroundings wrap around the new design.",
+        "hu": "Az épület beleillesztve egy helyszínen készült 360°-os fotóba, így a valós környezet veszi körül az új tervet."
+      },
+      "tech": [
+        "360-photo-integration"
+      ]
+    },
+    {
+      "code": "PANO.SHOOT",
+      "legacy": "D4",
+      "family": "PANO",
+      "name": {
+        "en": "Photographed 360° on site",
+        "hu": "Helyszíni 360°-os fotózás"
+      },
+      "unit": {
+        "en": "viewpoint",
+        "hu": "nézőpont"
+      },
+      "base": 100,
+      "help": {
+        "en": "A 360° photograph taken on site: existing interiors, the plot, or panoramas to blend renders into. Add a site visit (PANO.VISIT).",
+        "hu": "Helyszíni 360°-os fotó: meglévő belső, a telek, vagy panoráma renderek beillesztéséhez. Helyszíni kiszállással (PANO.VISIT)."
+      },
+      "tech": [
+        "360-photography"
+      ]
+    },
+    {
+      "code": "PANO.VISIT",
+      "legacy": "D5",
+      "family": "PANO",
+      "name": {
+        "en": "Site visit, Budapest",
+        "hu": "Helyszíni kiszállás, Budapest"
+      },
+      "desc": {
+        "en": "+€1.5/km outside Budapest",
+        "hu": "Budapesten kívül +1,5 €/km"
+      },
+      "unit": {
+        "en": "visit",
+        "hu": "alkalom"
+      },
+      "base": 210,
+      "help": {
+        "en": "One trip to the site with the camera gear, Budapest included; outside the city €1.5 per kilometre.",
+        "hu": "Egy kiszállás a helyszínre a felszereléssel, Budapesten belül; azon kívül 1,5 €/km."
+      },
+      "tech": [
+        "360-photography"
+      ]
+    },
+    {
+      "code": "PLAN.UNIT",
+      "legacy": "E1",
+      "family": "PLAN",
+      "name": {
+        "en": "Unit floor plans",
+        "hu": "Lakásalaprajzok"
+      },
+      "desc": {
+        "en": "quantity = total flats · × (0.25 + 0.75 × unit types ÷ flats)",
+        "hu": "mennyiség = összes lakás · × (0,25 + 0,75 × lakástípus ÷ lakás)"
+      },
+      "unit": {
+        "en": "flat",
+        "hu": "lakás"
+      },
+      "base": 95,
+      "ratio": {
+        "fixed": 0.25
+      },
+      "help": {
+        "en": "A marketing floor plan for every flat. The price scales with the number of distinct unit types, not only the flat count: repeated types are much cheaper.",
+        "hu": "Marketing alaprajz minden lakáshoz. Az ár a különböző lakástípusok számával skálázódik, nem csak a lakásszámmal: az ismétlődő típusok sokkal olcsóbbak."
+      },
+      "tech": [
+        "marketing-apartment-plan"
+      ]
+    },
+    {
+      "code": "PLAN.SHEET",
+      "legacy": "E4",
+      "family": "PLAN",
+      "name": {
+        "en": "Sales-sheet template design",
+        "hu": "Értékesítési adatlap sablonterv"
+      },
+      "unit": {
+        "en": "once",
+        "hu": "egyszeri"
+      },
+      "base": 110,
+      "help": {
+        "en": "Design of the sales-sheet template, once per project: layout, typography, brand colours.",
+        "hu": "Az értékesítési adatlap sablonjának megtervezése projektenként egyszer: elrendezés, tipográfia, arculati színek."
+      },
+      "tech": [
+        "marketing-apartment-plan"
+      ]
+    },
+    {
+      "code": "PLAN.ASSY",
+      "legacy": "E5",
+      "family": "PLAN",
+      "name": {
+        "en": "Sales-sheet assembly",
+        "hu": "Értékesítési adatlap összeállítás"
+      },
+      "unit": {
+        "en": "flat",
+        "hu": "lakás"
+      },
+      "base": 45,
+      "help": {
+        "en": "Filling the template for one flat: plan, data, position on the level plan, exported print and web PDF.",
+        "hu": "A sablon kitöltése egy lakáshoz: alaprajz, adatok, pozíció a szintrajzon, nyomdai és webes PDF."
+      },
+      "tech": [
+        "marketing-apartment-plan"
+      ]
+    },
+    {
+      "code": "PLAN.LEVEL",
+      "legacy": "E6",
+      "family": "PLAN",
+      "name": {
+        "en": "Level plans",
+        "hu": "Szintalaprajzok"
+      },
+      "desc": {
+        "en": "quantity = levels · × max(2, flats ÷ levels) ÷ 6 — average level 6 flats, minimum 2",
+        "hu": "mennyiség = szintek · × max(2, lakás ÷ szint) ÷ 6 — átlagos szint 6 lakás, minimum 2"
+      },
+      "unit": {
+        "en": "level",
+        "hu": "szint"
+      },
+      "base": 110,
+      "level": {
+        "ref": "PLAN.UNIT",
+        "avg": 6,
+        "min": 2
+      },
+      "help": {
+        "en": "A coloured plan of one level showing every flat. Priced by the average number of flats per level.",
+        "hu": "Egy szint színezett alaprajza az összes lakással. A szintenkénti átlagos lakásszám alapján árazva."
+      },
+      "tech": [
+        "marketing-level-plan"
+      ]
+    },
+    {
+      "code": "FILM.3D",
+      "legacy": "F1",
+      "family": "FILM",
+      "name": {
+        "en": "3D animation — complex",
+        "hu": "3D animáció — összetett"
+      },
+      "desc": {
+        "en": "choreographed people and vehicles, multiple cameras, storyboard · incl. previz, edit, grade, stock music, basic titles",
+        "hu": "koreografált emberek és járművek, több kamera, storyboard · previz, vágás, színkorrekció, stock zene, egyszerű feliratok az árban"
+      },
+      "unit": {
+        "en": "second",
+        "hu": "másodperc"
+      },
+      "base": 100,
+      "min": 30,
+      "mult": [
+        "formats",
+        "fourK",
+        "v360"
+      ],
+      "help": {
+        "en": "Fully choreographed animation: storyboard, several cameras, moving people and vehicles, previz, edit, colour grade, stock music and basic titles. Per finished second, 30 s minimum.",
+        "hu": "Teljesen megkoreografált animáció: storyboard, több kamera, mozgó emberek és járművek, előnézet, vágás, színezés, stock zene és alapfeliratok. Kész másodpercenként, minimum 30 s."
+      },
+      "tech": [
+        "3d-animation"
+      ]
+    },
+    {
+      "code": "FILM.WALK",
+      "legacy": "F2",
+      "family": "FILM",
+      "name": {
+        "en": "3D animation — simple walkthrough or flyby",
+        "hu": "3D animáció — egyszerű bejárás vagy átrepülés"
+      },
+      "desc": {
+        "en": "one camera path, no crowd choreography · same inclusions",
+        "hu": "egy kamerapálya, tömegkoreográfia nélkül · ugyanazzal a tartalommal"
+      },
+      "unit": {
+        "en": "second",
+        "hu": "másodperc"
+      },
+      "base": 50,
+      "min": 30,
+      "mult": [
+        "formats",
+        "fourK",
+        "v360"
+      ],
+      "help": {
+        "en": "One continuous camera path through or around the model, no crowd choreography. Same edit, grade and music inclusions as the complex film.",
+        "hu": "Egy folyamatos kameraút a modellben vagy körülötte, tömegkoreográfia nélkül. Ugyanaz a vágás, színezés és zene, mint a komplex filmnél."
+      },
+      "tech": [
+        "3d-animation"
+      ]
+    },
+    {
+      "code": "FILM.AI",
+      "legacy": "F3",
+      "family": "FILM",
+      "name": {
+        "en": "AI motion from stills, 1080p",
+        "hu": "AI mozgókép állóképekből, 1080p"
+      },
+      "desc": {
+        "en": "same rate on ai.visiongraphics.eu · incl. edit, stock music",
+        "hu": "azonos ár az ai.visiongraphics.eu oldalon · vágás, stock zene az árban"
+      },
+      "unit": {
+        "en": "second",
+        "hu": "másodperc"
+      },
+      "base": 40,
+      "min": 15,
+      "mult": [
+        "formats"
+      ],
+      "help": {
+        "en": "Camera motion generated by AI from finished stills, 1080p, edited to stock music. Order it directly on ai.visiongraphics.eu at the same rate.",
+        "hu": "AI által generált kameramozgás kész állóképekből, 1080p, stock zenére vágva. Ugyanezen az áron rendelhető az ai.visiongraphics.eu oldalon."
+      },
+      "tech": [
+        "ai-animation"
+      ]
+    },
+    {
+      "code": "FILM.EDIT",
+      "legacy": "F4",
+      "family": "FILM",
+      "name": {
+        "en": "Stock or site footage editing",
+        "hu": "Stock vagy helyszíni felvétel vágása"
+      },
+      "unit": {
+        "en": "second",
+        "hu": "másodperc"
+      },
+      "base": 6,
+      "help": {
+        "en": "Cutting and grading footage you supply or stock clips into the film, per finished second.",
+        "hu": "Az általatok adott vagy stock felvételek vágása és színezése a filmbe, kész másodpercenként."
+      },
+      "tech": [
+        "video-production"
+      ]
+    },
+    {
+      "code": "FILM.SHORT",
+      "legacy": "F5",
+      "family": "FILM",
+      "name": {
+        "en": "Short from the main film",
+        "hu": "Rövidfilm a főfilmből"
+      },
+      "desc": {
+        "en": "≤30 s re-edit from existing renders, one format · 3+ shorts ×0.8 · new camera seconds at FILM.WALK",
+        "hu": "≤30 mp újravágás meglévő renderekből, egy formátum · 3+ rövidfilm ×0,8 · új kamera-másodpercek FILM.WALK áron"
+      },
+      "unit": {
+        "en": "short",
+        "hu": "rövidfilm"
+      },
+      "base": 250,
+      "bundle": {
+        "from": 3,
+        "x": 0.8
+      },
+      "help": {
+        "en": "A social-length re-cut of the main film in one format, from existing renders. Three or more shorts get 20 % off; new camera seconds are charged at FILM.WALK.",
+        "hu": "A fő film rövid, közösségi médiára vágott változata egy formátumban, meglévő renderekből. Három vagy több rövidfilmnél 20 % kedvezmény; új kameramásodpercek FILM.WALK áron."
+      },
+      "tech": [
+        "video-production",
+        "3d-animation"
+      ]
+    },
+    {
+      "code": "FILM.MOGR",
+      "legacy": "F6",
+      "family": "FILM",
+      "name": {
+        "en": "Motion graphics",
+        "hu": "Mozgógrafika"
+      },
+      "desc": {
+        "en": "plan and site-plan reveals, unit highlights, availability overlays, infographics, maps",
+        "hu": "alaprajz- és helyszínrajz-animáció, lakáskiemelés, elérhetőségi rétegek, infografika, térképek"
+      },
+      "unit": {
+        "en": "second",
+        "hu": "másodperc"
+      },
+      "base": 90,
+      "help": {
+        "en": "Animated plans, site-plan reveals, unit highlights, availability overlays, maps and infographics, per second.",
+        "hu": "Animált alaprajzok, helyszínrajz-felfedések, lakáskiemelések, elérhetőségi rétegek, térképek, infografikák, másodpercenként."
+      },
+      "tech": [
+        "video-production"
+      ]
+    },
+    {
+      "code": "FILM.LOGO",
+      "legacy": "F7",
+      "family": "FILM",
+      "name": {
+        "en": "Animated logo sting or title sequence",
+        "hu": "Animált logó vagy főcím"
+      },
+      "desc": {
+        "en": "reused across films and shorts",
+        "hu": "minden filmben és rövidfilmben újrahasznosítva"
+      },
+      "unit": {
+        "en": "once",
+        "hu": "egyszeri"
+      },
+      "base": 300,
+      "help": {
+        "en": "A short animated logo or title sequence, made once and reused across every film and short of the project.",
+        "hu": "Rövid animált logó vagy címszekvencia, egyszer elkészítve és a projekt minden filmjében újrahasznosítva."
+      },
+      "tech": [
+        "video-production"
+      ]
+    },
+    {
+      "code": "FILM.VO.AI",
+      "legacy": "F8",
+      "family": "FILM",
+      "name": {
+        "en": "AI narration",
+        "hu": "AI narráció"
+      },
+      "desc": {
+        "en": "per language · cleared engines · preset or designed voice · 2 re-takes · no real-person cloning without consent",
+        "hu": "nyelvenként · tisztázott licencű motorok · előre beállított vagy tervezett hang · 2 újrafelvétel · valós személy hangja csak írásos hozzájárulással"
+      },
+      "unit": {
+        "en": "finished minute",
+        "hu": "kész perc"
+      },
+      "base": 60,
+      "help": {
+        "en": "Narration by a cleared AI voice, per language and finished minute, with two re-takes. No cloning of real people without consent.",
+        "hu": "Narráció engedélyezett AI hanggal, nyelvenként és kész percenként, két újrafelvétellel. Valós személy klónozása hozzájárulás nélkül nincs."
+      },
+      "tech": [
+        "video-production"
+      ]
+    },
+    {
+      "code": "FILM.VO.HUMAN",
+      "legacy": "F9",
+      "family": "FILM",
+      "name": {
+        "en": "Human narration — studio voice-over",
+        "hu": "Emberi narráció — stúdió szinkronhang"
+      },
+      "desc": {
+        "en": "we direct and edit · HU €150–300/min, native EN €300–500/min",
+        "hu": "mi rendezzük és vágjuk · HU 150–300 €/perc, anyanyelvi EN 300–500 €/perc"
+      },
+      "unit": {
+        "en": "minute",
+        "hu": "perc"
+      },
+      "custom": {
+        "en": "cost +15 %",
+        "hu": "költség +15 %"
+      },
+      "help": {
+        "en": "A studio voice actor we cast, direct and edit. Hungarian roughly €150–300, native English €300–500 per minute.",
+        "hu": "Stúdió szinkronhang, akit mi választunk, irányítunk és vágunk. Magyar kb. 150–300 €, anyanyelvi angol 300–500 € percenként."
+      },
+      "tech": [
+        "video-production"
+      ]
+    },
+    {
+      "code": "FILM.MUSIC.AI",
+      "legacy": "F10",
+      "family": "FILM",
+      "name": {
+        "en": "AI music composition",
+        "hu": "AI zeneszerzés"
+      },
+      "desc": {
+        "en": "bespoke track to length and mood · 3 candidates · edited to picture",
+        "hu": "egyedi zene hosszra és hangulatra · 3 változat · képre vágva"
+      },
+      "unit": {
+        "en": "track",
+        "hu": "zene"
+      },
+      "base": 150,
+      "help": {
+        "en": "A bespoke AI-composed track fitted to length and mood, three candidates, edited to picture.",
+        "hu": "Egyedi AI-komponált zene hosszra és hangulatra szabva, három jelölt, képre vágva."
+      },
+      "tech": [
+        "video-production"
+      ]
+    },
+    {
+      "code": "FILM.MUSIC.HUMAN",
+      "legacy": "F11",
+      "family": "FILM",
+      "name": {
+        "en": "Human music composition",
+        "hu": "Emberi zeneszerzés"
+      },
+      "desc": {
+        "en": "typ. €800–2,500 per 60–90 s · cleared for broadcast and paid ads",
+        "hu": "jellemzően 800–2 500 € / 60–90 mp · sugárzásra és fizetett hirdetésre tisztázva"
+      },
+      "unit": {
+        "en": "track",
+        "hu": "zene"
+      },
+      "custom": {
+        "en": "cost +15 %",
+        "hu": "költség +15 %"
+      },
+      "help": {
+        "en": "A composer-written track cleared for broadcast and paid advertising, typically €800–2,500 for 60–90 seconds.",
+        "hu": "Zeneszerző által írt, sugárzásra és fizetett hirdetésre engedélyezett zene, jellemzően 800–2 500 € 60–90 másodpercre."
+      },
+      "tech": [
+        "video-production"
+      ]
+    },
+    {
+      "code": "FILM.SCRIPT",
+      "legacy": "F12",
+      "family": "FILM",
+      "name": {
+        "en": "Script writing",
+        "hu": "Szövegírás"
+      },
+      "desc": {
+        "en": "narration text, per language · typ. 1–2 h per finished minute",
+        "hu": "narrációs szöveg, nyelvenként · jellemzően 1–2 óra kész percenként"
+      },
+      "unit": {
+        "en": "hour",
+        "hu": "óra"
+      },
+      "base": 75,
+      "noRush": true,
+      "help": {
+        "en": "Writing the narration text per language, typically one to two hours per finished minute.",
+        "hu": "A narrációs szöveg megírása nyelvenként, jellemzően egy-két óra kész percenként."
+      },
+      "tech": [
+        "video-production"
+      ]
+    },
+    {
+      "code": "FILM.SUBS",
+      "legacy": "F13",
+      "family": "FILM",
+      "name": {
+        "en": "Subtitles and captions",
+        "hu": "Feliratozás"
+      },
+      "desc": {
+        "en": "per language · speech recognition + manual check",
+        "hu": "nyelvenként · beszédfelismerés + kézi ellenőrzés"
+      },
+      "unit": {
+        "en": "minute",
+        "hu": "perc"
+      },
+      "base": 40,
+      "help": {
+        "en": "Subtitles per language: speech recognition, manual check, timed and styled to the film.",
+        "hu": "Feliratok nyelvenként: beszédfelismerés, kézi ellenőrzés, a filmhez időzítve és formázva."
+      },
+      "tech": [
+        "video-production"
+      ]
+    },
+    {
+      "code": "FILM.FRAME",
+      "legacy": "F15",
+      "family": "FILM",
+      "name": {
+        "en": "Film frames as stills",
+        "hu": "Filmkockák állóképként"
+      },
+      "desc": {
+        "en": "4K, graded, from an approved film",
+        "hu": "4K, színkorrigált, jóváhagyott filmből"
+      },
+      "unit": {
+        "en": "frame",
+        "hu": "képkocka"
+      },
+      "base": 50,
+      "help": {
+        "en": "A frame from an approved film re-rendered at 4K and graded as a still: cheaper than a new view because the camera already exists.",
+        "hu": "Egy jóváhagyott film képkockája 4K-ban újrarenderelve és állóképként színezve: olcsóbb egy új nézetnél, mert a kamera már megvan."
+      },
+      "tech": [
+        "3d-animation"
+      ]
+    },
+    {
+      "code": "AI.IMG",
+      "legacy": "G1",
+      "family": "AI",
+      "name": {
+        "en": "AI image from any 2D input",
+        "hu": "AI kép bármilyen 2D forrásból"
+      },
+      "desc": {
+        "en": "plan, sketch, photo, old render · one variation · self-serve",
+        "hu": "alaprajz, vázlat, fotó, régi render · egy variáció · önkiszolgáló"
+      },
+      "unit": {
+        "en": "image",
+        "hu": "kép"
+      },
+      "base": 90,
+      "help": {
+        "en": "One AI-generated image from any 2D input: plan, sketch, photo or an old render. One variation included, more at AI.VAR. Self-serve on ai.visiongraphics.eu.",
+        "hu": "Egy AI-generált kép bármilyen 2D forrásból: alaprajz, vázlat, fotó vagy régi render. Egy változat benne, továbbiak AI.VAR áron. Önkiszolgálóan az ai.visiongraphics.eu oldalon."
+      },
+      "tech": [
+        "ai-render-upgrade",
+        "architectural-styling"
+      ]
+    },
+    {
+      "code": "AI.EDIT",
+      "legacy": "G5",
+      "family": "AI",
+      "name": {
+        "en": "AI image with manual editing or special request",
+        "hu": "AI kép kézi szerkesztéssel vagy különleges kéréssel"
+      },
+      "desc": {
+        "en": "AI.IMG plus Photoshop work or a non-standard brief",
+        "hu": "AI.IMG plusz Photoshop-munka vagy nem szokványos brief"
+      },
+      "unit": {
+        "en": "image",
+        "hu": "kép"
+      },
+      "base": 180,
+      "help": {
+        "en": "AI.IMG with hand retouching in Photoshop, or a brief the standard pipeline cannot follow.",
+        "hu": "AI.IMG kézi Photoshop retussal, vagy olyan briefre, amit a standard folyamat nem követ."
+      },
+      "tech": [
+        "ai-render-upgrade"
+      ]
+    },
+    {
+      "code": "AI.VAR",
+      "legacy": "G4",
+      "family": "AI",
+      "name": {
+        "en": "Extra variation",
+        "hu": "További variáció"
+      },
+      "desc": {
+        "en": "per image, above the included one · no minimum",
+        "hu": "képenként, a tartalmazott felett · nincs minimum"
+      },
+      "unit": {
+        "en": "variation",
+        "hu": "variáció"
+      },
+      "base": 30,
+      "help": {
+        "en": "Another take on the same input image: different style, time of day, materials or season.",
+        "hu": "Újabb változat ugyanarra a forrásképre: más stílus, napszak, anyag vagy évszak."
+      },
+      "tech": [
+        "ai-render-upgrade"
+      ]
+    },
+    {
+      "code": "AI.CROP",
+      "legacy": "G6",
+      "family": "AI",
+      "name": {
+        "en": "Extra crop or aspect ratio",
+        "hu": "További kivágás vagy képarány"
+      },
+      "unit": {
+        "en": "view",
+        "hu": "nézet"
+      },
+      "base": 20,
+      "help": {
+        "en": "A second aspect ratio of an AI image, out-painted and re-checked.",
+        "hu": "Egy AI kép második képaránya, kiterjesztve és ellenőrizve."
+      },
+      "tech": [
+        "ai-render-upgrade"
+      ]
+    },
+    {
+      "code": "WEB.VIEWER",
+      "legacy": "H1",
+      "family": "WEB",
+      "name": {
+        "en": "Web 3D viewer",
+        "hu": "Webes 3D nézegető"
+      },
+      "desc": {
+        "en": "the project model in the browser (three.js / glTF): orbit, section, day–night, hotspots · mobile-first · hosting 12 months",
+        "hu": "a projekt modellje böngészőben (three.js / glTF): forgatás, metszet, nappal–éjszaka, hotspotok · mobil-először · 12 hónap tárhely"
+      },
+      "unit": {
+        "en": "project",
+        "hu": "projekt"
+      },
+      "base": 1800,
+      "help": {
+        "en": "Your model in the browser: orbit, section cut, day–night, hotspots, mobile-first. Hosting for twelve months included.",
+        "hu": "A modell a böngészőben: forgatás, metszés, nappal–éjszaka, hotspotok, mobilra optimalizálva. Tizenkét hónap tárhely benne."
+      }
+    },
+    {
+      "code": "WEB.VARSET",
+      "legacy": "H2",
+      "family": "WEB",
+      "name": {
+        "en": "Interactive variant set for the viewer",
+        "hu": "Interaktív variánskészlet a nézegetőhöz"
+      },
+      "desc": {
+        "en": "one toggle group: materials, phases, time of day, furnishing",
+        "hu": "egy kapcsolócsoport: anyagok, ütemek, napszak, berendezés"
+      },
+      "unit": {
+        "en": "set",
+        "hu": "készlet"
+      },
+      "base": 300,
+      "help": {
+        "en": "One toggle group added to the viewer: materials, construction phases, time of day or furnishing.",
+        "hu": "Egy kapcsolócsoport a nézegetőhöz: anyagok, építési fázisok, napszak vagy berendezés."
+      }
+    },
+    {
+      "code": "WEB.SUN",
+      "legacy": "H3",
+      "family": "WEB",
+      "name": {
+        "en": "Sun and shadow study tool",
+        "hu": "Benapozás- és árnyékvizsgáló eszköz"
+      },
+      "desc": {
+        "en": "on the client model: location, date, hour · embeddable",
+        "hu": "az ügyfél modelljén: helyszín, dátum, óra · beágyazható"
+      },
+      "unit": {
+        "en": "project",
+        "hu": "projekt"
+      },
+      "base": 1500,
+      "help": {
+        "en": "Sun and shadow study on your model by location, date and hour, embeddable on your site.",
+        "hu": "Nap- és árnyékvizsgálat a modellen helyszín, dátum és óra szerint, a saját oldalatokba ágyazható."
+      }
+    },
+    {
+      "code": "WEB.CONFIG",
+      "legacy": "H4",
+      "family": "WEB",
+      "name": {
+        "en": "Configurator or calculator microtool",
+        "hu": "Konfigurátor vagy kalkulátor mikroeszköz"
+      },
+      "desc": {
+        "en": "from · finish and colour pickers, unit-mix or area calculators, plan → volume · scoped in expert days",
+        "hu": "-tól · felület- és színválasztó, lakásmix- vagy területkalkulátor, alaprajz → tömeg · szakértői napokban felmérve"
+      },
+      "unit": {
+        "en": "project",
+        "hu": "projekt"
+      },
+      "base": 2700,
+      "help": {
+        "en": "Configurators and calculators built to your brief: finish pickers, unit-mix or area tools. Scoped in expert days; this is the starting price.",
+        "hu": "Briefre épített konfigurátorok és kalkulátorok: anyagválasztó, lakásmix- vagy területeszközök. Szakértői napokban felmérve; ez a kiinduló ár."
+      }
+    },
+    {
+      "code": "WEB.SITE",
+      "legacy": "H5",
+      "family": "WEB",
+      "name": {
+        "en": "Branded microsite",
+        "hu": "Márkázott microsite"
+      },
+      "desc": {
+        "en": "static, bilingual, galleries, no tracking, hosting 12 months",
+        "hu": "statikus, kétnyelvű, galériák, követés nélkül, 12 hónap tárhely"
+      },
+      "unit": {
+        "en": "project",
+        "hu": "projekt"
+      },
+      "base": 1800,
+      "help": {
+        "en": "A static, bilingual project microsite with galleries, no tracking, hosted for twelve months.",
+        "hu": "Statikus, kétnyelvű projekt-mikrosite galériákkal, követés nélkül, tizenkét hónap tárhellyel."
+      }
+    },
+    {
+      "code": "WEB.GUIDE",
+      "legacy": "H6",
+      "family": "WEB",
+      "name": {
+        "en": "Guided-tour presenter mode",
+        "hu": "Vezetett túra — előadói mód"
+      },
+      "desc": {
+        "en": "add-on to PANO tours: the sales agent steers the buyer's screen · setup + training",
+        "hu": "kiegészítés PANO túrákhoz: az értékesítő vezérli a vevő képernyőjét · beállítás + betanítás"
+      },
+      "unit": {
+        "en": "project",
+        "hu": "projekt"
+      },
+      "base": 600,
+      "help": {
+        "en": "Presenter mode for a 360° tour: the sales agent steers the buyer's screen live. Setup and training included.",
+        "hu": "Bemutató mód a 360°-os túrához: az értékesítő élőben vezérli a vevő képernyőjét. Beállítás és betanítás benne."
+      },
+      "tech": [
+        "360-tour"
+      ]
+    },
+    {
+      "code": "WEB.TOY",
+      "legacy": "H7",
+      "family": "WEB",
+      "name": {
+        "en": "Campaign toy or daily game",
+        "hu": "Kampányjáték vagy napi játék"
+      },
+      "desc": {
+        "en": "from · labs-class browser toy with share cards for a launch campaign",
+        "hu": "-tól · labs-szintű böngészős játék megosztókártyákkal egy kampányhoz"
+      },
+      "unit": {
+        "en": "project",
+        "hu": "projekt"
+      },
+      "base": 3600,
+      "help": {
+        "en": "A playful browser toy or daily game with share cards for a launch campaign. Scoped in expert days; this is the starting price.",
+        "hu": "Játékos böngészős eszköz vagy napi játék megosztókártyákkal egy indító kampányhoz. Szakértői napokban felmérve; ez a kiinduló ár."
+      }
+    },
+    {
+      "code": "WEB.VR",
+      "legacy": "H8",
+      "family": "WEB",
+      "name": {
+        "en": "Real-time (Unreal) VR application",
+        "hu": "Valós idejű (Unreal) VR alkalmazás"
+      },
+      "desc": {
+        "en": "from · scoped in expert days",
+        "hu": "-tól · szakértői napokban felmérve"
+      },
+      "unit": {
+        "en": "project",
+        "hu": "projekt"
+      },
+      "base": 22500,
+      "help": {
+        "en": "A real-time Unreal application for VR headsets, walkable at full scale. Scoped in expert days; this is the starting price.",
+        "hu": "Valós idejű Unreal alkalmazás VR-szemüvegre, valós léptékben bejárható. Szakértői napokban felmérve; ez a kiinduló ár."
+      },
+      "tech": [
+        "virtual-reality-vr-experience"
+      ]
+    },
+    {
+      "code": "WEB.HOST",
+      "legacy": "H9",
+      "family": "WEB",
+      "name": {
+        "en": "Hosting after the first year",
+        "hu": "Tárhely az első év után"
+      },
+      "desc": {
+        "en": "any hosted deliverable: tour, viewer, tool, microsite",
+        "hu": "bármely tárolt anyag: túra, nézegető, eszköz, microsite"
+      },
+      "unit": {
+        "en": "year",
+        "hu": "év"
+      },
+      "base": 280,
+      "noRush": true,
+      "help": {
+        "en": "Keeps a tour, viewer, tool or microsite online after the first included year.",
+        "hu": "Túra, nézegető, eszköz vagy mikrosite online tartása az első, díjmentes év után."
+      }
+    },
+    {
+      "code": "WEB.HEADSET",
+      "legacy": "H10",
+      "family": "WEB",
+      "name": {
+        "en": "Headset rental",
+        "hu": "VR-szemüveg bérlés"
+      },
+      "unit": {
+        "en": "day",
+        "hu": "nap"
+      },
+      "base": 110,
+      "noRush": true,
+      "help": {
+        "en": "VR headset rental per day for events and sales offices, set up with your application.",
+        "hu": "VR-szemüveg bérlés naponta rendezvényekre és értékesítési irodákba, az alkalmazással beállítva."
+      },
+      "tech": [
+        "virtual-reality-vr-experience"
+      ]
+    },
+    {
+      "code": "PROD.HERO",
+      "legacy": "K9",
+      "family": "PROD",
+      "name": {
+        "en": "Product hero package",
+        "hu": "Termék hero csomag"
+      },
+      "desc": {
+        "en": "product model from client CAD + 6 angles + 3 colour variants, print resolution",
+        "hu": "termékmodell az ügyfél CAD-jéből + 6 nézet + 3 színvariáns, nyomdai felbontás"
+      },
+      "unit": {
+        "en": "product",
+        "hu": "termék"
+      },
+      "base": 1200,
+      "help": {
+        "en": "Product model from your CAD, six angles and three colour variants at print resolution.",
+        "hu": "Termékmodell a CAD-etekből, hat nézet és három színváltozat nyomdai felbontásban."
+      },
+      "tech": [
+        "photorealistic-rendering"
+      ]
+    },
+    {
+      "code": "RATE.PROD.H",
+      "legacy": "K1",
+      "family": "RATE",
+      "name": {
+        "en": "Production hour",
+        "hu": "Gyártói óra"
+      },
+      "desc": {
+        "en": "plan revisions, changes, re-renders",
+        "hu": "tervmódosítások, változtatások, újrarender"
+      },
+      "unit": {
+        "en": "hour",
+        "hu": "óra"
+      },
+      "base": 75,
+      "noRush": true,
+      "help": {
+        "en": "Time-based work by the production team: plan revisions, small changes, re-renders.",
+        "hu": "A gyártócsapat időalapú munkája: tervmódosítás, kis változtatás, újrarender."
+      }
+    },
+    {
+      "code": "RATE.EXPERT.H",
+      "legacy": "K2",
+      "family": "RATE",
+      "name": {
+        "en": "Expert hour",
+        "hu": "Szakértői óra"
+      },
+      "desc": {
+        "en": "AI pipeline, MAXScript / automation, interactive development, XL scoping, audits",
+        "hu": "AI pipeline, MAXScript / automatizálás, interaktív fejlesztés, XL felmérés, audit"
+      },
+      "unit": {
+        "en": "hour",
+        "hu": "óra"
+      },
+      "base": 120,
+      "noRush": true,
+      "help": {
+        "en": "Senior time: AI pipelines, MAXScript and automation, interactive development, scoping and audits.",
+        "hu": "Szenior idő: AI folyamatok, MAXScript és automatizálás, interaktív fejlesztés, felmérés és audit."
+      }
+    },
+    {
+      "code": "RATE.PROD.D",
+      "legacy": "K3",
+      "family": "RATE",
+      "name": {
+        "en": "Production day",
+        "hu": "Gyártói nap"
+      },
+      "unit": {
+        "en": "day",
+        "hu": "nap"
+      },
+      "base": 600,
+      "noRush": true,
+      "help": {
+        "en": "Eight production hours booked as a day.",
+        "hu": "Nyolc termelési óra egy napra lekötve."
+      }
+    },
+    {
+      "code": "RATE.EXPERT.D",
+      "legacy": "K4",
+      "family": "RATE",
+      "name": {
+        "en": "Expert day",
+        "hu": "Szakértői nap"
+      },
+      "desc": {
+        "en": "audit = expert days + written report · MOD.XL, WEB.CONFIG, WEB.TOY scoped in these",
+        "hu": "audit = szakértői napok + írásos jelentés · a MOD.XL, WEB.CONFIG, WEB.TOY ebben felmérve"
+      },
+      "unit": {
+        "en": "day",
+        "hu": "nap"
+      },
+      "base": 900,
+      "noRush": true,
+      "help": {
+        "en": "Eight expert hours booked as a day; the unit we scope XL models, configurators and audits in.",
+        "hu": "Nyolc szakértői óra egy napra lekötve; ebben mérjük fel az XL modelleket, konfigurátorokat és auditokat."
+      }
+    },
+    {
+      "code": "RATE.ONSITE",
+      "legacy": "K5",
+      "family": "RATE",
+      "name": {
+        "en": "On-site premium",
+        "hu": "Helyszíni felár"
+      },
+      "desc": {
+        "en": "per day, on top of a day rate · travel and hotel at cost, reimbursed by the client · half-day minimum",
+        "hu": "naponta, a napidíjon felül · utazás és szállás költségen, az ügyfél téríti · minimum fél nap"
+      },
+      "unit": {
+        "en": "day",
+        "hu": "nap"
+      },
+      "base": 150,
+      "noRush": true,
+      "help": {
+        "en": "Added to a day rate when we work at your site. Travel and hotel are billed at cost; half a day is the minimum.",
+        "hu": "Napidíjhoz adódik, ha nálatok dolgozunk. Utazás és szállás önköltségen; fél nap a minimum."
+      }
+    },
+    {
+      "code": "RATE.TRAVEL",
+      "legacy": "K6",
+      "family": "RATE",
+      "name": {
+        "en": "Travel time",
+        "hu": "Utazási idő"
+      },
+      "desc": {
+        "en": "50 % of the production hour · charged on jobs of up to 2 days · half-day minimum",
+        "hu": "a gyártói óra 50 %-a · legfeljebb 2 napos munkáknál számítjuk · minimum fél nap"
+      },
+      "unit": {
+        "en": "hour",
+        "hu": "óra"
+      },
+      "base": 37.5,
+      "noRush": true,
+      "help": {
+        "en": "Travel hours at half the production rate, charged only on jobs of up to two days, half a day minimum.",
+        "hu": "Utazási órák a termelési óradíj felén, csak legfeljebb kétnapos munkáknál, fél nap minimum."
+      }
+    },
+    {
+      "code": "TRAIN.DAY",
+      "legacy": "K7",
+      "family": "TRAIN",
+      "name": {
+        "en": "Training or workshop day",
+        "hu": "Képzési vagy workshop-nap"
+      },
+      "desc": {
+        "en": "up to 6 seats · custom material prepared at the expert day rate",
+        "hu": "legfeljebb 6 fő · egyedi tananyag szakértői napidíjon"
+      },
+      "unit": {
+        "en": "day",
+        "hu": "nap"
+      },
+      "base": 1200,
+      "noRush": true,
+      "help": {
+        "en": "A training or workshop day for up to six people on 3ds Max, V-Ray, AI pipelines or our tools. Custom material is prepared at the expert day rate.",
+        "hu": "Képzési vagy workshopnap legfeljebb hat főnek 3ds Max, V-Ray, AI folyamatok vagy a saját eszközeink témájában. Egyedi tananyag szakértői napidíjon készül."
+      }
+    },
+    {
+      "code": "TRAIN.SEAT",
+      "legacy": "K8",
+      "family": "TRAIN",
+      "name": {
+        "en": "Workshop seat above 6",
+        "hu": "Workshop-hely a 6. felett"
+      },
+      "unit": {
+        "en": "seat",
+        "hu": "fő"
+      },
+      "base": 100,
+      "noRush": true,
+      "help": {
+        "en": "Each participant above six on a workshop day.",
+        "hu": "Minden résztvevő a hatodik fölött egy workshopnapon."
+      }
+    }
+  ],
+  "multipliers": {
+    "framework": {
+      "global": true,
+      "label": {
+        "en": "Client",
+        "hu": "Ügyfél"
+      },
+      "note": {
+        "en": "framework: ≥3 projects or ≥€28k a year",
+        "hu": "keretszerződés: évi ≥3 projekt vagy ≥28 ezer €"
+      },
+      "options": [
+        {
+          "label": {
+            "en": "standard",
+            "hu": "standard"
+          },
+          "value": 1,
+          "default": true
+        },
+        {
+          "label": {
+            "en": "framework",
+            "hu": "keret"
+          },
+          "value": 0.85
+        }
+      ]
+    },
+    "rush": {
+      "global": true,
+      "unless": "noRush",
+      "label": {
+        "en": "Rush",
+        "hu": "Sürgős"
+      },
+      "note": {
+        "en": "not on hosting, rentals, day rates",
+        "hu": "tárhelyre, bérlésre, napidíjra nem"
+      },
+      "options": [
+        {
+          "label": {
+            "en": "none",
+            "hu": "nincs"
+          },
+          "value": 1,
+          "default": true
+        },
+        {
+          "label": {
+            "en": "rush",
+            "hu": "sürgős"
+          },
+          "value": 1.25
+        }
+      ]
+    },
+    "source": {
+      "label": {
+        "en": "MOD · source data",
+        "hu": "MOD · forrásadat"
+      },
+      "note": {
+        "en": "3D model · 2D CAD · PDF or sketch",
+        "hu": "3D modell · 2D CAD · PDF vagy vázlat"
+      },
+      "options": [
+        {
+          "key": "3d",
+          "label": {
+            "en": "3D model",
+            "hu": "3D modell"
+          },
+          "value": 0.5
+        },
+        {
+          "key": "cad",
+          "label": {
+            "en": "2D CAD",
+            "hu": "2D CAD"
+          },
+          "value": 1,
+          "default": true
+        },
+        {
+          "key": "sketch",
+          "label": {
+            "en": "PDF / sketch",
+            "hu": "PDF / vázlat"
+          },
+          "value": 2
+        }
+      ]
+    },
+    "fn": {
+      "label": {
+        "en": "MOD.INT · function",
+        "hu": "MOD.INT · funkció"
+      },
+      "note": {
+        "en": "residential · office · retail / hospitality · public",
+        "hu": "lakó · iroda · üzlet / vendéglátás · középület"
+      },
+      "options": [
+        {
+          "key": "res",
+          "label": {
+            "en": "res",
+            "hu": "lakó"
+          },
+          "value": 1,
+          "default": true
+        },
+        {
+          "key": "off",
+          "label": {
+            "en": "off",
+            "hu": "iroda"
+          },
+          "value": 0.8
+        },
+        {
+          "key": "ret",
+          "label": {
+            "en": "ret",
+            "hu": "üzlet"
+          },
+          "value": 1.3
+        },
+        {
+          "key": "pub",
+          "label": {
+            "en": "pub",
+            "hu": "köz"
+          },
+          "value": 1.5
+        }
+      ]
+    },
+    "detail": {
+      "label": {
+        "en": "MOD.INT.FURN · detail",
+        "hu": "MOD.INT.FURN · részletesség"
+      },
+      "note": {
+        "en": "standard · bespoke furniture and materials",
+        "hu": "standard · egyedi bútor és anyagok"
+      },
+      "options": [
+        {
+          "key": "standard",
+          "label": {
+            "en": "standard",
+            "hu": "standard"
+          },
+          "value": 1,
+          "default": true
+        },
+        {
+          "key": "bespoke",
+          "label": {
+            "en": "bespoke",
+            "hu": "egyedi"
+          },
+          "value": 1.4
+        }
+      ]
+    },
+    "stillsOnly": {
+      "label": {
+        "en": "INT.FLAT · panorama tour",
+        "hu": "INT.FLAT · panorámatúra"
+      },
+      "note": {
+        "en": "included · stills only",
+        "hu": "az árban · csak képek"
+      },
+      "options": [
+        {
+          "label": {
+            "en": "incl.",
+            "hu": "benne"
+          },
+          "value": 1,
+          "default": true
+        },
+        {
+          "label": {
+            "en": "stills only",
+            "hu": "csak képek"
+          },
+          "value": 0.8
+        }
+      ]
+    },
+    "formats": {
+      "label": {
+        "en": "FILM · formats",
+        "hu": "FILM · formátumok"
+      },
+      "note": {
+        "en": "one · square · second orientation · all",
+        "hu": "egy · négyzetes · második orientáció · mind"
+      },
+      "options": [
+        {
+          "key": "one",
+          "label": {
+            "en": "1",
+            "hu": "1"
+          },
+          "value": 1,
+          "default": true
+        },
+        {
+          "key": "square",
+          "label": {
+            "en": "+□",
+            "hu": "+□"
+          },
+          "value": 1.1
+        },
+        {
+          "key": "second",
+          "label": {
+            "en": "+⟂",
+            "hu": "+⟂"
+          },
+          "value": 1.25
+        },
+        {
+          "key": "all",
+          "label": {
+            "en": "all",
+            "hu": "mind"
+          },
+          "value": 1.3
+        }
+      ]
+    },
+    "fourK": {
+      "label": {
+        "en": "FILM.3D / WALK · resolution",
+        "hu": "FILM.3D / WALK · felbontás"
+      },
+      "note": {
+        "en": "HD · 4K",
+        "hu": "HD · 4K"
+      },
+      "options": [
+        {
+          "label": {
+            "en": "HD",
+            "hu": "HD"
+          },
+          "value": 1,
+          "default": true
+        },
+        {
+          "label": {
+            "en": "4K",
+            "hu": "4K"
+          },
+          "value": 1.3
+        }
+      ]
+    },
+    "v360": {
+      "label": {
+        "en": "FILM.3D / WALK · 360° video",
+        "hu": "FILM.3D / WALK · 360°-os videó"
+      },
+      "note": {
+        "en": "equirectangular",
+        "hu": "equirektanguláris"
+      },
+      "options": [
+        {
+          "label": {
+            "en": "flat",
+            "hu": "sík"
+          },
+          "value": 1,
+          "default": true
+        },
+        {
+          "label": {
+            "en": "360°",
+            "hu": "360°"
+          },
+          "value": 1.5
+        }
+      ]
+    }
+  },
+  "tiers": {
+    "pano": {
+      "block": 10,
+      "step": 0.1,
+      "floor": 0.5
+    },
+    "sqm": [
+      [
+        50,
+        1
+      ],
+      [
+        200,
+        0.6
+      ],
+      [
+        1000,
+        0.25
+      ],
+      [
+        null,
+        0.12
+      ]
+    ],
+    "bulk5": {
+      "block": 5,
+      "step": 0.1,
+      "floor": 0.5
+    }
+  },
+  "presets": [
+    {
+      "code": "PULI",
+      "name": "Puli",
+      "subtitle": {
+        "en": "single house",
+        "hu": "családi ház"
+      },
+      "desc": {
+        "en": "Model of one house from CAD, five daytime exterior views, three night variants.",
+        "hu": "Egy ház modellje CAD-ből, öt nappali külső nézet, három éjszakai változat."
+      },
+      "q": {
+        "MOD.S": 1,
+        "EXT.DAY": 5,
+        "EXT.NIGHT": 3
+      }
+    },
+    {
+      "code": "VIZSLA",
+      "name": "Vizsla",
+      "subtitle": {
+        "en": "building launch",
+        "hu": "épületindítás"
+      },
+      "desc": {
+        "en": "One block modelled, ten exterior views, five night variants, two photo montages, an eight-viewpoint 360° tour and eight AI interiors.",
+        "hu": "Egy épület modellje, tíz külső nézet, öt éjszakai változat, két fotómontázs, nyolc nézőpontos 360°-os túra és nyolc AI belső kép."
+      },
+      "q": {
+        "MOD.M": 1,
+        "EXT.DAY": 10,
+        "EXT.NIGHT": 5,
+        "EXT.MONTAGE": 2,
+        "PANO.VP": 8,
+        "AI.IMG": 8
+      },
+      "highlight": true
+    },
+    {
+      "code": "KUVASZ",
+      "name": "Kuvasz",
+      "subtitle": {
+        "en": "sales campaign",
+        "hu": "értékesítési kampány"
+      },
+      "desc": {
+        "en": "Vizsla plus a 60-second 3D film, a studio and a 2-bedroom show flat, unit plans for 20 flats of 10 types and a sales-sheet template.",
+        "hu": "Vizsla plusz 60 másodperces 3D film, egy garzon és egy 2 hálószobás mintalakás, 20 lakás / 10 típus alaprajza és adatlap-sablon."
+      },
+      "q": {
+        "MOD.M": 1,
+        "EXT.DAY": 10,
+        "EXT.NIGHT": 5,
+        "EXT.MONTAGE": 2,
+        "PANO.VP": 8,
+        "AI.IMG": 8,
+        "FILM.3D": 60,
+        "INT.FLAT.STUDIO": 1,
+        "INT.FLAT.2BED": 1,
+        "PLAN.UNIT": 20,
+        "PLAN.SHEET": 1
+      },
+      "types": 10
+    },
+    {
+      "code": "KOMONDOR",
+      "name": "Komondor",
+      "subtitle": {
+        "en": "sales platform",
+        "hu": "értékesítési platform"
+      },
+      "desc": {
+        "en": "Kuvasz plus a web 3D viewer with two variant sets, a branded microsite and three social shorts.",
+        "hu": "Kuvasz plusz webes 3D nézegető két variánskészlettel, márkázott microsite és három social rövidfilm."
+      },
+      "q": {
+        "MOD.M": 1,
+        "EXT.DAY": 10,
+        "EXT.NIGHT": 5,
+        "EXT.MONTAGE": 2,
+        "PANO.VP": 8,
+        "AI.IMG": 8,
+        "FILM.3D": 60,
+        "INT.FLAT.STUDIO": 1,
+        "INT.FLAT.2BED": 1,
+        "PLAN.UNIT": 20,
+        "PLAN.SHEET": 1,
+        "WEB.VIEWER": 1,
+        "WEB.VARSET": 2,
+        "WEB.SITE": 1,
+        "FILM.SHORT": 3
+      },
+      "types": 10
+    },
+    {
+      "code": "KIT",
+      "name": "Sales kit / unit",
+      "subtitle": {
+        "en": "per apartment",
+        "hu": "lakásonként"
+      },
+      "desc": {
+        "en": "PLAN.UNIT + PLAN.ASSY + AI.IMG",
+        "hu": "PLAN.UNIT + PLAN.ASSY + AI.IMG"
+      },
+      "q": {
+        "PLAN.UNIT": 1,
+        "PLAN.ASSY": 1,
+        "AI.IMG": 1
+      },
+      "types": 1
+    },
+    {
+      "code": "CHECK.TEMESVAR",
+      "name": "Temesvár utca check",
+      "subtitle": {
+        "en": "Oct 2025 quote rebuilt",
+        "hu": "2025. októberi ajánlat újraépítve"
+      },
+      "desc": {
+        "en": "excl. VR-TV · comparable €22,790 · common areas as 8 × INT.VIEW",
+        "hu": "VR-TV nélkül · összehasonlítható 22 790 € · közös terek 8 × INT.VIEW"
+      },
+      "q": {
+        "MOD.L": 1,
+        "EXT.DAY": 15,
+        "EXT.NIGHT": 10,
+        "EXT.MONTAGE": 2,
+        "PANO.VP": 20,
+        "AI.IMG": 11,
+        "INT.VIEW": 8,
+        "FILM.3D": 90
+      },
+      "public": false
+    }
+  ],
+  "ai": {
+    "image": "AI.IMG",
+    "edit": "AI.EDIT",
+    "variation": "AI.VAR",
+    "motion": "FILM.AI",
+    "includedVariations": 1,
+    "motionMax": 300,
+    "motionStep": 5,
+    "sliders": {
+      "images": {
+        "min": 1,
+        "max": 30,
+        "default": 5
+      },
+      "variations": {
+        "min": 1,
+        "max": 15,
+        "default": 1
+      }
+    }
+  },
+  "calculator": {
+    "_readme": "On-page estimator tabs (one per service). rows = list codes with the typical starting quantity; source = show the MOD source-data picker; types = show the unit-types input (PLAN.UNIT ratio). Shared rows (MOD.S/M/L) are the same quantity in every tab.",
+    "tabs": [
+      {
+        "key": "ext",
+        "name": {
+          "en": "Exterior stills",
+          "hu": "Külső látványképek"
+        },
+        "lede": {
+          "en": "Model preparation once, then finished marketing views. Night variants and montages reuse an existing camera.",
+          "hu": "Modell-előkészítés egyszer, utána kész marketingképek. Az éjszakai változatok és montázsok meglévő kamerát használnak."
+        },
+        "source": true,
+        "rows": [
+          {
+            "code": "MOD.S",
+            "default": 1
+          },
+          {
+            "code": "MOD.M",
+            "default": 0
+          },
+          {
+            "code": "MOD.L",
+            "default": 0
+          },
+          {
+            "code": "EXT.DAY",
+            "default": 5
+          },
+          {
+            "code": "EXT.NIGHT",
+            "default": 2
+          },
+          {
+            "code": "EXT.VAR",
+            "default": 0
+          },
+          {
+            "code": "EXT.MONTAGE",
+            "default": 0
+          },
+          {
+            "code": "EXT.CROP",
+            "default": 0
+          },
+          {
+            "code": "EXT.CLAY",
+            "default": 0
+          }
+        ]
+      },
+      {
+        "key": "arch",
+        "name": {
+          "en": "Architects — permits and competitions",
+          "hu": "Építészeknek — engedélyezés és pályázat"
+        },
+        "lede": {
+          "en": "Raw renders and drawing sets straight from the model, with bulk discounts by blocks of five. Not for marketing use.",
+          "hu": "Nyers renderek és rajzsorozatok közvetlenül a modellből, ötös blokkonkénti mennyiségi kedvezménnyel. Nem marketingcélra."
+        },
+        "source": true,
+        "rows": [
+          {
+            "code": "MOD.S",
+            "default": 1
+          },
+          {
+            "code": "MOD.M",
+            "default": 0
+          },
+          {
+            "code": "MOD.L",
+            "default": 0
+          },
+          {
+            "code": "EXT.BASIC",
+            "default": 10
+          },
+          {
+            "code": "EXT.ARCHSET",
+            "default": 1
+          },
+          {
+            "code": "EXT.PHASES",
+            "default": 0
+          },
+          {
+            "code": "EXT.CLAY",
+            "default": 0
+          }
+        ]
+      },
+      {
+        "key": "int",
+        "name": {
+          "en": "Interiors",
+          "hu": "Belső terek"
+        },
+        "lede": {
+          "en": "Interior model per m², then views. Show flats are fixed packages; INT.AI furnishes the empty model without modelling.",
+          "hu": "Belső modell m²-enként, majd nézetek. A mintalakások fix csomagok; az INT.AI az üres modellt bútorozza modellezés nélkül."
+        },
+        "source": true,
+        "rows": [
+          {
+            "code": "MOD.INT.FURN",
+            "default": 120,
+            "step": 10
+          },
+          {
+            "code": "MOD.INT.EMPTY",
+            "default": 0,
+            "step": 10
+          },
+          {
+            "code": "INT.VIEW",
+            "default": 6
+          },
+          {
+            "code": "INT.AI",
+            "default": 0
+          },
+          {
+            "code": "INT.AI.VAR",
+            "default": 0
+          },
+          {
+            "code": "INT.FLAT.STUDIO",
+            "default": 0
+          },
+          {
+            "code": "INT.FLAT.1BED",
+            "default": 0
+          },
+          {
+            "code": "INT.FLAT.2BED",
+            "default": 0
+          },
+          {
+            "code": "INT.FLAT.3BED",
+            "default": 0
+          }
+        ]
+      },
+      {
+        "key": "pano",
+        "name": {
+          "en": "360° tours",
+          "hu": "360°-os túrák"
+        },
+        "lede": {
+          "en": "Viewpoints from the model with hosting included; blocks of ten get cheaper. Photographed panoramas need a site visit.",
+          "hu": "Nézőpontok a modellből, tárhellyel; a tízes blokkok olcsóbbak. A fotózott panorámákhoz helyszíni kiszállás kell."
+        },
+        "source": true,
+        "rows": [
+          {
+            "code": "MOD.S",
+            "default": 1
+          },
+          {
+            "code": "MOD.M",
+            "default": 0
+          },
+          {
+            "code": "MOD.L",
+            "default": 0
+          },
+          {
+            "code": "PANO.VP",
+            "default": 8
+          },
+          {
+            "code": "PANO.HOTSPOT",
+            "default": 0
+          },
+          {
+            "code": "PANO.BLEND",
+            "default": 0
+          },
+          {
+            "code": "PANO.SHOOT",
+            "default": 0
+          },
+          {
+            "code": "PANO.VISIT",
+            "default": 0
+          },
+          {
+            "code": "WEB.GUIDE",
+            "default": 0
+          }
+        ]
+      },
+      {
+        "key": "plan",
+        "name": {
+          "en": "Floor plans and sales sheets",
+          "hu": "Alaprajzok és adatlapok"
+        },
+        "lede": {
+          "en": "Quantities are total flats and levels; the number of distinct unit types drives the plan price.",
+          "hu": "A mennyiség az összes lakás és szint; az alaprajzok árát a különböző lakástípusok száma határozza meg."
+        },
+        "types": true,
+        "rows": [
+          {
+            "code": "PLAN.UNIT",
+            "default": 20
+          },
+          {
+            "code": "PLAN.LEVEL",
+            "default": 0
+          },
+          {
+            "code": "PLAN.SHEET",
+            "default": 1
+          },
+          {
+            "code": "PLAN.ASSY",
+            "default": 20
+          }
+        ]
+      },
+      {
+        "key": "film",
+        "name": {
+          "en": "Film",
+          "hu": "Film"
+        },
+        "lede": {
+          "en": "Per finished second, 30 s minimum for 3D animation. Edit, grade, stock music and basic titles are included in every animation line.",
+          "hu": "Kész másodpercenként, 3D animációnál minimum 30 s. Vágás, színezés, stock zene és alapfeliratok minden animációs tételben benne vannak."
+        },
+        "source": true,
+        "rows": [
+          {
+            "code": "MOD.S",
+            "default": 1
+          },
+          {
+            "code": "MOD.M",
+            "default": 0
+          },
+          {
+            "code": "MOD.L",
+            "default": 0
+          },
+          {
+            "code": "FILM.WALK",
+            "default": 30,
+            "step": 5
+          },
+          {
+            "code": "FILM.3D",
+            "default": 0,
+            "step": 5
+          },
+          {
+            "code": "FILM.AI",
+            "default": 0,
+            "step": 5
+          },
+          {
+            "code": "FILM.EDIT",
+            "default": 0,
+            "step": 5
+          },
+          {
+            "code": "FILM.SHORT",
+            "default": 0
+          },
+          {
+            "code": "FILM.MOGR",
+            "default": 0,
+            "step": 5
+          },
+          {
+            "code": "FILM.LOGO",
+            "default": 0
+          },
+          {
+            "code": "FILM.VO.AI",
+            "default": 0
+          },
+          {
+            "code": "FILM.MUSIC.AI",
+            "default": 0
+          },
+          {
+            "code": "FILM.SUBS",
+            "default": 0
+          },
+          {
+            "code": "FILM.FRAME",
+            "default": 0
+          }
+        ]
+      },
+      {
+        "key": "ai",
+        "name": {
+          "en": "AI stills",
+          "hu": "AI képek"
+        },
+        "lede": {
+          "en": "From any 2D input, one variation included. The same prices are self-serve on ai.visiongraphics.eu.",
+          "hu": "Bármilyen 2D forrásból, egy változattal. Ugyanezek az árak önkiszolgálóan az ai.visiongraphics.eu oldalon."
+        },
+        "rows": [
+          {
+            "code": "AI.IMG",
+            "default": 5
+          },
+          {
+            "code": "AI.EDIT",
+            "default": 0
+          },
+          {
+            "code": "AI.VAR",
+            "default": 0
+          },
+          {
+            "code": "AI.CROP",
+            "default": 0
+          }
+        ]
+      },
+      {
+        "key": "web",
+        "name": {
+          "en": "Interactive and web",
+          "hu": "Interaktív és web"
+        },
+        "lede": {
+          "en": "Browser tools built on the project model; hosting for the first year is included, then WEB.HOST.",
+          "hu": "Böngészős eszközök a projekt modelljére; az első év tárhelye benne, utána WEB.HOST."
+        },
+        "rows": [
+          {
+            "code": "WEB.VIEWER",
+            "default": 1
+          },
+          {
+            "code": "WEB.VARSET",
+            "default": 0
+          },
+          {
+            "code": "WEB.SUN",
+            "default": 0
+          },
+          {
+            "code": "WEB.SITE",
+            "default": 0
+          },
+          {
+            "code": "WEB.GUIDE",
+            "default": 0
+          },
+          {
+            "code": "WEB.HOST",
+            "default": 0
+          },
+          {
+            "code": "WEB.HEADSET",
+            "default": 0
+          }
+        ]
+      },
+      {
+        "key": "prod",
+        "name": {
+          "en": "Product",
+          "hu": "Termék"
+        },
+        "lede": {
+          "en": "One hero package per product: model from your CAD, six angles, three colour variants.",
+          "hu": "Termékenként egy hero csomag: modell a CAD-etekből, hat nézet, három színváltozat."
+        },
+        "rows": [
+          {
+            "code": "PROD.HERO",
+            "default": 1
+          }
+        ]
+      }
+    ]
+  },
+  "terms": [
+    {
+      "en": "<b>Net prices</b>; +27 % VAT in Hungary, reverse charge in the EU. Validity 30 days. Hungarian quotes at the January HUF peg.",
+      "hu": "<b>Nettó árak</b>; Magyarországon +27 % áfa, az EU-ban fordított adózás. Érvényesség 30 nap. Magyar ajánlatok a januári forintárfolyamon."
+    },
+    {
+      "en": "<b>One model version.</b> Prices include processing of the one model or plan version supplied at ordering. Plan revisions after ordering are charged at the production hour (RATE.PROD.H).",
+      "hu": "<b>Egy modellverzió.</b> Az árak a megrendeléskor átadott egy modell- vagy tervverzió feldolgozását tartalmazzák. A megrendelés utáni tervmódosításokat gyártói óradíjon (RATE.PROD.H) számoljuk."
+    },
+    {
+      "en": "<b>3D images</b> (EXT, INT.VIEW) are only quoted together with model preparation (MOD) on the same order.",
+      "hu": "<b>3D képeket</b> (EXT, INT.VIEW) csak modell-előkészítéssel (MOD) együtt, ugyanazon a megrendelésen ajánlunk."
+    },
+    {
+      "en": "<b>Post-production included.</b> Exterior and interior 3D images include Photoshop finishing; the architect lines (EXT.BASIC, EXT.ARCHSET, EXT.PHASES) are raw renders.",
+      "hu": "<b>Utómunka az árban.</b> A külső és belső 3D képek Photoshop-utómunkát tartalmaznak; az építész tételek (EXT.BASIC, EXT.ARCHSET, EXT.PHASES) nyers renderek."
+    },
+    {
+      "en": "<b>AI inside.</b> Every deliverable, the 3D lane included, is made with AI assistance at some stage — at least upscaling; also denoising, retouching, people, vegetation. The 3D lane is still modelled and rendered by us; the AI lane is generated.",
+      "hu": "<b>AI minden termékben.</b> Minden anyag, a 3D vonal is, valamely lépésben AI-segítséggel készül — legalább a felskálázásnál; továbbá zajszűrés, retusálás, emberek, növényzet. A 3D vonalat továbbra is mi modellezzük és rendereljük; az AI vonal generált."
+    },
+    {
+      "en": "<b>Payment</b> 40 % on order · 30 % on draft approval · 30 % on delivery. Under €1,500: 50/50. Due in 8 days in Hungary, 14 days internationally.",
+      "hu": "<b>Fizetés</b> 40 % megrendeléskor · 30 % a vázlatok jóváhagyásakor · 30 % átadáskor. 1 500 € alatt: 50/50. Fizetési határidő Magyarországon 8, külföldön 14 nap."
+    },
+    {
+      "en": "<b>Two revision rounds</b> per stage — model check, drafts, final. Beyond that at the production hour.",
+      "hu": "<b>Két módosítási kör</b> szakaszonként — modellellenőrzés, vázlatok, végleges. Ezen felül gyártói óradíjon."
+    },
+    {
+      "en": "<b>Delivery</b> stills 4–6K JPG/PNG · film 1080p MP4 · hosted deliverables (tours, viewers, tools, microsites) 12 months included, then WEB.HOST. Layered or source files +25 % of the item.",
+      "hu": "<b>Átadás</b> képek 4–6K JPG/PNG · film 1080p MP4 · tárolt anyagok (túrák, nézegetők, eszközök, microsite-ok) 12 hónapig az árban, utána WEB.HOST. Rétegezett vagy forrásfájlok: a tétel +25 %-a."
+    },
+    {
+      "en": "<b>Design phases.</b> A second design phase or a major model revision after ordering is 30 % of the affected MOD line (MOD.REV); small changes at the production hour.",
+      "hu": "<b>Tervfázisok.</b> A megrendelés utáni második tervfázis vagy jelentős modellmódosítás az érintett MOD tétel 30 %-a (MOD.REV); kis változtatások gyártói óradíjon."
+    },
+    {
+      "en": "<b>Usage</b> unrestricted marketing, advertising and broadcast use for the named project — no extra licence fee; another project or resale needs a licence.",
+      "hu": "<b>Felhasználás</b> korlátlan marketing-, hirdetési és sugárzási felhasználás a megnevezett projekthez — külön licencdíj nélkül; másik projekthez vagy továbbértékesítéshez licenc szükséges."
+    },
+    {
+      "en": "<b>Rush</b> ×1.25 (not on hosting, rentals, day rates). <b>Subcontracted</b> items cost +15 %.",
+      "hu": "<b>Sürgős</b> ×1,25 (tárhelyre, bérlésre, napidíjra nem). <b>Alvállalkozói</b> tételek költség +15 %."
+    },
+    {
+      "en": "<b>Indexation</b> every January: Hungarian CPI, minimum +5 %; the HUF peg is reset the same day.",
+      "hu": "<b>Indexálás</b> minden januárban: magyar fogyasztói árindex, legalább +5 %; a forintárfolyamot ugyanazon a napon állítjuk be."
+    }
+  ],
+  "retired": [
+    {
+      "code": "D2",
+      "was": "360° tour assembly fee",
+      "replacedBy": null,
+      "date": "2026-09-14"
+    },
+    {
+      "code": "D6",
+      "was": "Tour hosting after the first year",
+      "replacedBy": "WEB.HOST",
+      "date": "2026-09-14"
+    },
+    {
+      "code": "H1 (V2)",
+      "was": "PROPVSN property selector",
+      "replacedBy": null,
+      "date": "2026-09-14",
+      "note": "returns when PROPVSN ships — the V2 code H1 was later reused for the web viewer, which is why codes are now mnemonic and never reused"
+    },
+    {
+      "code": "H2 (V2)",
+      "was": "VR-TV integration",
+      "replacedBy": null,
+      "date": "2026-09-14"
+    },
+    {
+      "code": "MOD.INT",
+      "was": "Interior model preparation",
+      "replacedBy": "MOD.INT.FURN",
+      "date": "2026-09-15"
+    },
+    {
+      "code": "AI.CAM",
+      "was": "AI image from the project 3D model, new camera",
+      "replacedBy": "INT.AI",
+      "date": "2026-09-15"
+    },
+    {
+      "code": "FILM.SFX",
+      "was": "Bespoke sound design",
+      "replacedBy": null,
+      "date": "2026-09-15"
+    },
+    {
+      "code": "FILM.MASTER",
+      "was": "ProRes or DNxHR master",
+      "replacedBy": null,
+      "date": "2026-09-15"
+    },
+    {
+      "code": "RATE.WORKSHOP",
+      "was": "Training or workshop day",
+      "replacedBy": "TRAIN.DAY",
+      "date": "2026-09-15"
+    },
+    {
+      "code": "RATE.SEAT",
+      "was": "Workshop seat above 6",
+      "replacedBy": "TRAIN.SEAT",
+      "date": "2026-09-15"
+    }
+  ]
+}

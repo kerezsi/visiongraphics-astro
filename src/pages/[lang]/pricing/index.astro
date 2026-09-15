@@ -1,29 +1,145 @@
 ---
-// src/pages/pricing/index.astro
+// src/pages/[lang]/pricing/index.astro
+//
+// The public price list. Everything printed here comes from src/data/pricing.json
+// (edited with the pricing admin at localhost:4322/pricing/) through the shared
+// math in src/lib/pricing.mjs — packages are computed from the module list at
+// build time, never typed by hand. Internal multipliers (framework, rush,
+// source…) are deliberately not shown; they live on quotes only.
 
 import Page from '../../../layouts/Page.astro';
 import SectionBanner from '../../../components/ui/SectionBanner.astro';
-import packages from '../../../data/pricing-packages.json';
-import reference from '../../../data/pricing-reference.json';
-import { staticLocalePaths, type Locale } from '../../../lib/i18n';
+import { getCollection } from 'astro:content';
+import { staticLocalePaths, localeUrl, tStr, type Locale } from '../../../lib/i18n';
+import { ui } from '../../../i18n/strings';
+import raw from '../../../data/pricing.json';
+import { publicView, calcView, priceLabel, item, fmt, fmtHuf, type PricingData } from '../../../lib/pricing.mjs';
 
 export const getStaticPaths = staticLocalePaths;
 const { lang } = Astro.params as { lang: Locale };
 Astro.locals.lang = lang;
+const L = ui(lang);
 
+const data = raw as unknown as PricingData;
+const P = publicView(data);
+const t = (v: { en: string; hu: string } | undefined) => (v ? v[lang] : '');
+const eur = (n: number | undefined) => fmt(n ?? 0, lang);
+const huf = (n: number | undefined) => fmtHuf(n ?? 0, P.peg);
+// "€180 / view", "€600–2,400 / project" or the custom note — one implementation, shared with the vision-tech pages
+const unitLine = (it: (typeof P.items)[number]) => priceLabel(it, lang);
+// quote-only multipliers stay unpublished; the two the copy cites are read from the data so the text never drifts
+const src3d = Math.round((1 - data.multipliers.source.options.find((o) => o.key === '3d')!.value) * 100);
+const rushX = data.multipliers.rush.options.find((o) => !o.default)!.value;
+// crosslinks: item.tech → vision-tech pages, family.services → service pages (slugs live in pricing.json)
+const techTitle = Object.fromEntries((await getCollection('vision-tech')).map(e => [e.slug, tStr(e.data.title, lang)]));
+const svcTitle = Object.fromEntries((await getCollection('services')).map(e => [e.slug, tStr(e.data.title, lang)]));
+// estimator payload: priceable items, tiers, the source factor, public presets, tabs — embedded as JSON, read by the client script below
+const calc = calcView(data);
+
+const COPY = {
+  en: {
+    metaTitle: 'Pricing',
+    metaDescription: `Architectural visualization price list ${P.version}: model preparation, exterior and interior stills, 360° tours, film, AI images, interactive tools. Packages from ${eur(P.presets[0].total)}. Vision Graphics Kft., Budapest.`,
+    bannerLabel: 'Investment',
+    bannerTitle: 'Pricing',
+    label: 'Price list ' + P.version,
+    h2: 'One list.',
+    h2em: 'Every quote is built from it.',
+    intro: 'These are the prices we quote from — no package tiers, no hidden extras. Pick lines by code, or start from a package below. Prices are net EUR; Hungarian quotes are converted at a fixed rate set each January.',
+    lanes: 'Two fidelity lanes, not three tiers',
+    lanesBody: 'Most deliverables exist in a 3D lane (modelled, rendered, finished by hand) and an AI lane (generated from your existing image, lightly retouched). We quote both where it makes sense; you choose per item. Small budgets go to the AI lane, never to a cheaper 3D still.',
+    packages: 'Packages',
+    packagesIntro: 'Four fixed combinations of list items — Hungarian dog breeds, by size. The price is computed from the list; swap any line and the quote follows.',
+    mostCommon: 'Most common',
+    includes: 'Includes',
+    getQuote: 'Get a quote',
+    talk: 'Talk to us',
+    list: 'Module list',
+    listIntro: 'Every line we sell, by family. Codes are stable — quote by code.',
+    code: 'Code', itemH: 'Item', price: 'Price',
+    hufNote: '',
+    aiLane: 'AI lane',
+    selfServe: 'Order AI images and motion directly at',
+    terms: 'Terms on every quote',
+    termsIntro: 'The short version. The full',
+    termsLink: 'General Terms and Conditions',
+    termsTail: 'apply to every order.',
+    up: 'What drives cost up', down: 'What keeps cost down',
+    upList: ['Film instead of stills — an order of magnitude', 'Number of distinct camera angles', 'Interior detail: furnishing, bespoke materials', `Rush timelines (×${rushX})`, 'Plan revisions after ordering'],
+    downList: [`A usable 3D model instead of 2D plans (−${src3d} % on model preparation)`, 'A clear brief and one plan version at ordering', 'Repetition — unit types, panorama blocks, short bundles', 'The AI lane where photoreal 3D is not needed', 'A framework agreement for repeat work'],
+    ctaH: 'Not sure which fits?',
+    ctaP: '30-minute consultation, no charge. We scope the project together and send a quote by code.',
+    updated: 'Prices valid from',
+    serviceLbl: 'Service', techLbl: 'Technique',
+    calcTitle: 'Estimate your project',
+    calcIntro: 'Pick a service, set quantities, and the total is computed from the list with the same math we quote with. Combine tabs freely — one estimate, one quote request. The link in your address bar carries the estimate.',
+    calcTotal: 'Estimate, net EUR',
+    calcRequest: 'Request this quote',
+    calcReset: 'Clear all',
+    calcNote: 'Point estimate from list prices. Rush and framework terms are settled on the quote.',
+    calc: { source: 'What you can supply', sourceNote: 'Applies to model preparation (MOD).', types: 'Distinct unit types', typesNote: 'Repeated flat types make plans cheaper.', typical: 'Add the typical set', min: 'min.', empty: 'Nothing selected yet.', needsMod: 'Rendered items need model preparation (MOD) on the same order.', underMin: 'A film line is under its minimum length.', closest: 'Closest package:', above: 'above', below: 'below', msgHead: 'Estimate from the price list', total: 'Total', net: 'net' },
+  },
+  hu: {
+    metaTitle: 'Árak',
+    metaDescription: `Építészeti látványtervezés árlista ${P.version}: modell-előkészítés, külső és belső látványképek, 360°-os túrák, film, AI képek, interaktív eszközök. Csomagok ${eur(P.presets[0].total)}-tól. Vision Graphics Kft., Budapest.`,
+    bannerLabel: 'Befektetés',
+    bannerTitle: 'Árak',
+    label: 'Árlista ' + P.version,
+    h2: 'Egy lista.',
+    h2em: 'Minden ajánlat ebből épül.',
+    intro: 'Ezekből az árakból ajánlunk — nincsenek csomagsávok, nincsenek rejtett tételek. Válasszon tételeket kód szerint, vagy induljon az alábbi csomagok egyikéből. Nettó euróárak; a magyar ajánlatokat a januárban rögzített árfolyamon számítjuk át.',
+    lanes: 'Két minőségi vonal, nem három sáv',
+    lanesBody: 'A legtöbb anyag létezik 3D vonalon (modellezve, renderelve, kézzel befejezve) és AI vonalon (meglévő képből generálva, könnyű retusálással). Ahol van értelme, mindkettőt ajánljuk; tételenként Ön választ. A kis költségvetés az AI vonalra kerül, sosem egy olcsóbb 3D képre.',
+    packages: 'Csomagok',
+    packagesIntro: 'Négy rögzített kombináció a lista tételeiből — magyar kutyafajták, méret szerint. Az ár a listából számolódik; bármelyik tételt cseréli, az ajánlat követi.',
+    mostCommon: 'Leggyakoribb',
+    includes: 'Tartalma',
+    getQuote: 'Árajánlatot kérek',
+    talk: 'Beszéljünk',
+    list: 'Tétellista',
+    listIntro: 'Minden tétel, amit árulunk, családonként. A kódok állandóak — kód szerint ajánlunk.',
+    code: 'Kód', itemH: 'Tétel', price: 'Ár',
+    hufNote: `Forintárak tájékoztató jelleggel, ${P.peg} Ft/€ árfolyamon.`,
+    aiLane: 'AI vonal',
+    selfServe: 'AI képek és mozgókép közvetlenül rendelhetők itt:',
+    terms: 'Feltételek minden ajánlaton',
+    termsIntro: 'A rövid változat. Minden megrendelésre a teljes',
+    termsLink: 'Általános Szerződési Feltételek',
+    termsTail: 'vonatkoznak.',
+    up: 'Mi növeli az árat', down: 'Mi csökkenti az árat',
+    upList: ['Film állókép helyett — nagyságrendi különbség', 'Az eltérő kameraállások száma', 'Belső részletesség: berendezés, egyedi anyagok', `Sürgős határidő (×${String(rushX).replace('.', ',')})`, 'Tervmódosítás megrendelés után'],
+    downList: [`Használható 3D modell 2D tervek helyett (−${src3d} % a modell-előkészítésen)`, 'Egyértelmű brief és egy tervverzió megrendeléskor', 'Ismétlődés — lakástípusok, panorámablokkok, rövidfilm-csomag', 'Az AI vonal, ahol nem kell fotorealisztikus 3D', 'Keretszerződés visszatérő munkára'],
+    ctaH: 'Nem biztos benne, melyik illik Önhöz?',
+    ctaP: '30 perces konzultáció, díjmentesen. Együtt mérjük fel a projektet, és kód szerinti ajánlatot küldünk.',
+    updated: 'Árak érvényesek',
+    serviceLbl: 'Szolgáltatás', techLbl: 'Technika',
+    calcTitle: 'Becsülje meg a projektjét',
+    calcIntro: 'Válasszon szolgáltatást, állítsa be a mennyiségeket, és a végösszeg a listából számolódik ugyanazzal a képlettel, amivel ajánlatot adunk. A fülek szabadon kombinálhatók — egy becslés, egy ajánlatkérés. A címsorban lévő link a becslést is hordozza.',
+    calcTotal: 'Becslés, nettó EUR',
+    calcRequest: 'Ajánlatot kérek erre',
+    calcReset: 'Törlés',
+    calcNote: 'Pontbecslés listaárakból. Sürgősségi és keretszerződéses feltételek az ajánlatban.',
+    calc: { source: 'Amit át tud adni', sourceNote: 'A modell-előkészítésre (MOD) vonatkozik.', types: 'Különböző lakástípusok', typesNote: 'Az ismétlődő típusok olcsóbbá teszik az alaprajzokat.', typical: 'Tipikus készlet hozzáadása', min: 'min.', empty: 'Még nincs kiválasztva semmi.', needsMod: 'A renderelt tételekhez modell-előkészítés (MOD) kell ugyanazon a megrendelésen.', underMin: 'Egy filmtétel a minimális hossz alatt van.', closest: 'Legközelebbi csomag:', above: 'fölötte', below: 'alatta', msgHead: 'Becslés az árlistából', total: 'Összesen', net: 'nettó' },
+  },
+} as const;
+const c = COPY[lang];
+const calcJson = JSON.stringify({ lang, ui: { ...c.calc, contactUrl: localeUrl('/contact/', lang) }, ...calc }).replace(/</g, '\\u003c');
+
+// "5 × Exterior view, daytime" · film lines read "60 s · 3D animation — complex"
+const presetLines = (p: (typeof P.presets)[number]) =>
+  Object.entries(p.q).map(([code, q]) => {
+    const it = item(data, code);
+    return it.unit.en === 'second' ? `${q} s · ${t(it.name)}` : `${q} × ${t(it.name)}`;
+  });
 ---
 
-<Page
-  title="Pricing"
-  description="Transparent pricing for architectural visualization. Essential from €5,000, Professional from €15,000, Enterprise custom. Vision Graphics Kft., Budapest."
-  fullBleed
->
+<Page title={c.metaTitle} description={c.metaDescription} fullBleed>
   <div class="pricing-page">
 
     <SectionBanner
       image="/_img/banners/banner-general.jpg"
-      label="Investment"
-      title="Pricing"
+      label={c.bannerLabel}
+      title={c.bannerTitle}
       size="page"
       headingLevel="h1"
     />
@@ -31,391 +147,492 @@ Astro.locals.lang = lang;
     <section class="pricing-section section">
     <div class="container">
 
-    <!-- Header -->
     <div class="pricing-header">
-      <p class="section-label">Pricing</p>
-      <h2 class="display-lg pricing-h2">Transparent Pricing.<br /><em>No Surprises.</em></h2>
-      <p class="pricing-intro">
-        We quote based on actual scope, not package tiers.
-        The tiers below are starting points for conversation.
-      </p>
+      <p class="section-label">{c.label}</p>
+      <h2 class="display-lg pricing-h2">{c.h2}<br /><em>{c.h2em}</em></h2>
+      <p class="pricing-intro">{c.intro}</p>
+      <div class="lanes">
+        <h3 class="lanes-title">{c.lanes}</h3>
+        <p>{c.lanesBody}</p>
+      </div>
     </div>
 
-    <!-- Package cards -->
+    <!-- Packages: computed from the list -->
+    <h2 class="block-title">{c.packages}</h2>
+    <p class="block-intro">{c.packagesIntro}</p>
     <div class="packages">
-      {packages.map(pkg => (
+      {P.presets.map(pkg => (
         <div class:list={['package', { 'package--featured': pkg.highlight }]}>
-          {pkg.highlight && (
-            <div class="package-badge">Most common</div>
-          )}
+          {pkg.highlight && <div class="package-badge">{c.mostCommon}</div>}
           <div class="package-top">
-            <h2 class="package-name">{pkg.name}</h2>
-            <span class="package-price">{pkg.price}</span>
+            <h3 class="package-name">{pkg.name} <span>· {t(pkg.subtitle)}</span></h3>
+            <span class="package-price">{eur(pkg.total)}</span>
+            {lang === 'hu' && <span class="package-huf">{huf(pkg.total)}</span>}
           </div>
-          <p class="package-desc">{pkg.desc}</p>
+          <p class="package-desc">{t(pkg.desc)}</p>
           <ul class="package-includes">
-            {pkg.includes.map(item => <li>{item}</li>)}
+            {presetLines(pkg).map(line => <li>{line}</li>)}
           </ul>
-          <a href={pkg.href} class:list={['btn', pkg.highlight ? 'btn-primary' : 'btn-secondary', 'package-cta']}>
-            {pkg.cta}
+          <a href={localeUrl('/contact/', lang)} class:list={['btn', pkg.highlight ? 'btn-primary' : 'btn-secondary', 'package-cta']}>
+            {c.getQuote}
           </a>
         </div>
       ))}
     </div>
 
-    <!-- Line-item reference pricing -->
+    <!-- Estimator: one tab per service, math + data from pricing.mjs / pricing.json -->
+    <section class="calc" id="estimate">
+      <h2 class="block-title">{c.calcTitle}</h2>
+      <p class="block-intro">{c.calcIntro}</p>
+      <div class="calc-tabs" role="tablist">
+        {calc.calculator.tabs.map((T, i) => (
+          <button type="button" role="tab" class="calc-tab" data-tab={T.key} aria-selected={i === 0 ? 'true' : 'false'}>{t(T.name)}<span class="calc-tab-sum"></span></button>
+        ))}
+      </div>
+      <div class="calc-grid">
+        <div class="calc-main">
+          <p class="calc-lede" id="calc-lede"></p>
+          <div id="calc-rows" class="calc-rows"></div>
+        </div>
+        <aside class="calc-sum">
+          <p class="calc-sum-label">{c.calcTotal}</p>
+          <p class="calc-total" id="calc-total">—</p>
+          <p class="calc-near" id="calc-near"></p>
+          <ul class="calc-warns" id="calc-warn"></ul>
+          <ul class="calc-lines" id="calc-lines"></ul>
+          <a id="calc-request" href={localeUrl('/contact/', lang)} class="btn btn-primary">{c.calcRequest}</a>
+          <button type="button" id="calc-reset" class="calc-reset">{c.calcReset}</button>
+          <p class="calc-note">{c.calcNote}</p>
+        </aside>
+      </div>
+      <script is:inline type="application/json" id="calc-data" set:html={calcJson}></script>
+    </section>
+
+    <!-- Module list -->
     <div class="line-items">
-      <h2 class="line-items-title">Reference Pricing</h2>
-      <p class="line-items-intro">{reference.intro}</p>
+      <h2 class="block-title">{c.list}</h2>
+      <p class="block-intro">{c.listIntro}</p>
 
       <div class="price-categories">
-        {reference.categories.map(cat => (
-          <div class="price-cat">
-            <h3 class="price-cat-title">{cat.title}</h3>
+        {P.families.map(fam => (
+          <div class="price-cat" id={fam.code.toLowerCase()}>
+            <div class="price-cat-head">
+              <h3 class="price-cat-title"><span class="price-cat-code">{fam.code}</span>{t(fam.name)}{fam.lane === 'ai' && <span class="lane-tag">{c.aiLane}</span>}</h3>
+              <p class="price-cat-lede">{t(fam.lede)}</p>
+              {fam.services && fam.services.length > 0 && (
+                <p class="price-cat-links"><span>{c.serviceLbl}:</span>{fam.services.map(s => <a href={localeUrl(`/services/${s}/`, lang)}>{svcTitle[s]}</a>)}</p>
+              )}
+            </div>
             <div class="price-rows">
-              {cat.rows.map(row => (
-                <div class="price-row">
+              {P.items.filter(i => i.family === fam.code).map(row => (
+                <div class="price-row" id={row.code}>
                   <span class="price-code">{row.code}</span>
-                  <span class="price-item">{row.item}</span>
-                  <span class="price-val">{row.value}</span>
+                  <span class="price-item">
+                    <span class:list={['price-name', { tip: !!row.help }]} tabindex={row.help ? 0 : undefined} data-tip={row.help ? t(row.help) : undefined}>{t(row.name)}</span>
+                    {row.desc && <small>{t(row.desc)}</small>}
+                    {row.tech && row.tech.length > 0 && (
+                      <span class="price-tech"><span>{c.techLbl}:</span>{row.tech.map(s => <a href={localeUrl(`/vision-tech/${s}/`, lang)}>{techTitle[s]}</a>)}</span>
+                    )}
+                  </span>
+                  <span class:list={['price-val', { 'price-val--custom': !!row.custom && !row.range }]}>
+                    {unitLine(row)}
+                    {row.range && <small>{t(row.custom)}</small>}
+                    {row.min && <small>min. {row.min} {t(row.unit)}</small>}
+                    {lang === 'hu' && !row.custom && <small>{huf(row.base)}</small>}
+                  </span>
                 </div>
               ))}
             </div>
+            {fam.code === 'AI' && (
+              <p class="price-cat-foot">{c.selfServe} <a href="https://ai.visiongraphics.eu">ai.visiongraphics.eu</a></p>
+            )}
           </div>
         ))}
       </div>
+      {c.hufNote && <p class="line-items-note">{c.hufNote}</p>}
+    </div>
 
-      <p class="line-items-note">{reference.note}</p>
+    <!-- Terms block -->
+    <div class="terms">
+      <h2 class="block-title">{c.terms}</h2>
+      <p class="block-intro">{c.termsIntro} <a href={localeUrl('/terms/', lang)}>{c.termsLink}</a> {c.termsTail}</p>
+      <ul class="terms-list">
+        {P.terms.map(line => <li set:html={t(line)} />)}
+      </ul>
     </div>
 
     <!-- What drives cost -->
     <div class="cost-factors">
       <div class="cost-col">
-        <h2 class="cost-col-title">What drives cost up</h2>
-        <ul class="cost-list cost-list--up">
-          <li>Animation vs. stills — significantly more</li>
-          <li>Number of unique camera angles</li>
-          <li>Interior detail level (furniture, materials)</li>
-          <li>Tight deadlines</li>
-          <li>Multiple revision rounds beyond the included set</li>
-        </ul>
+        <h2 class="cost-col-title">{c.up}</h2>
+        <ul class="cost-list cost-list--up">{c.upList.map(x => <li>{x}</li>)}</ul>
       </div>
       <div class="cost-col">
-        <h2 class="cost-col-title">What keeps cost down</h2>
-        <ul class="cost-list cost-list--down">
-          <li>Clear brief upfront</li>
-          <li>Good source materials (CAD, not sketches)</li>
-          <li>Flexible timeline</li>
-          <li>AI-assisted workflows where appropriate</li>
-        </ul>
+        <h2 class="cost-col-title">{c.down}</h2>
+        <ul class="cost-list cost-list--down">{c.downList.map(x => <li>{x}</li>)}</ul>
       </div>
     </div>
 
-    <!-- CTA banner -->
+    <!-- CTA -->
     <div class="pricing-cta">
       <div class="pricing-cta-text">
-        <h2 class="pricing-cta-h2">Not sure which fits?</h2>
-        <p>30-minute consultation, no charge. We scope the project together.</p>
+        <h2 class="pricing-cta-h2">{c.ctaH}</h2>
+        <p>{c.ctaP}</p>
       </div>
-      <a href="/contact/" class="btn btn-primary">Get in Touch</a>
+      <a href={localeUrl('/contact/', lang)} class="btn btn-primary">{L.cta.getInTouch}</a>
     </div>
+
+    <p class="line-items-note">{c.updated} {P.updated} · {c.label}</p>
 
     </div>
     </section>
   </div>
 </Page>
 
+<script>
+  // Estimator. State = the same {qty, source, types} the quote math takes; the
+  // whole state lives in the URL hash (#e=tab;source;CODE:n,…) — no storage.
+  import { quote, defaultState, fmt, fmtHuf, item } from '../../../lib/pricing.mjs';
+  const dataEl = document.getElementById('calc-data');
+  if (dataEl) {
+    const D = JSON.parse(dataEl.textContent || '{}');
+    const { lang, ui, calculator: C } = D;
+    const t = (v: any) => (v ? v[lang] : '');
+    const $ = (s: string) => document.querySelector(s) as HTMLElement;
+    const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+    const S: any = defaultState(D);
+    let tab = C.tabs[0].key;
+    const srcOpts = D.multipliers.source.options;
+    const shared = new Set(C.tabs.flatMap((T: any) => T.rows.map((r: any) => r.code)).filter((c: string, i: number, a: string[]) => a.indexOf(c) !== i));
+
+    const parse = () => {
+      const m = location.hash.match(/^#e=([^;]*);?([^;]*);?(.*)$/);
+      if (!m) return;
+      if (C.tabs.some((x: any) => x.key === m[1])) tab = m[1];
+      const so = srcOpts.find((o: any) => o.key === m[2]); if (so) S.source = so.value;
+      for (const p of (m[3] || '').split(',')) { const [c, n] = p.split(':'); if (c === 'types' && +n > 0) S.types = +n; else if (item(D, c) && +n > 0) S.qty[c] = +n; }
+    };
+    const srcKey = () => (srcOpts.find((o: any) => o.value === S.source) || srcOpts[0]).key;
+    const write = () => history.replaceState(null, '', `#e=${tab};${srcKey()};${Object.entries(S.qty).filter(([, n]: any) => n > 0).map(([c, n]) => c + ':' + n).concat(S.types !== 10 ? ['types:' + S.types] : []).join(',')}`);
+
+    const curTab = () => C.tabs.find((x: any) => x.key === tab);
+    const has = (c: string) => (S.qty[c] || 0) > 0;
+    const tabEmpty = (T: any) => T.rows.every((r: any) => !has(r.code) || shared.has(r.code));
+    const applyDefaults = (T: any) => {
+      const hasShared = T.rows.some((r: any) => shared.has(r.code) && has(r.code));
+      for (const r of T.rows) if (!has(r.code) && !(hasShared && shared.has(r.code))) S.qty[r.code] = r.default;
+    };
+    const sub = (rows: any[]) => quote(D, { ...S, qty: Object.fromEntries(rows.map((r) => [r.code, S.qty[r.code] || 0])) }).total;
+    // what the typical-set button would add: defaults applied on a copy, minus the current total
+    const typical = (T: any) => { const c = { ...S, qty: { ...S.qty } }; const hasShared = T.rows.some((r: any) => shared.has(r.code) && has(r.code)); for (const r of T.rows) if (!has(r.code) && !(hasShared && shared.has(r.code))) c.qty[r.code] = r.default; return quote(D, c).total - quote(D, S).total; };
+    const money = (n: number) => fmt(n, lang) + (lang === 'hu' ? `<small>${fmtHuf(n, S.peg)}</small>` : '');
+
+    function lineCell(it: any, l: any) {
+      return (l ? fmt(l.line, lang) : `<span class="calc-unitprice">${fmt(it.base, lang)} / ${t(it.unit)}</span>`) +
+        (l && l.underMin ? `<small>${ui.min} ${it.min} ${t(it.unit)}</small>` : '');
+    }
+    function renderRows() {
+      const T = curTab();
+      const by = Object.fromEntries(quote(D, S).lines.map((l: any) => [l.it.code, l]));
+      document.querySelectorAll('.calc-tab').forEach((b) => b.setAttribute('aria-selected', String((b as HTMLElement).dataset.tab === tab)));
+      $('#calc-lede').textContent = t(T.lede);
+      $('#calc-rows').innerHTML =
+        (T.source ? `<label class="calc-src"><span>${ui.source}</span><select id="calc-src">${srcOpts.map((o: any) => `<option value="${o.key}"${o.value === S.source ? ' selected' : ''}>${t(o.label)} ×${o.value}</option>`).join('')}</select><small>${ui.sourceNote}</small></label>` : '') +
+        (T.types ? `<label class="calc-src"><span>${ui.types}</span><input type="number" id="calc-types" min="1" step="1" value="${S.types}"><small>${ui.typesNote}</small></label>` : '') +
+        (tabEmpty(T) ? `<button type="button" class="calc-typical" id="calc-typical">+ ${ui.typical} · ${fmt(typical(T), lang)}</button>` : '') +
+        T.rows.map((r: any) => { const it = item(D, r.code); return `
+          <div class="calc-row" data-row="${it.code}">
+            <span class="price-code">${it.code}</span>
+            <span class="calc-name${it.help ? ' tip' : ''}"${it.help ? ` tabindex="0" data-tip="${esc(t(it.help))}"` : ''}>${t(it.name)}${it.desc ? `<small>${t(it.desc)}</small>` : ''}</span>
+            <span class="calc-qty"><input type="number" inputmode="numeric" min="0" step="${r.step || 1}" value="${S.qty[r.code] || 0}" data-c="${r.code}" aria-label="${esc(t(it.name))}"><span class="calc-unit">${t(it.unit)}</span></span>
+            <span class="calc-line">${lineCell(it, by[r.code])}</span>
+          </div>`; }).join('');
+    }
+    function renderSum() {
+      write();
+      const Q = quote(D, S);
+      $('#calc-total').innerHTML = money(Q.total);
+      $('#calc-lines').innerHTML = Q.lines.map((l: any) => `<li><span class="price-code">${l.it.code}</span><span>${l.q} ${t(l.it.unit)} · ${t(l.it.name)}</span><b>${fmt(l.line, lang)}</b></li>`).join('') || `<li class="calc-empty">${ui.empty}</li>`;
+      const warn = []; if (Q.missing.length) warn.push(ui.needsMod); if (Q.lines.some((l: any) => l.underMin)) warn.push(ui.underMin);
+      $('#calc-warn').innerHTML = warn.map((w) => `<li>${w}</li>`).join('');
+      let near = '';
+      if (Q.total > 0) {
+        const p = D.presets.reduce((a: any, b: any) => (Math.abs(b.total - Q.total) < Math.abs(a.total - Q.total) ? b : a));
+        const d = Q.total - p.total;
+        near = `${ui.closest} <b>${p.name}</b> ${fmt(p.total, lang)} · ${fmt(Math.abs(d), lang)} ${d >= 0 ? ui.above : ui.below}`;
+      }
+      $('#calc-near').innerHTML = near;
+      C.tabs.forEach((T: any) => { const n = sub(T.rows.filter((r: any) => !shared.has(r.code))); $(`[data-tab="${T.key}"] .calc-tab-sum`).textContent = n ? fmt(n, lang) : ''; });
+      const so = srcOpts.find((o: any) => o.value === S.source) || srcOpts[0];
+      const msg = [`${ui.msgHead} ${D.version}`, ...Q.lines.map((l: any) => `${l.it.code} × ${l.q} ${t(l.it.unit)} — ${fmt(l.line, lang)}`), `${ui.source}: ${t(so.label)}`, `${ui.total}: ${fmt(Q.total, lang)} ${ui.net}`, location.href].join('\n');
+      ($('#calc-request') as HTMLAnchorElement).href = `${ui.contactUrl}?quote=${encodeURIComponent(msg)}`;
+    }
+    const render = () => { renderRows(); renderSum(); };
+
+    $('#calc-rows').addEventListener('input', (e) => {
+      const el = e.target as HTMLInputElement;
+      if (el.id === 'calc-types') { S.types = Math.max(1, +el.value || 1); render(); return; }
+      if (!el.dataset.c) return;
+      S.qty[el.dataset.c] = Math.max(0, +el.value || 0);
+      const by = Object.fromEntries(quote(D, S).lines.map((l: any) => [l.it.code, l]));
+      document.querySelectorAll<HTMLElement>('.calc-row').forEach((row) => { row.querySelector('.calc-line')!.innerHTML = lineCell(item(D, row.dataset.row!), by[row.dataset.row!]); });
+      if (!tabEmpty(curTab())) document.getElementById('calc-typical')?.remove();
+      renderSum();
+    });
+    $('#calc-rows').addEventListener('change', (e) => {
+      const el = e.target as HTMLSelectElement;
+      if (el.id === 'calc-src') { S.source = srcOpts.find((o: any) => o.key === el.value).value; render(); }
+    });
+    $('#calc-rows').addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).id === 'calc-typical') { applyDefaults(curTab()); render(); }
+    });
+    document.querySelectorAll<HTMLElement>('.calc-tab').forEach((b) => b.addEventListener('click', () => { tab = b.dataset.tab!; render(); }));
+    $('#calc-reset').addEventListener('click', () => { S.qty = {}; S.types = 10; render(); });
+
+    parse();
+    if (!Object.keys(S.qty).length) applyDefaults(curTab());
+    render();
+    if (location.hash.startsWith('#e=')) document.getElementById('estimate')?.scrollIntoView();
+  }
+</script>
+
+<style is:global>
+  /* Global on purpose: the estimator rows are rendered client-side, so Astro's scoped selectors would not match them. */
+  .calc .price-code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-accent); white-space: nowrap; }
+  /* Hover help (list + estimator): CSS-only, keyboard-focusable */
+  .tip { border-bottom: 1px dotted var(--color-text-faint); cursor: help; position: relative; }
+  .tip::after {
+    content: attr(data-tip); position: absolute; left: 0; top: calc(100% + 0.4rem); z-index: 20;
+    width: min(38ch, 80vw); padding: 0.55rem 0.75rem; background: var(--color-surface-2); color: var(--color-text-muted);
+    border: 1px solid var(--color-border); border-left: 2px solid var(--color-accent);
+    font-family: var(--font-body); font-size: var(--fs-xs); font-weight: 400; line-height: 1.5; white-space: normal; text-align: left;
+    opacity: 0; visibility: hidden; transition: opacity 120ms; pointer-events: none;
+  }
+  .tip:hover::after, .tip:focus::after { opacity: 1; visibility: visible; }
+  .price-cat-links, .price-tech { display: flex; flex-wrap: wrap; gap: 0.35rem; font-size: var(--fs-xs); color: var(--color-text-faint); margin: var(--space-2) 0 0; }
+  .price-cat-links a, .price-tech a { color: var(--color-text-muted); border: 1px solid var(--color-border); padding: 0.05em 0.5em; text-decoration: none; transition: color 150ms, border-color 150ms; }
+  .price-cat-links a:hover, .price-tech a:hover { color: var(--color-accent); border-color: var(--color-accent); }
+  .price-row { scroll-margin-top: calc(var(--size-header) + 1rem); }
+  .price-row:target { background: var(--color-surface-2); box-shadow: inset 2px 0 0 var(--color-accent); }
+
+  /* Estimator */
+  .calc { margin-bottom: var(--space-16); scroll-margin-top: var(--size-header); }
+  .calc-tabs { display: flex; flex-wrap: wrap; gap: 1px; background: var(--color-border); border: 1px solid var(--color-border); border-bottom: none; }
+  .calc-tab {
+    flex: 1 1 auto; display: flex; flex-direction: column; gap: 0.2rem; padding: var(--space-3) var(--space-4);
+    background: var(--color-surface); border: none; color: var(--color-text-muted); cursor: pointer; text-align: left;
+    font-family: var(--font-body); font-size: var(--fs-xs); font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; line-height: 1.3;
+  }
+  .calc-tab[aria-selected="true"] { background: var(--color-bg); color: var(--color-text); box-shadow: inset 0 2px 0 var(--color-accent); }
+  .calc-tab-sum { font-family: var(--font-mono); text-transform: none; letter-spacing: 0; color: var(--color-accent); min-height: 1.2em; }
+  .calc-grid { display: grid; grid-template-columns: 1fr 21rem; gap: 1px; background: var(--color-border); border: 1px solid var(--color-border); }
+  .calc-main { background: var(--color-bg); min-width: 0; }
+  .calc-lede { font-size: var(--fs-xs); color: var(--color-text-muted); line-height: 1.6; margin: 0; padding: var(--space-4) var(--space-5); background: var(--color-surface); border-bottom: 1px solid var(--color-border); }
+  .calc-src { display: grid; grid-template-columns: 11rem 1fr; gap: 0.25rem var(--space-4); align-items: center; padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border); font-size: var(--fs-xs); color: var(--color-text-muted); }
+  .calc-src small { grid-column: 2; color: var(--color-text-faint); }
+  .calc-src select, .calc-src input, .calc-qty input {
+    font-family: var(--font-mono); font-size: var(--fs-small); color: var(--color-text); background: var(--color-surface);
+    border: 1px solid var(--color-border); padding: 0.3rem 0.5rem; max-width: 18rem;
+  }
+  .calc-src select:focus, .calc-src input:focus, .calc-qty input:focus { outline: none; border-color: var(--color-accent); }
+  .calc-typical {
+    margin: var(--space-4) var(--space-5) 0; padding: 0.5rem 0.9rem; background: none; cursor: pointer;
+    border: 1px dashed var(--color-accent); color: var(--color-accent); font-family: var(--font-body); font-size: var(--fs-xs); letter-spacing: 0.05em;
+  }
+  .calc-typical:hover { background: var(--color-surface); }
+  .calc-row { display: grid; grid-template-columns: 9rem 1fr 10rem 8rem; gap: var(--space-4); align-items: center; padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border); }
+  .calc-row:last-child { border-bottom: none; }
+  .calc-name { font-size: var(--fs-small); color: var(--color-text); }
+  .calc-name small { display: block; font-size: var(--fs-xs); color: var(--color-text-faint); margin-top: 0.15em; line-height: 1.45; }
+  .calc-qty { display: flex; align-items: center; gap: 0.4rem; font-size: var(--fs-xs); color: var(--color-text-faint); }
+  .calc-qty input { width: 5.5rem; text-align: right; }
+  .calc-line { font-family: var(--font-mono); font-size: var(--fs-small); color: var(--color-text); text-align: right; white-space: nowrap; }
+  .calc-unitprice { color: var(--color-text-faint); font-size: var(--fs-xs); }
+  .calc-line small { display: block; font-family: var(--font-body); font-size: var(--fs-xs); color: var(--color-accent-2); }
+  .calc-sum { background: var(--color-surface); padding: var(--space-6); position: sticky; top: calc(var(--size-header) + 1rem); align-self: start; display: flex; flex-direction: column; gap: var(--space-3); }
+  .calc-sum-label { font-size: var(--fs-xs); letter-spacing: 0.15em; text-transform: uppercase; color: var(--color-text-faint); margin: 0; }
+  .calc-total { font-family: var(--font-mono); font-size: var(--fs-h4); color: var(--color-text); margin: 0; line-height: 1.1; letter-spacing: -0.02em; }
+  .calc-total small { display: block; font-size: var(--fs-xs); color: var(--color-text-faint); margin-top: 0.3rem; letter-spacing: 0; }
+  .calc-near, .calc-note { font-size: var(--fs-xs); color: var(--color-text-muted); margin: 0; line-height: 1.5; }
+  .calc-near b { color: var(--color-text); font-weight: 500; }
+  .calc-warns, .calc-lines { list-style: none; margin: 0; padding: 0; font-size: var(--fs-xs); }
+  .calc-warns li { color: var(--color-accent-2); padding-left: 1rem; position: relative; line-height: 1.5; }
+  .calc-warns li::before { content: '!'; position: absolute; left: 0; }
+  .calc-lines { border-top: 1px solid var(--color-border); padding-top: var(--space-3); display: flex; flex-direction: column; gap: 0.35rem; max-height: 20rem; overflow: auto; }
+  .calc-lines li { display: flex; gap: 0.5rem; align-items: baseline; color: var(--color-text-muted); line-height: 1.4; }
+  .calc-lines li .price-code { flex: 0 0 auto; }
+  .calc-lines li b { margin-left: auto; font-family: var(--font-mono); font-weight: 400; color: var(--color-text); white-space: nowrap; }
+  .calc-empty { color: var(--color-text-faint); font-style: italic; }
+  .calc-reset { background: none; border: none; padding: 0; color: var(--color-text-faint); font-family: var(--font-body); font-size: var(--fs-xs); cursor: pointer; text-decoration: underline; align-self: flex-start; }
+  @media (max-width: 900px) {
+    .calc-grid { grid-template-columns: 1fr; }
+    .calc-sum { position: static; }
+    .calc-row { grid-template-columns: 1fr auto; gap: var(--space-2) var(--space-4); }
+    .calc-row .price-code { display: none; }
+    .calc-name { grid-column: 1 / -1; }
+    .calc-src { grid-template-columns: 1fr; }
+    .calc-src small { grid-column: 1; }
+  }
+
+</style>
+
 <style>
   .pricing-page { width: 100%; }
   .pricing-section { padding-block: clamp(3rem, 5vw, 5rem); }
+  .pricing-page :global(p) { max-width: none; }
 
-  /* Header */
-  .pricing-header { margin-bottom: 3rem; }
-
+  .pricing-header { margin-bottom: var(--space-12); }
   .pricing-intro {
-    font-size: var(--fs-small);
-    color: var(--color-text-muted);
-    max-width: 52ch;
-    line-height: 1.7;
-    margin: 0;
-  }
-
-  /* Packages */
-  .packages {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: var(--color-border);
-    border: 1px solid var(--color-border);
-    margin-bottom: 4rem;
-  }
-
-  .package {
-    background: var(--color-surface);
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    position: relative;
-    transition: background 200ms ease;
-  }
-
-  .package--featured {
-    background: var(--color-surface-2);
-  }
-
-  .package-badge {
-    position: absolute;
-    top: -1px;
-    left: 2rem;
-    font-family: var(--font-body);
-    font-size: var(--fs-xs);
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--color-bg);
-    background: var(--color-accent);
-    padding: 0.2rem 0.6rem;
-  }
-
-  .package-top {
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-    padding-top: 1rem;
-  }
-
-  .package-name {
-    font-family: var(--font-body);
-    font-size: var(--fs-xs);
-    font-weight: 500;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--color-text-faint);
-  }
-
-  .package-price {
-    font-family: var(--font-display);
-    font-size: var(--fs-h5);
-    font-weight: 300;
-    color: var(--color-text);
-    letter-spacing: -0.02em;
-    line-height: 1;
-  }
-
-  .package-desc {
-    font-size: var(--fs-xs);
-    color: var(--color-text-muted);
-    line-height: 1.65;
-    margin: 0;
-    max-width: none;
-  }
-
-  .package-includes {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    flex: 1;
-    border-top: 1px solid var(--color-border);
-    padding-top: 1rem;
-    margin: 0;
-  }
-
-  .package-includes li {
-    font-size: var(--fs-xs);
-    color: var(--color-text-muted);
-    padding-left: 1.1rem;
-    position: relative;
-    line-height: 1.4;
-  }
-
-  .package-includes li::before {
-    content: '✓';
-    position: absolute;
-    left: 0;
-    color: var(--color-accent);
-    font-size: var(--fs-xs);
-  }
-
-  .package-cta { margin-top: auto; width: 100%; justify-content: center; }
-
-  /* Line items */
-  .line-items {
-    margin-bottom: 4rem;
-  }
-
-  .line-items-title {
-    font-family: var(--font-display);
-    font-size: var(--fs-h5);
-    font-weight: 300;
-    color: var(--color-text);
-    margin-bottom: 0.75rem;
-  }
-
-  .line-items-intro {
     font-size: var(--fs-small);
     color: var(--color-text-muted);
     max-width: 62ch;
     line-height: 1.7;
-    margin-bottom: 2rem;
+    margin: 0 0 var(--space-6);
   }
-
-  .price-categories {
-    display: flex;
-    flex-direction: column;
-    border: 1px solid var(--color-border);
+  .lanes {
+    border-left: 3px solid var(--color-accent);
+    padding: var(--space-3) var(--space-5);
+    background: var(--color-surface);
+    max-width: 72ch;
   }
-
-  .price-cat {
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .price-cat:last-child { border-bottom: none; }
-
-  .price-cat-title {
+  .lanes-title {
     font-family: var(--font-body);
     font-size: var(--fs-xs);
     font-weight: 500;
     letter-spacing: 0.15em;
     text-transform: uppercase;
     color: var(--color-text-faint);
-    padding: 0.75rem 1.25rem;
-    background: var(--color-surface);
-    border-bottom: 1px solid var(--color-border);
+    margin: 0 0 var(--space-2);
   }
+  .lanes p { font-size: var(--fs-small); color: var(--color-text-muted); line-height: 1.65; margin: 0; }
 
-  .price-rows { display: flex; flex-direction: column; }
-
-  .price-row {
-    display: grid;
-    grid-template-columns: 2.5rem 1fr auto;
-    gap: 1rem;
-    align-items: baseline;
-    padding: 0.65rem 1.25rem;
-    border-bottom: 1px solid var(--color-border);
-    background: var(--color-bg);
-    transition: background 150ms;
-  }
-
-  .price-row:last-child { border-bottom: none; }
-  .price-row:hover { background: var(--color-surface); }
-
-  .price-code {
-    font-family: var(--font-mono);
-    font-size: var(--fs-xs);
-    color: var(--color-accent);
-    white-space: nowrap;
-  }
-
-  .price-item {
-    font-size: var(--fs-xs);
-    color: var(--color-text-muted);
-    line-height: 1.4;
-  }
-
-  .price-val {
-    font-family: var(--font-mono);
-    font-size: var(--fs-xs);
-    color: var(--color-text);
-    white-space: nowrap;
-    text-align: right;
-  }
-
-  .line-items-note {
-    font-size: var(--fs-xs);
-    color: var(--color-text-faint);
-    margin-top: 1rem;
-    line-height: 1.6;
-  }
-
-  /* Cost factors */
-  .cost-factors {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1px;
-    background: var(--color-border);
-    border: 1px solid var(--color-border);
-    margin-bottom: 3rem;
-  }
-
-  .cost-col { background: var(--color-surface); padding: 2rem; }
-
-  .cost-col-title {
-    font-family: var(--font-body);
-    font-size: var(--fs-xs);
-    font-weight: 500;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--color-text-faint);
-    margin-bottom: 1rem;
-  }
-
-  .cost-list {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .cost-list li {
-    font-size: var(--fs-small);
-    color: var(--color-text-muted);
-    padding-left: 1.25rem;
-    position: relative;
-    line-height: 1.4;
-  }
-
-  .cost-list--up li::before {
-    content: '↑';
-    position: absolute;
-    left: 0;
-    color: var(--color-accent-2);
-    font-size: var(--fs-xs);
-  }
-
-  .cost-list--down li::before {
-    content: '↓';
-    position: absolute;
-    left: 0;
-    color: var(--color-accent);
-    font-size: var(--fs-xs);
-  }
-
-  /* CTA */
-  .pricing-cta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 2rem;
-    padding: 2.5rem;
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-sm);
-    flex-wrap: wrap;
-  }
-
-  .pricing-cta-h2 {
+  .block-title {
     font-family: var(--font-display);
     font-size: var(--fs-h5);
     font-weight: 300;
     color: var(--color-text);
-    margin-bottom: 0.4rem;
+    margin: 0 0 var(--space-3);
   }
-
-  .pricing-cta-text p {
+  .block-intro {
     font-size: var(--fs-small);
     color: var(--color-text-muted);
-    margin: 0;
-    max-width: none;
+    max-width: 62ch;
+    line-height: 1.7;
+    margin: 0 0 var(--space-8);
   }
+  .block-intro a { color: var(--color-accent); text-decoration: none; }
 
-  /* Responsive */
+  /* Packages */
+  .packages {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--color-border);
+    border: 1px solid var(--color-border);
+    margin-bottom: var(--space-16);
+  }
+  .package {
+    background: var(--color-surface);
+    padding: var(--space-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    position: relative;
+  }
+  .package--featured { background: var(--color-surface-2); }
+  .package-badge {
+    position: absolute; top: -1px; left: var(--space-8);
+    font-size: var(--fs-xs); font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--color-bg); background: var(--color-accent); padding: 0.2rem 0.6rem;
+  }
+  .package-top { display: flex; flex-direction: column; gap: var(--space-1); padding-top: var(--space-4); }
+  .package-name {
+    font-family: var(--font-body); font-size: var(--fs-xs); font-weight: 500;
+    letter-spacing: 0.15em; text-transform: uppercase; color: var(--color-text);
+  }
+  .package-name span { color: var(--color-text-faint); font-weight: 400; }
+  .package-price {
+    font-family: var(--font-mono); font-size: var(--fs-h5); font-weight: 400;
+    color: var(--color-text); letter-spacing: -0.02em; line-height: 1;
+  }
+  .package-huf { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-text-faint); }
+  .package-desc { font-size: var(--fs-xs); color: var(--color-text-muted); line-height: 1.65; margin: 0; }
+  .package-includes {
+    list-style: none; padding: var(--space-4) 0 0; margin: 0; flex: 1;
+    display: flex; flex-direction: column; gap: var(--space-2);
+    border-top: 1px solid var(--color-border);
+  }
+  .package-includes li { font-size: var(--fs-xs); color: var(--color-text-muted); padding-left: 1.1rem; position: relative; line-height: 1.4; }
+  .package-includes li::before { content: '✓'; position: absolute; left: 0; color: var(--color-accent); }
+  .package-cta { margin-top: auto; width: 100%; justify-content: center; }
+
+  /* Module list */
+  .line-items { margin-bottom: var(--space-16); }
+  .price-categories { display: flex; flex-direction: column; border: 1px solid var(--color-border); }
+  .price-cat { border-bottom: 1px solid var(--color-border); scroll-margin-top: var(--size-header); }
+  .price-cat:last-child { border-bottom: none; }
+  .price-cat-head { padding: var(--space-4) var(--space-5); background: var(--color-surface); border-bottom: 1px solid var(--color-border); }
+  .price-cat-title {
+    font-family: var(--font-body); font-size: var(--fs-small); font-weight: 500;
+    letter-spacing: 0.05em; color: var(--color-text); margin: 0 0 var(--space-2);
+    display: flex; align-items: baseline; gap: var(--space-3); flex-wrap: wrap;
+  }
+  .price-cat-code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-accent); border: 1px solid var(--color-accent); padding: 0.05em 0.4em; }
+  .lane-tag { font-size: var(--fs-xs); font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-text-faint); border: 1px solid var(--color-border); padding: 0.05em 0.5em; }
+  .price-cat-lede { font-size: var(--fs-xs); color: var(--color-text-muted); line-height: 1.6; margin: 0; max-width: 90ch; }
+  .price-cat-foot { font-size: var(--fs-xs); color: var(--color-text-muted); padding: var(--space-3) var(--space-5); margin: 0; background: var(--color-surface); }
+  .price-cat-foot a { color: var(--color-accent); text-decoration: none; }
+  .price-rows { display: flex; flex-direction: column; }
+  .price-row {
+    display: grid; grid-template-columns: 9rem 1fr auto; gap: var(--space-4);
+    align-items: baseline; padding: var(--space-3) var(--space-5);
+    border-bottom: 1px solid var(--color-border); background: var(--color-bg); transition: background 150ms;
+  }
+  .price-row:last-child { border-bottom: none; }
+  .price-row:hover { background: var(--color-surface); }
+  .price-code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-accent); white-space: nowrap; }
+  .price-item { font-size: var(--fs-small); color: var(--color-text); line-height: 1.4; }
+  .price-item small { display: block; font-size: var(--fs-xs); color: var(--color-text-faint); line-height: 1.45; margin-top: 0.15em; }
+  .price-val { font-family: var(--font-mono); font-size: var(--fs-small); color: var(--color-text); white-space: nowrap; text-align: right; }
+  .price-val small { display: block; font-size: var(--fs-xs); color: var(--color-text-faint); }
+  .price-val--custom { font-family: var(--font-body); font-style: italic; color: var(--color-text-faint); }
+  .line-items-note { font-size: var(--fs-xs); color: var(--color-text-faint); margin-top: var(--space-4); line-height: 1.6; }
+
+  /* Terms */
+  .terms { margin-bottom: var(--space-16); }
+  .terms-list { columns: 2; column-gap: var(--space-8); list-style: none; padding: 0; margin: 0; }
+  .terms-list li {
+    break-inside: avoid; font-size: var(--fs-xs); color: var(--color-text-muted); line-height: 1.6;
+    padding: 0 0 var(--space-3) var(--space-4); position: relative;
+  }
+  .terms-list li::before { content: '—'; position: absolute; left: 0; color: var(--color-accent); }
+  .terms-list :global(b) { color: var(--color-text); font-weight: 500; }
+
+  /* Cost factors */
+  .cost-factors { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--color-border); border: 1px solid var(--color-border); margin-bottom: var(--space-12); }
+  .cost-col { background: var(--color-surface); padding: var(--space-8); }
+  .cost-col-title { font-family: var(--font-body); font-size: var(--fs-xs); font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--color-text-faint); margin: 0 0 var(--space-4); }
+  .cost-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--space-2); }
+  .cost-list li { font-size: var(--fs-small); color: var(--color-text-muted); padding-left: 1.25rem; position: relative; line-height: 1.4; }
+  .cost-list--up li::before { content: '↑'; position: absolute; left: 0; color: var(--color-accent-2); font-size: var(--fs-xs); }
+  .cost-list--down li::before { content: '↓'; position: absolute; left: 0; color: var(--color-accent); font-size: var(--fs-xs); }
+
+  /* CTA */
+  .pricing-cta {
+    display: flex; justify-content: space-between; align-items: center; gap: var(--space-8);
+    padding: var(--space-10); background: var(--color-surface); border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm); flex-wrap: wrap;
+  }
+  .pricing-cta-h2 { font-family: var(--font-display); font-size: var(--fs-h5); font-weight: 300; color: var(--color-text); margin: 0 0 var(--space-2); }
+  .pricing-cta-text p { font-size: var(--fs-small); color: var(--color-text-muted); margin: 0; }
+
+  @media (max-width: 1100px) { .packages { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 768px) {
     .packages { grid-template-columns: 1fr; }
     .cost-factors { grid-template-columns: 1fr; }
-    .pricing-cta { flex-direction: column; }
+    .pricing-cta { flex-direction: column; align-items: flex-start; }
+    .terms-list { columns: 1; }
+    .price-row { grid-template-columns: 1fr; gap: var(--space-1); }
+    .price-val { text-align: left; }
   }
 </style>

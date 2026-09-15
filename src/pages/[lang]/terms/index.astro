@@ -1,0 +1,394 @@
+---
+// src/pages/[lang]/terms/index.astro
+//
+// General Terms and Conditions (ÁSZF) for Vision Graphics Kft.'s visualization
+// services. Same shape as privacy/: two parallel { heading, body[] } arrays so
+// EN and HU keep identical structure. Commercial numbers (payment split,
+// revision rounds, rush, hosting, indexation) mirror the price list
+// (src/data/pricing.json terms[]) — change them there first, then here.
+// Body strings are rendered raw (set:html) for the few inline links/emphasis.
+
+import Page from '../../../layouts/Page.astro';
+import SectionBanner from '../../../components/ui/SectionBanner.astro';
+import { staticLocalePaths, type Locale, localeUrl } from '../../../lib/i18n';
+import { ui } from '../../../i18n/strings';
+
+export const getStaticPaths = staticLocalePaths;
+const { lang } = Astro.params as { lang: Locale };
+Astro.locals.lang = lang;
+const L = ui(lang);
+
+const EFFECTIVE = '2026-10-01';
+const pricing = localeUrl('/pricing/', lang);
+const privacy = localeUrl('/privacy/', lang);
+
+type Section = { heading: string; body: string[] };
+type Doc = { meta: { title: string; description: string }; intro: string; effective: string; sections: Section[] };
+
+const EN: Doc = {
+  meta: {
+    title: 'General Terms and Conditions',
+    description: 'General Terms and Conditions of Vision Graphics Kft. for architectural visualization, film, AI imagery and interactive services — quotes, revisions, delivery, payment, usage rights, liability.',
+  },
+  effective: `Effective from ${EFFECTIVE} · applies to quotes issued on or after this date`,
+  intro:
+    'These General Terms and Conditions ("Terms") govern every quote, order and contract for the visualization services of Vision Graphics Kft. (the "Studio"). By accepting a quote or placing an order you accept these Terms. Deviations are valid only if agreed in writing (email suffices) and refer to the specific order.',
+  sections: [
+    {
+      heading: '1. The Studio',
+      body: [
+        'Vision Graphics Kft. · registered seat H-1126 Budapest, Hollósy Simon utca 15., Hungary · company registration 01-09-564319 (Fővárosi Törvényszék Cégbírósága) · tax number 12203688-2-43 · EU VAT HU12203688 · email <a href="mailto:info@visiongraphics.hu">info@visiongraphics.hu</a> · phone +36 30 945 4179. Represented by László Kerezsi, managing director. Full details on the <a href="' + localeUrl('/impressum/', lang) + '">Imprint</a> page.',
+      ],
+    },
+    {
+      heading: '2. Scope and definitions',
+      body: [
+        'The Studio provides architectural and product visualization: 3D model preparation, still images, 360° panoramas and tours, floor plans and sales materials, film and animation, AI-generated imagery and motion, interactive web tools, and related consulting, training and hosting. The current catalogue is the <a href="' + pricing + '">price list</a>; every line has a stable code, and quotes refer to those codes.',
+        '<strong>Client</strong> — the natural or legal person placing the order. These Terms are written for business clients; section 14 adds the rules that apply when the Client is a consumer.',
+        '<strong>Quote</strong> — the Studio\'s written offer listing price-list codes, quantities, multipliers, prices, timeline and any deviation from these Terms.',
+        '<strong>Order</strong> — the Client\'s written acceptance of a Quote. <strong>Deliverables</strong> — the images, films, tours, tools, files or services listed in the Quote. <strong>Model version</strong> — the one set of plans, models and brief supplied at ordering. <strong>Stage</strong> — model check, drafts, final (or previz, draft, final for film). <strong>Round</strong> — one consolidated list of change requests on a Stage.',
+      ],
+    },
+    {
+      heading: '3. Quotes, prices and contract formation',
+      body: [
+        'Prices are <strong>net</strong>, in EUR. Hungarian VAT (27 %) is added for Hungarian clients; for VAT-registered clients in other EU member states the reverse-charge mechanism applies; clients outside the EU are invoiced without VAT. Quotes to Hungarian clients may be expressed in HUF at the fixed conversion rate stated in the Quote (reset every January).',
+        'A Quote is valid for <strong>30 days</strong> from its date unless it states otherwise. The contract is formed when the Client accepts the Quote in writing (email is sufficient) — or, at the latest, when the Client supplies the Model version and the Studio confirms the start. The Quote, these Terms and the price list in force on the Quote date together form the contract; in case of conflict the Quote prevails.',
+        'Prices assume the scope, quantities, source-data quality and timeline stated in the Quote. Anything not listed in the Quote is not included. Rush delivery, requested by the Client, is priced at ×1.25 on production items (not on hosting, rentals or day rates).',
+        'The price list is indexed every January (Hungarian consumer price index, minimum +5 %). Prices already quoted remain valid for the Quote\'s validity period; framework clients receive a written price letter fixed for twelve months.',
+      ],
+    },
+    {
+      heading: '4. Client input and the one model version',
+      body: [
+        'The Client supplies the Model version at ordering: plans, 3D models, site data, material and furnishing references, logos, texts and the brief. The Client warrants that it holds all rights needed for the Studio to use these materials, including any third-party photographs, plans or 3D assets, and indemnifies the Studio against third-party claims arising from them.',
+        'Prices include the processing of the <strong>one Model version supplied at ordering</strong>. Plan changes after ordering are charged at the production hourly rate. A second design phase or a major model revision after ordering is charged at 30 % of the affected model-preparation line (code MOD.REV in the price list); the Studio states in advance whether a change is minor (hourly) or major (MOD.REV).',
+        'The source-data multiplier in the Quote (usable 3D model / 2D CAD / PDF or sketch) is set from what the Client actually delivers. If the delivered material differs from what the Quote assumed, the Studio may adjust the multiplier before starting and will say so in writing.',
+        'Delays or defects in the Client\'s input extend the timeline accordingly and are not a breach by the Studio.',
+      ],
+    },
+    {
+      heading: '5. Process, approvals and revisions',
+      body: [
+        'Work proceeds in Stages. The Studio submits each Stage for approval; the Client approves in writing. Approval of a Stage closes it — changes to an approved Stage (for example a new camera after previz approval, or material changes after the drafts are approved) are charged at the production hourly rate plus any re-rendering.',
+        'Each Stage includes <strong>two revision Rounds</strong>. A Round is one consolidated list of changes sent by one authorised contact; scattered or contradictory requests from several people count as separate Rounds. Further Rounds are charged at the production hourly rate.',
+        'If the Client does not respond to a submission within 10 working days, the Studio may treat the Stage as approved so that the timeline can hold, after notifying the Client.',
+        'The Studio decides technical means and methods (software, render engines, AI models, subcontractors) at its own discretion within the agreed quality.',
+      ],
+    },
+    {
+      heading: '6. Delivery',
+      body: [
+        'Standard formats: stills as 4–6K JPG/PNG; films as 1080p MP4 (4K, 360° or ProRes/DNxHR masters when quoted); tours, viewers, tools and microsites as hosted web deliverables; floor plans and sales sheets as PDF/PNG. Layered or source files (PSD, 3ds Max scenes, project files) are not part of the standard delivery and, where the Studio agrees to release them, are priced at +25 % of the relevant item.',
+        'Delivery is by download link or hosted URL. Deliverables are deemed accepted when the Client approves the final Stage or uses them publicly, or 10 working days after delivery without a written, specific defect notice — whichever comes first.',
+        'Timelines in a Quote are working-day estimates that start when the complete Model version and the first payment have arrived. They are binding only if the Quote says "binding deadline". The Studio informs the Client without delay of foreseeable delays.',
+      ],
+    },
+    {
+      heading: '7. Payment',
+      body: [
+        'Standard schedule: <strong>40 % on order · 30 % on approval of the drafts · 30 % on delivery</strong>. Orders under €1,500 net: 50 % on order, 50 % on delivery. Hosting, rentals, day rates and pass-through costs are invoiced as they occur. Different schedules (for example monthly invoicing under a framework agreement) apply if stated in the Quote.',
+        'Invoices are due in <strong>8 days</strong> (Hungarian clients) or <strong>14 days</strong> (international clients) by bank transfer; bank charges of the sender are borne by the Client. In case of late payment the Studio may charge the statutory default interest and the flat recovery cost under Hungarian law, and may suspend work, deliveries and hosting until payment; hosted deliverables may be taken offline after written notice.',
+        'The Client may not withhold or set off payments because of alleged defects unless the Studio has acknowledged them in writing or a court has established them.',
+      ],
+    },
+    {
+      heading: '8. Intellectual property and usage rights',
+      body: [
+        'All copyright and related rights in the Deliverables, the 3D models, scenes, scripts, tools and working files remain with the Studio. The Client receives, upon <strong>full payment</strong>, a non-exclusive, perpetual, worldwide licence to use the Deliverables for the <strong>marketing, advertising, broadcast, presentation, sale, lease, planning and permitting of the named project</strong>, in any medium and channel — paid advertising and broadcast included, at no extra licence fee —, including sub-licensing to the project\'s agents, brokers, investors and press. Until full payment the Client may use the Deliverables only for internal review.',
+        'Use for another project, resale, stock licensing, product packaging, use as training data for machine-learning systems, or transfer of the licence to a third party outside the named project requires a separate written licence. The Client may not remove credits or watermarks the Studio places on drafts, and may crop, resize or overlay Deliverables for the licensed purpose but not alter their substance in a way that misrepresents the Studio\'s work.',
+        'The Studio may show the Deliverables in its portfolio, website, social channels, competition entries and marketing, naming the project and the architect, from the moment the project becomes public — or, if the Client requests confidentiality in writing at ordering, from a date agreed with the Client. Unpublished projects are never shown without consent.',
+        'Third-party materials (stock music, stock footage, fonts, textures, 3D assets, voice-over, human music) are licensed for the scope stated in the Quote — stock music, for example, for web and social use. Broadcast, paid-advertising or other extended use needs a licence upgrade, invoiced at cost +15 %.',
+        'The Client is responsible for the accuracy of the plans and the legal admissibility of what is shown (for example massing, heights, signage, neighbouring properties, trademarks). Visualizations are illustrations; they are not construction, permitting or survey documents and must not be presented as such.',
+      ],
+    },
+    {
+      heading: '9. AI-assisted deliverables',
+      body: [
+        'Every Deliverable, the 3D lane included, is produced with AI assistance at some stage — at least upscaling, typically also denoising, retouching, people and vegetation — while the 3D lane remains modelled and rendered by the Studio. Some Deliverables — the "AI lane" in the price list (AI images, AI motion, AI narration and music) — are produced with generative AI systems operated or licensed by the Studio and reviewed by the Studio. The Client accepts that such outputs are inherently variable: variations are the product; details may differ between variations; a generated image cannot be edited with the precision of a 3D render unless manual editing is ordered.',
+        'The Studio uses only engines whose licences permit commercial use, never clones the voice or likeness of a real person without that person\'s written consent, and does not upload the Client\'s materials to services that would use them to train public models. Copyright protection of purely AI-generated content varies by jurisdiction; the Studio grants the same usage rights as in section 8 but cannot warrant registrability or exclusivity of such content.',
+        'Where a law or platform requires AI-generated content to be labelled, the Client is responsible for labelling in its own publications; the Studio states in the delivery which items are AI-generated.',
+      ],
+    },
+    {
+      heading: '10. Subcontracting and pass-through costs',
+      body: [
+        'The Studio may use subcontractors and specialists (floor-plan drafting, drone photography, voice-over, music composition, translation). The Studio remains the Client\'s sole contract partner. Items marked as pass-through in the price list or Quote are invoiced at cost +15 % and, where the third party requires it, on the third party\'s own terms (for example non-refundable licence fees).',
+      ],
+    },
+    {
+      heading: '11. Hosting',
+      body: [
+        'Hosted Deliverables (360° tours, web viewers, tools, microsites) include hosting for <strong>12 months</strong> from delivery; afterwards hosting continues at the annual fee in the price list (WEB.HOST) unless either party cancels in writing before the renewal date. The Studio hosts on reputable third-party infrastructure and takes reasonable care but does not guarantee uninterrupted availability. On termination the Studio delivers the static files on request so the Client can host them elsewhere; hosting may be suspended for unpaid invoices after written notice.',
+      ],
+    },
+    {
+      heading: '12. Warranty and liability',
+      body: [
+        'The Studio delivers with professional care and warrants that the Deliverables conform to the approved Stages. Defects must be reported in writing with specifics within 10 working days of delivery; the Studio remedies genuine defects at its own cost within a reasonable time. Deviations that result from the Client\'s input, from approved Stages, or from the inherent nature of AI-generated content are not defects.',
+        'The Studio\'s total liability for an Order is limited to the net fees paid for that Order. The Studio is not liable for indirect or consequential loss, lost profit, lost sales, or decisions (investment, purchase, planning) made on the basis of visualizations. These limitations do not apply to damage caused intentionally, to damage to life, body or health, or where liability cannot be limited under mandatory law.',
+        'The Studio keeps project files for at least 24 months after delivery but is not obliged to keep them longer; the Client is responsible for archiving the delivered files.',
+      ],
+    },
+    {
+      heading: '13. Cancellation and termination',
+      body: [
+        'The Client may cancel an Order in writing at any time. The Studio invoices the work completed and in progress up to receipt of the cancellation (at least the payment instalments already due), plus committed third-party costs. Payments already received are credited against this amount and are otherwise not refunded.',
+        'Either party may terminate the contract for a material breach not remedied within 15 days of written notice — for the Studio, in particular, for non-payment or for a Client\'s failure to supply input for more than 30 days. Sections 7, 8, 12 and 15 survive termination.',
+      ],
+    },
+    {
+      heading: '14. Consumers',
+      body: [
+        'If the Client is a consumer (a natural person acting outside their trade or profession), the following applies in addition and prevails in case of conflict. Under Hungarian Government Decree 45/2014 (II. 26.) the consumer may withdraw from a distance contract within 14 days; the Studio starts work within this period only at the consumer\'s express request, and the right of withdrawal lapses once the service has been fully performed — for Deliverables made to the consumer\'s specifications it does not apply. Complaints may be brought before the conciliation body of the consumer\'s residence, for Budapest: Budapesti Békéltető Testület, 1016 Budapest, Krisztina krt. 99., <a href="https://bekeltet.bkik.hu/">bekeltet.bkik.hu</a>. The liability cap in section 12 does not limit a consumer\'s statutory rights.',
+      ],
+    },
+    {
+      heading: '15. Confidentiality and data protection',
+      body: [
+        'Each party keeps confidential the other\'s non-public information received in connection with an Order — plans, prices, business data — and uses it only for the Order. The Studio signs a separate NDA on request. Section 8 (portfolio use after publication) is an agreed exception.',
+        'Personal data is handled as described in the <a href="' + privacy + '">Privacy Policy</a>. Where the Client supplies personal data of third parties (for example photographs of people, voice recordings), the Client is responsible for the lawful basis of sharing them.',
+      ],
+    },
+    {
+      heading: '16. General',
+      body: [
+        'Hungarian law applies, with the exclusion of the UN Convention on Contracts for the International Sale of Goods. Disputes are settled amicably first; failing that, the courts of Budapest with competence for the Studio\'s seat have jurisdiction, subject to mandatory consumer rules.',
+        'Notices are valid by email to the addresses used in the Order. If a provision of these Terms is invalid, the remainder stays in force. The Studio may update these Terms; the version in force on the Quote date applies to that Order. These Terms exist in English and Hungarian; in case of discrepancy the Hungarian version prevails.',
+      ],
+    },
+  ],
+};
+
+const HU: Doc = {
+  meta: {
+    title: 'Általános Szerződési Feltételek',
+    description: 'A Vision Graphics Kft. általános szerződési feltételei építészeti látványtervezési, film-, AI-kép és interaktív szolgáltatásokra — ajánlat, módosítás, átadás, fizetés, felhasználási jog, felelősség.',
+  },
+  effective: `Hatályos ${EFFECTIVE}-től · az ezen a napon vagy ez után kiadott ajánlatokra`,
+  intro:
+    'A jelen Általános Szerződési Feltételek („ÁSZF") a Vision Graphics Kft. („Stúdió") vizualizációs szolgáltatásaira adott minden ajánlatra, megrendelésre és szerződésre vonatkoznak. Az ajánlat elfogadásával vagy a megrendeléssel a Megrendelő elfogadja az ÁSZF-et. Eltérés csak írásban (e-mail elegendő), az adott megrendelésre hivatkozva érvényes.',
+  sections: [
+    {
+      heading: '1. A Stúdió',
+      body: [
+        'Vision Graphics Kft. · székhely: 1126 Budapest, Hollósy Simon utca 15. · cégjegyzékszám: 01-09-564319 (Fővárosi Törvényszék Cégbírósága) · adószám: 12203688-2-43 · közösségi adószám: HU12203688 · e-mail: <a href="mailto:info@visiongraphics.hu">info@visiongraphics.hu</a> · telefon: +36 30 945 4179. Képviseli: Kerezsi László ügyvezető. Teljes adatok az <a href="' + localeUrl('/impressum/', lang) + '">Impresszum</a> oldalon.',
+      ],
+    },
+    {
+      heading: '2. Hatály és fogalmak',
+      body: [
+        'A Stúdió építészeti és termékvizualizációt nyújt: 3D modell-előkészítés, látványképek, 360°-os panorámák és túrák, alaprajzok és értékesítési anyagok, film és animáció, AI-generált képek és mozgókép, interaktív webes eszközök, valamint kapcsolódó tanácsadás, oktatás és tárhely. Az aktuális kínálat az <a href="' + pricing + '">árlista</a>; minden tételnek állandó kódja van, az ajánlatok ezekre a kódokra hivatkoznak.',
+        '<strong>Megrendelő</strong> — a megrendelést leadó természetes vagy jogi személy. Az ÁSZF üzleti ügyfelekre íródott; a 14. pont tartalmazza a fogyasztókra vonatkozó kiegészítő szabályokat.',
+        '<strong>Ajánlat</strong> — a Stúdió írásos ajánlata, amely árlista-kódokat, mennyiségeket, szorzókat, árakat, határidőt és az ÁSZF-től való esetleges eltérést tartalmaz.',
+        '<strong>Megrendelés</strong> — az Ajánlat írásos elfogadása a Megrendelő részéről. <strong>Teljesítés</strong> — az Ajánlatban felsorolt képek, filmek, túrák, eszközök, fájlok vagy szolgáltatások. <strong>Modellverzió</strong> — a megrendeléskor átadott egy készlet terv, modell és brief. <strong>Szakasz</strong> — modellellenőrzés, vázlatok, végleges (filmnél previz, vázlat, végleges). <strong>Kör</strong> — egy Szakaszra vonatkozó, egy összesített módosítási lista.',
+      ],
+    },
+    {
+      heading: '3. Ajánlat, árak, szerződéskötés',
+      body: [
+        'Az árak <strong>nettó</strong> euróárak. Magyar megrendelőnek 27 % áfa kerül felszámításra; más EU-tagállambeli, közösségi adószámmal rendelkező megrendelőnél a fordított adózás szabályai érvényesek; EU-n kívüli megrendelőnek áfa nélkül számlázunk. Magyar megrendelőnek az ajánlat az abban megadott, januárban rögzített átváltási árfolyamon forintban is kifejezhető.',
+        'Az Ajánlat keltétől számított <strong>30 napig</strong> érvényes, ha másként nem rendelkezik. A szerződés az Ajánlat írásos elfogadásával (e-mail elegendő) — legkésőbb a Modellverzió átadásával és a munka megkezdésének stúdiói visszaigazolásával — jön létre. A szerződést az Ajánlat, az ÁSZF és az Ajánlat keltekor hatályos árlista együtt alkotja; ellentmondás esetén az Ajánlat az irányadó.',
+        'Az árak az Ajánlatban rögzített terjedelmet, mennyiséget, forrásadat-minőséget és határidőt feltételezik. Ami az Ajánlatban nem szerepel, az nem része az árnak. A Megrendelő kérésére vállalt sürgős teljesítés a gyártási tételekre ×1,25 szorzóval kerül elszámolásra (tárhelyre, bérlésre, napidíjra nem).',
+        'Az árlistát minden januárban indexáljuk (magyar fogyasztói árindex, legalább +5 %). A már kiadott ajánlatok érvényességi idejükön belül változatlanok; keretszerződéses ügyfelek tizenkét hónapra rögzített írásos árlevelet kapnak.',
+      ],
+    },
+    {
+      heading: '4. Megrendelői anyagok és az egy modellverzió',
+      body: [
+        'A Megrendelő a megrendeléskor átadja a Modellverziót: terveket, 3D modelleket, helyszíni adatokat, anyag- és berendezési referenciákat, logókat, szövegeket és a briefet. A Megrendelő szavatolja, hogy rendelkezik minden joggal, amely ezek felhasználásához szükséges — harmadik felek fotóit, terveit, 3D anyagait is beleértve —, és mentesíti a Stúdiót az ezekből eredő harmadik feles igények alól.',
+        'Az árak a <strong>megrendeléskor átadott egy Modellverzió</strong> feldolgozását tartalmazzák. A megrendelés utáni tervváltozásokat gyártói óradíjon számoljuk. A megrendelés utáni második tervfázis vagy jelentős modellmódosítás az érintett modell-előkészítési tétel 30 %-a (árlista-kód: MOD.REV); a Stúdió előre jelzi, hogy egy változtatás kisebb (óradíjas) vagy jelentős (MOD.REV).',
+        'Az Ajánlat forrásadat-szorzóját (használható 3D modell / 2D CAD / PDF vagy vázlat) a ténylegesen átadott anyag alapján állapítjuk meg. Ha az átadott anyag eltér az Ajánlatban feltételezettől, a Stúdió a munka megkezdése előtt írásban módosíthatja a szorzót.',
+        'A megrendelői anyagok késése vagy hiányossága a határidőt megfelelően kitolja, és nem minősül a Stúdió szerződésszegésének.',
+      ],
+    },
+    {
+      heading: '5. Folyamat, jóváhagyás, módosítási körök',
+      body: [
+        'A munka Szakaszokban halad. A Stúdió minden Szakaszt jóváhagyásra bemutat; a Megrendelő írásban hagy jóvá. A jóváhagyás lezárja a Szakaszt — jóváhagyott Szakasz módosítása (például új kamera a previz jóváhagyása után, vagy anyagváltoztatás a vázlatok jóváhagyása után) gyártói óradíjon, plusz az újrarenderelés költségén történik.',
+        'Minden Szakasz <strong>két módosítási kört</strong> tartalmaz. Egy Kör egy összesített módosítási lista, amelyet egy kijelölt kapcsolattartó küld; több személytől érkező, elszórt vagy egymásnak ellentmondó kérések külön Körnek számítanak. A további Körök gyártói óradíjon kerülnek elszámolásra.',
+        'Ha a Megrendelő egy bemutatásra 10 munkanapon belül nem reagál, a Stúdió — a Megrendelő értesítése után — a Szakaszt jóváhagyottnak tekintheti, hogy a határidő tartható maradjon.',
+        'A technikai eszközöket és módszereket (szoftver, renderelő, AI-modellek, alvállalkozók) a Stúdió az elvárt minőség keretein belül saját belátása szerint választja meg.',
+      ],
+    },
+    {
+      heading: '6. Átadás',
+      body: [
+        'Szabványos formátumok: látványképek 4–6K JPG/PNG; film 1080p MP4 (4K, 360° vagy ProRes/DNxHR master, ha az ajánlatban szerepel); túrák, nézegetők, eszközök és microsite-ok tárolt webes formában; alaprajzok és adatlapok PDF/PNG formában. A rétegezett vagy forrásfájlok (PSD, 3ds Max jelenetek, projektfájlok) nem részei a szabványos átadásnak; amennyiben a Stúdió kiadásukhoz hozzájárul, áruk az érintett tétel +25 %-a.',
+        'Az átadás letöltési linkkel vagy tárolt URL-lel történik. A Teljesítés elfogadottnak minősül a végleges Szakasz jóváhagyásával, nyilvános felhasználásával, vagy az átadástól számított 10 munkanap elteltével konkrét, írásos hibajelzés hiányában — amelyik előbb bekövetkezik.',
+        'Az Ajánlatban szereplő határidők munkanapban számított becslések, amelyek a teljes Modellverzió és az első részlet beérkezésétől indulnak. Csak akkor kötelezőek, ha az Ajánlat „kötbéres határidő" megjelölést tartalmaz. Az előre látható késésről a Stúdió haladéktalanul tájékoztatja a Megrendelőt.',
+      ],
+    },
+    {
+      heading: '7. Fizetés',
+      body: [
+        'Szabványos ütemezés: <strong>40 % megrendeléskor · 30 % a vázlatok jóváhagyásakor · 30 % átadáskor</strong>. Nettó 1 500 € alatti megrendelésnél: 50 % megrendeléskor, 50 % átadáskor. Tárhely, bérlés, napidíj és továbbszámlázott költség felmerüléskor kerül számlázásra. Eltérő ütemezés (például keretszerződés szerinti havi számlázás) akkor érvényes, ha az Ajánlat tartalmazza.',
+        'A számlák fizetési határideje átutalással <strong>8 nap</strong> (magyar megrendelő) vagy <strong>14 nap</strong> (külföldi megrendelő); a küldő bankköltségeit a Megrendelő viseli. Késedelem esetén a Stúdió a Ptk. szerinti késedelmi kamatot és a behajtási költségátalányt számíthatja fel, továbbá a munkát, az átadást és a tárhelyszolgáltatást a kifizetésig felfüggesztheti; a tárolt anyagok írásos értesítés után elérhetetlenné tehetők.',
+        'A Megrendelő állítólagos hibára hivatkozva nem tarthat vissza vagy számíthat be kifizetést, kivéve ha a hibát a Stúdió írásban elismerte vagy bíróság megállapította.',
+      ],
+    },
+    {
+      heading: '8. Szellemi tulajdon és felhasználási jog',
+      body: [
+        'A Teljesítéshez, a 3D modellekhez, jelenetekhez, szkriptekhez, eszközökhöz és munkafájlokhoz fűződő szerzői és kapcsolódó jogok a Stúdiónál maradnak. A Megrendelő a <strong>teljes vételár kiegyenlítésével</strong> nem kizárólagos, időben és területileg korlátlan felhasználási engedélyt kap a Teljesítés használatára a <strong>megnevezett projekt marketingjéhez, hirdetéséhez, sugárzásához, bemutatásához, értékesítéséhez, bérbeadásához, tervezéséhez és engedélyeztetéséhez</strong>, bármely médiumban és csatornán — a fizetett hirdetést és a sugárzást is beleértve, külön licencdíj nélkül —, beleértve az allicencet a projekt ügynökei, közvetítői, befektetői és a sajtó részére. A teljes kifizetésig a Teljesítés csak belső egyeztetésre használható.',
+        'Másik projekthez való felhasználás, továbbértékesítés, stock-licencelés, termékcsomagolás, gépi tanulási rendszerek tanítóadataként való felhasználás, vagy az engedély átruházása a megnevezett projekten kívüli harmadik félre külön írásos licencet igényel. A Megrendelő a vázlatokon elhelyezett feliratokat, vízjeleket nem távolíthatja el; a Teljesítést az engedélyezett célra vághatja, átméretezheti, feliratozhatja, de lényegét a Stúdió munkáját félrevezetően megváltoztató módon nem módosíthatja.',
+        'A Stúdió a Teljesítést portfóliójában, honlapján, közösségi csatornáin, pályázatokon és marketingjében bemutathatja a projekt és az építész megnevezésével, a projekt nyilvánosságra kerülésétől — vagy ha a Megrendelő megrendeléskor írásban titoktartást kér, a Megrendelővel egyeztetett időponttól. Nem publikus projektet hozzájárulás nélkül soha nem mutatunk be.',
+        'A harmadik feles anyagok (stock zene, stock felvétel, betűtípus, textúra, 3D elem, narráció, emberi zeneszerzés) az Ajánlatban megadott körre licenceltek — a stock zene például webes és közösségi felhasználásra. Sugárzott, fizetett hirdetési vagy egyéb kiterjesztett felhasználáshoz licencbővítés szükséges, amelyet költség +15 % áron számlázunk.',
+        'A tervek pontosságáért és a bemutatott tartalom jogszerűségéért (például tömeg, magasság, feliratok, szomszédos ingatlanok, védjegyek) a Megrendelő felel. A látványtervek illusztrációk; nem kiviteli, engedélyezési vagy felmérési dokumentumok, és ilyenként nem mutathatók be.',
+      ],
+    },
+    {
+      heading: '9. AI-támogatott teljesítés',
+      body: [
+        'Minden Teljesítés, a 3D vonal is, valamely lépésben AI-segítséggel készül — legalább a felskálázásnál, jellemzően a zajszűrésnél, retusálásnál, embereknél és növényzetnél is —, miközben a 3D vonalat továbbra is a Stúdió modellezi és rendereli. Egyes Teljesítések — az árlista „AI vonala" (AI képek, AI mozgókép, AI narráció és zene) — a Stúdió által üzemeltetett vagy licencelt generatív AI rendszerekkel készülnek, a Stúdió ellenőrzése mellett. A Megrendelő tudomásul veszi, hogy az ilyen kimenetek természetüknél fogva változékonyak: a variáció maga a termék; a részletek variációnként eltérhetnek; egy generált kép nem szerkeszthető egy 3D render pontosságával, hacsak kézi szerkesztést nem rendel.',
+        'A Stúdió kizárólag kereskedelmi felhasználást engedő licencű motorokat használ, valós személy hangját vagy képmását annak írásos hozzájárulása nélkül soha nem klónozza, és a Megrendelő anyagait nem tölti fel olyan szolgáltatásba, amely azokat nyilvános modellek tanítására használná. A tisztán AI-generált tartalom szerzői jogi védelme joghatóságonként eltér; a Stúdió a 8. pont szerinti felhasználási jogot biztosítja, de az ilyen tartalom lajstromozhatóságát vagy kizárólagosságát nem szavatolja.',
+        'Ahol jogszabály vagy platform az AI-generált tartalom megjelölését írja elő, a saját publikációiban a Megrendelő felel a megjelölésért; a Stúdió az átadáskor közli, mely tételek AI-generáltak.',
+      ],
+    },
+    {
+      heading: '10. Alvállalkozók és továbbszámlázott költségek',
+      body: [
+        'A Stúdió alvállalkozókat és szakembereket vehet igénybe (alaprajz-szerkesztés, drónfotózás, narráció, zeneszerzés, fordítás). A Megrendelő szerződéses partnere kizárólag a Stúdió marad. Az árlistában vagy Ajánlatban továbbszámlázottként jelölt tételeket költség +15 % áron számlázzuk, és ahol a harmadik fél megköveteli, annak saját feltételei szerint (például nem visszatéríthető licencdíjak).',
+      ],
+    },
+    {
+      heading: '11. Tárhely',
+      body: [
+        'A tárolt Teljesítések (360°-os túrák, webes nézegetők, eszközök, microsite-ok) az átadástól számított <strong>12 hónap</strong> tárhelyet tartalmaznak; ezt követően a tárhely az árlista szerinti éves díjon (WEB.HOST) folytatódik, hacsak valamelyik fél a megújítás előtt írásban fel nem mondja. A Stúdió megbízható harmadik feles infrastruktúrán, kellő gondossággal tárol, de megszakítás nélküli elérhetőséget nem garantál. Megszűnéskor a Stúdió kérésre átadja a statikus fájlokat, hogy a Megrendelő máshol tárolhassa; kifizetetlen számla esetén a tárhely írásos értesítés után felfüggeszthető.',
+      ],
+    },
+    {
+      heading: '12. Szavatosság és felelősség',
+      body: [
+        'A Stúdió szakmai gondossággal teljesít, és szavatolja, hogy a Teljesítés megfelel a jóváhagyott Szakaszoknak. A hibát az átadástól számított 10 munkanapon belül, konkrétan, írásban kell jelezni; a valódi hibát a Stúdió saját költségén, ésszerű határidőn belül javítja. Nem hiba az az eltérés, amely a megrendelői anyagból, a jóváhagyott Szakaszokból vagy az AI-generált tartalom természetéből ered.',
+        'A Stúdió egy Megrendelésért viselt teljes felelőssége az adott Megrendelésért fizetett nettó díj összegére korlátozódik. A Stúdió nem felel közvetett vagy következményi kárért, elmaradt haszonért, elmaradt értékesítésért, sem a látványtervek alapján hozott (befektetési, vásárlási, tervezési) döntésekért. E korlátozások nem vonatkoznak a szándékosan okozott kárra, az életet, testi épséget, egészséget érintő károkra, sem arra, amire kötelező jogszabály a felelősség korlátozását kizárja.',
+        'A Stúdió a projektfájlokat az átadás után legalább 24 hónapig megőrzi, de ennél hosszabb megőrzésre nem köteles; az átadott fájlok archiválásáért a Megrendelő felel.',
+      ],
+    },
+    {
+      heading: '13. Lemondás és felmondás',
+      body: [
+        'A Megrendelő a Megrendelést írásban bármikor lemondhatja. A Stúdió a lemondás beérkezéséig elkészült és folyamatban lévő munkát (legalább a már esedékes részleteket), valamint a vállalt harmadik feles költségeket számlázza. A már beérkezett kifizetéseket ebbe beszámítja; egyébként nem téríti vissza.',
+        'Bármelyik fél felmondhatja a szerződést olyan lényeges szerződésszegés miatt, amelyet a másik fél írásos felszólítástól számított 15 napon belül nem orvosol — a Stúdió különösen nemfizetés, illetve a megrendelői anyagok 30 napot meghaladó elmaradása esetén. A 7., 8., 12. és 15. pont a megszűnés után is hatályban marad.',
+      ],
+    },
+    {
+      heading: '14. Fogyasztók',
+      body: [
+        'Ha a Megrendelő fogyasztó (szakmája, önálló foglalkozása vagy üzleti tevékenysége körén kívül eljáró természetes személy), kiegészítésként és ellentmondás esetén elsőbbséggel az alábbiak érvényesek. A 45/2014. (II. 26.) Korm. rendelet alapján a fogyasztó a távollévők között kötött szerződéstől 14 napon belül elállhat; a Stúdió ezen időszakon belül csak a fogyasztó kifejezett kérésére kezdi meg a munkát, és a szolgáltatás teljes teljesítése után az elállási jog megszűnik — a fogyasztó egyedi igényei szerint készült Teljesítésre az elállási jog nem vonatkozik. Panasszal a fogyasztó lakóhelye szerinti békéltető testülethez fordulhat, Budapesten: Budapesti Békéltető Testület, 1016 Budapest, Krisztina krt. 99., <a href="https://bekeltet.bkik.hu/">bekeltet.bkik.hu</a>. A 12. pont felelősségkorlátozása a fogyasztó jogszabályon alapuló jogait nem érinti.',
+      ],
+    },
+    {
+      heading: '15. Titoktartás és adatvédelem',
+      body: [
+        'A felek a Megrendeléssel összefüggésben megismert, nem nyilvános információt — terveket, árakat, üzleti adatokat — bizalmasan kezelik, és kizárólag a Megrendeléshez használják. A Stúdió kérésre külön titoktartási megállapodást ír alá. A 8. pont (portfólió-felhasználás a nyilvánosságra kerülés után) megállapodott kivétel.',
+        'A személyes adatok kezelése az <a href="' + privacy + '">Adatkezelési tájékoztató</a> szerint történik. Ha a Megrendelő harmadik személyek adatait adja át (például emberek fotóit, hangfelvételeket), azok megosztásának jogalapjáért a Megrendelő felel.',
+      ],
+    },
+    {
+      heading: '16. Általános rendelkezések',
+      body: [
+        'A magyar jog az irányadó, az áruk nemzetközi adásvételéről szóló ENSZ-egyezmény kizárásával. A vitákat a felek először békés úton rendezik; ennek hiányában a Stúdió székhelye szerint illetékes budapesti bíróság jár el, a kötelező fogyasztóvédelmi szabályok fenntartásával.',
+        'Az értesítések a Megrendelésben használt e-mail-címekre érvényesen küldhetők. Ha az ÁSZF valamely rendelkezése érvénytelen, a többi hatályban marad. A Stúdió az ÁSZF-et módosíthatja; az adott Megrendelésre az Ajánlat keltekor hatályos változat vonatkozik. Az ÁSZF magyar és angol nyelven készült; eltérés esetén a magyar változat az irányadó.',
+      ],
+    },
+  ],
+};
+
+const C = lang === 'hu' ? HU : EN;
+---
+
+<Page title={C.meta.title} description={C.meta.description} fullBleed>
+  <div class="legal-page">
+
+    <SectionBanner
+      image="/_img/banners/banner-general.jpg"
+      label={lang === 'hu' ? 'Jogi nyilatkozat' : 'Legal'}
+      title={C.meta.title}
+      headingLevel="h1"
+      size="page"
+    />
+
+    <section class="section legal-section">
+      <div class="container legal-container">
+
+        <p class="legal-updated">{C.effective}</p>
+        <p class="legal-intro">{C.intro}</p>
+
+        {C.sections.map(section => (
+          <article class="legal-block">
+            <h2 class="legal-heading">{section.heading}</h2>
+            {section.body.map(line => (
+              <p class="legal-body" set:html={line} />
+            ))}
+          </article>
+        ))}
+
+        <p class="legal-footer-note">
+          <a href={pricing}>{L.nav.pricing}</a>
+          {' · '}
+          <a href={privacy}>{L.nav.privacy}</a>
+          {' · '}
+          <a href={localeUrl('/impressum/', lang)}>{L.nav.impressum}</a>
+          {' · '}
+          <a href={localeUrl('/contact/', lang)}>{L.nav.contact}</a>
+        </p>
+
+      </div>
+    </section>
+
+  </div>
+</Page>
+
+<style>
+  .legal-page { width: 100%; }
+  .legal-section { padding-block: clamp(2.5rem, 4vw, 4rem); }
+  .legal-container { max-width: 820px; }
+
+  .legal-updated {
+    font-size: var(--fs-xs);
+    color: var(--color-text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: var(--space-4);
+  }
+  .legal-intro {
+    font-size: var(--fs-body);
+    color: var(--color-text-muted);
+    line-height: 1.75;
+    margin-bottom: var(--space-12);
+    max-width: 72ch;
+  }
+  .legal-block { margin-bottom: var(--space-10); }
+  .legal-heading {
+    font-size: var(--fs-h5);
+    font-weight: 600;
+    color: var(--color-accent);
+    margin: 0 0 var(--space-4);
+    line-height: 1.3;
+  }
+  .legal-body {
+    font-size: var(--fs-body);
+    color: var(--color-text-muted);
+    line-height: 1.75;
+    margin: 0 0 var(--space-3);
+    max-width: 72ch;
+  }
+  .legal-body :global(a) {
+    color: var(--color-accent);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 150ms ease;
+  }
+  .legal-body :global(a:hover) { border-bottom-color: var(--color-accent); }
+  .legal-body :global(strong) { color: var(--color-text); font-weight: 600; }
+
+  .legal-footer-note {
+    margin-top: var(--space-12);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-border);
+    font-size: var(--fs-small);
+    color: var(--color-text-faint);
+  }
+  .legal-footer-note a { color: var(--color-accent); text-decoration: none; }
+</style>

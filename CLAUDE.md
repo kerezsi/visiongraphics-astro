@@ -547,6 +547,21 @@ Honeypot field `_gotcha`. Local test: `npm run build` then
 `npx wrangler pages dev dist --binding RESEND_API_KEY=... --binding CONTACT_TO=... --binding CONTACT_FROM=...`.
 Functions have their own `functions/tsconfig.json` (workers types); root tsconfig excludes them.
 
+### 8.1a Pricing system (added 2026-09-15)
+
+One price list drives both sites. Never type a price into a template.
+
+| Piece | Path | Role |
+|---|---|---|
+| Master data | `src/data/pricing.json` | Families, items (codes `FAMILY.ITEM[.VARIANT]`, `{en,hu}` names), multipliers, tiers, presets, terms, retired codes. Rules: `E:\CLAUDE\Visiongraphics_strategies\PRICING_CODES.md`. |
+| Math | `src/lib/pricing.mjs` (+ `pricing.d.mts` types) | The only implementation of base × multipliers × tiers, `quote()`, `presetTotal()`, `publicView()`. Plain ESM so the admin tool can import it. |
+| Check | `node scripts/check-pricing.mjs` | Asserts preset totals (Puli €1,975 · Vizsla €7,335 · Kuvasz €19,233 · Komondor €24,033), unique codes, tier maths. Run after any pricing change. |
+| Admin tool | `tools/editor/pricing/index.html` → http://localhost:4322/pricing/ | Served by the editor server (two `express.static` mounts in `server/index.ts`: `/pricing` and `/lib`). Edits bases, multiplier values, presets, raw JSON; **Save** = `POST /api/files/write`; **Publish** = `POST /api/commands/git-promote` (commits everything pending on develop, same as ↑ Live). |
+| Public feed | `src/pages/pricing.json.ts` → `/pricing.json` | `publicView(data)`: list, public presets with computed totals, the `ai` block. CORS header for it in `public/_headers`. ai.visiongraphics.eu fetches it at page load and falls back to its bundled `pricing.js`. |
+| Pages | `[lang]/pricing/index.astro`, `[lang]/terms/index.astro` | Pricing page is fully data-driven (packages computed at build). Terms = ÁSZF, EN + HU, effective 2026-10-01; its commercial numbers mirror `pricing.json.terms[]` — change the JSON first. |
+
+Rules: internal multipliers (framework, rush, source…) are quote-only — `publicView()` strips them; keep it that way. `pricing-packages.json` and `pricing-reference.json` are superseded (still read by the editor's Pricing tab; delete both when that tab is retired). A price change is not done until `check-pricing.mjs` passes and `/en/pricing/` + `/hu/pricing/` render.
+
 ### 8.2 Images & thumbnails
 
 - URL shape: `/_img/<collection>/<slug>/<file>` where collection ∈ portfolio, services,
@@ -697,8 +712,9 @@ is invisible under `border-none`; don't "fix" it back.
    `localeUrl`, dates via `formatDate(date, lang)`, labels from `strings.ts articles`, prose
    marked `lang="en"`). `Lang` is still not registered in `articles/[slug].astro` — localizing
    an article body requires adding it (and `{en,hu}` frontmatter support in the template).
-2. **`faq/` and `pricing/`** ignore `lang` entirely (EN content on /hu/ URLs). Both nav-disabled,
-   but `services/index.astro` still links "See Pricing" → `/pricing/`.
+2. **`faq/`** ignores `lang` entirely (EN content on /hu/ URLs) and is nav-disabled. (`pricing/`
+   was rebuilt bilingual and data-driven 2026-09-15 — §8.1a — but is still nav-disabled;
+   `services/index.astro` links "See Pricing" → `/pricing/`.)
 3. **Eight orphaned editor block types** (`section-label`, `diff-block`, `cta-section`,
    `button-group`, `sidebar-block`, `section-container`, `two-col`, `service-body-grid`):
    render+inspector exist, but absent from palette registry and from `blockToMdx` — saving a

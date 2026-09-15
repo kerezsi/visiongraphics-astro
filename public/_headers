@@ -1,0 +1,5 @@
+# Cloudflare Pages custom headers.
+# /pricing.json is the public price feed read cross-origin by ai.visiongraphics.eu.
+/pricing.json
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=300

@@ -21,6 +21,7 @@ import ArticleGalleryMounter from '../../../components/media/ArticleGalleryMount
 import ArticleImageCompareMounter from '../../../components/media/ArticleImageCompareMounter.tsx';
 import Lang from '../../../components/i18n/Lang.astro';
 import { localizedPaths, localeUrl, tStr, type Locale } from '../../../lib/i18n';
+import pricing from '../../../data/pricing.json';
 
 export async function getStaticPaths() {
   const allServices = await getCollection('services', ({ data }) => data.published);
@@ -59,6 +60,9 @@ const linkedTech = (data.techniques ?? [])
 
 const hasMeta = pricingStr || startRequirementsStr || (sidebarLabelStr && sidebarContentStr);
 
+// Price-list families that sell this service (pricing.json family.services)
+const priceFams = pricing.families.filter(f => ((f as { services?: string[] }).services ?? []).includes(entry.slug));
+
 const COPY = {
   en: {
     metaSuffix:        '— Services',
@@ -67,6 +71,8 @@ const COPY = {
     pricingLabel:      'Pricing',
     startRequirements: 'What you need to start',
     techniquesUsed:    'Techniques used in this service:',
+    priceList:         'In the price list:',
+    estimate:          'Estimate your project →',
     projectsUsing:     'Projects using this service:',
     seeWork:           'See Our Work',
     startProject:      'Start a Project',
@@ -80,6 +86,8 @@ const COPY = {
     pricingLabel:      'Árazás',
     startRequirements: 'Mi szükséges az induláshoz?',
     techniquesUsed:    'A szolgáltatáshoz használt technikák:',
+    priceList:         'Az árlistában:',
+    estimate:          'Becsülje meg a projektjét →',
     projectsUsing:     'Projektek, amelyek ezt a szolgáltatást használták:',
     seeWork:           'Munkáink',
     startProject:      'Projekt indítása',
@@ -166,6 +174,18 @@ const c = COPY[lang];
           {linkedTech.map(t => (
             <a href={localeUrl(`/vision-tech/${t!.slug}/`, lang)} class="svc-technique-chip">{tStr(t!.data.title, lang)}</a>
           ))}
+        </div>
+      </div>
+    )}
+
+    {priceFams.length > 0 && (
+      <div class="svc-techniques container">
+        <span class="svc-techniques-label">{c.priceList}</span>
+        <div class="svc-techniques-chips">
+          {priceFams.map(f => (
+            <a href={localeUrl('/pricing/', lang) + '#' + f.code.toLowerCase()} class="svc-technique-chip"><span class="svc-chip-code">{f.code}</span>{tStr(f.name, lang)}</a>
+          ))}
+          <a href={localeUrl('/pricing/', lang) + '#estimate'} class="svc-technique-chip svc-technique-chip--accent">{c.estimate}</a>
         </div>
       </div>
     )}
@@ -414,6 +434,8 @@ const c = COPY[lang];
     color: var(--color-accent);
     border-color: var(--color-accent);
   }
+  .svc-chip-code { font-family: var(--font-mono); color: var(--color-accent); margin-right: 0.4rem; }
+  .svc-technique-chip--accent { color: var(--color-accent); }
 
   /* ── Related projects carousel ────────────────────────── */
   .svc-related-section {

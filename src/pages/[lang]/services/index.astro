@@ -35,8 +35,9 @@ const COPY = {
     intro:            'From single architectural renders to airport-scale animation sequences. From photorealistic product shots to custom MAXScript tools, pipeline audits, and AI-enhanced workflows. Seven services — scoped and priced to your actual project, not a package tier.',
     pricingLabel:     'Pricing',
     pricingHeading:   'Transparent from the Start',
-    pricingBody:      'Most projects start from €5,000; larger programmes from €15,000. Every quote is built from your actual scope — never from a package tier.',
+    pricingBody:      'A single house with five views starts at €1,975; a building launch with a 360° tour around €7,300. Every quote is built line by line from one public price list — never from a package tier.',
     seePricing:       'See Pricing',
+    estimate:         'Estimate Your Project',
     getQuote:         'Get a Quote',
     pricingNote:      '"Not sure which fits?\n30-minute consultation, no charge."',
     exploreService:   'Explore this service',
@@ -49,8 +50,9 @@ const COPY = {
     intro:            'Egyetlen építészeti rendertől repülőtér-léptékű animációs szekvenciákig. Fotorealisztikus termékfotóktól egyedi MAXScript eszközökig, munkafolyamat-auditokig és AI-támogatott folyamatokig. Hét szolgáltatás — a tényleges projektre szabott terjedelem és ár.',
     pricingLabel:     'Árazás',
     pricingHeading:   'Átlátható az első perctől',
-    pricingBody:      'A legtöbb projekt 5 000 €-tól indul, a nagyobb programok 15 000 €-tól. Minden árajánlat a tényleges feladatra épül — soha nem csomagsávokra.',
+    pricingBody:      'Egy családi ház öt nézettel 1 975 €-tól; egy épületindítás 360°-os túrával 7 300 € körül. Minden ajánlat tételről tételre, egyetlen nyilvános árlistából épül — soha nem csomagsávokból.',
     seePricing:       'Árlista',
+    estimate:         'Projektbecslés',
     getQuote:         'Árajánlat',
     pricingNote:      '„Nem biztos benne, melyik illik Önhöz?\n30 perces konzultáció, ingyenesen."',
     exploreService:   'Részletek',
@@ -98,6 +100,7 @@ const c = COPY[lang];
           <p class="pricing-body">{c.pricingBody}</p>
           <div class="pricing-ctas">
             <a href={localeUrl('/pricing/', lang)} class="btn btn-secondary">{c.seePricing}</a>
+            <a href={localeUrl('/pricing/', lang) + '#estimate'} class="btn btn-secondary">{c.estimate}</a>
             <a href={localeUrl('/contact/', lang)} class="btn btn-primary">{c.getQuote}</a>
           </div>
         </div>

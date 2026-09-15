@@ -30,6 +30,7 @@ const en = {
     blog:        'Blog',
     privacy:     'Privacy Policy',
     impressum:   'Imprint',
+    terms:       'Terms and Conditions',
   },
 
   // ── Buttons / CTAs ───────────────────────────────────────────
@@ -321,6 +322,7 @@ const hu: Strings = {
     blog:        'Blog',
     privacy:     'Adatkezelési tájékoztató',
     impressum:   'Impresszum',
+    terms:       'Általános szerződési feltételek',
   },
   cta: {
     seeWork:        'Munkáink',
