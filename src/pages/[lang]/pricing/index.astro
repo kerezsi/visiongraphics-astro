@@ -6,14 +6,23 @@
 // math in src/lib/pricing.mjs — packages are computed from the module list at
 // build time, never typed by hand. Internal multipliers (framework, rush,
 // source…) are deliberately not shown; they live on quotes only.
+//
+// Layout is standard components only: SectionHeading / Callout / BulletList /
+// CtaPanel (ui) + PriceList (pricing). Packages live on /pricing/estimate/
+// (PackageGrid), where they load into the calculator. No page-local styling
+// beyond block rhythm.
 
 import Page from '../../../layouts/Page.astro';
 import SectionBanner from '../../../components/ui/SectionBanner.astro';
-import { getCollection } from 'astro:content';
-import { staticLocalePaths, localeUrl, tStr, type Locale } from '../../../lib/i18n';
+import SectionHeading from '../../../components/ui/SectionHeading.astro';
+import Callout from '../../../components/ui/Callout.astro';
+import BulletList from '../../../components/ui/BulletList.astro';
+import CtaPanel from '../../../components/ui/CtaPanel.astro';
+import PriceList from '../../../components/pricing/PriceList.astro';
+import { staticLocalePaths, localeUrl, type Locale } from '../../../lib/i18n';
 import { ui } from '../../../i18n/strings';
 import raw from '../../../data/pricing.json';
-import { publicView, calcView, priceLabel, item, fmt, fmtHuf, type PricingData } from '../../../lib/pricing.mjs';
+import { fmtBoth, publicView, fmt, type PricingData } from '../../../lib/pricing.mjs';
 
 export const getStaticPaths = staticLocalePaths;
 const { lang } = Astro.params as { lang: Locale };
@@ -23,413 +32,119 @@ const L = ui(lang);
 const data = raw as unknown as PricingData;
 const P = publicView(data);
 const t = (v: { en: string; hu: string } | undefined) => (v ? v[lang] : '');
-const eur = (n: number | undefined) => fmt(n ?? 0, lang);
-const huf = (n: number | undefined) => fmtHuf(n ?? 0, P.peg);
-// "€180 / view", "€600–2,400 / project" or the custom note — one implementation, shared with the vision-tech pages
-const unitLine = (it: (typeof P.items)[number]) => priceLabel(it, lang);
-// quote-only multipliers stay unpublished; the two the copy cites are read from the data so the text never drifts
-const src3d = Math.round((1 - data.multipliers.source.options.find((o) => o.key === '3d')!.value) * 100);
-const rushX = data.multipliers.rush.options.find((o) => !o.default)!.value;
-// crosslinks: item.tech → vision-tech pages, family.services → service pages (slugs live in pricing.json)
-const techTitle = Object.fromEntries((await getCollection('vision-tech')).map(e => [e.slug, tStr(e.data.title, lang)]));
-const svcTitle = Object.fromEntries((await getCollection('services')).map(e => [e.slug, tStr(e.data.title, lang)]));
-// the calculator lives on /pricing/estimate/ (components/pricing/Estimator.astro); this page only links its tabs
-const calc = calcView(data);
+// quote-only multipliers stay unpublished — the copy names the levers without their factors
+// the calculator lives on /pricing/estimate/ (components/pricing/Estimator.astro); this page only links it
+const estimateUrl = localeUrl('/pricing/estimate/', lang);
 
 const COPY = {
   en: {
     metaTitle: 'Pricing',
-    metaDescription: `Architectural visualization price list ${P.version}: model preparation, exterior and interior stills, 360° tours, film, AI images, interactive tools. Packages from ${eur(P.presets[0].total)}. Vision Graphics Kft., Budapest.`,
+    metaDescription: `Architectural visualization price list ${P.version}: model preparation, exterior and interior stills, 360° tours, film, AI images, interactive tools. Packages from ${fmt(P.presets[0].total, lang)}. Vision Graphics Kft., Budapest.`,
     bannerLabel: 'Investment',
     bannerTitle: 'Pricing',
     label: 'Price list ' + P.version,
     h2: 'One list.',
     h2em: 'Every quote is built from it.',
-    intro: 'These are the prices we quote from — no package tiers, no hidden extras. Pick lines by code, or start from a package below. Prices are net EUR; Hungarian quotes are converted at a fixed rate set each January.',
+    intro: 'These are the prices we quote from — no package tiers, no hidden extras. Pick lines by code, or start from a package in the price calculator. Prices are net EUR; Hungarian quotes are converted at a fixed rate set each January.',
     lanes: 'Two fidelity lanes, not three tiers',
     lanesBody: 'Most deliverables exist in a 3D lane (modelled, rendered, finished by hand) and an AI lane (generated from your existing image, lightly retouched). We quote both where it makes sense; you choose per item. Small budgets go to the AI lane, never to a cheaper 3D still.',
-    packages: 'Packages',
-    packagesIntro: 'Four fixed combinations of list items — Hungarian dog breeds, by size. The price is computed from the list; swap any line and the quote follows.',
-    mostCommon: 'Most common',
-    includes: 'Includes',
-    getQuote: 'Get a quote',
-    talk: 'Talk to us',
     list: 'Module list',
     listIntro: 'Every line we sell, by family. Codes are stable — quote by code.',
-    code: 'Code', itemH: 'Item', price: 'Price',
-    hufNote: '',
-    aiLane: 'AI lane',
-    selfServe: 'Order AI images and motion directly at',
     terms: 'Terms on every quote',
     termsIntro: 'The short version. The full',
     termsLink: 'General Terms and Conditions',
     termsTail: 'apply to every order.',
     up: 'What drives cost up', down: 'What keeps cost down',
-    upList: ['Film instead of stills — an order of magnitude', 'Number of distinct camera angles', 'Interior detail: furnishing, bespoke materials', `Rush timelines (×${rushX})`, 'Plan revisions after ordering'],
-    downList: [`A usable 3D model instead of 2D plans (−${src3d} % on model preparation)`, 'A clear brief and one plan version at ordering', 'Repetition — unit types, panorama blocks, short bundles', 'The AI lane where photoreal 3D is not needed', 'A framework agreement for repeat work'],
+    upList: ['Film instead of stills — an order of magnitude', 'Number of distinct camera angles', 'Interior detail: furnishing, bespoke materials', 'Rush timelines', 'Plan revisions after ordering'],
+    downList: ['A usable 3D model instead of 2D plans', 'A clear brief and one plan version at ordering', 'Repetition — unit types, panorama blocks, short bundles', 'The AI lane where photoreal 3D is not needed', 'A framework agreement for repeat work'],
     ctaH: 'Not sure which fits?',
     ctaP: '30-minute consultation, no charge. We scope the project together and send a quote by code.',
     updated: 'Prices valid from',
-    serviceLbl: 'Service', techLbl: 'Technique',
     calcTitle: 'Price calculator',
-    calcIntro: 'Set quantities per service and see the total computed with the same math we quote with. Open the full calculator, or jump straight to one service.',
+    calcIntro: 'Describe the project as subjects — building, interiors, show flats — with their own outputs, add film or plans, and see the total computed with the same math we quote with.',
     calcOpen: 'Open the price calculator',
   },
   hu: {
     metaTitle: 'Árak',
-    metaDescription: `Építészeti látványtervezés árlista ${P.version}: modell-előkészítés, külső és belső látványképek, 360°-os túrák, film, AI képek, interaktív eszközök. Csomagok ${eur(P.presets[0].total)}-tól. Vision Graphics Kft., Budapest.`,
+    metaDescription: `Építészeti látványtervezés árlista ${P.version}: modell-előkészítés, külső és belső látványképek, 360°-os túrák, film, AI képek, interaktív eszközök. Csomagok ${fmtBoth(P.presets[0].total, lang, P.peg)}-tól. Vision Graphics Kft., Budapest.`,
     bannerLabel: 'Befektetés',
     bannerTitle: 'Árak',
     label: 'Árlista ' + P.version,
     h2: 'Egy lista.',
     h2em: 'Minden ajánlat ebből épül.',
-    intro: 'Ezekből az árakból ajánlunk — nincsenek csomagsávok, nincsenek rejtett tételek. Válasszon tételeket kód szerint, vagy induljon az alábbi csomagok egyikéből. Nettó euróárak; a magyar ajánlatokat a januárban rögzített árfolyamon számítjuk át.',
+    intro: 'Ezekből az árakból ajánlunk — nincsenek csomagsávok, nincsenek rejtett tételek. Válasszon tételeket kód szerint, vagy induljon az árkalkulátor egyik csomagjából. Nettó euróárak; a magyar ajánlatokat a januárban rögzített árfolyamon számítjuk át.',
     lanes: 'Két minőségi vonal, nem három sáv',
     lanesBody: 'A legtöbb anyag létezik 3D vonalon (modellezve, renderelve, kézzel befejezve) és AI vonalon (meglévő képből generálva, könnyű retusálással). Ahol van értelme, mindkettőt ajánljuk; tételenként Ön választ. A kis költségvetés az AI vonalra kerül, sosem egy olcsóbb 3D képre.',
-    packages: 'Csomagok',
-    packagesIntro: 'Négy rögzített kombináció a lista tételeiből — magyar kutyafajták, méret szerint. Az ár a listából számolódik; bármelyik tételt cseréli, az ajánlat követi.',
-    mostCommon: 'Leggyakoribb',
-    includes: 'Tartalma',
-    getQuote: 'Árajánlatot kérek',
-    talk: 'Beszéljünk',
     list: 'Tétellista',
     listIntro: 'Minden tétel, amit árulunk, családonként. A kódok állandóak — kód szerint ajánlunk.',
-    code: 'Kód', itemH: 'Tétel', price: 'Ár',
-    hufNote: `Forintárak tájékoztató jelleggel, ${P.peg} Ft/€ árfolyamon.`,
-    aiLane: 'AI vonal',
-    selfServe: 'AI képek és mozgókép közvetlenül rendelhetők itt:',
     terms: 'Feltételek minden ajánlaton',
     termsIntro: 'A rövid változat. Minden megrendelésre a teljes',
     termsLink: 'Általános Szerződési Feltételek',
     termsTail: 'vonatkoznak.',
     up: 'Mi növeli az árat', down: 'Mi csökkenti az árat',
-    upList: ['Film állókép helyett — nagyságrendi különbség', 'Az eltérő kameraállások száma', 'Belső részletesség: berendezés, egyedi anyagok', `Sürgős határidő (×${String(rushX).replace('.', ',')})`, 'Tervmódosítás megrendelés után'],
-    downList: [`Használható 3D modell 2D tervek helyett (−${src3d} % a modell-előkészítésen)`, 'Egyértelmű brief és egy tervverzió megrendeléskor', 'Ismétlődés — lakástípusok, panorámablokkok, rövidfilm-csomag', 'Az AI vonal, ahol nem kell fotorealisztikus 3D', 'Keretszerződés visszatérő munkára'],
+    upList: ['Film állókép helyett — nagyságrendi különbség', 'Az eltérő kameraállások száma', 'Belső részletesség: berendezés, egyedi anyagok', 'Sürgős határidő', 'Tervmódosítás megrendelés után'],
+    downList: ['Használható 3D modell 2D tervek helyett', 'Egyértelmű brief és egy tervverzió megrendeléskor', 'Ismétlődés — lakástípusok, panorámablokkok, rövidfilm-csomag', 'Az AI vonal, ahol nem kell fotorealisztikus 3D', 'Keretszerződés visszatérő munkára'],
     ctaH: 'Nem biztos benne, melyik illik Önhöz?',
     ctaP: '30 perces konzultáció, díjmentesen. Együtt mérjük fel a projektet, és kód szerinti ajánlatot küldünk.',
     updated: 'Árak érvényesek',
-    serviceLbl: 'Szolgáltatás', techLbl: 'Technika',
     calcTitle: 'Árkalkulátor',
-    calcIntro: 'Állítsa be a mennyiségeket szolgáltatásonként, és a végösszeg ugyanazzal a képlettel számolódik, amivel ajánlatot adunk. Nyissa meg a teljes kalkulátort, vagy ugorjon egy szolgáltatásra.',
+    calcIntro: 'Írja le a projektet témák szerint — épület, belső terek, mintalakások — saját anyagaikkal, adjon hozzá filmet vagy alaprajzokat, és a végösszeg ugyanazzal a képlettel számolódik, amivel ajánlatot adunk.',
     calcOpen: 'Árkalkulátor megnyitása',
   },
 } as const;
 const c = COPY[lang];
-
-// "5 × Exterior view, daytime" · film lines read "60 s · 3D animation — complex"
-const presetLines = (p: (typeof P.presets)[number]) =>
-  Object.entries(p.q).map(([code, q]) => {
-    const it = item(data, code);
-    return it.unit.en === 'second' ? `${q} s · ${t(it.name)}` : `${q} × ${t(it.name)}`;
-  });
 ---
 
 <Page title={c.metaTitle} description={c.metaDescription} fullBleed>
-  <div class="pricing-page">
+  <SectionBanner
+    image="/_img/banners/banner-general.jpg"
+    label={c.bannerLabel}
+    title={c.bannerTitle}
+    size="page"
+    headingLevel="h1"
+  />
 
-    <SectionBanner
-      image="/_img/banners/banner-general.jpg"
-      label={c.bannerLabel}
-      title={c.bannerTitle}
-      size="page"
-      headingLevel="h1"
-    />
-
-    <section class="pricing-section section">
+  <section class="section">
     <div class="container">
 
-    <div class="pricing-header">
-      <p class="section-label">{c.label}</p>
-      <h2 class="display-lg pricing-h2">{c.h2}<br /><em>{c.h2em}</em></h2>
-      <p class="pricing-intro">{c.intro}</p>
-      <div class="lanes">
-        <h3 class="lanes-title">{c.lanes}</h3>
-        <p>{c.lanesBody}</p>
+      <div class="pricing-block">
+        <SectionHeading label={c.label} size="lg" intro={c.intro}>
+          <Fragment slot="title">{c.h2}<br /><em>{c.h2em}</em></Fragment>
+          <Callout title={c.lanes} text={c.lanesBody} />
+        </SectionHeading>
       </div>
-    </div>
 
-    <!-- Packages: computed from the list -->
-    <h2 class="block-title">{c.packages}</h2>
-    <p class="block-intro">{c.packagesIntro}</p>
-    <div class="packages">
-      {P.presets.map(pkg => (
-        <div class:list={['package', { 'package--featured': pkg.highlight }]}>
-          {pkg.highlight && <div class="package-badge">{c.mostCommon}</div>}
-          <div class="package-top">
-            <h3 class="package-name">{pkg.name} <span>· {t(pkg.subtitle)}</span></h3>
-            <span class="package-price">{eur(pkg.total)}</span>
-            {lang === 'hu' && <span class="package-huf">{huf(pkg.total)}</span>}
-          </div>
-          <p class="package-desc">{t(pkg.desc)}</p>
-          <ul class="package-includes">
-            {presetLines(pkg).map(line => <li>{line}</li>)}
-          </ul>
-          <a href={localeUrl('/contact/', lang)} class:list={['btn', pkg.highlight ? 'btn-primary' : 'btn-secondary', 'package-cta']}>
-            {c.getQuote}
-          </a>
-        </div>
-      ))}
-    </div>
-
-    <!-- Price calculator: its own page, one button per service tab -->
-    <div class="calc-links" id="estimate">
-      <h2 class="block-title">{c.calcTitle}</h2>
-      <p class="block-intro">{c.calcIntro}</p>
-      <div class="calc-link-row">
-        <a href={localeUrl('/pricing/estimate/', lang)} class="btn btn-primary">{c.calcOpen}</a>
-        {calc.calculator.tabs.map((T) => (
-          <a href={`${localeUrl('/pricing/estimate/', lang)}#e=${T.key}`} class="btn btn-secondary">{t(T.name)}</a>
-        ))}
+      <div class="pricing-block" id="estimate">
+        <SectionHeading title={c.calcTitle} intro={c.calcIntro} />
+        <a href={estimateUrl} class="btn btn-primary">{c.calcOpen}</a>
       </div>
-    </div>
 
-    <!-- Module list -->
-    <div class="line-items">
-      <h2 class="block-title">{c.list}</h2>
-      <p class="block-intro">{c.listIntro}</p>
-
-      <div class="price-categories">
-        {P.families.map(fam => (
-          <div class="price-cat" id={fam.code.toLowerCase()}>
-            <div class="price-cat-head">
-              <h3 class="price-cat-title"><span class="price-cat-code">{fam.code}</span>{t(fam.name)}{fam.lane === 'ai' && <span class="lane-tag">{c.aiLane}</span>}</h3>
-              <p class="price-cat-lede">{t(fam.lede)}</p>
-              {fam.services && fam.services.length > 0 && (
-                <p class="price-cat-links"><span>{c.serviceLbl}:</span>{fam.services.map(s => <a href={localeUrl(`/services/${s}/`, lang)}>{svcTitle[s]}</a>)}</p>
-              )}
-            </div>
-            <div class="price-rows">
-              {P.items.filter(i => i.family === fam.code).map(row => (
-                <div class="price-row" id={row.code}>
-                  <span class="price-code">{row.code}</span>
-                  <span class="price-item">
-                    <span class:list={['price-name', { tip: !!row.help }]} tabindex={row.help ? 0 : undefined} data-tip={row.help ? t(row.help) : undefined}>{t(row.name)}</span>
-                    {row.desc && <small>{t(row.desc)}</small>}
-                    {row.tech && row.tech.length > 0 && (
-                      <span class="price-tech"><span>{c.techLbl}:</span>{row.tech.map(s => <a href={localeUrl(`/vision-tech/${s}/`, lang)}>{techTitle[s]}</a>)}</span>
-                    )}
-                  </span>
-                  <span class:list={['price-val', { 'price-val--custom': !!row.custom && !row.range }]}>
-                    {unitLine(row)}
-                    {row.range && <small>{t(row.custom)}</small>}
-                    {row.min && <small>min. {row.min} {t(row.unit)}</small>}
-                    {lang === 'hu' && !row.custom && <small>{huf(row.base)}</small>}
-                  </span>
-                </div>
-              ))}
-            </div>
-            {fam.code === 'AI' && (
-              <p class="price-cat-foot">{c.selfServe} <a href="https://ai.visiongraphics.eu">ai.visiongraphics.eu</a></p>
-            )}
-          </div>
-        ))}
+      <div class="pricing-block">
+        <SectionHeading title={c.list} intro={c.listIntro} />
+        <PriceList lang={lang} />
       </div>
-      {c.hufNote && <p class="line-items-note">{c.hufNote}</p>}
-    </div>
 
-    <!-- Terms block -->
-    <div class="terms">
-      <h2 class="block-title">{c.terms}</h2>
-      <p class="block-intro">{c.termsIntro} <a href={localeUrl('/terms/', lang)}>{c.termsLink}</a> {c.termsTail}</p>
-      <ul class="terms-list">
-        {P.terms.map(line => <li set:html={t(line)} />)}
-      </ul>
-    </div>
-
-    <!-- What drives cost -->
-    <div class="cost-factors">
-      <div class="cost-col">
-        <h2 class="cost-col-title">{c.up}</h2>
-        <ul class="cost-list cost-list--up">{c.upList.map(x => <li>{x}</li>)}</ul>
+      <div class="pricing-block">
+        <SectionHeading title={c.terms}>
+          <Fragment slot="intro">{c.termsIntro} <a href={localeUrl('/terms/', lang)}>{c.termsLink}</a> {c.termsTail}</Fragment>
+        </SectionHeading>
+        <BulletList items={P.terms.map(t)} marker="dash" columns={2} html />
       </div>
-      <div class="cost-col">
-        <h2 class="cost-col-title">{c.down}</h2>
-        <ul class="cost-list cost-list--down">{c.downList.map(x => <li>{x}</li>)}</ul>
+
+      <div class="pricing-block panel-grid">
+        <BulletList title={c.up} items={c.upList} marker="up" />
+        <BulletList title={c.down} items={c.downList} marker="down" />
       </div>
-    </div>
 
-    <!-- CTA -->
-    <div class="pricing-cta">
-      <div class="pricing-cta-text">
-        <h2 class="pricing-cta-h2">{c.ctaH}</h2>
-        <p>{c.ctaP}</p>
-      </div>
-      <a href={localeUrl('/contact/', lang)} class="btn btn-primary">{L.cta.getInTouch}</a>
-    </div>
+      <CtaPanel title={c.ctaH} text={c.ctaP} href={localeUrl('/contact/', lang)} cta={L.cta.getInTouch} />
 
-    <p class="line-items-note">{c.updated} {P.updated} · {c.label}</p>
+      <p class="pricing-foot">{c.updated} {P.updated} · {c.label}</p>
 
     </div>
-    </section>
-  </div>
+  </section>
 </Page>
 
 <style>
-  .pricing-page { width: 100%; }
-  .pricing-section { padding-block: clamp(3rem, 5vw, 5rem); }
-  .pricing-page :global(p) { max-width: none; }
-
-  .pricing-header { margin-bottom: var(--space-12); }
-  .pricing-intro {
-    font-size: var(--fs-small);
-    color: var(--color-text-muted);
-    max-width: 62ch;
-    line-height: 1.7;
-    margin: 0 0 var(--space-6);
-  }
-  .lanes {
-    border-left: 3px solid var(--color-accent);
-    padding: var(--space-3) var(--space-5);
-    background: var(--color-surface);
-    max-width: 72ch;
-  }
-  .lanes-title {
-    font-family: var(--font-body);
-    font-size: var(--fs-xs);
-    font-weight: 500;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--color-text-faint);
-    margin: 0 0 var(--space-2);
-  }
-  .lanes p { font-size: var(--fs-small); color: var(--color-text-muted); line-height: 1.65; margin: 0; }
-
-  .block-title {
-    font-family: var(--font-display);
-    font-size: var(--fs-h5);
-    font-weight: 300;
-    color: var(--color-text);
-    margin: 0 0 var(--space-3);
-  }
-  .block-intro {
-    font-size: var(--fs-small);
-    color: var(--color-text-muted);
-    max-width: 62ch;
-    line-height: 1.7;
-    margin: 0 0 var(--space-8);
-  }
-  .block-intro a { color: var(--color-accent); text-decoration: none; }
-
-  /* Packages */
-  .packages {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1px;
-    background: var(--color-border);
-    border: 1px solid var(--color-border);
-    margin-bottom: var(--space-16);
-  }
-  .package {
-    background: var(--color-surface);
-    padding: var(--space-8);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
-    position: relative;
-  }
-  .package--featured { background: var(--color-surface-2); }
-  .package-badge {
-    position: absolute; top: -1px; left: var(--space-8);
-    font-size: var(--fs-xs); font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--color-bg); background: var(--color-accent); padding: 0.2rem 0.6rem;
-  }
-  .package-top { display: flex; flex-direction: column; gap: var(--space-1); padding-top: var(--space-4); }
-  .package-name {
-    font-family: var(--font-body); font-size: var(--fs-xs); font-weight: 500;
-    letter-spacing: 0.15em; text-transform: uppercase; color: var(--color-text);
-  }
-  .package-name span { color: var(--color-text-faint); font-weight: 400; }
-  .package-price {
-    font-family: var(--font-mono); font-size: var(--fs-h5); font-weight: 400;
-    color: var(--color-text); letter-spacing: -0.02em; line-height: 1;
-  }
-  .package-huf { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-text-faint); }
-  .package-desc { font-size: var(--fs-xs); color: var(--color-text-muted); line-height: 1.65; margin: 0; }
-  .package-includes {
-    list-style: none; padding: var(--space-4) 0 0; margin: 0; flex: 1;
-    display: flex; flex-direction: column; gap: var(--space-2);
-    border-top: 1px solid var(--color-border);
-  }
-  .package-includes li { font-size: var(--fs-xs); color: var(--color-text-muted); padding-left: 1.1rem; position: relative; line-height: 1.4; }
-  .package-includes li::before { content: '✓'; position: absolute; left: 0; color: var(--color-accent); }
-  .package-cta { margin-top: auto; width: 100%; justify-content: center; }
-
-  /* Module list */
-  .line-items { margin-bottom: var(--space-16); }
-  .price-categories { display: flex; flex-direction: column; border: 1px solid var(--color-border); }
-  .price-cat { border-bottom: 1px solid var(--color-border); scroll-margin-top: var(--size-header); }
-  .price-cat:last-child { border-bottom: none; }
-  .price-cat-head { padding: var(--space-4) var(--space-5); background: var(--color-surface); border-bottom: 1px solid var(--color-border); }
-  .price-cat-title {
-    font-family: var(--font-body); font-size: var(--fs-small); font-weight: 500;
-    letter-spacing: 0.05em; color: var(--color-text); margin: 0 0 var(--space-2);
-    display: flex; align-items: baseline; gap: var(--space-3); flex-wrap: wrap;
-  }
-  .price-cat-code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-accent); border: 1px solid var(--color-accent); padding: 0.05em 0.4em; }
-  .lane-tag { font-size: var(--fs-xs); font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-text-faint); border: 1px solid var(--color-border); padding: 0.05em 0.5em; }
-  .price-cat-lede { font-size: var(--fs-xs); color: var(--color-text-muted); line-height: 1.6; margin: 0; max-width: 90ch; }
-  .price-cat-foot { font-size: var(--fs-xs); color: var(--color-text-muted); padding: var(--space-3) var(--space-5); margin: 0; background: var(--color-surface); }
-  .price-cat-foot a { color: var(--color-accent); text-decoration: none; }
-  .price-rows { display: flex; flex-direction: column; }
-  .price-row {
-    display: grid; grid-template-columns: 9rem 1fr auto; gap: var(--space-4);
-    align-items: baseline; padding: var(--space-3) var(--space-5);
-    border-bottom: 1px solid var(--color-border); background: var(--color-bg); transition: background 150ms;
-  }
-  .price-row:last-child { border-bottom: none; }
-  .price-row:hover { background: var(--color-surface); }
-  .price-code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-accent); white-space: nowrap; }
-  .price-item { font-size: var(--fs-small); color: var(--color-text); line-height: 1.4; }
-  .price-item small { display: block; font-size: var(--fs-xs); color: var(--color-text-faint); line-height: 1.45; margin-top: 0.15em; }
-  .price-val { font-family: var(--font-mono); font-size: var(--fs-small); color: var(--color-text); white-space: nowrap; text-align: right; }
-  .price-val small { display: block; font-size: var(--fs-xs); color: var(--color-text-faint); }
-  .price-val--custom { font-family: var(--font-body); font-style: italic; color: var(--color-text-faint); }
-  .line-items-note { font-size: var(--fs-xs); color: var(--color-text-faint); margin-top: var(--space-4); line-height: 1.6; }
-
-  /* Terms */
-  .terms { margin-bottom: var(--space-16); }
-  .terms-list { columns: 2; column-gap: var(--space-8); list-style: none; padding: 0; margin: 0; }
-  .terms-list li {
-    break-inside: avoid; font-size: var(--fs-xs); color: var(--color-text-muted); line-height: 1.6;
-    padding: 0 0 var(--space-3) var(--space-4); position: relative;
-  }
-  .terms-list li::before { content: '—'; position: absolute; left: 0; color: var(--color-accent); }
-  .terms-list :global(b) { color: var(--color-text); font-weight: 500; }
-
-  /* Cost factors */
-  .cost-factors { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--color-border); border: 1px solid var(--color-border); margin-bottom: var(--space-12); }
-  .cost-col { background: var(--color-surface); padding: var(--space-8); }
-  .cost-col-title { font-family: var(--font-body); font-size: var(--fs-xs); font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--color-text-faint); margin: 0 0 var(--space-4); }
-  .cost-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--space-2); }
-  .cost-list li { font-size: var(--fs-small); color: var(--color-text-muted); padding-left: 1.25rem; position: relative; line-height: 1.4; }
-  .cost-list--up li::before { content: '↑'; position: absolute; left: 0; color: var(--color-accent-2); font-size: var(--fs-xs); }
-  .cost-list--down li::before { content: '↓'; position: absolute; left: 0; color: var(--color-accent); font-size: var(--fs-xs); }
-
-  /* CTA */
-  .pricing-cta {
-    display: flex; justify-content: space-between; align-items: center; gap: var(--space-8);
-    padding: var(--space-10); background: var(--color-surface); border: 1px solid var(--color-border);
-    border-radius: var(--radius-sm); flex-wrap: wrap;
-  }
-  .pricing-cta-h2 { font-family: var(--font-display); font-size: var(--fs-h5); font-weight: 300; color: var(--color-text); margin: 0 0 var(--space-2); }
-  .pricing-cta-text p { font-size: var(--fs-small); color: var(--color-text-muted); margin: 0; }
-
-  .price-cat-links, .price-tech { display: flex; flex-wrap: wrap; gap: 0.35rem; font-size: var(--fs-xs); color: var(--color-text-faint); margin: var(--space-2) 0 0; }
-  .price-cat-links a, .price-tech a { color: var(--color-text-muted); border: 1px solid var(--color-border); padding: 0.05em 0.5em; text-decoration: none; transition: color 150ms, border-color 150ms; }
-  .price-cat-links a:hover, .price-tech a:hover { color: var(--color-accent); border-color: var(--color-accent); }
-  .price-row { scroll-margin-top: calc(var(--size-header) + 1rem); }
-  .price-row:target { background: var(--color-surface-2); box-shadow: inset 2px 0 0 var(--color-accent); }
-
-  .calc-links { margin-bottom: var(--space-16); scroll-margin-top: var(--size-header); }
-  .calc-link-row { display: flex; flex-wrap: wrap; gap: var(--space-2); }
-
-  @media (max-width: 1100px) { .packages { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 768px) {
-    .packages { grid-template-columns: 1fr; }
-    .cost-factors { grid-template-columns: 1fr; }
-    .pricing-cta { flex-direction: column; align-items: flex-start; }
-    .terms-list { columns: 1; }
-    .price-row { grid-template-columns: 1fr; gap: var(--space-1); }
-    .price-val { text-align: left; }
-  }
+  .pricing-block { margin-bottom: var(--space-16); scroll-margin-top: var(--size-header); }
+  .pricing-foot { font-size: var(--fs-xs); color: var(--color-text-faint); margin: var(--space-4) 0 0; }
 </style>

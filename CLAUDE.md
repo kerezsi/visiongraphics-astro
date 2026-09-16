@@ -323,6 +323,19 @@ Astro.locals.pageType = 'portfolio';   // 'portfolio' | 'service' | 'article' | 
 - Tailwind custom utilities (`bg-page`, `text-content`, `border-line`, `text-h1..h6`, ...) are
   defined in `tailwind.config.mjs` and map to the CSS vars — renaming either side breaks the other.
 - React-island CSS lives in `global.css` (scoped Astro styles can't reach island DOM).
+- **Shared page-building blocks** (use these before writing page-local markup/CSS):
+  `ui/SectionHeading` (kicker + title + intro, slots for inline markup), `ui/Callout`,
+  `ui/BulletList` (check/dash/up/down markers, 2-column option, `html` items), `ui/ChipRow`
+  (kicker + link chips, optional `code`/`accent`), `ui/CtaPanel`. Global utilities in
+  `global.css`: `.eyebrow` (faint kicker), `.code` (mono accent identifier), `.tag-accent`,
+  `.btn-row`, `.panel-grid` (hairline surface grid), `.field` (plain form control),
+  `--size-field-sm`. Pricing-specific: `pricing/PackageGrid`, `pricing/PriceList`
+  (full list, or `codes={[…]}` for a linked subset), `pricing/Estimator`.
+  Labs: `labs/LabPromo` (one random app from `src/data/labs.json` per page load — SSR
+  renders the first live app, an inline script swaps in a random one; no storage). The
+  labs list mirrors https://labs.visiongraphics.eu — when an app ships there, add it to
+  `labs.json` (`slug` = subdomain, `desc` `{en,hu}`, `live`, `tags`). Used on the home
+  page bottom and the About page's Labs section.
 
 ### 5.3 Content authoring (current conventions — use these for new work)
 
@@ -549,8 +562,13 @@ you patterned it on.
 Contact form: `/api/contact` Pages Function (`functions/api/contact.ts`), Resend API.
 Env vars (Cloudflare Pages → Production): `RESEND_API_KEY` (secret), `CONTACT_TO`
 (info@visiongraphics.hu), `CONTACT_FROM` (contact@visiongraphics.hu, Resend-verified domain).
-Honeypot field `_gotcha`. Local test: `npm run build` then
-`npx wrangler pages dev dist --binding RESEND_API_KEY=... --binding CONTACT_TO=... --binding CONTACT_FROM=...`.
+Honeypot field `_gotcha` + **Cloudflare Turnstile**: widget on the contact page (site key from
+the build env `PUBLIC_TURNSTILE_SITE_KEY`), token `cf-turnstile-response` verified server-side
+with `TURNSTILE_SECRET_KEY` (Pages secret). Both unset → Cloudflare's always-pass test pair
+(fine in dev, wrong in prod — the widget then says "testing only"). Local test: `npm run build` then
+`npx wrangler pages dev dist --binding RESEND_API_KEY=... --binding CONTACT_TO=... --binding CONTACT_FROM=... --binding TURNSTILE_SECRET_KEY=...`.
+The estimator hands off with `?quote=<text>&type=<project_type>`; `type` comes from
+`pricing.json calculator.kinds[].contact` (the card with the largest subtotal wins).
 Functions have their own `functions/tsconfig.json` (workers types); root tsconfig excludes them.
 
 ### 8.1a Pricing system (added 2026-09-15)
@@ -560,11 +578,12 @@ One price list drives both sites. Never type a price into a template.
 | Piece | Path | Role |
 |---|---|---|
 | Master data | `src/data/pricing.json` | Families, items (codes `FAMILY.ITEM[.VARIANT]`, `{en,hu}` names), multipliers, tiers, presets, terms, retired codes. Rules: `E:\CLAUDE\Visiongraphics_strategies\PRICING_CODES.md`. |
-| Math | `src/lib/pricing.mjs` (+ `pricing.d.mts` types) | The only implementation of base × multipliers × tiers, `quote()`, `presetTotal()`, `publicView()`. Plain ESM so the admin tool can import it. |
+| Math | `src/lib/pricing.mjs` (+ `pricing.d.mts` types) | The only implementation of base × multipliers × tiers. `quoteEntries(data, state, entries)` is the core: entries `{code, q, opts, types, group}` may repeat a code (one per subject) — tiers/bundles count the project-wide quantity, item multipliers come from each entry's option keys (`optValue`). `quote()` (flat `state.qty`), `presetTotal()`, `publicView()`, `calcView()` (what the estimator ships: items + the item-level option multipliers `CALC_MULTIPLIERS`; framework/rush stay out). Plain ESM so the admin tool can import it. |
+| Estimator UI | `src/lib/estimator.mjs` (+ `estimator.d.mts`, `estimator.css`) | The calculator itself, plain ESM, framework-free, shared by the site (`pricing/Estimator.astro` is a thin shell) and the admin quote builder (`/lib/estimator.mjs`). A project = cards: **subjects** (building & exterior with one MOD size S–XL + optional MOD.SITE; interior spaces with m², function, furnished/empty, detail; show flats; product) each owning a model line and its outputs (stills, 360° viewpoints…), plus **project-wide groups** (film with formats/4K/360°, plans with unit types, AI stills, tour extras, web). Cards are `pricing.json calculator.kinds[]` (rows = codes with defaults, `when: furn\|empty`, `tag`, `slider`, `short` labels); `calculator.starts[]` are the one-click project shapes. Option semantics (size → `MOD.<size>`, furn → `MOD.INT.FURN/EMPTY` with q = m²) live in `entryLines()` — extend there, not in JSON. State = URL hash `#p=src=…/kind:name:opt=v,…:CODE=n,…/…` (`serialize`/`parse`; legacy `#e=` links still parse via `fromQty`, which also maps presets' flat `q` onto cards — `PackageGrid` builds its links with it). Cards fold (header click), "Codes and unit prices" toggle reveals the details, hover/focus help from `item.help`. Rail: total (+HUF on hu), closest package, warnings, lines by card, Request quote (contact prefill), Copy estimate, Copy link, Print/PDF (popup + `print()`), Clear. Mobile: one column + sticky total bar. `mount(root, D, { lang, scope, embedded, internal, contactUrl, estimateUrl, textExtra, onChange })`. Smoke check lives in the session scratchpad pattern: presets and starts must round-trip `fromQty → serialize → parse` at the same total — re-run `check-pricing.mjs` after touching kinds. |
 | Check | `node scripts/check-pricing.mjs` | Asserts preset totals (Puli €1,975 · Vizsla €7,335 · Kuvasz €19,233 · Komondor €24,033), unique codes, tier maths. Run after any pricing change. |
-| Admin tool | `tools/editor/pricing/index.html` → http://localhost:4322/pricing/ | Served by the editor server (two `express.static` mounts in `server/index.ts`: `/pricing` and `/lib`). Edits bases, multiplier values, presets, raw JSON; **Save** = `POST /api/files/write`; **Publish** = `POST /api/commands/git-promote` (commits everything pending on develop, same as ↑ Live). |
+| Admin tool | `tools/editor/pricing/index.html` → http://localhost:4322/pricing/ | Served by the editor server (two `express.static` mounts in `server/index.ts`: `/pricing` and `/lib`). **Quote builder** at the top = the site's estimator mounted with `internal: true` on the full data (framework/rush segmented in its rail, VAT + HUF, client/project fields, terms appended, Copy / Print) — this is how client quotations are produced; the link inside the text opens the same estimate publicly (internal factors are ignored there). Below it: bases, multiplier values, presets, raw JSON; **Save** = `POST /api/files/write`; **Publish** = `POST /api/commands/git-promote` (commits everything pending on develop, same as ↑ Live). |
 | Public feed | `src/pages/pricing.json.ts` → `/pricing.json` | `publicView(data)`: list, public presets with computed totals, the `ai` block. CORS header for it in `public/_headers`. ai.visiongraphics.eu fetches it at page load and falls back to its bundled `pricing.js`. |
-| Pages | `[lang]/pricing/index.astro`, `[lang]/terms/index.astro` | Pricing page is fully data-driven (packages computed at build). Terms = ÁSZF, EN + HU, effective 2026-10-01; its commercial numbers mirror `pricing.json.terms[]` — change the JSON first. |
+| Pages | `[lang]/pricing/index.astro`, `[lang]/pricing/estimate/index.astro`, `[lang]/terms/index.astro` | Pricing page = the list only, built from shared components (§5.2): `PriceList`, `SectionHeading`, `BulletList`, `Callout`, `CtaPanel`. Estimate page = `PackageGrid` (full cards; a card's CTA is a `#p=…` hash that loads the package into the calculator) + `Estimator` with every card kind. Short-form packages (`<PackageGrid compact>`) sit on the home page and on service pages (`service={slug}`, filtered by `presets[].services` in pricing.json) and link to the calculator with the package loaded. Service pages embed the estimator scoped to their kinds (`<Estimator scope={kinds} embedded>`, from `calculator.kinds[].services`); vision-tech pages render `<PriceList codes>` for the lines that deliver the technique. Terms = ÁSZF, EN + HU, effective 2026-10-01; its commercial numbers mirror `pricing.json.terms[]` — change the JSON first. |
 
 Rules: internal multipliers (framework, rush, source…) are quote-only — `publicView()` strips them; keep it that way. `pricing-packages.json` and `pricing-reference.json` are superseded (still read by the editor's Pricing tab; delete both when that tab is retired). A price change is not done until `check-pricing.mjs` passes and `/en/pricing/` + `/hu/pricing/` render.
 

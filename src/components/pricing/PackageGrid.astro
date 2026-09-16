@@ -1,0 +1,109 @@
+---
+// src/components/pricing/PackageGrid.astro — the public presets as cards.
+// Totals come from publicView() (computed from the list), never typed.
+//
+//   <PackageGrid lang={lang} />                    full cards on /pricing/estimate/: the CTA
+//                                                  loads the package into the calculator (hash)
+//   <PackageGrid lang={lang} compact />            short form (home): name, price, one line,
+//                                                  link to the calculator with the package loaded
+//   <PackageGrid lang={lang} compact service="…" /> short form filtered by preset.services
+//   <PackageGrid lang={lang} compact tech="…" />    short form filtered by preset.tech (vision-tech pages);
+//                                                  presets carrying `tech` stay out of the other grids
+import raw from '../../data/pricing.json';
+import { publicView, calcView, item, fmt, fmtHuf, type PricingData } from '../../lib/pricing.mjs';
+import { fromQty, serialize } from '../../lib/estimator.mjs';
+import { localeUrl, type Locale } from '../../lib/i18n';
+import BulletList from '../ui/BulletList.astro';
+
+interface Props { lang: Locale; compact?: boolean; service?: string; tech?: string; title?: string; class?: string }
+const { lang, compact = false, service, tech, title, class: cls } = Astro.props;
+const data = raw as unknown as PricingData;
+const P = publicView(data);
+const t = (v: { en: string; hu: string } | undefined) => (v ? v[lang] : '');
+const presets = tech ? P.presets.filter((p) => (p.tech ?? []).includes(tech))
+  : service ? P.presets.filter((p) => (p.services ?? []).includes(service))
+  : P.presets.filter((p) => !p.tech);
+
+const COPY = {
+  en: { mostCommon: 'Most common', customize: 'Customize this package', customizeShort: 'Customize in the calculator', includes: 'What is included' },
+  hu: { mostCommon: 'Leggyakoribb', customize: 'Testreszabás', customizeShort: 'Testreszabás a kalkulátorban', includes: 'Mit tartalmaz' },
+} as const;
+const c = COPY[lang];
+
+// Calculator hash for a preset (#p=…): the package's lines mapped onto the estimator's cards
+// (estimator.mjs fromQty), serialised the way the estimator reads its state.
+const D = calcView(data);
+const hashFor = (p: (typeof presets)[number]) => serialize(fromQty(D, p.q, p.types, lang));
+const hrefFor = (p: (typeof presets)[number]) => (compact ? localeUrl('/pricing/estimate/', lang) : '') + hashFor(p);
+
+// "5 × Exterior view, daytime" · film lines read "60 s · 3D animation — complex"
+const lines = (p: (typeof presets)[number]) =>
+  Object.entries(p.q).map(([code, q]) => {
+    const it = item(data, code);
+    return it.unit.en === 'second' ? `${q} s · ${t(it.name)}` : `${q} × ${t(it.name)}`;
+  });
+---
+
+{presets.length > 0 && (
+  <div class:list={['package-grid-wrap', cls]}>
+    {title && <p class="eyebrow package-grid__title">{title}</p>}
+    <div class:list={['package-grid', { 'package-grid--compact': compact }]}>
+      {presets.map((pkg) => (
+        <article class:list={['package', { 'package--featured': pkg.highlight }]}>
+          {pkg.highlight && <span class="tag tag-accent package__badge">{c.mostCommon}</span>}
+          <h3 class="eyebrow package__name">{pkg.name} <span>· {t(pkg.subtitle)}</span></h3>
+          <p class="package__price">{lang === 'hu' ? fmtHuf(pkg.total, P.peg) : fmt(pkg.total, lang)}{lang === 'hu' && <small>({fmt(pkg.total, lang)})</small>}</p>
+          <p class="package__desc">{t(pkg.desc)}</p>
+          {compact
+            ? <a href={hrefFor(pkg)} class="btn btn-ghost package__cta">{c.customizeShort}</a>
+            : <>
+                <details class="package__includes">
+                  <summary class="eyebrow">{c.includes}</summary>
+                  <BulletList items={lines(pkg)} marker="check" />
+                </details>
+                <a href={hrefFor(pkg)} class:list={['btn', pkg.highlight ? 'btn-primary' : 'btn-secondary', 'package__cta']}>{c.customize}</a>
+              </>
+          }
+        </article>
+      ))}
+    </div>
+  </div>
+)}
+
+<style>
+  .package-grid__title { margin: 0 0 var(--space-3); }
+  .package-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--color-border);
+    border: 1px solid var(--color-border);
+  }
+  .package {
+    position: relative;
+    display: flex; flex-direction: column; gap: var(--space-4);
+    padding: var(--space-8);
+    padding-top: var(--space-10);
+    background: var(--color-surface);
+    min-width: 0;
+  }
+  .package--featured { background: var(--color-surface-2); }
+  .package__badge { position: absolute; top: 0; left: var(--space-8); border-radius: 0; }
+  .package__name { color: var(--color-text); margin: 0; }
+  .package__name span { color: var(--color-text-faint); font-weight: 400; }
+  .package__price { font-family: var(--font-mono); font-size: var(--fs-h5); color: var(--color-text); line-height: 1; margin: 0; }
+  .package__price small { display: block; font-size: var(--fs-xs); color: var(--color-text-faint); margin-top: var(--space-1); }
+  .package__desc { font-size: var(--fs-xs); color: var(--color-text-muted); margin: 0; }
+  .package__includes { flex: 1; padding-top: var(--space-4); border-top: 1px solid var(--color-border); }
+  .package__includes summary { cursor: pointer; list-style: none; display: flex; align-items: center; gap: var(--space-2); color: var(--color-text-muted); }
+  .package__includes summary::-webkit-details-marker { display: none; }
+  .package__includes summary::before { content: ''; width: 0.4em; height: 0.4em; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(-45deg); transition: transform var(--transition); }
+  .package__includes[open] summary::before { transform: rotate(45deg); }
+  .package__includes[open] summary { margin-bottom: var(--space-3); }
+  .package__cta { margin-top: auto; justify-content: center; }
+  .package-grid--compact .package { padding: var(--space-6); padding-top: var(--space-8); gap: var(--space-2); }
+  .package-grid--compact .package__badge { left: var(--space-6); }
+  .package-grid--compact .package__cta { justify-content: flex-start; font-size: var(--fs-xs); padding-block: var(--space-2); }
+  @media (max-width: 1100px) { .package-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 768px) { .package-grid { grid-template-columns: 1fr; } }
+</style>

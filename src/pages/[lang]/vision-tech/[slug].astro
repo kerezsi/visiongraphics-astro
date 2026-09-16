@@ -25,7 +25,8 @@ import Lang from '../../../components/i18n/Lang.astro';
 import { localizedPaths, localeUrl, tStr, type Locale } from '../../../lib/i18n';
 import { vtLabel } from '../../../lib/vision-tech-labels';
 import pricing from '../../../data/pricing.json';
-import { priceLabel } from '../../../lib/pricing.mjs';
+import PriceList from '../../../components/pricing/PriceList.astro';
+import PackageGrid from '../../../components/pricing/PackageGrid.astro';
 
 export async function getStaticPaths() {
   const all = await getCollection('vision-tech', e => e.data.published !== false);
@@ -44,9 +45,7 @@ const titleStr       = tStr(data.title, lang);
 const descriptionStr = tStr(data.description, lang);
 
 // Price-list lines that deliver this technique (pricing.json item.tech)
-type PriceRow = { code: string; name: { en: string; hu: string }; unit: { en: string; hu: string }; base?: number; custom?: { en: string; hu: string }; range?: [number, number]; needs?: string; tech?: string[]; public?: boolean };
-const priceItems = (pricing.items as PriceRow[]).filter(i => i.public !== false && (i.tech ?? []).includes(slug!));
-const needsMod = priceItems.some(i => i.needs === 'MOD');
+const priceCodes = (pricing.items as { code: string; tech?: string[]; public?: boolean }[]).filter(i => i.public !== false && (i.tech ?? []).includes(slug!)).map(i => i.code);
 
 // Related portfolio projects
 const allProjects = await getCollection('projects', p => p.data.published && !!p.data.coverImage);
@@ -114,8 +113,7 @@ const COPY = {
     goToProject:       (i: number) => `Go to project ${i}`,
     talkToUs:          'Talk to Us',
     priceList:         'In the price list:',
-    needsMod:          'Rendered lines also need model preparation:',
-    estimate:          'Estimate your project →',
+    packages:          'Package for this technique',
   },
   hu: {
     metaSuffix:        '| Vision Graphics technológiák',
@@ -136,8 +134,7 @@ const COPY = {
     goToProject:       (i: number) => `Ugrás a(z) ${i}. projekthez`,
     talkToUs:          'Beszéljünk',
     priceList:         'Az árlistában:',
-    needsMod:          'A renderelt tételekhez modell-előkészítés is kell:',
-    estimate:          'Becsülje meg a projektjét →',
+    packages:          'Csomag ehhez a technikához',
   },
 } as const;
 const c = COPY[lang];
@@ -201,18 +198,10 @@ const c = COPY[lang];
         </span>
       </div>
 
-      {priceItems.length > 0 && (
-        <div class="vt-price">
-          <span class="vt-price-label">{c.priceList}</span>
-          <ul class="vt-price-list">
-            {priceItems.map(it => (
-              <li><a href={localeUrl('/pricing/', lang) + '#' + it.code}><span class="vt-price-code">{it.code}</span><span>{tStr(it.name, lang)}</span><span class="vt-price-val">{priceLabel(it, lang)}</span></a></li>
-            ))}
-          </ul>
-          {needsMod && <p class="vt-price-note">{c.needsMod} <a href={localeUrl('/pricing/', lang) + '#mod'}>MOD</a></p>}
-          <a href={localeUrl('/pricing/estimate/', lang)} class="vt-price-est">{c.estimate}</a>
-        </div>
+      {priceCodes.length > 0 && (
+        <PriceList class="vt-price" lang={lang} codes={priceCodes} title={c.priceList} />
       )}
+      <PackageGrid class="vt-packages" lang={lang} compact tech={slug} title={c.packages} />
     </div>
   </section>
 
@@ -427,18 +416,9 @@ const c = COPY[lang];
   .vt-gallery-section .section-label { margin-bottom: 1.5rem; }
 
   /* ─── Related projects carousel ─────────────────────────── */
-  /* Price-list crosslink */
-  .vt-price { margin-top: var(--space-6); border-top: 1px solid var(--color-border); padding-top: var(--space-4); }
-  .vt-price-label { display: block; font-size: var(--fs-xs); font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-text-faint); margin-bottom: var(--space-3); }
-  .vt-price-list { list-style: none; margin: 0 0 var(--space-3); padding: 0; display: flex; flex-direction: column; gap: 1px; background: var(--color-border); border: 1px solid var(--color-border); max-width: 64ch; }
-  .vt-price-list a { display: grid; grid-template-columns: 8.5rem 1fr auto; gap: var(--space-3); align-items: baseline; padding: 0.5rem var(--space-4); background: var(--color-surface); color: var(--color-text); text-decoration: none; font-size: var(--fs-small); transition: background 150ms; }
-  .vt-price-list a:hover { background: var(--color-surface-2); }
-  .vt-price-code, .vt-price-val { font-family: var(--font-mono); font-size: var(--fs-xs); }
-  .vt-price-code { color: var(--color-accent); }
-  .vt-price-val { color: var(--color-text-muted); white-space: nowrap; }
-  .vt-price-note { font-size: var(--fs-xs); color: var(--color-text-muted); margin: 0 0 var(--space-2); }
-  .vt-price-note a, .vt-price-est { color: var(--color-accent); text-decoration: none; font-size: var(--fs-xs); }
-  @media (max-width: 640px) { .vt-price-list a { grid-template-columns: 1fr auto; } .vt-price-code { display: none; } }
+  /* Price-list crosslink (PriceList, linked mode) */
+  :global(.vt-price) { margin-top: var(--space-6); border-top: 1px solid var(--color-border); padding-top: var(--space-4); max-width: 72ch; }
+  :global(.vt-packages) { margin-top: var(--space-6); max-width: 72ch; }
 
   .vt-related-section {
     border-top: 1px solid var(--color-border);

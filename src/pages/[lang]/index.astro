@@ -9,6 +9,8 @@ import HomeCarousel from '../../components/HomeCarousel';
 import { getCollection, getEntry } from 'astro:content';
 import { staticLocalePaths, localeUrl, tStr, LOCALES, type Locale } from '../../lib/i18n';
 import { ui } from '../../i18n/strings';
+import PackageGrid from '../../components/pricing/PackageGrid.astro';
+import LabPromo from '../../components/labs/LabPromo.astro';
 
 export const getStaticPaths = staticLocalePaths;
 
@@ -106,6 +108,9 @@ const COPY = {
     whatWeDo:        'What We Do',
     services:        'Services',
     allServices:     'All Services',
+    packagesLabel:   'Packages',
+    packagesH2:      'Fixed combinations, priced from one public list',
+    packagesCta:     'Open the price calculator',
     howItWorksLabel: 'How It Works',
     howItWorksH2:    'Three Steps to Finished Visuals',
     processSteps: [
@@ -151,6 +156,9 @@ const COPY = {
     whatWeDo:        'Amit csinálunk',
     services:        'Szolgáltatások',
     allServices:     'Összes szolgáltatás',
+    packagesLabel:   'Csomagok',
+    packagesH2:      'Rögzített kombinációk, egyetlen nyilvános árlistából számolva',
+    packagesCta:     'Árkalkulátor megnyitása',
     howItWorksLabel: 'Hogyan működik',
     howItWorksH2:    'Három lépés a kész látványtervekig',
     processSteps: [
@@ -327,6 +335,31 @@ const c = COPY[lang];
             </div>
           ))}
         </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- PACKAGES (short form — customised on the calculator page)   -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <section class="section packages-section">
+      <div class="container">
+        <div class="services-teaser-header">
+          <div>
+            <p class="section-label">{c.packagesLabel}</p>
+            <h2 class="display-md">{c.packagesH2}</h2>
+          </div>
+          <a href={localeUrl('/pricing/estimate/', lang)} class="btn btn-secondary">{c.packagesCta}</a>
+        </div>
+        <PackageGrid lang={lang} compact />
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- LABS — one random app per page load                         -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <section class="section labs-section">
+      <div class="container">
+        <LabPromo lang={lang} />
       </div>
     </section>
 
@@ -597,8 +630,8 @@ const c = COPY[lang];
     max-width: none;
   }
 
-  /* ── Services Teaser ──────────────────────────────────────── */
-  .services-teaser-section { border-top: 1px solid var(--color-border); }
+  /* ── Services Teaser + Packages ───────────────────────────── */
+  .services-teaser-section, .packages-section, .labs-section { border-top: 1px solid var(--color-border); }
 
   .services-teaser-header {
     display: flex;

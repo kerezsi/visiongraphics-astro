@@ -1,0 +1,132 @@
+---
+// src/components/pricing/PriceList.astro — the module list from pricing.json.
+//   <PriceList lang={lang} />                 full list, grouped by family, with
+//                                             hover help, HUF, service/technique links
+//   <PriceList lang={lang} codes={[…]} />     a flat subset; every row links to
+//                                             /pricing/#CODE (vision-tech pages)
+// One CSS grid (subgrid rows) so the code column lines up across families.
+import raw from '../../data/pricing.json';
+import { getCollection } from 'astro:content';
+import { publicView, priceLabel, item, type PricingData } from '../../lib/pricing.mjs';
+import { localeUrl, tStr, type Locale } from '../../lib/i18n';
+
+interface Props { lang: Locale; codes?: string[]; title?: string; class?: string }
+const { lang, codes, title, class: cls } = Astro.props;
+const data = raw as unknown as PricingData;
+const P = publicView(data);
+const t = (v: { en: string; hu: string } | undefined) => (v ? v[lang] : '');
+const linked = !!codes;
+const items = codes ? P.items.filter((i) => codes.includes(i.code)) : P.items;
+const groups = linked ? [null] : P.families;
+const Row = linked ? 'a' : 'div';
+const pricingUrl = localeUrl('/pricing/', lang);
+const needsMod = linked && items.some((i) => item(data, i.code).needs === 'MOD');
+const techTitle = linked ? {} : Object.fromEntries((await getCollection('vision-tech')).map((e) => [e.slug, tStr(e.data.title, lang)]));
+const svcTitle = linked ? {} : Object.fromEntries((await getCollection('services')).map((e) => [e.slug, tStr(e.data.title, lang)]));
+
+const COPY = {
+  en: { service: 'Service', tech: 'Technique', aiLane: 'AI lane', min: 'min.', selfServe: 'Order AI images and motion directly at', hufNote: '', needsMod: 'Rendered lines also need model preparation:', estimate: 'Estimate your project' },
+  hu: { service: 'Szolgáltatás', tech: 'Technika', aiLane: 'AI vonal', min: 'min.', selfServe: 'AI képek és mozgókép közvetlenül rendelhetők itt:', hufNote: `Forintárak tájékoztató jelleggel, ${P.peg} Ft/€ árfolyamon.`, needsMod: 'A renderelt tételekhez modell-előkészítés is kell:', estimate: 'Becsülje meg a projektjét' },
+} as const;
+const c = COPY[lang];
+---
+
+<div class:list={['price-list', cls]}>
+  {title && <p class="eyebrow price-list__title">{title}</p>}
+  <div class="price-list__grid">
+    {groups.map((fam) => (
+      <Fragment>
+        {fam && (
+          <div class="price-list__head" id={fam.code.toLowerCase()}>
+            <h3 class="price-list__family">
+              <span class="tag code">{fam.code}</span>{t(fam.name)}
+              {fam.lane === 'ai' && <span class="tag">{c.aiLane}</span>}
+            </h3>
+            <p class="price-list__lede">{t(fam.lede)}</p>
+            {fam.services && fam.services.length > 0 && (
+              <p class="price-list__links"><span>{c.service}:</span>{fam.services.map((s) => <a href={localeUrl(`/services/${s}/`, lang)}>{svcTitle[s]}</a>)}</p>
+            )}
+          </div>
+        )}
+        {(fam ? items.filter((i) => i.family === fam.code) : items).map((row) => (
+          <Row class="price-list__row" id={linked ? undefined : row.code} href={linked ? `${pricingUrl}#${row.code}` : undefined}>
+            <span class="code">{row.code}</span>
+            <span class="price-list__item">
+              <span class:list={['price-list__name', { tip: !linked && !!row.help }]} tabindex={!linked && row.help ? 0 : undefined} data-tip={!linked && row.help ? t(row.help) : undefined}>{t(row.name)}</span>
+              {!linked && row.desc && <small>{t(row.desc)}</small>}
+              {!linked && row.tech && row.tech.length > 0 && (
+                <span class="price-list__links"><span>{c.tech}:</span>{row.tech.map((s) => <a href={localeUrl(`/vision-tech/${s}/`, lang)}>{techTitle[s]}</a>)}</span>
+              )}
+            </span>
+            <span class:list={['price-list__val', { 'price-list__val--custom': !!row.custom && !row.range }]}>
+              {priceLabel(row, lang, P.peg)}
+              {lang === 'hu' && (row.range || (!row.custom && row.base != null)) && <small>({priceLabel(row, lang).split(' / ')[0]})</small>}
+              {!linked && row.range && <small>{t(row.custom)}</small>}
+              {!linked && row.min && <small>{c.min} {row.min} {t(row.unit)}</small>}
+            </span>
+          </Row>
+        ))}
+        {fam?.code === 'AI' && (
+          <p class="price-list__foot">{c.selfServe} <a href="https://ai.visiongraphics.eu">ai.visiongraphics.eu</a></p>
+        )}
+      </Fragment>
+    ))}
+  </div>
+  {!linked && c.hufNote && <p class="price-list__note">{c.hufNote}</p>}
+  {needsMod && <p class="price-list__note">{c.needsMod} <a href={`${pricingUrl}#mod`}>MOD</a></p>}
+  {linked && <a href={localeUrl('/pricing/estimate/', lang)} class="btn btn-ghost">{c.estimate}</a>}
+</div>
+
+<style>
+  .price-list__title { margin: 0 0 var(--space-3); }
+  .price-list__grid {
+    display: grid;
+    grid-template-columns: max-content 1fr max-content;
+    column-gap: var(--space-4);
+    border: 1px solid var(--color-border);
+  }
+  .price-list__head, .price-list__foot { grid-column: 1 / -1; }
+  .price-list__head {
+    padding: var(--space-4) var(--space-5);
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    scroll-margin-top: var(--size-header);
+  }
+  .price-list__head:not(:first-child) { border-top: 1px solid var(--color-border); }
+  .price-list__family {
+    display: flex; align-items: baseline; flex-wrap: wrap; gap: var(--space-3);
+    font-family: var(--font-body); font-size: var(--fs-small); font-weight: 500; letter-spacing: 0.05em;
+    color: var(--color-text); margin: 0 0 var(--space-2);
+  }
+  .price-list__lede { font-size: var(--fs-xs); color: var(--color-text-muted); margin: 0; }
+  .price-list__foot { font-size: var(--fs-xs); color: var(--color-text-muted); padding: var(--space-3) var(--space-5); margin: 0; background: var(--color-surface); }
+  .price-list__foot a, .price-list__note a { color: var(--color-accent); }
+
+  .price-list__row {
+    display: grid; grid-template-columns: subgrid; grid-column: 1 / -1;
+    align-items: baseline;
+    padding: var(--space-3) var(--space-5);
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-bg);
+    color: inherit;
+    scroll-margin-top: calc(var(--size-header) + var(--space-4));
+    transition: background var(--transition);
+  }
+  .price-list__row:last-child, .price-list__row:has(+ .price-list__foot) { border-bottom: none; }
+  .price-list__row:hover { background: var(--color-surface); }
+  .price-list__row:target { background: var(--color-surface-2); box-shadow: inset 2px 0 0 var(--color-accent); }
+  .price-list__item { font-size: var(--fs-small); color: var(--color-text); line-height: 1.4; }
+  .price-list__item small, .price-list__val small { display: block; font-size: var(--fs-xs); color: var(--color-text-faint); }
+  .price-list__val { font-family: var(--font-mono); font-size: var(--fs-small); color: var(--color-text); white-space: nowrap; text-align: right; }
+  .price-list__val--custom { font-family: var(--font-body); font-style: italic; color: var(--color-text-faint); }
+  .price-list__links { display: flex; flex-wrap: wrap; gap: var(--space-1); font-size: var(--fs-xs); color: var(--color-text-faint); margin: var(--space-2) 0 0; }
+  .price-list__links a { color: var(--color-text-muted); border: 1px solid var(--color-border); padding: 0 var(--space-2); transition: color var(--transition), border-color var(--transition); }
+  .price-list__links a:hover { color: var(--color-accent); border-color: var(--color-accent); }
+  .price-list__note { font-size: var(--fs-xs); color: var(--color-text-faint); margin: var(--space-4) 0 0; }
+  .price-list :global(.btn-ghost) { margin-top: var(--space-2); font-size: var(--fs-xs); }
+
+  @media (max-width: 768px) {
+    .price-list__grid { grid-template-columns: 1fr; }
+    .price-list__val { text-align: left; }
+  }
+</style>

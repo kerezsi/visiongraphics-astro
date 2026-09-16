@@ -98,7 +98,7 @@ const c = COPY[lang];
           <p class="section-label">{c.pricingLabel}</p>
           <h2 class="display-md pricing-heading">{c.pricingHeading}</h2>
           <p class="pricing-body">{c.pricingBody}</p>
-          <div class="pricing-ctas">
+          <div class="btn-row">
             <a href={localeUrl('/pricing/', lang)} class="btn btn-secondary">{c.seePricing}</a>
             <a href={localeUrl('/pricing/estimate/', lang)} class="btn btn-secondary">{c.estimate}</a>
             <a href={localeUrl('/contact/', lang)} class="btn btn-primary">{c.getQuote}</a>
@@ -142,7 +142,7 @@ const c = COPY[lang];
   .pricing-teaser {
     display: grid;
     grid-template-columns: 1fr auto;
-    gap: 4rem;
+    gap: var(--space-16);
     align-items: center;
   }
 
@@ -156,11 +156,9 @@ const c = COPY[lang];
     margin-bottom: var(--space-6);
   }
 
-  .pricing-ctas { display: flex; gap: var(--space-3); flex-wrap: wrap; }
-
   .pricing-note {
     border: 1px solid var(--color-border);
-    padding: 2rem;
+    padding: var(--space-8);
     border-radius: var(--radius-sm);
     background: var(--color-surface);
   }
@@ -178,6 +176,6 @@ const c = COPY[lang];
 
   /* Responsive */
   @media (max-width: 1024px) {
-    .pricing-teaser { grid-template-columns: 1fr; gap: 2rem; }
+    .pricing-teaser { grid-template-columns: 1fr; gap: var(--space-8); }
   }
 </style>

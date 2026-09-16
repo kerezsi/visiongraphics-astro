@@ -131,8 +131,8 @@
         "hu": "Interaktív és webes eszközök"
       },
       "lede": {
-        "en": "The competence behind labs.visiongraphics.eu — 26 live browser apps, 100 % client-side, instant, mobile-first, bilingual, no accounts, no tracking — sold as bespoke tools for a project. Static hosting means near-zero running cost. Fixed anchors below; anything larger is scoped in expert days.",
-        "hu": "A labs.visiongraphics.eu mögötti tudás — 26 élő böngészős alkalmazás, 100 % kliensoldali, azonnali, mobil-először, kétnyelvű, fiók és követés nélkül — projektre szabott eszközként. A statikus tárhely közel nulla üzemeltetési költséget jelent. Fix árpontok alább; ami nagyobb, azt szakértői napokban árazzuk."
+        "en": "The competence behind labs.visiongraphics.eu — many live browser apps, 100 % client-side, instant, mobile-first, bilingual, no accounts, no tracking — sold as bespoke tools for a project. Static hosting means near-zero running cost. Fixed anchors below; anything larger is scoped in expert days.",
+        "hu": "A labs.visiongraphics.eu mögötti tudás — számos élő böngészős alkalmazás, 100 % kliensoldali, azonnali, mobil-először, kétnyelvű, fiók és követés nélkül — projektre szabott eszközként. A statikus tárhely közel nulla üzemeltetési költséget jelent. Fix árpontok alább; ami nagyobb, azt szakértői napokban árazzuk."
       },
       "services": [
         "architectural-visualization",
@@ -1947,14 +1947,16 @@
             "hu": "standard"
           },
           "value": 1,
-          "default": true
+          "default": true,
+          "key": "standard"
         },
         {
           "label": {
             "en": "framework",
             "hu": "keret"
           },
-          "value": 0.85
+          "value": 0.85,
+          "key": "framework"
         }
       ]
     },
@@ -1976,14 +1978,16 @@
             "hu": "nincs"
           },
           "value": 1,
-          "default": true
+          "default": true,
+          "key": "none"
         },
         {
           "label": {
             "en": "rush",
             "hu": "sürgős"
           },
-          "value": 1.25
+          "value": 1.25,
+          "key": "rush"
         }
       ]
     },
@@ -2003,7 +2007,11 @@
             "en": "3D model",
             "hu": "3D modell"
           },
-          "value": 0.5
+          "value": 0.5,
+          "long": {
+            "en": "usable 3D model",
+            "hu": "használható 3D modell"
+          }
         },
         {
           "key": "cad",
@@ -2012,7 +2020,11 @@
             "hu": "2D CAD"
           },
           "value": 1,
-          "default": true
+          "default": true,
+          "long": {
+            "en": "2D CAD drawings",
+            "hu": "2D CAD rajzok"
+          }
         },
         {
           "key": "sketch",
@@ -2020,7 +2032,11 @@
             "en": "PDF / sketch",
             "hu": "PDF / vázlat"
           },
-          "value": 2
+          "value": 2,
+          "long": {
+            "en": "PDF or sketch",
+            "hu": "PDF vagy vázlat"
+          }
         }
       ]
     },
@@ -2041,7 +2057,11 @@
             "hu": "lakó"
           },
           "value": 1,
-          "default": true
+          "default": true,
+          "long": {
+            "en": "residential",
+            "hu": "lakó"
+          }
         },
         {
           "key": "off",
@@ -2049,7 +2069,11 @@
             "en": "off",
             "hu": "iroda"
           },
-          "value": 0.8
+          "value": 0.8,
+          "long": {
+            "en": "office",
+            "hu": "iroda"
+          }
         },
         {
           "key": "ret",
@@ -2057,7 +2081,11 @@
             "en": "ret",
             "hu": "üzlet"
           },
-          "value": 1.3
+          "value": 1.3,
+          "long": {
+            "en": "retail / hospitality",
+            "hu": "üzlet / vendéglátás"
+          }
         },
         {
           "key": "pub",
@@ -2065,7 +2093,11 @@
             "en": "pub",
             "hu": "köz"
           },
-          "value": 1.5
+          "value": 1.5,
+          "long": {
+            "en": "public",
+            "hu": "középület"
+          }
         }
       ]
     },
@@ -2086,7 +2118,11 @@
             "hu": "standard"
           },
           "value": 1,
-          "default": true
+          "default": true,
+          "long": {
+            "en": "standard furniture and materials",
+            "hu": "standard bútor és anyagok"
+          }
         },
         {
           "key": "bespoke",
@@ -2094,7 +2130,11 @@
             "en": "bespoke",
             "hu": "egyedi"
           },
-          "value": 1.4
+          "value": 1.4,
+          "long": {
+            "en": "bespoke furniture and materials",
+            "hu": "egyedi bútor és anyagok"
+          }
         }
       ]
     },
@@ -2114,14 +2154,24 @@
             "hu": "benne"
           },
           "value": 1,
-          "default": true
+          "default": true,
+          "key": "incl",
+          "long": {
+            "en": "with panorama tour",
+            "hu": "panorámatúrával"
+          }
         },
         {
           "label": {
             "en": "stills only",
             "hu": "csak képek"
           },
-          "value": 0.8
+          "value": 0.8,
+          "key": "stills",
+          "long": {
+            "en": "stills only",
+            "hu": "csak képek"
+          }
         }
       ]
     },
@@ -2142,7 +2192,11 @@
             "hu": "1"
           },
           "value": 1,
-          "default": true
+          "default": true,
+          "long": {
+            "en": "one format",
+            "hu": "egy formátum"
+          }
         },
         {
           "key": "square",
@@ -2150,7 +2204,11 @@
             "en": "+□",
             "hu": "+□"
           },
-          "value": 1.1
+          "value": 1.1,
+          "long": {
+            "en": "+ square",
+            "hu": "+ négyzetes"
+          }
         },
         {
           "key": "second",
@@ -2158,7 +2216,11 @@
             "en": "+⟂",
             "hu": "+⟂"
           },
-          "value": 1.25
+          "value": 1.25,
+          "long": {
+            "en": "+ second orientation",
+            "hu": "+ második orientáció"
+          }
         },
         {
           "key": "all",
@@ -2166,7 +2228,11 @@
             "en": "all",
             "hu": "mind"
           },
-          "value": 1.3
+          "value": 1.3,
+          "long": {
+            "en": "all formats",
+            "hu": "minden formátum"
+          }
         }
       ]
     },
@@ -2186,14 +2252,24 @@
             "hu": "HD"
           },
           "value": 1,
-          "default": true
+          "default": true,
+          "key": "hd",
+          "long": {
+            "en": "HD 1080p",
+            "hu": "HD 1080p"
+          }
         },
         {
           "label": {
             "en": "4K",
             "hu": "4K"
           },
-          "value": 1.3
+          "value": 1.3,
+          "key": "4k",
+          "long": {
+            "en": "4K",
+            "hu": "4K"
+          }
         }
       ]
     },
@@ -2213,14 +2289,24 @@
             "hu": "sík"
           },
           "value": 1,
-          "default": true
+          "default": true,
+          "key": "flat",
+          "long": {
+            "en": "flat video",
+            "hu": "sík videó"
+          }
         },
         {
           "label": {
             "en": "360°",
             "hu": "360°"
           },
-          "value": 1.5
+          "value": 1.5,
+          "key": "360",
+          "long": {
+            "en": "360° video",
+            "hu": "360°-os videó"
+          }
         }
       ]
     }
@@ -2258,6 +2344,9 @@
   "presets": [
     {
       "code": "PULI",
+      "services": [
+        "architectural-visualization"
+      ],
       "name": "Puli",
       "subtitle": {
         "en": "single house",
@@ -2275,6 +2364,9 @@
     },
     {
       "code": "VIZSLA",
+      "services": [
+        "architectural-visualization"
+      ],
       "name": "Vizsla",
       "subtitle": {
         "en": "building launch",
@@ -2296,6 +2388,10 @@
     },
     {
       "code": "KUVASZ",
+      "services": [
+        "architectural-visualization",
+        "large-scale-projects"
+      ],
       "name": "Kuvasz",
       "subtitle": {
         "en": "sales campaign",
@@ -2322,6 +2418,10 @@
     },
     {
       "code": "KOMONDOR",
+      "services": [
+        "architectural-visualization",
+        "large-scale-projects"
+      ],
       "name": "Komondor",
       "subtitle": {
         "en": "sales platform",
@@ -2366,7 +2466,11 @@
         "PLAN.ASSY": 1,
         "AI.IMG": 1
       },
-      "types": 1
+      "types": 1,
+      "tech": [
+        "marketing-apartment-plan",
+        "marketing-level-plan"
+      ]
     },
     {
       "code": "CHECK.TEMESVAR",
@@ -2414,422 +2518,1032 @@
     }
   },
   "calculator": {
-    "_readme": "On-page estimator tabs (one per service). rows = list codes with the typical starting quantity; source = show the MOD source-data picker; types = show the unit-types input (PLAN.UNIT ratio). Shared rows (MOD.S/M/L) are the same quantity in every tab. services = service-page slugs that embed the tab.",
-    "tabs": [
+    "_readme": "Estimator (src/lib/estimator.mjs). kinds = the cards a visitor can add: subject:true kinds (building, interior, show flats, product) own a model line and their outputs; the others are project-wide output groups. opts = option keys the card shows (size/site/m2/furn are estimator-native, the rest are multipliers). rows = list codes with a starting quantity; when = furn|empty shows the row only for that interior state; tag = a labelled sub-set (tags{}); slider = [min,max] renders a range input. starts = one-click project shapes (entries of kind/name/opts/q). services = service-page slugs whose embedded estimator offers the kind. contact = contact-form project_type the kind maps to.",
+    "kinds": [
       {
         "key": "ext",
+        "subject": true,
+        "contact": "architectural-visualization",
+        "services": [
+          "architectural-visualization",
+          "large-scale-projects"
+        ],
         "name": {
-          "en": "Exterior stills",
-          "hu": "Külső látványképek"
+          "en": "Building & exterior",
+          "hu": "Épület és külső"
+        },
+        "defaultName": {
+          "en": "Building",
+          "hu": "Épület"
         },
         "lede": {
-          "en": "Model preparation once, then finished marketing views. Night variants and montages reuse an existing camera.",
-          "hu": "Modell-előkészítés egyszer, utána kész marketingképek. Az éjszakai változatok és montázsok meglévő kamerát használnak."
+          "en": "One 3D model of the building — pick the size, one per building or complex — then finished exterior views and 360° viewpoints from it. Night variants and montages reuse an existing camera.",
+          "hu": "Egy 3D modell az épületről — méret szerint, épületenként vagy együttesenként egy —, majd kész külső nézetek és 360°-os nézőpontok belőle. Az éjszakai változatok és montázsok meglévő kamerát használnak."
         },
-        "source": true,
+        "opts": [
+          "size",
+          "site"
+        ],
+        "tags": {
+          "arch": {
+            "en": "For architects — permits and competitions",
+            "hu": "Építészeknek — engedélyezés és pályázat"
+          }
+        },
         "rows": [
           {
-            "code": "MOD.S",
-            "default": 1
-          },
-          {
-            "code": "MOD.M",
-            "default": 0
-          },
-          {
-            "code": "MOD.L",
-            "default": 0
-          },
-          {
             "code": "EXT.DAY",
-            "default": 5
+            "default": 5,
+            "short": {
+              "en": "day views",
+              "hu": "nappali nézet"
+            }
           },
           {
             "code": "EXT.NIGHT",
-            "default": 2
+            "default": 2,
+            "short": {
+              "en": "night",
+              "hu": "éjszakai"
+            }
+          },
+          {
+            "code": "PANO.VP",
+            "default": 0,
+            "short": {
+              "en": "× 360°",
+              "hu": "× 360°"
+            }
           },
           {
             "code": "EXT.VAR",
-            "default": 0
+            "default": 0,
+            "short": {
+              "en": "variants",
+              "hu": "változat"
+            }
           },
           {
             "code": "EXT.MONTAGE",
-            "default": 0
+            "default": 0,
+            "short": {
+              "en": "montages",
+              "hu": "montázs"
+            }
           },
           {
             "code": "EXT.CROP",
-            "default": 0
+            "default": 0,
+            "short": {
+              "en": "crops",
+              "hu": "kivágás"
+            }
           },
           {
             "code": "EXT.CLAY",
-            "default": 0
-          }
-        ],
-        "services": [
-          "architectural-visualization"
-        ]
-      },
-      {
-        "key": "arch",
-        "name": {
-          "en": "Architects — permits and competitions",
-          "hu": "Építészeknek — engedélyezés és pályázat"
-        },
-        "lede": {
-          "en": "Raw renders and drawing sets straight from the model, with bulk discounts by blocks of five. Not for marketing use.",
-          "hu": "Nyers renderek és rajzsorozatok közvetlenül a modellből, ötös blokkonkénti mennyiségi kedvezménnyel. Nem marketingcélra."
-        },
-        "source": true,
-        "rows": [
-          {
-            "code": "MOD.S",
-            "default": 1
+            "default": 0,
+            "short": {
+              "en": "clay",
+              "hu": "clay"
+            }
           },
           {
-            "code": "MOD.M",
-            "default": 0
-          },
-          {
-            "code": "MOD.L",
-            "default": 0
+            "code": "PANO.BLEND",
+            "default": 0,
+            "short": {
+              "en": "photo-blended 360°",
+              "hu": "fotóba illesztett 360°"
+            }
           },
           {
             "code": "EXT.BASIC",
-            "default": 10
+            "default": 0,
+            "tag": "arch",
+            "short": {
+              "en": "basic renders",
+              "hu": "alap render"
+            }
           },
           {
             "code": "EXT.ARCHSET",
-            "default": 1
+            "default": 0,
+            "tag": "arch",
+            "short": {
+              "en": "elevation sets",
+              "hu": "homlokzati készlet"
+            }
           },
           {
             "code": "EXT.PHASES",
-            "default": 0
-          },
-          {
-            "code": "EXT.CLAY",
-            "default": 0
+            "default": 0,
+            "tag": "arch",
+            "short": {
+              "en": "phase cameras",
+              "hu": "fáziskamera"
+            }
           }
-        ],
-        "services": [
-          "architectural-visualization"
         ]
       },
       {
         "key": "int",
-        "name": {
-          "en": "Interiors",
-          "hu": "Belső terek"
-        },
-        "lede": {
-          "en": "Interior model per m², then views. Show flats are fixed packages; INT.AI furnishes the empty model without modelling.",
-          "hu": "Belső modell m²-enként, majd nézetek. A mintalakások fix csomagok; az INT.AI az üres modellt bútorozza modellezés nélkül."
-        },
-        "source": true,
-        "rows": [
-          {
-            "code": "MOD.INT.FURN",
-            "default": 120,
-            "step": 10
-          },
-          {
-            "code": "MOD.INT.EMPTY",
-            "default": 0,
-            "step": 10
-          },
-          {
-            "code": "INT.VIEW",
-            "default": 6
-          },
-          {
-            "code": "INT.AI",
-            "default": 0
-          },
-          {
-            "code": "INT.AI.VAR",
-            "default": 0
-          },
-          {
-            "code": "INT.FLAT.STUDIO",
-            "default": 0
-          },
-          {
-            "code": "INT.FLAT.1BED",
-            "default": 0
-          },
-          {
-            "code": "INT.FLAT.2BED",
-            "default": 0
-          },
-          {
-            "code": "INT.FLAT.3BED",
-            "default": 0
-          }
-        ],
-        "services": [
-          "architectural-visualization"
-        ]
-      },
-      {
-        "key": "pano",
-        "name": {
-          "en": "360° tours",
-          "hu": "360°-os túrák"
-        },
-        "lede": {
-          "en": "Viewpoints from the model with hosting included; blocks of ten get cheaper. Photographed panoramas need a site visit.",
-          "hu": "Nézőpontok a modellből, tárhellyel; a tízes blokkok olcsóbbak. A fotózott panorámákhoz helyszíni kiszállás kell."
-        },
-        "source": true,
-        "rows": [
-          {
-            "code": "MOD.S",
-            "default": 1
-          },
-          {
-            "code": "MOD.M",
-            "default": 0
-          },
-          {
-            "code": "MOD.L",
-            "default": 0
-          },
-          {
-            "code": "PANO.VP",
-            "default": 8
-          },
-          {
-            "code": "PANO.HOTSPOT",
-            "default": 0
-          },
-          {
-            "code": "PANO.BLEND",
-            "default": 0
-          },
-          {
-            "code": "PANO.SHOOT",
-            "default": 0
-          },
-          {
-            "code": "PANO.VISIT",
-            "default": 0
-          },
-          {
-            "code": "WEB.GUIDE",
-            "default": 0
-          }
-        ],
+        "subject": true,
+        "contact": "architectural-visualization",
         "services": [
           "architectural-visualization",
           "large-scale-projects"
+        ],
+        "name": {
+          "en": "Interior space",
+          "hu": "Belső tér"
+        },
+        "defaultName": {
+          "en": "Interior",
+          "hu": "Belső tér"
+        },
+        "lede": {
+          "en": "One named space or group of rooms. Area, function and finish set the model price; then stills and 360° viewpoints of it. An empty shell gets AI-furnished images instead of modelled views.",
+          "hu": "Egy megnevezett tér vagy helyiségcsoport. A terület, a funkció és a kidolgozottság adja a modell árát; utána képek és 360°-os nézőpontok róla. Üres térhez modellezett nézetek helyett AI-berendezett képek készülnek."
+        },
+        "opts": [
+          "m2",
+          "fn",
+          "furn",
+          "detail"
+        ],
+        "names": [
+          {
+            "name": {
+              "en": "Living room & kitchen",
+              "hu": "Nappali és konyha"
+            },
+            "m2": 45,
+            "fn": "res"
+          },
+          {
+            "name": {
+              "en": "Bedroom",
+              "hu": "Hálószoba"
+            },
+            "m2": 18,
+            "fn": "res"
+          },
+          {
+            "name": {
+              "en": "Bathroom",
+              "hu": "Fürdőszoba"
+            },
+            "m2": 8,
+            "fn": "res"
+          },
+          {
+            "name": {
+              "en": "Lobby",
+              "hu": "Lobby"
+            },
+            "m2": 120,
+            "fn": "pub"
+          },
+          {
+            "name": {
+              "en": "Common areas",
+              "hu": "Közös terek"
+            },
+            "m2": 150,
+            "fn": "pub"
+          },
+          {
+            "name": {
+              "en": "Restaurant",
+              "hu": "Étterem"
+            },
+            "m2": 200,
+            "fn": "ret"
+          },
+          {
+            "name": {
+              "en": "Fitness",
+              "hu": "Fitnesz"
+            },
+            "m2": 150,
+            "fn": "pub"
+          },
+          {
+            "name": {
+              "en": "Retail unit",
+              "hu": "Üzlethelyiség"
+            },
+            "m2": 80,
+            "fn": "ret"
+          },
+          {
+            "name": {
+              "en": "Office floor",
+              "hu": "Irodaszint"
+            },
+            "m2": 300,
+            "fn": "off"
+          }
+        ],
+        "rows": [
+          {
+            "code": "INT.VIEW",
+            "default": 4,
+            "when": "furn",
+            "short": {
+              "en": "views",
+              "hu": "nézet"
+            }
+          },
+          {
+            "code": "PANO.VP",
+            "default": 0,
+            "when": "furn",
+            "short": {
+              "en": "× 360°",
+              "hu": "× 360°"
+            }
+          },
+          {
+            "code": "INT.AI",
+            "default": 4,
+            "when": "empty",
+            "short": {
+              "en": "AI images",
+              "hu": "AI kép"
+            }
+          },
+          {
+            "code": "INT.AI.VAR",
+            "default": 0,
+            "when": "empty",
+            "short": {
+              "en": "variants",
+              "hu": "változat"
+            }
+          }
         ]
       },
       {
-        "key": "plan",
+        "key": "flat",
+        "subject": true,
+        "contact": "architectural-visualization",
+        "services": [
+          "architectural-visualization",
+          "large-scale-projects"
+        ],
         "name": {
-          "en": "Floor plans and sales sheets",
-          "hu": "Alaprajzok és adatlapok"
+          "en": "Show flats",
+          "hu": "Mintalakások"
+        },
+        "defaultName": {
+          "en": "Show flats",
+          "hu": "Mintalakások"
         },
         "lede": {
-          "en": "Quantities are total flats and levels; the number of distinct unit types drives the plan price.",
-          "hu": "A mennyiség az összes lakás és szint; az alaprajzok árát a különböző lakástípusok száma határozza meg."
+          "en": "Residential packages: interior model, furnishing to a moodboard, stills and a panorama tour of the same rooms. One package per flat type — identical unit types reuse it.",
+          "hu": "Lakáscsomagok: belső modell, berendezés moodboard alapján, képek és panorámatúra ugyanazokról a terekről. Lakástípusonként egy csomag — az azonos típusok ugyanazt használják."
         },
-        "types": true,
+        "opts": [
+          "stillsOnly"
+        ],
         "rows": [
           {
-            "code": "PLAN.UNIT",
-            "default": 20
+            "code": "INT.FLAT.STUDIO",
+            "default": 0,
+            "short": {
+              "en": "studio",
+              "hu": "garzon"
+            }
           },
           {
-            "code": "PLAN.LEVEL",
-            "default": 0
+            "code": "INT.FLAT.1BED",
+            "default": 0,
+            "short": {
+              "en": "1-bed",
+              "hu": "1 hálós"
+            }
           },
           {
-            "code": "PLAN.SHEET",
-            "default": 1
+            "code": "INT.FLAT.2BED",
+            "default": 1,
+            "short": {
+              "en": "2-bed",
+              "hu": "2 hálós"
+            }
           },
           {
-            "code": "PLAN.ASSY",
-            "default": 20
+            "code": "INT.FLAT.3BED",
+            "default": 0,
+            "short": {
+              "en": "3-bed",
+              "hu": "3 hálós"
+            }
           }
-        ],
+        ]
+      },
+      {
+        "key": "prod",
+        "subject": true,
+        "contact": "product",
         "services": [
-          "architectural-visualization"
+          "product-visualization"
+        ],
+        "name": {
+          "en": "Product",
+          "hu": "Termék"
+        },
+        "defaultName": {
+          "en": "Product",
+          "hu": "Termék"
+        },
+        "lede": {
+          "en": "Product model from your CAD, studio-lit angles and colour variants at print resolution. Larger suites are built from a Small building model plus exterior view lines.",
+          "hu": "Termékmodell a CAD-ből, stúdióvilágítású nézetek és színvariánsok nyomdai felbontásban. Nagyobb sorozatok Kicsi modell + külső nézet tételekből épülnek."
+        },
+        "opts": [],
+        "rows": [
+          {
+            "code": "PROD.HERO",
+            "default": 1,
+            "short": {
+              "en": "hero packages",
+              "hu": "hero csomag"
+            }
+          }
         ]
       },
       {
         "key": "film",
+        "contact": "animation",
+        "services": [
+          "architectural-visualization",
+          "large-scale-projects"
+        ],
         "name": {
           "en": "Film",
           "hu": "Film"
         },
         "lede": {
-          "en": "Per finished second, 30 s minimum for 3D animation. Edit, grade, stock music and basic titles are included in every animation line.",
-          "hu": "Kész másodpercenként, 3D animációnál minimum 30 s. Vágás, színezés, stock zene és alapfeliratok minden animációs tételben benne vannak."
+          "en": "Length in seconds per film type; a mixed 3D + AI film is priced per segment. Formats, 4K and 360° apply to the 3D lines. Includes previz, edit, grade, stock music and basic titles.",
+          "hu": "Hossz másodpercben filmtípusonként; a vegyes 3D + AI film szakaszonként árazódik. A formátum, a 4K és a 360° a 3D tételekre vonatkozik. Previz, vágás, színkorrekció, stock zene és egyszerű feliratok az árban."
         },
-        "source": true,
+        "opts": [
+          "formats",
+          "fourK",
+          "v360"
+        ],
         "rows": [
-          {
-            "code": "MOD.S",
-            "default": 1
-          },
-          {
-            "code": "MOD.M",
-            "default": 0
-          },
-          {
-            "code": "MOD.L",
-            "default": 0
-          },
           {
             "code": "FILM.WALK",
             "default": 30,
-            "step": 5
+            "step": 5,
+            "slider": [
+              0,
+              180
+            ],
+            "short": {
+              "en": "s walkthrough",
+              "hu": "s bejárás"
+            }
           },
           {
             "code": "FILM.3D",
             "default": 0,
-            "step": 5
+            "step": 5,
+            "slider": [
+              0,
+              180
+            ],
+            "short": {
+              "en": "s 3D film",
+              "hu": "s 3D film"
+            }
           },
           {
             "code": "FILM.AI",
             "default": 0,
-            "step": 5
+            "step": 5,
+            "slider": [
+              0,
+              180
+            ],
+            "short": {
+              "en": "s AI motion",
+              "hu": "s AI mozgókép"
+            }
           },
           {
             "code": "FILM.EDIT",
             "default": 0,
-            "step": 5
+            "step": 5,
+            "short": {
+              "en": "s footage edit",
+              "hu": "s felvételvágás"
+            }
           },
           {
             "code": "FILM.SHORT",
-            "default": 0
+            "default": 0,
+            "short": {
+              "en": "shorts",
+              "hu": "rövidfilm"
+            }
           },
           {
             "code": "FILM.MOGR",
             "default": 0,
-            "step": 5
+            "step": 5,
+            "short": {
+              "en": "s motion graphics",
+              "hu": "s mozgógrafika"
+            }
           },
           {
             "code": "FILM.LOGO",
-            "default": 0
+            "default": 0,
+            "short": {
+              "en": "logo sting",
+              "hu": "animált logó"
+            }
           },
           {
             "code": "FILM.VO.AI",
-            "default": 0
+            "default": 0,
+            "short": {
+              "en": "min AI narration",
+              "hu": "perc AI narráció"
+            }
           },
           {
             "code": "FILM.MUSIC.AI",
-            "default": 0
+            "default": 0,
+            "short": {
+              "en": "AI track",
+              "hu": "AI zene"
+            }
           },
           {
             "code": "FILM.SUBS",
-            "default": 0
+            "default": 0,
+            "short": {
+              "en": "min subtitles",
+              "hu": "perc felirat"
+            }
+          },
+          {
+            "code": "FILM.SCRIPT",
+            "default": 0,
+            "short": {
+              "en": "h script",
+              "hu": "óra szövegírás"
+            }
           },
           {
             "code": "FILM.FRAME",
-            "default": 0
+            "default": 0,
+            "short": {
+              "en": "frames",
+              "hu": "képkocka"
+            }
           }
-        ],
+        ]
+      },
+      {
+        "key": "plan",
+        "contact": "architectural-visualization",
         "services": [
           "architectural-visualization",
           "large-scale-projects"
+        ],
+        "name": {
+          "en": "Floor plans & sales sheets",
+          "hu": "Alaprajzok és adatlapok"
+        },
+        "lede": {
+          "en": "One per-flat price; repeated unit types make plans cheaper. Level plans scale with flats per level.",
+          "hu": "Egy lakásonkénti ár; az ismétlődő lakástípusok olcsóbbá teszik az alaprajzokat. A szintrajzok a szintenkénti lakásszámmal skálázódnak."
+        },
+        "opts": [
+          "types"
+        ],
+        "rows": [
+          {
+            "code": "PLAN.UNIT",
+            "default": 20,
+            "short": {
+              "en": "unit plans",
+              "hu": "lakásalaprajz"
+            }
+          },
+          {
+            "code": "PLAN.LEVEL",
+            "default": 0,
+            "short": {
+              "en": "level plans",
+              "hu": "szintrajz"
+            }
+          },
+          {
+            "code": "PLAN.SHEET",
+            "default": 1,
+            "short": {
+              "en": "sheet template",
+              "hu": "adatlap-sablon"
+            }
+          },
+          {
+            "code": "PLAN.ASSY",
+            "default": 20,
+            "short": {
+              "en": "sheets",
+              "hu": "adatlap"
+            }
+          }
         ]
       },
       {
         "key": "ai",
+        "contact": "ai-services",
+        "services": [
+          "advanced-ai-services",
+          "architectural-visualization"
+        ],
         "name": {
           "en": "AI stills",
           "hu": "AI képek"
         },
         "lede": {
-          "en": "From any 2D input, one variation included. The same prices are self-serve on ai.visiongraphics.eu.",
-          "hu": "Bármilyen 2D forrásból, egy változattal. Ugyanezek az árak önkiszolgálóan az ai.visiongraphics.eu oldalon."
+          "en": "Images generated from any 2D input — plan, sketch, photo, old render — with light retouch. One variation included per image. Also self-serve at ai.visiongraphics.eu.",
+          "hu": "Bármilyen 2D forrásból — alaprajz, vázlat, fotó, régi render — generált képek könnyű retusálással. Képenként egy variáció az árban. Önkiszolgálóan is: ai.visiongraphics.eu."
         },
+        "opts": [],
         "rows": [
           {
             "code": "AI.IMG",
-            "default": 5
+            "default": 5,
+            "short": {
+              "en": "AI images",
+              "hu": "AI kép"
+            }
           },
           {
             "code": "AI.EDIT",
-            "default": 0
+            "default": 0,
+            "short": {
+              "en": "edited",
+              "hu": "szerkesztett"
+            }
           },
           {
             "code": "AI.VAR",
-            "default": 0
+            "default": 0,
+            "short": {
+              "en": "variations",
+              "hu": "variáció"
+            }
           },
           {
             "code": "AI.CROP",
-            "default": 0
+            "default": 0,
+            "short": {
+              "en": "crops",
+              "hu": "kivágás"
+            }
           }
-        ],
+        ]
+      },
+      {
+        "key": "tour",
+        "contact": "architectural-visualization",
         "services": [
-          "advanced-ai-services"
+          "architectural-visualization",
+          "large-scale-projects"
+        ],
+        "name": {
+          "en": "Tour extras & photography",
+          "hu": "Túra-extrák és fotózás"
+        },
+        "lede": {
+          "en": "Content hotspots and presenter mode for the 360° tours above; on-site 360° photography for existing interiors or the plot.",
+          "hu": "Tartalmi hotspotok és előadói mód a fenti 360°-os túrákhoz; helyszíni 360°-os fotózás meglévő belsőkhöz vagy a telekhez."
+        },
+        "opts": [],
+        "rows": [
+          {
+            "code": "PANO.HOTSPOT",
+            "default": 0,
+            "short": {
+              "en": "hotspots",
+              "hu": "hotspot"
+            }
+          },
+          {
+            "code": "WEB.GUIDE",
+            "default": 0,
+            "short": {
+              "en": "presenter mode",
+              "hu": "előadói mód"
+            }
+          },
+          {
+            "code": "PANO.SHOOT",
+            "default": 0,
+            "short": {
+              "en": "360° photos",
+              "hu": "360° fotó"
+            }
+          },
+          {
+            "code": "PANO.VISIT",
+            "default": 0,
+            "short": {
+              "en": "site visits",
+              "hu": "kiszállás"
+            }
+          }
         ]
       },
       {
         "key": "web",
-        "name": {
-          "en": "Interactive and web",
-          "hu": "Interaktív és web"
-        },
-        "lede": {
-          "en": "Browser tools built on the project model; hosting for the first year is included, then WEB.HOST.",
-          "hu": "Böngészős eszközök a projekt modelljére; az első év tárhelye benne, utána WEB.HOST."
-        },
-        "rows": [
-          {
-            "code": "WEB.VIEWER",
-            "default": 1
-          },
-          {
-            "code": "WEB.VARSET",
-            "default": 0
-          },
-          {
-            "code": "WEB.SUN",
-            "default": 0
-          },
-          {
-            "code": "WEB.SITE",
-            "default": 0
-          },
-          {
-            "code": "WEB.GUIDE",
-            "default": 0
-          },
-          {
-            "code": "WEB.HOST",
-            "default": 0
-          },
-          {
-            "code": "WEB.HEADSET",
-            "default": 0
-          }
-        ],
+        "contact": "vr",
         "services": [
           "architectural-visualization",
           "large-scale-projects"
+        ],
+        "name": {
+          "en": "Interactive & web",
+          "hu": "Interaktív és web"
+        },
+        "lede": {
+          "en": "The project model in the browser, variant toggles, a sun study, a branded microsite — bespoke tools at fixed anchors. Hosting for the first year is included.",
+          "hu": "A projekt modellje böngészőben, variánskapcsolók, benapozásvizsgálat, márkázott microsite — projektre szabott eszközök fix árpontokon. Az első év tárhelye az árban."
+        },
+        "opts": [],
+        "rows": [
+          {
+            "code": "WEB.VIEWER",
+            "default": 1,
+            "short": {
+              "en": "3D viewer",
+              "hu": "3D nézegető"
+            }
+          },
+          {
+            "code": "WEB.VARSET",
+            "default": 0,
+            "short": {
+              "en": "variant sets",
+              "hu": "variánskészlet"
+            }
+          },
+          {
+            "code": "WEB.SUN",
+            "default": 0,
+            "short": {
+              "en": "sun study",
+              "hu": "benapozás"
+            }
+          },
+          {
+            "code": "WEB.SITE",
+            "default": 0,
+            "short": {
+              "en": "microsite",
+              "hu": "microsite"
+            }
+          },
+          {
+            "code": "WEB.HOST",
+            "default": 0,
+            "short": {
+              "en": "yr hosting",
+              "hu": "év tárhely"
+            }
+          },
+          {
+            "code": "WEB.HEADSET",
+            "default": 0,
+            "short": {
+              "en": "headset days",
+              "hu": "nap headset"
+            }
+          }
+        ]
+      }
+    ],
+    "starts": [
+      {
+        "key": "house",
+        "name": {
+          "en": "House · exterior",
+          "hu": "Ház · külső"
+        },
+        "entries": [
+          {
+            "kind": "ext",
+            "opts": {
+              "size": "S"
+            },
+            "q": {
+              "EXT.DAY": 5,
+              "EXT.NIGHT": 2
+            }
+          }
         ]
       },
       {
-        "key": "prod",
+        "key": "house-int",
+        "name": {
+          "en": "House · with interiors",
+          "hu": "Ház · belsőkkel"
+        },
+        "entries": [
+          {
+            "kind": "ext",
+            "opts": {
+              "size": "S"
+            },
+            "q": {
+              "EXT.DAY": 4,
+              "EXT.NIGHT": 2
+            }
+          },
+          {
+            "kind": "int",
+            "name": {
+              "en": "Living room & kitchen",
+              "hu": "Nappali és konyha"
+            },
+            "opts": {
+              "m2": 45,
+              "fn": "res"
+            },
+            "q": {
+              "INT.VIEW": 3
+            }
+          },
+          {
+            "kind": "int",
+            "name": {
+              "en": "Bedroom",
+              "hu": "Hálószoba"
+            },
+            "opts": {
+              "m2": 18,
+              "fn": "res"
+            },
+            "q": {
+              "INT.VIEW": 1
+            }
+          },
+          {
+            "kind": "int",
+            "name": {
+              "en": "Bathroom",
+              "hu": "Fürdőszoba"
+            },
+            "opts": {
+              "m2": 8,
+              "fn": "res"
+            },
+            "q": {
+              "INT.VIEW": 1
+            }
+          }
+        ]
+      },
+      {
+        "key": "block",
+        "name": {
+          "en": "Residential building",
+          "hu": "Lakóépület"
+        },
+        "entries": [
+          {
+            "kind": "ext",
+            "opts": {
+              "size": "M"
+            },
+            "q": {
+              "EXT.DAY": 10,
+              "EXT.NIGHT": 5,
+              "EXT.MONTAGE": 2,
+              "PANO.VP": 8
+            }
+          },
+          {
+            "kind": "flat",
+            "q": {
+              "INT.FLAT.2BED": 1
+            }
+          },
+          {
+            "kind": "plan",
+            "opts": {
+              "types": 10
+            },
+            "q": {
+              "PLAN.UNIT": 20,
+              "PLAN.SHEET": 1
+            }
+          }
+        ]
+      },
+      {
+        "key": "complex",
+        "name": {
+          "en": "Housing complex",
+          "hu": "Lakópark"
+        },
+        "entries": [
+          {
+            "kind": "ext",
+            "opts": {
+              "size": "L",
+              "site": 1
+            },
+            "q": {
+              "EXT.DAY": 15,
+              "EXT.NIGHT": 8,
+              "EXT.MONTAGE": 2,
+              "PANO.VP": 12
+            }
+          },
+          {
+            "kind": "int",
+            "name": {
+              "en": "Lobby",
+              "hu": "Lobby"
+            },
+            "opts": {
+              "m2": 120,
+              "fn": "pub"
+            },
+            "q": {
+              "INT.VIEW": 3,
+              "PANO.VP": 3
+            }
+          },
+          {
+            "kind": "int",
+            "name": {
+              "en": "Restaurant",
+              "hu": "Étterem"
+            },
+            "opts": {
+              "m2": 200,
+              "fn": "ret"
+            },
+            "q": {
+              "INT.VIEW": 4,
+              "PANO.VP": 4
+            }
+          },
+          {
+            "kind": "int",
+            "name": {
+              "en": "Fitness",
+              "hu": "Fitnesz"
+            },
+            "opts": {
+              "m2": 150,
+              "fn": "pub"
+            },
+            "q": {
+              "INT.VIEW": 3,
+              "PANO.VP": 2
+            }
+          },
+          {
+            "kind": "flat",
+            "q": {
+              "INT.FLAT.STUDIO": 1,
+              "INT.FLAT.2BED": 1,
+              "INT.FLAT.3BED": 1
+            }
+          },
+          {
+            "kind": "film",
+            "q": {
+              "FILM.3D": 60
+            }
+          },
+          {
+            "kind": "plan",
+            "opts": {
+              "types": 20
+            },
+            "q": {
+              "PLAN.UNIT": 80,
+              "PLAN.LEVEL": 6,
+              "PLAN.SHEET": 1,
+              "PLAN.ASSY": 80
+            }
+          }
+        ]
+      },
+      {
+        "key": "office",
+        "name": {
+          "en": "Office building",
+          "hu": "Irodaház"
+        },
+        "entries": [
+          {
+            "kind": "ext",
+            "opts": {
+              "size": "M"
+            },
+            "q": {
+              "EXT.DAY": 8,
+              "EXT.NIGHT": 4,
+              "PANO.VP": 6
+            }
+          },
+          {
+            "kind": "int",
+            "name": {
+              "en": "Lobby",
+              "hu": "Lobby"
+            },
+            "opts": {
+              "m2": 150,
+              "fn": "pub"
+            },
+            "q": {
+              "INT.VIEW": 2,
+              "PANO.VP": 2
+            }
+          },
+          {
+            "kind": "int",
+            "name": {
+              "en": "Office floor",
+              "hu": "Irodaszint"
+            },
+            "opts": {
+              "m2": 300,
+              "fn": "off"
+            },
+            "q": {
+              "INT.VIEW": 3,
+              "PANO.VP": 3
+            }
+          }
+        ]
+      },
+      {
+        "key": "fitout",
+        "name": {
+          "en": "Interior fit-out",
+          "hu": "Belsőépítészet"
+        },
+        "entries": [
+          {
+            "kind": "int",
+            "name": {
+              "en": "Interior",
+              "hu": "Belső tér"
+            },
+            "opts": {
+              "m2": 120,
+              "fn": "res"
+            },
+            "q": {
+              "INT.VIEW": 6,
+              "PANO.VP": 6
+            }
+          }
+        ]
+      },
+      {
+        "key": "product",
         "name": {
           "en": "Product",
           "hu": "Termék"
         },
-        "lede": {
-          "en": "One hero package per product: model from your CAD, six angles, three colour variants.",
-          "hu": "Termékenként egy hero csomag: modell a CAD-etekből, hat nézet, három színváltozat."
-        },
-        "rows": [
+        "entries": [
           {
-            "code": "PROD.HERO",
-            "default": 1
+            "kind": "prod",
+            "q": {
+              "PROD.HERO": 1
+            }
           }
-        ],
-        "services": [
-          "product-visualization"
+        ]
+      },
+      {
+        "key": "ai",
+        "name": {
+          "en": "AI images only",
+          "hu": "Csak AI képek"
+        },
+        "entries": [
+          {
+            "kind": "ai",
+            "q": {
+              "AI.IMG": 8
+            }
+          }
         ]
       }
     ]

@@ -52,12 +52,17 @@ for (const it of data.items) {
   for (const s of it.tech ?? []) assert.ok(tech.has(s), `${it.code}: tech ${s}`);
 }
 for (const f of data.families) for (const s of f.services ?? []) assert.ok(svcs.has(s), `${f.code}: service ${s}`);
-for (const tb of data.calculator.tabs) for (const s of tb.services ?? []) assert.ok(svcs.has(s), `tab ${tb.key}: service ${s}`);
-for (const tb of data.calculator.tabs) for (const r of tb.rows) assert.ok(item(data, r.code) && !item(data, r.code).custom, `tab ${tb.key}: ${r.code}`);
+for (const p of data.presets) { for (const s of p.services ?? []) assert.ok(svcs.has(s), `${p.code}: service ${s}`); for (const s of p.tech ?? []) assert.ok(tech.has(s), `${p.code}: tech ${s}`); }
+for (const k of data.calculator.kinds) for (const s of k.services ?? []) assert.ok(svcs.has(s), `kind ${k.key}: service ${s}`);
+for (const k of data.calculator.kinds) for (const r of k.rows) assert.ok(item(data, r.code) && !item(data, r.code).custom, `kind ${k.key}: ${r.code}`);
 const cv = calcView(data);
-assert.deepEqual(Object.keys(cv.multipliers), ['source']);
+assert.deepEqual(Object.keys(cv.multipliers), ['source', 'fn', 'detail', 'stillsOnly', 'formats', 'fourK', 'v360']);
 assert.equal(priceLabel(item(data, 'EXT.DAY')), '€180 / view');
 assert.equal(priceLabel(item(data, 'MOD.SITE'), 'hu'), '600–2400 € / projekt');
+// hu-HU groups thousands with a non-breaking space — compare on plain spaces
+const sp = (s) => s.replace(/\s/g, ' ');
+assert.equal(sp(priceLabel(item(data, 'EXT.DAY'), 'hu', 360)), '64 800 Ft / nézet');
+assert.equal(sp(priceLabel(item(data, 'MOD.SITE'), 'hu', 360)), '216 000–864 000 Ft / projekt');
 { const s = defaultState(cv); s.qty = { 'MOD.S': 1, 'EXT.DAY': 5, 'EXT.NIGHT': 3 }; assert.equal(Math.round(quote(cv, s).total), 1975); }
 
 console.log('pricing ok —', got);

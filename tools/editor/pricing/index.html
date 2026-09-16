@@ -5,7 +5,21 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Vision Graphics · Pricing admin</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/lib/estimator.css">
 <style>
+/* token bridge for /lib/estimator.css (the site's design tokens mapped onto this page's palette) */
+:root{--color-bg:var(--bg);--color-surface:var(--card);--color-surface-2:var(--surface);--color-border:var(--rule-soft);--color-accent:var(--accent);--color-accent-2:var(--accent);
+  --color-text:var(--ink);--color-text-muted:var(--muted);--color-text-faint:var(--faint);--color-header-bg:var(--bg);--font-body:var(--fb);--font-mono:var(--fm);
+  --fs-h4:1.6rem;--fs-small:.85rem;--fs-xs:.75rem;--space-1:.25rem;--space-2:.5rem;--space-3:.75rem;--space-4:1rem;--space-5:1.25rem;--space-6:1.5rem;--space-8:2rem;--space-10:2.5rem;--space-16:4rem;
+  --size-header:0px;--size-field-sm:6rem;--radius-sm:2px;--transition:150ms ease}
+.est .eyebrow{font:500 .694rem/1 var(--fb);letter-spacing:.2em;text-transform:uppercase;color:var(--faint)}
+.est .code{font-family:var(--fm);font-size:.75rem;color:var(--accent);white-space:nowrap}
+.est .field{font:.85rem var(--fm);color:var(--ink);background:var(--bg);border:1px solid var(--rule-soft);border-radius:2px;padding:.25rem .45rem}
+.est .btn.btn-primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);display:inline-flex;justify-content:center;text-decoration:none}
+.est-sum{position:static;max-height:none}
+.qhead{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:1rem}
+.qhead input{width:100%}
+@media (max-width:700px){.qhead{grid-template-columns:1fr}}
 :root{
   --bg:#f7f5f2;--surface:#eeeae5;--card:#fffdfb;--ink:#18160f;--muted:#47433b;--faint:#8a8075;--rule:#9a9088;--rule-soft:#d9d3cb;
   --accent:#c41010;--accent-ink:#fff;--accent-soft:rgba(196,16,16,.08);--warn:#c41010;--ok:#1a7f37;
@@ -110,6 +124,16 @@ textarea.raw{min-height:24rem}
 
 <div class="layout">
 <main>
+<section id="quote">
+  <h2>Quote builder</h2>
+  <p class="lede">The site's calculator plus the quote-only levers: framework and rush in its rail, VAT and HUF in the totals. Client and project go into the text; the link inside it opens the same estimate on visiongraphics.eu at public prices (no internal factors). Base-price edits below flow into it live.</p>
+  <div class="qhead"><input id="qClient" type="text" placeholder="Client (company, contact)"><input id="qProject" type="text" placeholder="Project (name, address)"></div>
+  <div id="est" class="est"></div>
+  <h3 style="margin:1.5rem 0 .4rem">Quote text</h3>
+  <textarea id="qout" readonly style="min-height:16rem"></textarea>
+  <div class="actions" style="margin-top:.5rem"><button class="btn" id="qcopy">Copy</button></div>
+</section>
+
 <section id="list">
   <h2>Module list</h2>
   <p class="lede">Base × item multipliers × global multipliers × quantity. Multiplier factors sit under the rows they affect; global ones below the list. Edit bases inline (changed ones turn red until saved); quantities build a quote in the rail. Adding, removing or reordering items and editing names: the raw JSON below.</p>
@@ -129,8 +153,8 @@ textarea.raw{min-height:24rem}
 </section>
 
 <section id="export">
-  <h2>Quote text</h2>
-  <p class="lede">Lines with a quantity, as plain text for the offer document.</p>
+  <h2>Quick quote text</h2>
+  <p class="lede">The rail quantities as one flat list, no subjects. Client offers: the quote builder at the top.</p>
   <textarea id="out" readonly></textarea>
   <div class="actions" style="margin-top:.5rem"><button class="btn" id="copy">Copy</button><button class="btn ghost" id="clear">Clear quantities</button></div>
 </section>
@@ -183,7 +207,8 @@ textarea.raw{min-height:24rem}
 </div>
 
 <script type="module">
-import { defaultState, quote, presetTotal, units, multiplier, base, item } from '/lib/pricing.mjs';
+import { defaultState, quote, presetTotal, units, multiplier, base, item, calcView } from '/lib/pricing.mjs';
+import { mount } from '/lib/estimator.mjs';
 
 const FILE = 'src/data/pricing.json';
 const API = '/api';
@@ -200,8 +225,25 @@ async function load() {
   S = defaultState(D);
   buildStatic();
   $('rawJson').value = JSON.stringify(D, null, 2);
+  mountEst();
   render();
 }
+
+// Quote builder: the site's estimator on the full data (same item objects, so base edits show live) with the internal levers.
+let est;
+const stripTags = (h) => h.replace(/<[^>]+>/g, '');
+const qExtra = () => ({
+  date: new Date().toISOString().slice(0, 10), vat: true, huf: true,
+  head: [$('qClient').value && 'Client: ' + $('qClient').value, $('qProject').value && 'Project: ' + $('qProject').value].filter(Boolean),
+  tail: D.terms.map((t) => '· ' + stripTags(t.en)),
+});
+function mountEst() {
+  const view = { ...calcView(D), items: D.items, multipliers: D.multipliers, vat: D.vat, terms: D.terms };
+  est = mount($('est'), view, { lang: 'en', internal: true, estimateUrl: 'https://visiongraphics.eu/en/pricing/estimate/', textExtra: qExtra, onChange: ({ text }) => { $('qout').value = text; } });
+}
+$('qClient').addEventListener('input', () => est?.render());
+$('qProject').addEventListener('input', () => est?.render());
+$('qcopy').onclick = async () => { const t = $('qout'); try { await navigator.clipboard.writeText(t.value); } catch { t.select(); document.execCommand('copy'); } $('qcopy').textContent = 'Copied'; setTimeout(() => $('qcopy').textContent = 'Copy', 1200); };
 
 // factor inputs under each row that lists the multiplier; the same key on several rows stays in sync (setMval)
 const msub = (i) => i.mult?.length ? `<tr class="msub"><td></td><td colspan="7">${i.mult.map((k) => `<span class="mk"><b>${D.multipliers[k].label.en}</b>${D.multipliers[k].options.map((o, j) => `<label>${o.label.en} ×<input type="number" step="0.05" min="0" data-m="${k}" data-i="${j}" value="${o.value}"></label>`).join('')}</span>`).join('')}</td></tr>` : '';
@@ -262,6 +304,7 @@ function render() {
     $('presets').querySelector(`[data-p="${i}"] span`).textContent = t;
     $('presetTable').querySelector(`[data-pt="${i}"]`).textContent = t;
   });
+  est?.render();
   const mods = Object.entries(D.multipliers).filter(([k]) => S[k] !== 1).map(([k, m]) => `${m.label.en} ×${S[k]}`);
   if (S.qty['PLAN.UNIT']) mods.push(`${S.qty['PLAN.UNIT']} flats / ${S.types} types`);
   $('out').value = Q.lines.length ? `Vision Graphics Kft. — quote ${new Date().toISOString().slice(0, 10)} · price list ${D.version}\n${mods.length ? 'Multipliers: ' + mods.join(', ') + '\n' : ''}${Q.missing.length ? `!! requires a ${Q.missing.join(', ')} line\n` : ''}\n` +
@@ -306,7 +349,7 @@ $('copy').onclick = async () => { const t = $('out'); try { await navigator.clip
 $('applyRaw').onclick = () => {
   try { D = JSON.parse($('rawJson').value); } catch (err) { status($('rawStatus'), 'Invalid JSON: ' + err.message, 'err'); return; }
   const keep = S; S = defaultState(D); S.qty = keep.qty; S.types = keep.types;
-  dirty = new Set(D.items.map((i) => i.code)); buildStatic(); render(); status($('rawStatus'), 'Applied — Save to write the file.', 'ok');
+  dirty = new Set(D.items.map((i) => i.code)); buildStatic(); mountEst(); render(); status($('rawStatus'), 'Applied — Save to write the file.', 'ok');
 };
 $('reloadRaw').onclick = () => { $('rawJson').value = JSON.stringify(D, null, 2); status($('rawStatus'), ''); };
 
