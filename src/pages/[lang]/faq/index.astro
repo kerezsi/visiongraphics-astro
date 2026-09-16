@@ -1,371 +1,490 @@
 ---
-// src/pages/faq/index.astro
+// src/pages/[lang]/faq/index.astro
+//
+// Bilingual FAQ. Every question/answer is a Localized string ({ en, hu });
+// tStr() falls back to EN until the HU pass fills the hu values, and the HU
+// page shows a one-line note while any answer still lacks hu. Answers are
+// HTML (set:html) for the inline links, which go through localeUrl.
+//
+// Numbers: package prices and descriptions come from pricing.json through
+// publicView(). The commercial numbers in
+// prose (payment split, revision rounds, rush, hosting, retention, source
+// files) mirror pricing.json terms[] and the terms page — change those first,
+// then here.
 
 import Page from '../../../layouts/Page.astro';
-
-const sections = [
-  {
-    title: 'Getting Started',
-    items: [
-      {
-        q: 'What do you need from me to start?',
-        a: 'Plans (CAD, PDF, sketch — any level of detail), references you like, and your deadline. We\'ll guide you through the rest. You don\'t need a polished brief — we\'re used to working from rough materials.',
-      },
-      {
-        q: 'How do I get a quote?',
-        a: 'Send us your plans and a brief description of what you need. We\'ll respond with a realistic scope and price within one business day. Call +36 30 945 4179 or email info@visiongraphics.hu.',
-      },
-      {
-        q: 'Do you work in Hungarian and English?',
-        a: 'Yes. László is fluent in both. Most of our international project communication is in English; Hungarian clients can work entirely in Hungarian.',
-      },
-      {
-        q: 'Can I start without a firm brief?',
-        a: 'Yes. A 30-minute conversation is often enough to scope a project. We ask the right questions so you don\'t have to write a detailed RFP.',
-      },
-    ],
-  },
-  {
-    title: 'Timelines',
-    items: [
-      {
-        q: 'How long does a typical project take?',
-        a: 'Most architectural renders: 1–2 weeks. Multi-image sets: 2–3 weeks. Animations: 3–6 weeks. We\'ll give you a detailed timeline in our first conversation.',
-      },
-      {
-        q: 'Can you work to a tight deadline?',
-        a: 'Often yes. Rush delivery is possible and costs more — we\'ll tell you upfront what\'s realistic given the scope. We don\'t agree to timelines we can\'t meet.',
-      },
-      {
-        q: 'What happens if the design changes mid-project?',
-        a: 'Minor changes within agreed scope: included. Significant design changes after 3D work has begun: we scope and price the additional work before proceeding. No surprises.',
-      },
-    ],
-  },
-  {
-    title: 'Working Together',
-    items: [
-      {
-        q: 'Who will actually work on my project?',
-        a: 'László Kerezsi works directly on every project. For large-scale commissions requiring specialists (character animation, BIM, photogrammetry, etc.), we bring in tested partners — and László remains your point of contact throughout.',
-      },
-      {
-        q: 'How many revision rounds are included?',
-        a: 'Typically two rounds of client feedback per deliverable. Additional rounds are priced in the quote if you anticipate needing more flexibility.',
-      },
-      {
-        q: 'How do you handle feedback?',
-        a: 'We work from annotated images, PDFs, or calls — whatever\'s clearest for you. We document feedback and confirm interpretation before implementing, so we don\'t waste rounds on misunderstandings.',
-      },
-      {
-        q: 'Can you handle large-scale projects?',
-        a: 'Yes. Our specialist network lets us scale to airport terminals, urban masterplans, and exhibition content — while László stays as your single point of contact. Past work includes Budapest Airport, Antalya Airport T2, Sochi Airport, Pulkovo Airport (St. Petersburg), and the Road Safety Centre Doha.',
-      },
-    ],
-  },
-  {
-    title: 'Deliverables & Files',
-    items: [
-      {
-        q: 'What file formats do you deliver in?',
-        a: 'Still images: high-resolution TIFF or PNG, web-optimized JPG. Animations: H.264 or ProRes MP4. VR: standalone executable or web embed via Pano2VR. We deliver what your team can actually use.',
-      },
-      {
-        q: 'Do I own the final files?',
-        a: 'Yes. You receive full rights to all final deliverables. Raw 3D scene files are generally not included but can be licensed separately if needed.',
-      },
-      {
-        q: 'Can you deliver source files or editable 3D scenes?',
-        a: 'Yes, by arrangement. Scene files are priced separately as they represent significant additional value.',
-      },
-    ],
-  },
-  {
-    title: 'Technical Details',
-    items: [
-      {
-        q: 'What software do you use?',
-        a: '3ds Max (since version 1), V-Ray (15+ years), Unreal Engine for VR and real-time, Blender, ComfyUI/SwarmUI for AI-assisted work, Pano2VR for 360° tours, DaVinci Resolve for video.',
-      },
-      {
-        q: 'Can you work with BIM models (Revit, ArchiCAD)?',
-        a: 'Yes. We import and work with BIM exports daily. We\'ll usually ask for geometry exports rather than native files, but we can work with both.',
-      },
-      {
-        q: 'What image resolution do you deliver?',
-        a: 'Print-quality stills: minimum 4000px on the long edge. Marketing materials: as required by the brief. Animations: up to 4K (3840×2160).',
-      },
-      {
-        q: 'Do you do VR?',
-        a: 'Yes. Both 360° interactive panoramas (Pano2VR) and real-time VR walkthroughs (Unreal Engine). VR can be added to any project at any stage — it\'s not a separate workflow.',
-      },
-      {
-        q: 'What\'s your render infrastructure?',
-        a: 'We operate our own render farm and have access to additional render nodes as needed. We don\'t outsource rendering for quality-critical work.',
-      },
-    ],
-  },
-  {
-    title: 'Pricing',
-    items: [
-      {
-        q: 'How much does architectural visualization cost?',
-        a: 'From €1,975 for a single-house still set (model + 5 daytime views + 3 night variants). A building launch with a 360° tour and AI interiors is around €7,300; a full sales campaign with film and show flats around €19,000. Every line has a fixed list price — see the pricing page, then contact us for a quote by code.',
-      },
-      {
-        q: 'What drives cost up?',
-        a: 'Animations vs. stills (significantly more). Number of unique camera angles. Interior detail level. Tight deadlines. Multiple revision rounds beyond the included set.',
-      },
-      {
-        q: 'What keeps cost down?',
-        a: 'A clear brief upfront. Good source materials (CAD, not sketches). Flexible timeline. AI-assisted workflows where appropriate.',
-      },
-      {
-        q: 'What are the payment terms?',
-        a: 'Standard structure: 30–40% deposit to begin, progress payments at project milestones, balance on delivery. Flexible terms negotiable for larger or longer projects. Invoiced in EUR.',
-      },
-      {
-        q: 'Do you charge for the initial consultation?',
-        a: 'No. The first 30-minute conversation is free with no obligation. We want to understand your project before either of us commits to anything.',
-      },
-    ],
-  },
-  {
-    title: 'Confidentiality',
-    items: [
-      {
-        q: 'How do you handle confidential projects?',
-        a: 'We sign NDAs on request before any project materials are shared. Secure file transfer, access controls, and data encryption are standard on all projects. Confidential projects are not included in our portfolio without explicit permission.',
-      },
-      {
-        q: 'Do you work with sensitive or unreleased developments?',
-        a: 'Yes, frequently. Pre-announcement real estate, commercial developments, and competition entries all require discretion. We\'re accustomed to operating under embargo and NDA for the full duration of a project.',
-      },
-    ],
-  },
-  {
-    title: 'After Delivery',
-    items: [
-      {
-        q: 'What does final delivery include?',
-        a: 'Final approved files in all agreed formats, technical documentation, usage guidelines, and archive copies. Source 3D files included where contracted.',
-      },
-      {
-        q: 'How long do you keep project files?',
-        a: 'Active projects indefinitely. Completed projects: five years, with multiple backup locations. 360° tour hosting: three years by default, extendable. Archive access available on request.',
-      },
-      {
-        q: 'Can I request changes after delivery?',
-        a: 'Yes. Post-delivery amendments are handled with quick turnaround, fair pricing, and priority processing. The existing 3D scene is the starting point — updates don\'t require rebuilding from scratch.',
-      },
-      {
-        q: 'What if I\'m not satisfied with the result?',
-        a: 'We do checkpoint reviews throughout the project rather than revealing the final result cold. Issues are rare because of that. When something does need to change, we have a clear revision process.',
-      },
-    ],
-  },
-];
 import SectionBanner from '../../../components/ui/SectionBanner.astro';
-import { staticLocalePaths, type Locale } from '../../../lib/i18n';
+import CtaPanel from '../../../components/ui/CtaPanel.astro';
+import { staticLocalePaths, localeUrl, tStr, hasLocale, type Locale, type Localized } from '../../../lib/i18n';
+import { ui } from '../../../i18n/strings';
+import raw from '../../../data/pricing.json';
+import labs from '../../../data/labs.json';
+import { publicView, fmtBoth, type PricingData } from '../../../lib/pricing.mjs';
 
 export const getStaticPaths = staticLocalePaths;
 const { lang } = Astro.params as { lang: Locale };
 Astro.locals.lang = lang;
+const L = ui(lang);
+const u = (path: string) => localeUrl(path, lang);
 
+const P = publicView(raw as unknown as PricingData);
+const pkg = (code: string) => {
+  const p = P.presets.find((x) => x.code === code);
+  if (!p) throw new Error(`pricing.json preset missing: ${code}`);
+  return `<b>${p.name}</b> ${fmtBoth(p.total, lang, P.peg)} — ${tStr(p.desc, lang)}`;
+};
+const packages = `<ul>${['PULI', 'VIZSLA', 'KUVASZ', 'KOMONDOR'].map((c) => `<li>${pkg(c)}</li>`).join('')}</ul>`;
+
+const PHONE = '<a href="tel:+36309454179">+36 30 945 4179</a>';
+const MAIL = '<a href="mailto:info@visiongraphics.hu">info@visiongraphics.hu</a>';
+const AI_SITE = '<a href="https://ai.visiongraphics.eu/" rel="noopener">ai.visiongraphics.eu</a>';
+const LABS_SITE = `<a href="${labs.url}" rel="noopener">labs.visiongraphics.eu</a>`;
+
+const COPY = {
+  en: {
+    metaTitle: 'FAQ',
+    metaDescription: 'Answers to common questions about working with Vision Graphics Kft. — how AI is used on your project, timelines, revisions, pricing and payment, deliverables and rights, software, confidentiality.',
+    bannerLabel: 'Have questions?',
+    bannerTitle: "We've got answers",
+    jump: 'Jump to section',
+    intro: `Can't find what you're looking for? Call ${PHONE} or email ${MAIL} — we answer the same day.`,
+    enOnly: '',
+    ctaTitle: 'Still have a question?',
+    ctaText: '30-minute consultation. No charge. No obligation.',
+  },
+  hu: {
+    metaTitle: 'GYIK',
+    metaDescription: 'Válaszok a gyakori kérdésekre a Vision Graphics Kft.-vel való munkáról — AI a projektben, határidők, módosítási körök, árak és fizetés, átadás és felhasználási jogok, szoftverek, titoktartás.',
+    bannerLabel: 'Kérdése van?',
+    bannerTitle: 'Válaszolunk',
+    jump: 'Ugrás a szakaszhoz',
+    intro: `Nem találja, amit keres? Hívja a ${PHONE} számot vagy írjon a ${MAIL} címre — még aznap válaszolunk.`,
+    enOnly: 'A részletes válaszok egyelőre angolul olvashatók; a magyar változat készül.',
+    ctaTitle: 'Maradt még kérdése?',
+    ctaText: '30 perces konzultáció. Díjmentesen, kötelezettség nélkül.',
+  },
+} as const;
+const c = COPY[lang];
+
+type QA = { id: string; q: Localized<string>; a: Localized<string> };
+type Section = { title: Localized<string>; items: QA[] };
+type Group = {
+  id: string;
+  nav: Localized<string>;
+  banner?: { image: string; label: Localized<string>; title: Localized<string> };
+  sections: Section[];
+};
+
+const GROUPS: Group[] = [
+  {
+    id: 'getting-started',
+    nav: { en: 'Getting started', hu: 'Első lépések' },
+    sections: [
+      {
+        title: { en: 'Getting started', hu: 'Első lépések' },
+        items: [
+          {
+            id: 'what-we-need',
+            q: { en: 'What do you need from me to start?', hu: `Mire van szükségük az induláshoz?` },
+            a: { en: `Drawings in whatever state they exist — plans, elevations, sections, a PDF, a sketch. Your material and finish intent, even rough. A decision on what the images are <em>for</em> — planning, sales, an investor deck — because that sets the camera, the hour of the day and the level of finish. And one person who can say yes. If you have 3D data (Revit, ArchiCAD, SketchUp, DWG), the modelling line on the price list halves; a PDF or sketch doubles it.`, hu: `Rajzokra, amilyen állapotban éppen léteznek — alaprajz, homlokzat, metszet, PDF vagy vázlat. Az anyag- és felületi elképzelésre, akár nagyvonalúan. Egy döntésre arról, <em>mire</em> valók a képek — engedélyeztetés, értékesítés, befektetői prezentáció —, mert ez határozza meg a kamerát, a napszakot és a kidolgozottság szintjét. És egy emberre, aki igent tud mondani. Ha van 3D adat (Revit, ArchiCAD, SketchUp, DWG), az árlista modellezési tétele feleződik; PDF vagy vázlat esetén duplázódik.` },
+          },
+          {
+            id: 'quote',
+            q: { en: 'How do I get a quote, and is the first conversation free?', hu: `Hogyan kérhetek ajánlatot, és ingyenes az első egyeztetés?` },
+            a: { en: `Every line we sell has a list price and a stable code on the <a href="${u('/pricing/')}">price list</a>, and the <a href="${u('/pricing/estimate/')}">price calculator</a> builds a total with the same maths we quote with. Send your plans and a short description — or a calculator link — and you get a quote by code within one business day. The first 30-minute conversation is free, with no obligation; most of them start from a package on the price list and adjust it.`, hu: `Minden tételünknek listaára és állandó kódja van az <a href="${u('/pricing/')}">árlistán</a>, az <a href="${u('/pricing/estimate/')}">árkalkulátor</a> pedig ugyanazzal a képlettel számol végösszeget, amivel mi ajánlatot adunk. Küldje el a terveket és egy rövid leírást — vagy egy kalkulátor-linket —, és egy munkanapon belül kód szerinti ajánlatot kap. Az első 30 perces egyeztetés díjmentes és kötelezettség nélküli; a legtöbb az árlista egyik csomagjából indul, és azt igazítjuk.` },
+          },
+          {
+            id: 'languages',
+            q: { en: 'Do you work in Hungarian and English?', hu: `Dolgoznak magyarul és angolul is?` },
+            a: { en: `Yes, both. Hungarian clients can work entirely in Hungarian; international projects run in English. The price list and the <a href="${u('/terms/')}">general terms</a> exist in both languages.`, hu: `Igen, mindkét nyelven. Magyar ügyfeleinkkel végig magyarul dolgozunk; a nemzetközi projektek angolul futnak. Az árlista és az <a href="${u('/terms/')}">általános szerződési feltételek</a> mindkét nyelven elérhetők.` },
+          },
+          {
+            id: 'start-from-sketch',
+            q: { en: 'Can we start before there is a 3D model — from a sketch or a flat export?', hu: `Elindulhatunk 3D modell nélkül — vázlatból vagy nyers exportból?` },
+            a: { en: `Yes. A pencil sketch, a SketchUp or ArchiCAD export, or a render from an earlier phase is enough for a photorealistic concept image from the AI lane, in days rather than weeks — see <a href="${u('/vision-tech/ai-render-upgrade/')}">AI Render Upgrade</a>. When the design settles, the 3D model follows for everything that has to be exact.`, hu: `Igen. Egy ceruzavázlat, egy SketchUp- vagy ArchiCAD-export vagy egy korábbi tervfázis rendere elég egy fotorealisztikus koncepcióképhez az AI vonalon, hetek helyett napok alatt — lásd az <a href="${u('/vision-tech/ai-render-upgrade/')}">AI fotósítást</a>. Amikor a terv letisztul, jön a 3D modell mindenhez, aminek pontosnak kell lennie.` },
+          },
+        ],
+      },
+      {
+        title: { en: 'Timelines', hu: 'Határidők' },
+        items: [
+          {
+            id: 'how-long',
+            q: { en: 'How long does a typical project take?', hu: `Mennyi ideig tart egy tipikus projekt?` },
+            a: { en: `<ul><li>Single exterior render: 3–5 days</li><li>Multi-view package of 5–10 stills: 1–2 weeks</li><li>Interior package: 1–2 weeks</li><li>90-second animation: 3–4 weeks</li><li>VR or interactive: 4–6 weeks</li><li>Full developer marketing package: 6–8 weeks, staged to your launch</li><li>Concept-stage AI image set: days</li></ul><p>The clock starts when the complete model version and the first payment have arrived. Timelines in a quote are working-day estimates and binding only when the quote says so. The AI finishing pass shortened the last stretch of every schedule, not the modelling.</p>`, hu: `<ul><li>Egyetlen külső látványkép: 3–5 nap</li><li>Többnézetes csomag, 5–10 kép: 1–2 hét</li><li>Belső csomag: 1–2 hét</li><li>90 másodperces animáció: 3–4 hét</li><li>VR vagy interaktív anyag: 4–6 hét</li><li>Teljes fejlesztői marketingcsomag: 6–8 hét, az értékesítés indulásához ütemezve</li><li>Koncepciófázisú AI-képsorozat: napok</li></ul><p>Az óra akkor indul, amikor a teljes modellverzió és az első részlet beérkezett. Az ajánlatban szereplő határidők munkanapban számított becslések, és csak akkor kötelezőek, ha az ajánlat így mondja. Az AI-befejező lépés minden ütemterv utolsó szakaszát rövidítette le, nem a modellezést.</p>` },
+          },
+          {
+            id: 'rush',
+            q: { en: 'Can you work to a tight deadline?', hu: `Tudnak szoros határidőre dolgozni?` },
+            a: { en: `Often — with advance notice, and sometimes without, depending on current load. Rush is ×1.25 on production items, written on the price list so there is no surprise; hosting, rentals and day rates are never rushed. We do not agree to timelines we cannot meet.`, hu: `Gyakran igen — előzetes egyeztetéssel, és az aktuális terheléstől függően néha anélkül is. A sürgősségi szorzó ×1,25 a gyártási tételekre, az árlistán rögzítve, hogy ne érje meglepetés; tárhelyre, bérlésre és napidíjra nem vonatkozik. Olyan határidőt nem vállalunk, amit nem tudunk tartani.` },
+          },
+          {
+            id: 'design-changes',
+            q: { en: 'What happens if the design changes mid-project?', hu: `Mi történik, ha a terv menet közben változik?` },
+            a: { en: `Prices cover the one model version supplied at ordering. Small changes after that are charged at the production hourly rate; a second design phase or a major model revision is 30 % of the affected modelling line, and we say in advance which of the two a change is. A correction at draft stage costs a fraction of one after finishing, so flag anything that looks wrong early. For architects we also offer packages that carry a project through the three or four design phases, concept to construction documentation, with the same camera and model updates between phases — see the <a href="${u('/pricing/')}">price list</a>.`, hu: `Az árak a megrendeléskor átadott egy modellverzió feldolgozását tartalmazzák. Az ezt követő kisebb változtatásokat gyártói óradíjon számoljuk; egy második tervfázis vagy jelentős modellmódosítás az érintett modellezési tétel 30 %-a, és előre megmondjuk, melyik kategóriába esik a változás. Egy vázlatfázisú javítás a töredékébe kerül annak, amit a befejezés után költene, ezért érdemes korán jelezni, ami nem stimmel. Építészeknek olyan csomagokat is kínálunk, amelyek a koncepciótervtől a kiviteli tervig végigkísérik a projektet a három-négy tervfázison, azonos kamerával és fázisok közötti modellfrissítéssel — lásd az <a href="${u('/pricing/')}">árlistát</a>.` },
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'ai',
+    nav: { en: 'AI on your project', hu: 'AI a projektben' },
+    banner: { image: '/_img/banners/banner-ai.jpg', label: { en: 'Useful AI, not hype', hu: 'Hasznos AI, nem hype' }, title: { en: 'AI on your project', hu: 'AI az Ön projektjében' } },
+    sections: [
+      {
+        title: { en: 'AI on your project', hu: 'AI az Ön projektjében' },
+        items: [
+          {
+            id: 'ai-used',
+            q: { en: 'Is AI used on my project, and will I know?', hu: `Használnak AI-t a projektemben, és tudni fogok róla?` },
+            a: { en: `Yes, on every deliverable at some stage — at least upscaling, usually also denoising, retouching, people and vegetation. The 3D lane is still modelled and rendered by us; the AI lane is generated. On delivery we state which items are AI-generated, and every delivered file carries a record of the tools that touched it. <a href="${u('/terms/')}">Section 9 of our terms</a> spells it out.`, hu: `Igen, minden anyagnál, valamely lépésben — legalább a felskálázásnál, jellemzően a zajszűrésnél, retusálásnál, embereknél és növényzetnél is. A 3D vonalat továbbra is mi modellezzük és rendereljük; az AI vonal generált. Átadáskor közöljük, mely tételek AI-generáltak, és minden átadott fájl hordozza a rajta dolgozó eszközök listáját. Az <a href="${u('/terms/')}">ÁSZF 9. pontja</a> részletezi.` },
+          },
+          {
+            id: 'lanes',
+            q: { en: 'What is the difference between the 3D lane and the AI lane?', hu: `Mi a különbség a 3D vonal és az AI vonal között?` },
+            a: { en: `The 3D lane is modelled from your drawings, rendered in V-Ray and finished by hand: exact geometry, exact materials, editable to the pixel. The AI lane is generated from an existing image — your software export, an old render, our own working render — and lightly retouched: variations are the product, details differ between them, and a generated image cannot be edited with a 3D render's precision. We quote both where it makes sense, you choose per item, and the two can be mixed at any time. Small budgets go to the AI lane, never to a cheaper 3D still.`, hu: `A 3D vonal az Ön rajzaiból modellezve, V-Rayben renderelve, kézzel befejezve készül: pontos geometria, pontos anyagok, pixelre szerkeszthető. Az AI vonal egy meglévő képből — az Ön szoftverexportjából, egy régi renderből, a saját munkarenderünkből — generált és könnyedén retusált: a variáció maga a termék, a részletek eltérhetnek, és egy generált kép nem szerkeszthető egy 3D render pontosságával. Ahol van értelme, mindkettőt ajánljuk, tételenként Ön választ, és a kettő bármikor vegyíthető. A kis költségvetés az AI vonalra kerül, sosem egy olcsóbb 3D képre.` },
+          },
+          {
+            id: 'archupgrade',
+            q: { en: 'What is ArchUpgrade?', hu: `Mi az ArchUpgrade?` },
+            a: { en: `Our in-house production pipeline that turns a working 3D render into photorealistic images, in daily use since spring 2026. For each approved view it generates candidates across the moods we agreed — lighting, season, time of day, furnishing style — and a local vision model scores every candidate on five criteria before a person picks. Same geometry, same camera, same layout. What it changes for you is the iteration count: a curated selection from dozens of candidates instead of two polished images. <a href="${u('/articles/from-render-to-photograph-archupgrade/')}">From render to photograph</a> shows it on real projects.`, hu: `Saját fejlesztésű produkciós pipeline-unk, amely a munkarenderből fotorealisztikus képeket készít; 2026 tavasza óta napi használatban. Minden jóváhagyott nézethez jelölteket generál az egyeztetett hangulatok mentén — fény, évszak, napszak, berendezési stílus —, és egy helyben futó vizuális modell öt szempont szerint pontozza mindegyiket, mielőtt ember választana. Ugyanaz a geometria, ugyanaz a kamera, ugyanaz az elrendezés. Önnek az iterációk száma változik: két kidolgozott kép helyett tucatnyi jelöltből válogatott sorozat. A <a href="${u('/articles/from-render-to-photograph-archupgrade/')}">Rendertől a fotóig</a> cikk valós projekteken mutatja be.` },
+          },
+          {
+            id: 'data-stays',
+            q: { en: 'Does my material leave your building?', hu: `Kikerül az anyagom az épületükből?` },
+            a: { en: `No. Every model we run is open-weight and runs on our own GPU farm. Nothing is uploaded to a third-party service, nothing is used to train anyone's model, and there is no per-image cloud cost quietly shaping how many variations we try. Plans under NDA and unreleased schemes stay on our network.`, hu: `Nem. Minden általunk futtatott modell nyílt súlyú, és a saját GPU-farmunkon fut. Semmit nem töltünk fel külső szolgáltatásba, semmit nem használunk mások modelljének tanítására, és nincs képenkénti felhőköltség, amely csendben szűkítené a kipróbált variációk számát. Az NDA alatt álló tervek és a még nem publikált fejlesztések a saját hálózatunkon maradnak.` },
+          },
+          {
+            id: 'design-control',
+            q: { en: 'Will AI change my design?', hu: `Megváltoztatja az AI a tervemet?` },
+            a: { en: `No. The pipeline works from the accurate 3D model — it enhances, it does not invent unless we instruct it to. Walls, proportions, furniture positions and brand colours stay where the designer put them, and a candidate whose fidelity score shows drift is rejected automatically. Where a surface has to match a specific product — a supplier's oak floor, a listed facade — we model it and render it in V-Ray.`, hu: `Nem. A pipeline a pontos 3D modellből dolgozik — javít, nem talál ki, hacsak mi nem utasítjuk rá. A falak, arányok, bútorpozíciók és márkaszínek ott maradnak, ahová a tervező tette őket, és az a jelölt, amelynek hűségpontszáma eltérést jelez, automatikusan kiesik. Ahol egy felületnek konkrét termékkel kell egyeznie — egy gyártó tölgyparkettájával, egy műemléki homlokzattal —, azt modellezzük és V-Rayben rendereljük.` },
+          },
+          {
+            id: 'variants',
+            q: { en: 'Can I have a night, dusk or winter version of an approved view without a re-render?', hu: `Kaphatok éjszakai, alkonyati vagy téli változatot egy jóváhagyott nézetből, újrarenderelés nélkül?` },
+            a: { en: `Yes. Time of day, season, weather, furnishing style, budget tier — generated from the approved view with the scene locked, and priced as a variant at a fraction of a new view. They are look passes for presentation, not lighting simulations; a physically measured sun study still comes from the model.`, hu: `Igen. Napszak, évszak, időjárás, berendezési stílus, költségvetési szint — a jóváhagyott nézetből, rögzített jelenettel generálva, variációként árazva, egy új nézet töredékéért. Ezek prezentációs célú hangulatváltozatok, nem fényszimulációk; a fizikailag mért napjárás-vizsgálat továbbra is a modellből készül.` },
+          },
+          {
+            id: 'upgrade-old-renders',
+            q: { en: 'Can you upgrade my old renders or raw software exports?', hu: `Feljavítják a régi rendereimet vagy a nyers szoftverexportokat?` },
+            a: { en: `Yes. <a href="${u('/vision-tech/ai-render-upgrade/')}">AI Render Upgrade</a> takes an existing image — a previous-phase render, an ArchiCAD, Revit or SketchUp export — and returns photorealistic variations with the geometry fixed. Self-serve at ${AI_SITE}, or as a line on any quote.`, hu: `Igen. Az <a href="${u('/vision-tech/ai-render-upgrade/')}">AI fotósítás</a> egy meglévő képet vesz alapul — korábbi fázis renderét, ArchiCAD-, Revit- vagy SketchUp-exportot —, és rögzített geometriával fotorealisztikus variációkat ad vissza. Önkiszolgáló módon az ${AI_SITE} oldalon, vagy bármely ajánlat tételeként.` },
+          },
+          {
+            id: 'animate-still',
+            q: { en: 'Can you animate a still image?', hu: `Tudnak állóképet animálni?` },
+            a: { en: `Yes. Camera moves, time-of-day and weather transitions are generated from a still and cut into films of 30 seconds to 5 minutes, in landscape, portrait or square — see <a href="${u('/vision-tech/ai-animation/')}">AI Animation</a>. Right for social feeds and sales-office loops. A continuous flythrough with exact geometry in every frame is still based on a 3D animation.`, hu: `Igen. Kameramozgások, napszak- és időjárás-átmenetek készülnek egy állóképből, 30 másodperctől 5 percig terjedő filmekbe vágva, fekvő, álló vagy négyzetes formátumban — lásd az <a href="${u('/vision-tech/ai-animation/')}">AI animációt</a>. Közösségi médiába és értékesítési irodák képernyőire való. Egy folyamatos, minden képkockában pontos geometriájú bejárás továbbra is 3D animációra épül.` },
+          },
+          {
+            id: 'ai-limits',
+            q: { en: 'What can AI not do?', hu: `Mire nem képes az AI?` },
+            a: { en: `Honestly, we cannot tell you. It has limitations today, and the list changes every week. What does not change: the accuracy comes from the 3D model, and the judgement about which image tells the story stays human.`, hu: `Őszintén: nem tudjuk megmondani. Ma vannak korlátai, de a lista hétről hétre változik. Ami nem változik: a pontosság a 3D modellből jön, és a döntés arról, melyik kép meséli el a történetet, emberi marad.` },
+          },
+          {
+            id: 'ai-licences',
+            q: { en: 'Are the AI tools licensed for commercial use?', hu: `Kereskedelmi felhasználásra licenceltek az AI-eszközök?` },
+            a: { en: `Yes, and it is enforced by configuration rather than by promise. Every model carries a licence class, and anything non-commercial or research-only is locked out of paid deliverables. Before a tool reaches production it passes through our own vetting database, re-checked weekly for release state, licence and hardware needs — <a href="${u('/articles/how-we-vet-the-ai-tool-flood/')}">how we vet the flood</a>.`, hu: `Igen, és ezt nem ígéret, hanem konfiguráció garantálja. Minden modell licencosztályt visel, és ami nem kereskedelmi vagy csak kutatási célú, az ki van zárva a fizetős anyagokból. Mielőtt egy eszköz produkcióba kerül, átmegy a saját vizsgálati adatbázisunkon, amely hetente újraellenőrzi a kiadási állapotot, a licencet és a hardverigényt — <a href="${u('/articles/how-we-vet-the-ai-tool-flood/')}">így szűrjük az áradatot</a>.` },
+          },
+          {
+            id: 'agents',
+            q: { en: 'Do you use autonomous AI agents on client work?', hu: `Használnak autonóm AI-ügynököket ügyfélmunkában?` },
+            a: { en: `Not to decide anything a client sees. What we run is scheduled automation: jobs that fire overnight, generate, check their own output against an automated review, and leave a shorter list for a person to read in the morning. The judgement stays human — <a href="${u('/articles/agents-that-work-the-night-shift/')}">the boring version of AI automation</a>.`, hu: `Olyat nem, ami az ügyfél elé kerülő bármiről döntene. Amit futtatunk, az ütemezett automatizálás: éjszaka induló feladatok, amelyek generálnak, saját kimenetüket automatikus ellenőrzésen átvezetik, és reggelre rövidebb listát hagynak egy embernek. A döntés emberi marad — <a href="${u('/articles/agents-that-work-the-night-shift/')}">az AI-automatizálás unalmas változata</a>.` },
+          },
+          {
+            id: 'ai-labelling',
+            q: { en: 'Do AI images need to be labelled?', hu: `Meg kell jelölni az AI-képeket?` },
+            a: { en: `Generally yes. Where a law or a platform requires it, you label them in your own publications; we state in the delivery which items are AI-generated so you can. Our images have carried the word "illustration" for thirty years; nothing new there. We never clone a real person's voice or likeness without their written consent.`, hu: `Általában igen. Ahol jogszabály vagy platform megköveteli, Ön jelöli meg őket a saját publikációiban; mi átadáskor közöljük, mely tételek AI-generáltak, hogy megtehesse. A képeink harminc éve viselik a „látványterv” megjelölést; ebben nincs újdonság. Valós személy hangját vagy képmását írásos hozzájárulása nélkül soha nem klónozzuk.` },
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'working-together',
+    nav: { en: 'Working together', hu: 'Együttműködés' },
+    banner: { image: '/_img/banners/banner-workflow.jpg', label: { en: 'Process', hu: 'Folyamat' }, title: { en: 'Working together', hu: 'Együttműködés' } },
+    sections: [
+      {
+        title: { en: 'Working together', hu: 'Együttműködés' },
+        items: [
+          {
+            id: 'who-works',
+            q: { en: 'Who will actually work on my project?', hu: `Ki dolgozik majd ténylegesen a projektemen?` },
+            a: { en: `László Kerezsi and our 3D staff, from brief to delivery. When a project needs a specialist — character animation, BIM, photogrammetry, drone photography, Unreal Engine — we bring in tested partners; László stays your single point of contact and reviews everything before it leaves the studio.`, hu: `Kerezsi László és 3D-s munkatársaink, a brieftől az átadásig. Ha egy projekthez specialista kell — karakteranimáció, BIM, fotogrammetria, drónfotózás, Unreal Engine —, kipróbált partnereket vonunk be; László marad az egyetlen kapcsolattartó, és mindent átnéz, mielőtt elhagyja a stúdiót.` },
+          },
+          {
+            id: 'revisions',
+            q: { en: 'How many revision rounds are included?', hu: `Hány módosítási kört tartalmaz az ár?` },
+            a: { en: `Two per stage, and the stages are model check, drafts and final (previz, draft and final for film). A round is one consolidated list of changes from one authorised contact; scattered or contradictory requests from several people count as separate rounds. Further rounds are charged at the production hourly rate.`, hu: `Szakaszonként kettőt; a szakaszok: modellellenőrzés, vázlatok, végleges (filmnél previz, vázlat, végleges). Egy kör egy összesített módosítási lista egy kijelölt kapcsolattartótól; több személytől érkező, elszórt vagy egymásnak ellentmondó kérések külön körnek számítanak. A további köröket gyártói óradíjon számoljuk.` },
+          },
+          {
+            id: 'feedback',
+            q: { en: 'How do you handle feedback?', hu: `Hogyan kezelik a visszajelzéseket?` },
+            a: { en: `Mainly by email or through our revisioning tool; annotated images, PDFs or a call when that is clearer. We confirm our reading before implementing, so no round is wasted on a misunderstanding. At the AI finishing stage you can sit in on the selection round and pick from the scored candidates with us. If a submission gets no reply for 3 working days we may treat the stage as approved, after telling you, so the timeline holds.`, hu: `Főként e-mailben vagy a saját revíziós eszközünkön keresztül; jelölt képekkel, PDF-fel vagy telefonon, ha az egyértelműbb. Megvalósítás előtt visszaigazoljuk, hogyan értettük, így egyetlen kör sem vész el félreértésen. Az AI-befejező szakaszban részt vehet a válogatási körben, és velünk együtt választhat a pontozott jelöltek közül. Ha egy bemutatásra 3 munkanapig nem érkezik válasz, a szakaszt — az Ön értesítése után — jóváhagyottnak tekinthetjük, hogy a határidő tartható maradjon.` },
+          },
+          {
+            id: 'large-scale',
+            q: { en: 'Can you handle large-scale projects?', hu: `Vállalnak nagyléptékű projekteket?` },
+            a: { en: `Yes. Airport terminals, urban masterplans and exhibition content are on the record — Budapest Airport, Antalya Airport T2, Sochi and Pulkovo airports, the Road Safety Centre in Doha. The specialist network scales around the project; the point of contact does not change.`, hu: `Igen. Repülőtéri terminálok, városfejlesztési mestertervek és kiállítási tartalmak szerepelnek a referenciáink között — Budapest Airport, Antalya Airport T2, a szocsi és a pulkovói repülőtér, a dohai Road Safety Centre. A szakértői hálózat a projekt köré skálázódik; a kapcsolattartó nem változik.` },
+          },
+        ],
+      },
+      {
+        title: { en: 'Deliverables and rights', hu: 'Átadás és felhasználási jogok' },
+        items: [
+          {
+            id: 'formats',
+            q: { en: 'What file formats do you deliver?', hu: `Milyen fájlformátumban adják át az anyagot?` },
+            a: { en: `Stills as 4–6K JPG/PNG, upscaled to print resolution where needed. Film as 1080p MP4, with 4K, 360° or ProRes/DNxHR masters when quoted. Tours, viewers, tools and microsites as hosted web deliverables. Floor plans and sales sheets as PDF/PNG.`, hu: `Látványképek 4–6K JPG/PNG formátumban, ahol kell, nyomdai felbontásra felskálázva. Film 1080p MP4-ben; 4K, 360°-os vagy ProRes/DNxHR master, ha az ajánlatban szerepel. Túrák, nézegetők, eszközök és microsite-ok tárolt webes formában. Alaprajzok és adatlapok PDF/PNG formátumban.` },
+          },
+          {
+            id: 'rights',
+            q: { en: 'Do I own the images?', hu: `Az enyémek lesznek a képek?` },
+            a: { en: `You receive, on full payment, a non-exclusive, perpetual, worldwide licence to use them for the named project — marketing, advertising, broadcast, presentation, sale, lease, planning and permitting, paid advertising included, at no extra licence fee — and you may pass them to the project's agents, brokers, investors and press. Copyright stays with the studio. Use for another project, resale, stock licensing or as AI training data needs a separate licence. <a href="${u('/terms/')}">Section 8 of our terms</a> has the full wording.`, hu: `A teljes vételár kiegyenlítésével nem kizárólagos, időben és területileg korlátlan felhasználási engedélyt kap a megnevezett projekthez — marketing, hirdetés, sugárzás, bemutatás, értékesítés, bérbeadás, tervezés és engedélyeztetés, a fizetett hirdetést is beleértve, külön licencdíj nélkül —, és továbbadhatja őket a projekt ügynökeinek, közvetítőinek, befektetőinek és a sajtónak. A szerzői jog a stúdiónál marad. Másik projekthez való felhasználáshoz, továbbértékesítéshez, stock-licenceléshez vagy AI-tanítóadatként való használathoz külön licenc szükséges. Az <a href="${u('/terms/')}">ÁSZF 8. pontja</a> tartalmazza a teljes szöveget.` },
+          },
+          {
+            id: 'source-files',
+            q: { en: 'Can I get source files or editable 3D scenes?', hu: `Megkaphatom a forrásfájlokat vagy a szerkeszthető 3D jeleneteket?` },
+            a: { en: `By arrangement, at +25 % of the relevant item. Layered PSDs, 3ds Max scenes and project files are not part of the standard delivery, and licensed third-party assets — people, cars, trees, textures and the like — stay out where their licence does not allow it.`, hu: `Megállapodás szerint, az érintett tétel +25 %-áért. A rétegezett PSD-k, a 3ds Max jelenetek és a projektfájlok nem részei a szabványos átadásnak, a licencelt harmadik feles elemek — emberek, autók, fák, textúrák és hasonlók — pedig kimaradnak, ahol a licencük nem engedi.` },
+          },
+          {
+            id: 'portfolio-use',
+            q: { en: 'Will you show my project in your portfolio?', hu: `Bemutatják a projektemet a portfóliójukban?` },
+            a: { en: `Only once the project is public, naming the project and the architect — or from a date we agree if you ask for confidentiality at ordering. Unpublished projects are never shown.`, hu: `Csak miután a projekt nyilvános lett, a projekt és az építész megnevezésével — vagy egy közösen egyeztetett időponttól, ha megrendeléskor titoktartást kér. Nem publikált projektet soha nem mutatunk be.` },
+          },
+          {
+            id: 'hosting',
+            q: { en: 'How long is a 360° tour or web viewer hosted?', hu: `Meddig tárolják a 360°-os túrát vagy a webes nézegetőt?` },
+            a: { en: `Twelve months from delivery are included. After that, hosting continues at the annual fee on the price list unless either side cancels before the renewal date. On request you get the static files to host elsewhere.`, hu: `Az átadástól számított tizenkét hónap benne van az árban. Utána a tárhely az árlista szerinti éves díjon folytatódik, hacsak valamelyik fél a megújítás előtt fel nem mondja. Kérésre megkapja a statikus fájlokat, hogy máshol tárolhassa.` },
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'technical',
+    nav: { en: 'Technical', hu: 'Technika' },
+    banner: { image: '/_img/banners/banner-tech.jpg', label: { en: 'Tools and infrastructure', hu: 'Eszközök és infrastruktúra' }, title: { en: 'Technical details', hu: 'Technikai részletek' } },
+    sections: [
+      {
+        title: { en: 'Technical details', hu: 'Technikai részletek' },
+        items: [
+          {
+            id: 'software',
+            q: { en: 'What software do you use?', hu: `Milyen szoftvereket használnak?` },
+            a: { en: `3ds Max since version 1, with V-Ray for 15+ years. Unreal Engine 5 for VR and real-time work. Blender. ComfyUI and SwarmUI with local models, and Ollama for automated quality review. And our own tools: ArchUpgrade, a tour engine that publishes 360° tours straight from the 3D scene, a render-farm controller, and a MAXScript and Python toolkit — written with AI assistants and, for some jobs, <a href="${u('/articles/automation-maxscript-and-ai-in-3ds-max/')}">driven by one</a>.`, hu: `3ds Max az 1-es verzió óta, V-Ray több mint 15 éve. Unreal Engine 5 a VR- és valós idejű munkákhoz. Blender. ComfyUI és SwarmUI helyben futó modellekkel, Ollama az automatikus minőségellenőrzéshez. És a saját eszközeink: az ArchUpgrade, egy túramotor, amely közvetlenül a 3D jelenetből publikál 360°-os túrákat, egy renderfarm-vezérlő, valamint egy MAXScript- és Python-eszköztár — AI-asszisztensekkel írva, és egyes feladatoknál <a href="${u('/articles/automation-maxscript-and-ai-in-3ds-max/')}">AI által vezérelve</a>.` },
+          },
+          {
+            id: 'bim',
+            q: { en: 'Can you work with BIM models (Revit, ArchiCAD)?', hu: `Tudnak BIM modellekkel (Revit, ArchiCAD) dolgozni?` },
+            a: { en: `Yes, daily. We usually ask for geometry exports rather than native files, but both work. A usable 3D model halves the modelling line on the price list; the multiplier is set from what you actually deliver.`, hu: `Igen, naponta. Általában geometria-exportot kérünk natív fájl helyett, de mindkettő működik. Egy használható 3D modell felezi az árlista modellezési tételét; a szorzót a ténylegesen átadott anyag alapján állapítjuk meg.` },
+          },
+          {
+            id: 'resolution',
+            q: { en: 'What image resolution do you deliver?', hu: `Milyen felbontásban adják át a képeket?` },
+            a: { en: `4–6K on the long edge as standard. For hoarding-sized prints we upscale to 4K or 8K with detail added rather than smeared — which also gives an older render a second life. Animation up to 4K when quoted.`, hu: `Szabványosan 4–6K a hosszabb oldalon. Óriásplakát-méretű nyomathoz 4K-ra vagy 8K-ra skálázunk fel, valódi részletekkel, nem elkenve — ez egy régebbi rendernek is második életet ad. Animáció 4K-ig, ha az ajánlatban szerepel.` },
+          },
+          {
+            id: 'vr-360',
+            q: { en: 'Do you do 360° tours and VR?', hu: `Készítenek 360°-os túrát és VR-t?` },
+            a: { en: `Yes. 360° tours are generated by our own engine from the same 3D scene as the stills — viewpoints, floor plan and links included — so a design change re-publishes the tour instead of rebuilding it, and a tour can be relit or upscaled without a re-render. Guided viewing lets a presenter steer what every visitor sees on their own phone or headset. Real-time VR walkthroughs are built in Unreal Engine. <a href="${u('/articles/building-our-own-vr-tour-engine/')}">How we built the tour engine.</a>`, hu: `Igen. A 360°-os túrákat a saját motorunk generálja ugyanabból a 3D jelenetből, mint a látványképeket — nézőpontokkal, alaprajzzal és kapcsolatokkal együtt —, így egy tervváltozás után a túra újrapublikálódik, nem újraépül, és újrarenderelés nélkül újravilágítható vagy felskálázható. A vezetett bejárással az előadó irányítja, mit lát minden látogató a saját telefonján vagy headsetjén. A valós idejű VR-bejárások Unreal Engine-ben készülnek. <a href="${u('/articles/building-our-own-vr-tour-engine/')}">Így építettük a túramotort.</a>` },
+          },
+          {
+            id: 'render-farm',
+            q: { en: 'What is your render infrastructure?', hu: `Milyen a renderelési infrastruktúrájuk?` },
+            a: { en: `Our own farm of up to fifteen machines, in our building: V-Ray render nodes by night, AI generation nodes by day, switched from one dashboard. No third-party cloud — not for quality-critical rendering and not for AI.`, hu: `Saját, legfeljebb tizenöt gépes farm, a saját épületünkben: éjjel V-Ray render node-ok, nappal AI-generáló node-ok, egyetlen felületről átkapcsolva. Külső felhő nincs — sem a minőségkritikus rendereléshez, sem az AI-hoz.` },
+          },
+        ],
+      },
+      {
+        title: { en: 'For other studios', hu: 'Más stúdióknak' },
+        items: [
+          {
+            id: 'ai-for-studios',
+            q: { en: "Can you run the AI finishing pass on our studio's renders?", hu: `Lefuttatják az AI-befejező lépést a mi stúdiónk renderein?` },
+            a: { en: `Yes, since this year. Send working renders from any software and get back photorealistic versions with lighting, season and time-of-day variants, quality-scored and delivered with provenance metadata. Standalone at ${AI_SITE}, or a line on any quote. Your images stay on our network.`, hu: `Igen, idén óta. Küldjön munkarendereket bármilyen szoftverből, és fotorealisztikus változatokat kap vissza fény-, évszak- és napszak-variációkkal, minőség szerint pontozva, eredetmetaadatokkal átadva. Önállóan az ${AI_SITE} oldalon, vagy bármely ajánlat tételeként. A képei a mi hálózatunkon maradnak.` },
+          },
+          {
+            id: 'tools-for-studios',
+            q: { en: 'Do you build tools or audit pipelines for other studios?', hu: `Készítenek eszközöket vagy auditálnak pipeline-t más stúdióknak?` },
+            a: { en: `Yes. <a href="${u('/services/workflow-optimization/')}">Pipeline audits</a> that start with a written report, quick wins first. <a href="${u('/services/3ds-max-tools/')}">Custom 3ds Max tools</a> in MAXScript and Python — batch rendering, scene repair, asset management, connections to other systems. AI tooling that runs on your own machines when data cannot leave your network. And <a href="${u('/services/custom-rendering/')}">render nodes</a> with your scene prepared properly before it hits the farm.`, hu: `Igen. <a href="${u('/services/workflow-optimization/')}">Pipeline-auditok</a>, amelyek írásos jelentéssel indulnak, előbb a gyors nyereségekkel. <a href="${u('/services/3ds-max-tools/')}">Egyedi 3ds Max eszközök</a> MAXScriptben és Pythonban — kötegelt renderelés, jelenetjavítás, asset-kezelés, kapcsolat más rendszerekkel. Saját gépeken futó AI-eszközök, ha az adat nem hagyhatja el az Ön hálózatát. És <a href="${u('/services/custom-rendering/')}">render node-ok</a>, a jelenetét rendesen előkészítve, mielőtt a farmra kerül.` },
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'pricing',
+    nav: { en: 'Pricing', hu: 'Árak' },
+    banner: { image: '/_img/banners/banner-general.jpg', label: { en: 'Investment', hu: 'Befektetés' }, title: { en: 'Pricing and confidentiality', hu: 'Árak és titoktartás' } },
+    sections: [
+      {
+        title: { en: 'Pricing and payment', hu: 'Árak és fizetés' },
+        items: [
+          {
+            id: 'cost',
+            q: { en: 'How much does architectural visualization cost?', hu: `Mennyibe kerül az építészeti látványtervezés?` },
+            a: { en: `Every line has a list price, and every quote is built from those lines. Four packages show the scale:${packages}<p>Build your own in the <a href="${u('/pricing/estimate/')}">price calculator</a>, or read the full <a href="${u('/pricing/')}">price list</a>. A night or dusk variant of an existing view is a fraction of a new view; film is an order of magnitude more than stills.</p>`, hu: `Minden tételnek listaára van, és minden ajánlat ezekből épül. Négy csomag mutatja a léptéket:${packages}<p>Állítsa össze a sajátját az <a href="${u('/pricing/estimate/')}">árkalkulátorban</a>, vagy olvassa el a teljes <a href="${u('/pricing/')}">árlistát</a>. Egy meglévő nézet éjszakai vagy alkonyati változata egy új nézet töredéke; a film nagyságrenddel drágább az állóképeknél.</p>` },
+          },
+          {
+            id: 'cost-drivers',
+            q: { en: 'What drives cost up, and what keeps it down?', hu: `Mi növeli az árat, és mi csökkenti?` },
+            a: { en: `Up: film instead of stills, the number of distinct camera angles, interior detail such as furnishing and bespoke materials, rush timelines, and plan revisions after ordering. Down: a usable 3D model instead of 2D plans, a clear brief with one plan version at ordering, repetition — unit types, panorama blocks, short bundles —, the AI lane where photoreal 3D is not needed, and a framework agreement for repeat work.`, hu: `Növeli: film állókép helyett, az eltérő kameraállások száma, a belső részletesség — berendezés, egyedi anyagok —, a sürgős határidő és a megrendelés utáni tervmódosítás. Csökkenti: használható 3D modell 2D tervek helyett, egyértelmű brief egy tervverzióval megrendeléskor, az ismétlődés — lakástípusok, panorámablokkok, rövidfilm-csomagok —, az AI vonal ott, ahol nem kell fotorealisztikus 3D, és keretszerződés visszatérő munkára.` },
+          },
+          {
+            id: 'payment',
+            q: { en: 'What are the payment terms?', hu: `Milyenek a fizetési feltételek?` },
+            a: { en: `40 % on order, 30 % on approval of the drafts, 30 % on delivery; orders under €1,500 net are 50/50. Invoices are due in 8 days in Hungary and 14 days internationally. Prices are net EUR: 27 % VAT for Hungarian clients, reverse charge for VAT-registered clients elsewhere in the EU, no VAT outside the EU. Hungarian quotes can be issued in forint at a rate fixed each January.`, hu: `40 % megrendeléskor, 30 % a vázlatok jóváhagyásakor, 30 % átadáskor; nettó 1 500 € alatti megrendelésnél 50/50. A számlák fizetési határideje Magyarországon 8, külföldön 14 nap. Az árak nettó euróárak: magyar ügyfeleknek 27 % áfa, más EU-tagállambeli, közösségi adószámmal rendelkező ügyfeleknek fordított adózás, EU-n kívül áfa nélkül. Magyar ajánlatot forintban is adunk, a minden januárban rögzített árfolyamon.` },
+          },
+          {
+            id: 'quote-validity',
+            q: { en: 'How long is a quote valid?', hu: `Meddig érvényes egy ajánlat?` },
+            a: { en: `30 days. The price list is indexed every January (Hungarian consumer price index, at least +5 %); framework clients receive a price letter fixed for twelve months.`, hu: `30 napig. Az árlistát minden januárban indexáljuk (magyar fogyasztói árindex, legalább +5 %); keretszerződéses ügyfeleink tizenkét hónapra rögzített árlevelet kapnak.` },
+          },
+        ],
+      },
+      {
+        title: { en: 'Confidentiality', hu: 'Titoktartás' },
+        items: [
+          {
+            id: 'nda',
+            q: { en: 'How do you handle confidential projects?', hu: `Hogyan kezelik a bizalmas projekteket?` },
+            a: { en: `We sign an NDA on request before any material is shared, and confidentiality is written into our terms regardless. Files stay on our own network — the AI pipeline included; nothing goes to a third-party service. Confidential projects never appear in the portfolio without permission.`, hu: `Kérésre titoktartási megállapodást írunk alá, mielőtt bármilyen anyag átadásra kerül, a titoktartás pedig ettől függetlenül is szerepel az ÁSZF-ünkben. A fájlok a saját hálózatunkon maradnak — az AI-pipeline-t is beleértve; semmi nem kerül külső szolgáltatóhoz. Bizalmas projekt engedély nélkül soha nem jelenik meg a portfólióban.` },
+          },
+          {
+            id: 'unreleased',
+            q: { en: 'Do you work with unreleased developments and competition entries?', hu: `Dolgoznak még nem publikált fejlesztéseken és pályázati anyagokon?` },
+            a: { en: `Yes, frequently. Pre-announcement real estate, commercial developments and competition entries all require discretion, and we are used to operating under embargo for the full duration of a project.`, hu: `Igen, gyakran. A bejelentés előtti ingatlanfejlesztések, kereskedelmi beruházások és tervpályázatok mind diszkréciót igényelnek, és megszoktuk, hogy a projekt teljes időtartama alatt embargó alatt dolgozunk.` },
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'after',
+    nav: { en: 'After delivery', hu: 'Átadás után' },
+    banner: { image: '/_img/banners/banner-arch-viz.jpg', label: { en: 'After the project', hu: 'A projekt után' }, title: { en: 'After delivery', hu: 'Átadás után' } },
+    sections: [
+      {
+        title: { en: 'After delivery', hu: 'Átadás után' },
+        items: [
+          {
+            id: 'delivery-package',
+            q: { en: 'What does final delivery include?', hu: `Mit tartalmaz a végleges átadás?` },
+            a: { en: `The picked images in a clean, numbered package in every agreed format, hosted URLs for tours and viewers, and a metadata record with the generation history and the tools used on each file. Source files where contracted.`, hu: `A kiválasztott képeket rendezett, sorszámozott csomagban, minden egyeztetett formátumban; a túrák és nézegetők tárolt URL-jeit; valamint egy metaadat-jegyzéket a generálási előzményekkel és a fájlonként használt eszközökkel. Forrásfájlokat ott, ahol a szerződés tartalmazza.` },
+          },
+          {
+            id: 'retention',
+            q: { en: 'How long do you keep project files?', hu: `Meddig őrzik meg a projektfájlokat?` },
+            a: { en: `At least 24 months by contract; in practice five years and more, with backups in several places. The 3D model can be updated for later phases or additional outputs without starting over. Archive access on request.`, hu: `Szerződés szerint legalább 24 hónapig; a gyakorlatban öt évig és tovább, több helyen tárolt biztonsági másolatokkal. A 3D modell későbbi fázisokhoz vagy további anyagokhoz frissíthető, nem kell elölről kezdeni. Archív hozzáférés kérésre.` },
+          },
+          {
+            id: 'changes-after',
+            q: { en: 'Can I request changes after delivery?', hu: `Kérhetek módosítást az átadás után?` },
+            a: { en: `Yes. The existing scene is the starting point, and a delivered image can be branched from its exact version — "that one, but at dusk" is a re-run, not a reconstruction from memory. Priced from the price list, quick turnaround.`, hu: `Igen. A meglévő jelenet a kiindulópont, és egy átadott kép a pontos verziójából ágaztatható tovább — „azt, csak alkonyatkor” újrafuttatás, nem emlékezetből való rekonstrukció. Az árlista szerint árazva, gyors átfutással.` },
+          },
+          {
+            id: 'not-satisfied',
+            q: { en: "What if I'm not satisfied with the result?", hu: `Mi van, ha nem vagyok elégedett az eredménnyel?` },
+            a: { en: `Checkpoint reviews at every stage mean the final is never a cold reveal, which is why this is rare. If something is still wrong, report it within 3 working days of delivery with specifics and we fix genuine defects at our cost.`, hu: `A szakaszonkénti ellenőrzőpontok miatt a végeredmény sosem hideg leleplezés — ezért ritka az ilyen. Ha mégis marad hiba, jelezze konkrétan, az átadástól számított 3 munkanapon belül, és a valódi hibákat saját költségünkön javítjuk.` },
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'labs',
+    nav: { en: 'Labs', hu: 'Labs' },
+    banner: { image: '/_img/banners/banner-large-scale.jpg', label: { en: 'Side projects', hu: 'Melléktermékek' }, title: { en: 'Vision Graphics Labs', hu: 'Vision Graphics Labs' } },
+    sections: [
+      {
+        title: { en: 'Labs', hu: 'Labs' },
+        items: [
+          {
+            id: 'labs-what',
+            q: { en: 'What is Vision Graphics Labs?', hu: `Mi az a Vision Graphics Labs?` },
+            a: { en: `Free browser apps about light, colour, geometry and sound — a sun-path simulator, a lens and depth-of-field wheel, a floor-plan-to-3D tool, daily spatial-aptitude games — at ${LABS_SITE}. Everything runs in your browser; nothing is uploaded, no accounts, no ads, no tracking. They are toys made from studio skills, not substitutes: a permit-grade sun study and the massing model still come from your drawings, in the project.`, hu: `Ingyenes böngészős alkalmazások fényről, színről, geometriáról és hangról — napjárás-szimulátor, objektív- és mélységélesség-kerék, alaprajzból 3D-t készítő eszköz, napi térlátás-játékok — a ${LABS_SITE} oldalon. Minden a böngészőben fut; semmi nem kerül feltöltésre, nincs fiók, nincs reklám, nincs követés. Stúdiós tudásból készült játékok, nem helyettesítők: az engedélyezéshez szükséges napjárás-vizsgálat és a tömegmodell továbbra is az Ön rajzaiból készül, a projektben.` },
+          },
+          {
+            id: 'labs-branded',
+            q: { en: 'Can I have one with my brand on it?', hu: `Kaphatok egyet a saját márkámmal?` },
+            a: { en: `Yes, three ways. We build it — a campaign toy or daily game is a fixed line on the <a href="${u('/pricing/')}">price list</a>, next to the sun-study tool and the configurator. We teach your team to build one in a workshop day. Or a short session on what knowledge your brand owns that people would want to play with.`, hu: `Igen, háromféleképpen. Megépítjük — egy kampányjáték vagy napi játék fix tétel az <a href="${u('/pricing/')}">árlistán</a>, a napjárás-eszköz és a konfigurátor mellett. Megtanítjuk a csapatát egy workshopnapon, hogyan készül. Vagy egy rövid beszélgetés arról, milyen tudás van a márkája birtokában, amivel az emberek szívesen játszanának.` },
+          },
+        ],
+      },
+    ],
+  },
+];
+
+const enOnly = c.enOnly && GROUPS.some((g) => g.sections.some((s) => s.items.some((i) => !hasLocale(i.a, lang))));
 ---
 
-<Page
-  title="FAQ"
-  description="Answers to common questions about working with Vision Graphics Kft. — timelines, pricing, deliverables, software, and how we work."
-  fullBleed
->
+<Page title={c.metaTitle} description={c.metaDescription} fullBleed>
   <div class="faq-page">
-
-    <!-- ══════════════════════════════════════════════════════════ -->
-    <!-- PAGE HEADER                                               -->
-    <!-- ══════════════════════════════════════════════════════════ -->
     <SectionBanner
       image="/_img/banners/banner-faq.jpg"
-      label="Have Questions?"
-      title="We've Got Answers"
+      label={c.bannerLabel}
+      title={c.bannerTitle}
       headingLevel="h1"
       size="page"
     />
 
-    <!-- Quick navigation -->
-    <nav class="faq-quicknav container" aria-label="Jump to section">
-      <a href="#getting-started">Getting Started</a>
-      <a href="#working-together">Working Together</a>
-      <a href="#technical">Technical Details</a>
-      <a href="#pricing">Pricing</a>
-      <a href="#after">After Delivery</a>
+    <nav class="faq-quicknav container" aria-label={c.jump}>
+      {GROUPS.map((g) => <a href={`#${g.id}`}>{tStr(g.nav, lang)}</a>)}
     </nav>
 
-    <!-- ══════════════════════════════════════════════════════════ -->
-    <!-- GROUP 1 — Getting Started & Timelines                     -->
-    <!-- ══════════════════════════════════════════════════════════ -->
-    <section class="faq-group section" id="getting-started">
-      <div class="container">
-        <div class="faq-header">
-          <p class="faq-intro">
-            Can't find what you're looking for?
-            Call <a href="tel:+36309454179">+36 30 945 4179</a> or
-            email <a href="mailto:info@visiongraphics.hu">info@visiongraphics.hu</a> — we answer same day.
-          </p>
-        </div>
-        <div class="faq-sections">
-          {sections.filter(s => ['Getting Started', 'Timelines'].includes(s.title)).map(section => (
-            <div class="faq-section">
-              <h2 class="faq-section-title">{section.title}</h2>
-              <div class="faq-list">
-                {section.items.map(item => (
-                  <details class="faq-item">
-                    <summary class="faq-q">{item.q}</summary>
-                    <p class="faq-a">{item.a}</p>
-                  </details>
-                ))}
+    {GROUPS.map((g, gi) => (
+      <>
+        {g.banner && <SectionBanner image={g.banner.image} label={tStr(g.banner.label, lang)} title={tStr(g.banner.title, lang)} />}
+        <section class="faq-group section" id={g.id}>
+          <div class="container">
+            {gi === 0 && (
+              <div class="faq-header">
+                <p class="faq-intro" set:html={c.intro} />
+                {enOnly && <p class="faq-intro faq-note">{c.enOnly}</p>}
               </div>
+            )}
+            <div class="faq-sections">
+              {g.sections.map((s) => (
+                <div class="faq-section">
+                  {g.sections.length > 1 && <h2 class="faq-section-title">{tStr(s.title, lang)}</h2>}
+                  <div class="faq-list">
+                    {s.items.map((item) => (
+                      <details class="faq-item" id={item.id}>
+                        <summary class="faq-q">{tStr(item.q, lang)}</summary>
+                        <div class="faq-a" set:html={tStr(item.a, lang)} />
+                      </details>
+                    ))}
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </div>
-    </section>
+          </div>
+        </section>
+      </>
+    ))}
 
-    <!-- ══════════════════════════════════════════════════════════ -->
-    <!-- GROUP 2 — Working Together & Deliverables                 -->
-    <!-- ══════════════════════════════════════════════════════════ -->
-    <SectionBanner
-      image="/_img/banners/banner-workflow.jpg"
-      label="Process"
-      title="Working Together"
-    />
-    <section class="faq-group section" id="working-together">
+    <section class="faq-group section">
       <div class="container">
-        <div class="faq-sections">
-          {sections.filter(s => ['Working Together', 'Deliverables & Files'].includes(s.title)).map(section => (
-            <div class="faq-section">
-              <h2 class="faq-section-title">{section.title}</h2>
-              <div class="faq-list">
-                {section.items.map(item => (
-                  <details class="faq-item">
-                    <summary class="faq-q">{item.q}</summary>
-                    <p class="faq-a">{item.a}</p>
-                  </details>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
+        <CtaPanel title={c.ctaTitle} text={c.ctaText} href={u('/contact/')} cta={L.cta.getInTouch} />
       </div>
     </section>
-
-    <!-- ══════════════════════════════════════════════════════════ -->
-    <!-- GROUP 3 — Technical Details                               -->
-    <!-- ══════════════════════════════════════════════════════════ -->
-    <SectionBanner
-      image="/_img/banners/banner-tech.jpg"
-      label="Tools & Infrastructure"
-      title="Technical Details"
-    />
-    <section class="faq-group section" id="technical">
-      <div class="container">
-        <div class="faq-sections">
-          {sections.filter(s => ['Technical Details'].includes(s.title)).map(section => (
-            <div class="faq-section">
-              <h2 class="faq-section-title">{section.title}</h2>
-              <div class="faq-list">
-                {section.items.map(item => (
-                  <details class="faq-item">
-                    <summary class="faq-q">{item.q}</summary>
-                    <p class="faq-a">{item.a}</p>
-                  </details>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-
-    <!-- ══════════════════════════════════════════════════════════ -->
-    <!-- GROUP 4 — Pricing & Confidentiality                       -->
-    <!-- ══════════════════════════════════════════════════════════ -->
-    <SectionBanner
-      image="/_img/banners/banner-general.jpg"
-      label="Investment"
-      title="Pricing & Confidentiality"
-    />
-    <section class="faq-group section" id="pricing">
-      <div class="container">
-        <div class="faq-sections">
-          {sections.filter(s => ['Pricing', 'Confidentiality'].includes(s.title)).map(section => (
-            <div class="faq-section">
-              <h2 class="faq-section-title">{section.title}</h2>
-              <div class="faq-list">
-                {section.items.map(item => (
-                  <details class="faq-item">
-                    <summary class="faq-q">{item.q}</summary>
-                    <p class="faq-a">{item.a}</p>
-                  </details>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-
-    <!-- ══════════════════════════════════════════════════════════ -->
-    <!-- GROUP 5 — After Delivery                                  -->
-    <!-- ══════════════════════════════════════════════════════════ -->
-    <SectionBanner
-      image="/_img/banners/banner-arch-viz.jpg"
-      label="After the Project"
-      title="After Delivery"
-    />
-    <section class="faq-group section" id="after">
-      <div class="container">
-        <div class="faq-sections">
-          {sections.filter(s => ['After Delivery'].includes(s.title)).map(section => (
-            <div class="faq-section">
-              <h2 class="faq-section-title">{section.title}</h2>
-              <div class="faq-list">
-                {section.items.map(item => (
-                  <details class="faq-item">
-                    <summary class="faq-q">{item.q}</summary>
-                    <p class="faq-a">{item.a}</p>
-                  </details>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-
-    <!-- ══════════════════════════════════════════════════════════ -->
-    <!-- CTA — full bleed, matching About page                     -->
-    <!-- ══════════════════════════════════════════════════════════ -->
-    <section class="faq-cta">
-      <div class="container faq-cta-inner">
-        <div>
-          <h2 class="cta-heading">Still have a question?</h2>
-          <p class="cta-sub">
-            Call <a href="tel:+36309454179">+36 30 945 4179</a> or
-            email <a href="mailto:info@visiongraphics.hu">info@visiongraphics.hu</a> — we answer same day.
-          </p>
-        </div>
-        <a href="/contact/" class="btn btn-primary">Talk to Us</a>
-      </div>
-    </section>
-
   </div>
 </Page>
+
+<script>
+  // open the answer a deep link (#id) points at
+  const openTarget = () => {
+    const el = document.querySelector<HTMLDetailsElement>('details.faq-item:target');
+    if (el) el.open = true;
+  };
+  openTarget();
+  addEventListener('hashchange', openTarget);
+</script>
 
 <style>
   .faq-page { width: 100%; }
 
-  /* ── Quick-nav ───────────────────────────────────────────────── */
   .faq-quicknav {
     display: flex;
     flex-wrap: wrap;
@@ -375,7 +494,6 @@ Astro.locals.lang = lang;
   }
 
   .faq-quicknav a {
-    font-family: var(--font-body);
     font-size: var(--fs-xs);
     font-weight: 500;
     letter-spacing: 0.1em;
@@ -387,14 +505,12 @@ Astro.locals.lang = lang;
 
   .faq-quicknav a:hover { color: var(--color-accent); }
 
-  /* ── Content groups (matching .section on About page) ────────── */
   .faq-group {
     padding-block: clamp(3rem, 5vw, 5rem);
+    scroll-margin-top: var(--size-header);
   }
 
-  .faq-header {
-    margin-bottom: var(--space-10);
-  }
+  .faq-header { margin-bottom: var(--space-10); }
 
   .faq-intro {
     font-size: var(--fs-small);
@@ -404,13 +520,14 @@ Astro.locals.lang = lang;
     margin: 0;
   }
 
-  .faq-intro a {
+  .faq-note { margin-top: var(--space-3); color: var(--color-text-faint); }
+
+  .faq-intro :global(a) {
     color: var(--color-accent);
     text-decoration: underline;
     text-underline-offset: 2px;
   }
 
-  /* ── FAQ sections list ───────────────────────────────────────── */
   .faq-sections {
     display: flex;
     flex-direction: column;
@@ -419,7 +536,6 @@ Astro.locals.lang = lang;
   }
 
   .faq-section-title {
-    font-family: var(--font-body);
     font-size: var(--fs-xs);
     font-weight: 600;
     letter-spacing: 0.18em;
@@ -428,21 +544,17 @@ Astro.locals.lang = lang;
     margin: 0 0 var(--space-3);
   }
 
-  .faq-list {
-    display: flex;
-    flex-direction: column;
-  }
+  .faq-list { display: flex; flex-direction: column; }
 
-  /* ── Accordion items ─────────────────────────────────────────── */
   .faq-item {
     border-top: 1px solid var(--color-border);
     padding-block: var(--space-5);
+    scroll-margin-top: calc(var(--size-header) + var(--space-4));
   }
 
   .faq-item:last-child { border-bottom: 1px solid var(--color-border); }
 
   .faq-q {
-    font-family: var(--font-body);
     font-size: var(--fs-small);
     font-weight: 500;
     color: var(--color-text);
@@ -479,49 +591,14 @@ Astro.locals.lang = lang;
     max-width: 72ch;
   }
 
-  /* ── CTA — full bleed, matching About page ───────────────────── */
-  .faq-cta {
-    background: var(--color-surface);
-    border-top: 1px solid var(--color-border);
-    padding-block: var(--space-20);
-  }
-
-  .faq-cta-inner {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: var(--space-8);
-    flex-wrap: wrap;
-  }
-
-  .cta-heading {
-    font-family: var(--font-display);
-    font-size: var(--fs-h3);
-    font-weight: 300;
-    color: var(--color-text);
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-    margin-bottom: var(--space-2);
-  }
-
-  .cta-sub {
-    font-size: var(--fs-small);
-    color: var(--color-text-muted);
-    margin: 0;
-  }
-
-  .cta-sub a {
-    color: var(--color-text-muted);
+  .faq-a :global(p) { max-width: none; margin: 0 0 var(--space-3); }
+  .faq-a :global(p:last-child) { margin-bottom: 0; }
+  .faq-a :global(ul) { margin: 0 0 var(--space-3); padding-left: var(--space-5); }
+  .faq-a :global(li) { margin-bottom: var(--space-1); }
+  .faq-a :global(b) { color: var(--color-text); font-weight: 500; }
+  .faq-a :global(a) {
+    color: var(--color-accent);
     text-decoration: underline;
     text-underline-offset: 2px;
-    transition: color 150ms ease;
-  }
-
-  .cta-sub a:hover { color: var(--color-accent); }
-
-  /* ── Responsive ──────────────────────────────────────────────── */
-  @media (max-width: 600px) {
-    .faq-cta-inner { flex-direction: column; align-items: flex-start; }
-    .faq-cta { padding-block: var(--space-12); }
   }
 </style>

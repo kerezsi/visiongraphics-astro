@@ -15,11 +15,6 @@
     "enabled": true
   },
   {
-    "label": "FAQ",
-    "href": "/faq/",
-    "enabled": false
-  },
-  {
     "label": "Pricing",
     "href": "/pricing/",
     "enabled": true
@@ -27,6 +22,11 @@
   {
     "label": "Blog",
     "href": "/articles/",
+    "enabled": false
+  },
+  {
+    "label": "FAQ",
+    "href": "/faq/",
     "enabled": true
   },
   {

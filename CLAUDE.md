@@ -595,7 +595,7 @@ One price list drives both sites. Never type a price into a template.
 | Check | `node scripts/check-pricing.mjs` | Asserts preset totals (Puli €1,975 · Vizsla €7,335 · Kuvasz €19,233 · Komondor €24,033), unique codes, tier maths. Run after any pricing change. |
 | Admin tool | `tools/editor/pricing/index.html` → http://localhost:4322/pricing/ | Served by the editor server (two `express.static` mounts in `server/index.ts`: `/pricing` and `/lib`). **Quote builder** at the top = the site's estimator mounted with `internal: true` on the full data (framework/rush segmented in its rail, VAT + HUF, client/project fields, terms appended, Copy / Print) — this is how client quotations are produced; the link inside the text opens the same estimate publicly (internal factors are ignored there). Below it: bases, multiplier values, presets, raw JSON; **Save** = `POST /api/files/write`; **Publish** = `POST /api/commands/git-promote` (commits everything pending on develop, same as ↑ Live). |
 | Public feed | `src/pages/pricing.json.ts` → `/pricing.json` | `publicView(data)`: list, public presets with computed totals, the `ai` block. CORS header for it in `public/_headers`. ai.visiongraphics.eu fetches it at page load and falls back to its bundled `pricing.js`. |
-| Pages | `[lang]/pricing/index.astro`, `[lang]/pricing/estimate/index.astro`, `[lang]/terms/index.astro` | Pricing page = the list only, built from shared components (§5.2): `PriceList`, `SectionHeading`, `BulletList`, `Callout`, `CtaPanel`. Estimate page = `PackageGrid` (full cards; a card's CTA is a `#p=…` hash that loads the package into the calculator) + `Estimator` with every card kind. Short-form packages (`<PackageGrid compact>`) sit on the home page and on service pages (`service={slug}`, filtered by `presets[].services` in pricing.json) and link to the calculator with the package loaded. Service pages embed the estimator scoped to their kinds (`<Estimator scope={kinds} embedded>`, from `calculator.kinds[].services`); vision-tech pages render `<PriceList codes>` for the lines that deliver the technique. Terms = ÁSZF, EN + HU, effective 2026-10-01; its commercial numbers mirror `pricing.json.terms[]` — change the JSON first. |
+| Pages | `[lang]/pricing/index.astro`, `[lang]/pricing/estimate/index.astro`, `[lang]/terms/index.astro` | Pricing page = the list only, built from shared components (§5.2): `PriceList`, `SectionHeading`, `BulletList`, `Callout`, `CtaPanel`. Estimate page = `PackageGrid` (full cards; a card's CTA is a `#p=…` hash that loads the package into the calculator) + `Estimator` with every card kind. Short-form packages (`<PackageGrid compact>`) sit on the home page and on service pages (`service={slug}`, filtered by `presets[].services` in pricing.json) and link to the calculator with the package loaded. Service pages embed the estimator scoped to their kinds (`<Estimator scope={kinds} embedded>`, from `calculator.kinds[].services`); vision-tech pages render `<PriceList codes>` for the lines that deliver the technique. Terms = ÁSZF, EN + HU, effective 2026-10-01; its commercial numbers mirror `pricing.json.terms[]`, as do the `faq/` answers — change the JSON first, then both pages. |
 
 Rules: internal multipliers (framework, rush, source…) are quote-only — `publicView()` strips them; keep it that way. `pricing-packages.json` and `pricing-reference.json` are superseded (still read by the editor's Pricing tab; delete both when that tab is retired). A price change is not done until `check-pricing.mjs` passes and `/en/pricing/` + `/hu/pricing/` render.
 
@@ -784,37 +784,34 @@ is invisible under `border-none`; don't "fix" it back.
    `localeUrl`, dates via `formatDate(date, lang)`, labels from `strings.ts articles`, prose
    marked `lang="en"`). `Lang` is still not registered in `articles/[slug].astro` — localizing
    an article body requires adding it (and `{en,hu}` frontmatter support in the template).
-2. **`faq/`** ignores `lang` entirely (EN content on /hu/ URLs) and is nav-disabled. (`pricing/`
-   was rebuilt bilingual and data-driven 2026-09-15 — §8.1a — but is still nav-disabled;
-   `services/index.astro` links "See Pricing" → `/pricing/`.)
-3. **Eight orphaned editor block types** (`section-label`, `diff-block`, `cta-section`,
+2. **Eight orphaned editor block types** (`section-label`, `diff-block`, `cta-section`,
    `button-group`, `sidebar-block`, `section-container`, `two-col`, `service-body-grid`):
    render+inspector exist, but absent from palette registry and from `blockToMdx` — saving a
    doc containing one **silently deletes it** (§4.16).
-4. **`3ds-max-tools.mdx` ships `TODO_` media URLs** (Hungexpo gala, Rubik, Planet 2023 tour).
-5. **Dead code — do not wire new work to it:** `ui/PageHero.astro` (unused), `comfyBase`
+3. **`3ds-max-tools.mdx` ships `TODO_` media URLs** (Hungexpo gala, Rubik, Planet 2023 tour).
+4. **Dead code — do not wire new work to it:** `ui/PageHero.astro` (unused), `comfyBase`
    config key + "ComfyUIPanel" misnomer, editor ImportDialog (unreachable), `FilmEmbed`
    (registered, unused; `hasFilm` flags exist with no embeds), projects `features`/`tags`
    (always empty — the portfolio filter hides its "Output type" group until they aren't),
    `components.css` double-import, mounter comments referencing nonexistent remark plugins.
    Pagefind is still indexed at build time but nothing on the site consumes it (no search UI).
-6. **MDX body links are locale-blind** (bare `/vision-tech/x/` → redirects to `/en/...` even
+5. **MDX body links are locale-blind** (bare `/vision-tech/x/` → redirects to `/en/...` even
    from HU pages) — accepted debt, consistent across all content.
-7. **Editor live pipeline has zero tests** (vitest wired but `tools/editor/tests/` empty).
+6. **Editor live pipeline has zero tests** (vitest wired but `tools/editor/tests/` empty).
    A future suite should round-trip `documentToMdx` → `parseMdx` → `mapMdxToBlocks`.
-8. **Working tree carries teardown debris:** `storybook-static/` is untracked build output.
+7. **Working tree carries teardown debris:** `storybook-static/` is untracked build output.
    It is gitignored again, but delete it — `astro check` walks it otherwise (tsconfig now
    excludes it too).
-9. **YouTubeEmbed nests a `<button>` inside a `role="button"` div** — works, but double
+8. **YouTubeEmbed nests a `<button>` inside a `role="button"` div** — works, but double
    announces to screen readers. Fix = drop the outer role and make the inner button the target.
-10. **Light-mode `--color-border` is `#9a9088` in `global.css`** while §8.9 documents `#d0cbc3`;
+9. **Light-mode `--color-border` is `#9a9088` in `global.css`** while §8.9 documents `#d0cbc3`;
     the CSS is what ships. Reconcile when the light palette is next touched.
-11. **`ui/ImageCompare.tsx` reveals the *after* image on the left** (`clipPath: inset(0 X% 0 0)`
+10. **`ui/ImageCompare.tsx` reveals the *after* image on the left** (`clipPath: inset(0 X% 0 0)`
     on the after-wrap) while its corner labels sit before-left / after-right and the prop
     comments say "after — revealed on the right". Prose must not say "left side is the
     before" — the articles now say "the labels on the image say which". Fix = flip the clip
     side or the label sides, in the island, once, with the user's sign-off.
-12. **ArchUpgrade's Vite dev server (`192.168.0.2:5173`) is an unauthenticated owner door**:
+11. **ArchUpgrade's Vite dev server (`192.168.0.2:5173`) is an unauthenticated owner door**:
     it proxies `/api` from loopback, so any LAN peer is `owner` without a credential (the
     `:7788` backend itself refuses them). Convenient for §8.2 illustrations; a security gap
     on the production PC. Belongs to the archupgrade repo, noted here because the site
