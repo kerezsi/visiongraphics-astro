@@ -1,0 +1,41 @@
+---
+// src/components/ui/SectionHeading.astro — in-page block heading: optional
+// kicker, title (h2/h3, md or display-lg), optional intro, optional extra
+// content in the default slot. Title and intro can be slotted for inline
+// markup (<em>, links): <Fragment slot="title">…</Fragment>.
+interface Props {
+  title?: string;
+  intro?: string;
+  label?: string;
+  level?: 'h2' | 'h3';
+  size?: 'md' | 'lg';
+  id?: string;
+}
+const { title, intro, label, level = 'h2', size = 'md', id } = Astro.props;
+const Tag = level;
+const hasIntro = !!intro || Astro.slots.has('intro');
+---
+
+<div class="section-heading" id={id}>
+  {label && <p class="section-label section-heading__label">{label}</p>}
+  <Tag class:list={['section-heading__title', size === 'lg' ? 'display-lg' : 'section-heading__title--md']}>
+    <slot name="title">{title}</slot>
+  </Tag>
+  {hasIntro && <p class="section-heading__intro"><slot name="intro">{intro}</slot></p>}
+  <slot />
+</div>
+
+<style>
+  .section-heading { margin-bottom: var(--space-8); scroll-margin-top: var(--size-header); }
+  .section-heading__label { margin: 0 0 var(--space-3); }
+  .section-heading__title { margin: 0 0 var(--space-3); }
+  .section-heading__title--md {
+    font-family: var(--font-display);
+    font-size: var(--fs-h5);
+    font-weight: 300;
+    color: var(--color-text);
+  }
+  .section-heading__intro { font-size: var(--fs-small); color: var(--color-text-muted); margin: 0; }
+  .section-heading__intro :global(a) { color: var(--color-accent); }
+  .section-heading__intro + :global(*) { margin-top: var(--space-6); }
+</style>

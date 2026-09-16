@@ -4,6 +4,8 @@
 import Page          from '../../../layouts/Page.astro';
 import SectionBanner from '../../../components/ui/SectionBanner.astro';
 import timeline      from '../../../data/about-timeline.json';
+import labs          from '../../../data/labs.json';
+import LabPromo      from '../../../components/labs/LabPromo.astro';
 import { staticLocalePaths, type Locale, tStr, localeUrl } from '../../../lib/i18n';
 import { ui } from '../../../i18n/strings';
 
@@ -177,6 +179,30 @@ const L = ui(lang);
           </div>
         </div>
 
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- SECTION 3b — LABS                                      -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <SectionBanner
+      image="/_img/banners/banner-general.jpg"
+      label={L.about.labsLabel}
+      title={L.about.labsTitle}
+    />
+
+    <section class="labs-section section">
+      <div class="container">
+        <div class="two-col">
+          <div class="col-left">
+            <p class="body-lead">{L.about.labsLead}</p>
+          </div>
+          <div class="col-right">
+            <p class="body-text">{L.about.labsBody}</p>
+            <a href={labs.url} class="btn btn-primary" rel="noopener">{L.about.labsBtn}</a>
+          </div>
+        </div>
+        <LabPromo lang={lang} class="labs-promo" />
       </div>
     </section>
 
@@ -602,6 +628,7 @@ const L = ui(lang);
 
   /* ── Section 4: Scroll-animated Timeline ────────────────── */
   .timeline-section { padding-block: clamp(3rem, 5vw, 5rem); }
+  .labs-section :global(.labs-promo) { margin-top: var(--space-12); }
 
   .timeline-intro {
     max-width: 68ch;

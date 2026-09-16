@@ -1,0 +1,66 @@
+---
+// src/components/labs/LabPromo.astro — promotes one app from labs.visiongraphics.eu.
+// The server renders the first live app; an inline script swaps in a random one on
+// every page load (no storage — hard rule 4). Data: src/data/labs.json.
+import labs from '../../data/labs.json';
+import { tStr, type Locale } from '../../lib/i18n';
+
+interface Props { lang: Locale; class?: string }
+const { lang, class: cls } = Astro.props;
+
+const COPY = {
+  en: { kicker: 'From Vision Graphics Labs', tagline: 'Free browser toys, tools & games — no accounts, no uploads, no ads.', open: 'Try', all: 'All labs' },
+  hu: { kicker: 'A Vision Graphics Labs kínálatából', tagline: 'Ingyenes böngészős játékok, eszközök és kísérletek — fiók, feltöltés és reklám nélkül.', open: 'Kipróbálom:', all: 'Minden lab' },
+} as const;
+const c = COPY[lang];
+
+const apps = labs.apps.filter((a) => a.live).map((a) => ({ name: a.name, url: `https://${a.slug}.visiongraphics.eu`, desc: tStr(a.desc, lang), tags: a.tags }));
+const first = apps[0];
+const json = JSON.stringify(apps).replace(/</g, '\\u003c');
+---
+
+<div class:list={['lab-promo', cls]}>
+  <div class="lab-promo__text">
+    <p class="section-label">{c.kicker}</p>
+    <h3 class="lab-promo__name">{first.name}</h3>
+    <p class="lab-promo__desc">{first.desc}</p>
+    <p class="lab-promo__tags">{first.tags.map((t) => <span class="tag">{t}</span>)}</p>
+    <p class="lab-promo__tagline">{c.tagline}</p>
+  </div>
+  <div class="lab-promo__ctas btn-row">
+    <a class="btn btn-primary lab-promo__open" href={first.url} rel="noopener">{c.open} {first.name}</a>
+    <a class="btn btn-ghost" href={labs.url} rel="noopener">{c.all}</a>
+  </div>
+  <script is:inline type="application/json" class="lab-promo__data" set:html={json}></script>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.lab-promo').forEach((root) => {
+    const apps = JSON.parse(root.querySelector('.lab-promo__data')!.textContent || '[]');
+    const pick = apps[Math.floor(Math.random() * apps.length)];
+    if (!pick) return;
+    const open = root.querySelector<HTMLAnchorElement>('.lab-promo__open')!;
+    root.querySelector('.lab-promo__name')!.textContent = pick.name;
+    root.querySelector('.lab-promo__desc')!.textContent = pick.desc;
+    root.querySelector('.lab-promo__tags')!.innerHTML = pick.tags.map((t: string) => `<span class="tag">${t}</span>`).join('');
+    open.href = pick.url;
+    open.textContent = `${open.textContent!.split(' ').slice(0, -1).join(' ')} ${pick.name}`;
+  });
+</script>
+
+<style>
+  .lab-promo {
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;
+    gap: var(--space-8);
+    padding: var(--space-10);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+  }
+  .lab-promo__text { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; }
+  .lab-promo__name { font-family: var(--font-display); font-size: var(--fs-h4); font-weight: 300; color: var(--color-text); margin: 0; }
+  .lab-promo__desc { font-size: var(--fs-body); color: var(--color-text-muted); margin: 0; }
+  .lab-promo__tags { display: flex; flex-wrap: wrap; gap: var(--space-1); margin: 0; }
+  .lab-promo__tagline { font-size: var(--fs-xs); color: var(--color-text-faint); margin: var(--space-2) 0 0; }
+  .lab-promo__ctas { flex-shrink: 0; }
+</style>

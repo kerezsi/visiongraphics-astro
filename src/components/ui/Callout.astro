@@ -1,0 +1,20 @@
+---
+// src/components/ui/Callout.astro — accent-edged aside: kicker + one paragraph.
+interface Props { title: string; text: string }
+const { title, text } = Astro.props;
+---
+
+<aside class="callout">
+  <p class="eyebrow callout__title">{title}</p>
+  <p class="callout__text">{text}</p>
+</aside>
+
+<style>
+  .callout {
+    border-left: 3px solid var(--color-accent);
+    padding: var(--space-3) var(--space-5);
+    background: var(--color-surface);
+  }
+  .callout__title { margin: 0 0 var(--space-2); }
+  .callout__text { font-size: var(--fs-small); color: var(--color-text-muted); margin: 0; }
+</style>

@@ -11,6 +11,9 @@
 //   CONTACT_TO      — destination address (e.g. info@visiongraphics.hu)
 //   CONTACT_FROM    — verified sender (e.g. contact@visiongraphics.hu)
 //                     The domain must be verified in Resend.
+//   TURNSTILE_SECRET_KEY — Cloudflare Turnstile secret (encrypt as a secret). Its public
+//                     sibling PUBLIC_TURNSTILE_SITE_KEY goes in the *build* env for the
+//                     contact page. Unset = Cloudflare's always-passing test pair (dev only).
 //
 // Local testing (optional):
 //   npx wrangler pages dev dist \
@@ -22,7 +25,11 @@ interface Env {
   RESEND_API_KEY: string;
   CONTACT_TO: string;
   CONTACT_FROM: string;
+  TURNSTILE_SECRET_KEY?: string;
 }
+
+// Cloudflare's documented always-pass test secret — pairs with the test site key the page falls back to.
+const TURNSTILE_TEST_SECRET = '1x0000000000000000000000000000000AA';
 
 export const onRequestPost: PagesFunction<Env> = async (ctx) => {
   try {
@@ -31,6 +38,12 @@ export const onRequestPost: PagesFunction<Env> = async (ctx) => {
     // Honeypot — if filled by a bot, return success silently
     if ((data.get('_gotcha') ?? '').toString().trim()) {
       return json({ ok: true });
+    }
+
+    // Turnstile — the widget on the page puts its token in cf-turnstile-response
+    const token = str(data.get('cf-turnstile-response'));
+    if (!token || !(await turnstileOk(token, ctx.env.TURNSTILE_SECRET_KEY || TURNSTILE_TEST_SECRET, ctx.request.headers.get('CF-Connecting-IP')))) {
+      return json({ ok: false, error: 'Verification failed' }, 403);
     }
 
     const name        = str(data.get('name'));
@@ -105,6 +118,15 @@ export const onRequestPost: PagesFunction<Env> = async (ctx) => {
 };
 
 // ── helpers ────────────────────────────────────────────────────────────────
+
+async function turnstileOk(token: string, secret: string, ip: string | null): Promise<boolean> {
+  const body = new URLSearchParams({ secret, response: token });
+  if (ip) body.set('remoteip', ip);
+  const res = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', { method: 'POST', body });
+  if (!res.ok) return false;
+  const out = (await res.json()) as { success?: boolean };
+  return out.success === true;
+}
 
 function str(v: FormDataEntryValue | null): string {
   return (v ?? '').toString().trim();

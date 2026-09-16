@@ -66,6 +66,7 @@
   --size-logo:    2.25rem;   /*  36px →  72px */
   --size-logo-sm: 1.875rem;  /*  30px →  60px */
   --size-header:  4.5rem;    /*  72px → 144px */
+  --size-field-sm: 6rem;     /*  96px → 192px — short numeric inputs */
 }
 /* ─── Light Mode Tokens ─────────────────────────────────────────── */
 [data-theme="light"] {
@@ -178,6 +179,62 @@ a {
   letter-spacing: 0;
 }
 
+/* Faint uppercase kicker (the non-accent sibling of .section-label) */
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-text-faint);
+}
+
+/* Price-list codes and other stable identifiers */
+.code {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--color-accent);
+  white-space: nowrap;
+}
+
+/* A wrapping row of .btn links */
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+/* Hairline-separated panel grid: surface cells on a border-coloured ground */
+.panel-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--color-border);
+  border: 1px solid var(--color-border);
+}
+.panel-grid > * {
+  background: var(--color-surface);
+  padding: var(--space-8);
+  min-width: 0;
+}
+@media (max-width: 768px) {
+  .panel-grid { grid-template-columns: 1fr; }
+}
+
+/* Plain form control (inputs/selects outside the contact form) */
+.field {
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-1) var(--space-2);
+  outline: none;
+  transition: border-color var(--transition);
+}
+.field:focus { border-color: var(--color-accent); }
+
 /* ─── Layout ─────────────────────────────────────────────────── */
 .container {
   width: 100%;
@@ -286,6 +343,14 @@ a {
   border-color: var(--color-accent);
   color: var(--color-accent);
   background: rgba(218, 19, 19, 0.08); /* brand red tint */
+}
+
+/* Solid accent badge (no hover state — it's a label, not a control) */
+.tag-accent,
+.tag-accent:hover {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #fff;
 }
 
 /* ─── Horizontal Rule ────────────────────────────────────────── */
@@ -699,11 +764,10 @@ img {
 /* Hover help (price list + calculator): CSS-only, keyboard-focusable. Text comes from pricing.json item.help. */
 .tip { border-bottom: 1px dotted var(--color-text-faint); cursor: help; position: relative; }
 .tip::after {
-  content: attr(data-tip); position: absolute; left: 0; top: calc(100% + 0.4rem); z-index: 20;
-  width: min(38ch, 80vw); padding: 0.55rem 0.75rem; background: var(--color-surface-2); color: var(--color-text-muted);
+  content: attr(data-tip); position: absolute; left: 0; top: calc(100% + var(--space-1)); z-index: 20;
+  width: min(40ch, 80vw); padding: var(--space-2) var(--space-3); background: var(--color-surface-2); color: var(--color-text-muted);
   border: 1px solid var(--color-border); border-left: 2px solid var(--color-accent);
   font-family: var(--font-body); font-size: var(--fs-xs); font-weight: 400; line-height: 1.5; white-space: normal; text-align: left;
-  opacity: 0; visibility: hidden; transition: opacity 120ms; pointer-events: none;
+  opacity: 0; visibility: hidden; transition: opacity var(--transition); pointer-events: none;
 }
-.tip:hover::after, .tip:focus::after { opacity: 1; visibility: visible; }
 .tip:hover::after, .tip:focus::after { opacity: 1; visibility: visible; }

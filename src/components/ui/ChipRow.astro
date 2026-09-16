@@ -1,0 +1,35 @@
+---
+// src/components/ui/ChipRow.astro — kicker label + a wrapping row of link chips.
+interface Chip { href: string; text: string; code?: string; accent?: boolean }
+interface Props { label: string; chips: Chip[]; class?: string }
+const { label, chips, class: cls } = Astro.props;
+---
+
+<div class:list={['chip-row', cls]}>
+  <span class="eyebrow">{label}</span>
+  <div class="chip-row__chips">
+    {chips.map((ch) => (
+      <a href={ch.href} class:list={['chip', { 'chip--accent': ch.accent }]}>
+        {ch.code && <span class="code chip__code">{ch.code}</span>}{ch.text}
+      </a>
+    ))}
+  </div>
+</div>
+
+<style>
+  .chip-row { display: flex; flex-direction: column; gap: var(--space-3); }
+  .chip-row__chips { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  .chip {
+    font-size: var(--fs-xs);
+    color: var(--color-text-muted);
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: var(--space-1) var(--space-3);
+    white-space: nowrap;
+    transition: color var(--transition), border-color var(--transition);
+  }
+  .chip:hover { color: var(--color-accent); border-color: var(--color-accent); }
+  .chip--accent { color: var(--color-accent); }
+  .chip__code { margin-right: var(--space-2); }
+</style>

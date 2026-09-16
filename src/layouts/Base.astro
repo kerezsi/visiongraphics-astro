@@ -101,6 +101,14 @@ const buildStamp = new Date().toISOString();
   <script>
     import '../lib/photoswipe.ts';
   </script>
+
+  <!-- External links (any other host, subdomains included) open in a new tab. -->
+  <script>
+    // ponytail: one pass at load; links an island injects later stay same-tab — add a MutationObserver if that ever matters.
+    for (const a of document.querySelectorAll<HTMLAnchorElement>('a[href^="http"]')) {
+      if (a.host !== location.host) { a.target = '_blank'; a.relList.add('noopener'); }
+    }
+  </script>
 </body>
 </html>
 

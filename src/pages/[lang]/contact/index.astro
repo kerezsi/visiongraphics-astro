@@ -11,6 +11,10 @@ export const getStaticPaths = staticLocalePaths;
 const { lang } = Astro.params as { lang: Locale };
 Astro.locals.lang = lang;
 const L = ui(lang);
+
+// Turnstile site key (public). Set PUBLIC_TURNSTILE_SITE_KEY in the Cloudflare Pages build env;
+// without it the page uses Cloudflare's always-passing test key (visibly labelled "testing only").
+const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '1x00000000000000000000AA';
 ---
 
 <Page
@@ -178,6 +182,9 @@ const L = ui(lang);
           <!-- Honeypot (spam prevention) -->
           <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true" />
 
+          <!-- Cloudflare Turnstile — token lands in cf-turnstile-response, verified in functions/api/contact.ts -->
+          <div class="cf-turnstile form-turnstile" data-sitekey={TURNSTILE_SITE_KEY} data-theme="auto" data-language={lang}></div>
+
           <button type="submit" class="btn btn-primary form-submit">
             {L.contact.fSubmit}
           </button>
@@ -195,6 +202,7 @@ const L = ui(lang);
   </div>
 </Page>
 
+<script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <script>
   // Progressive enhancement: handle submission with fetch.
   // Localized status messages are read from data-status-* on the form.
@@ -237,12 +245,19 @@ const L = ui(lang);
       }
       if (submitBtn) submitBtn.disabled = false;
     }
+    // a Turnstile token is single-use — issue a fresh one for the next attempt
+    (window as any).turnstile?.reset();
   });
 
-  // Hand-off from the price calculator (/pricing/estimate/): ?quote=<text> prefills the message.
-  const quoteText = new URLSearchParams(location.search).get('quote');
+  // Hand-off from the price calculator (/pricing/estimate/): ?quote=<text> prefills the
+  // message, ?type=<project_type option> preselects the project type.
+  const params = new URLSearchParams(location.search);
+  const quoteText = params.get('quote');
   const messageEl = document.getElementById('message') as HTMLTextAreaElement | null;
   if (quoteText && messageEl && !messageEl.value) messageEl.value = quoteText;
+  const typeEl = document.getElementById('project-type') as HTMLSelectElement | null;
+  const type = params.get('type');
+  if (type && typeEl && [...typeEl.options].some((o) => o.value === type)) typeEl.value = type;
 </script>
 
 <style>
@@ -414,6 +429,8 @@ const L = ui(lang);
   }
 
   .form-textarea { resize: vertical; min-height: 140px; }
+
+  .form-turnstile { min-height: var(--space-16); } /* ≈ the widget's height — reserves space so the button does not jump */
 
   .form-submit {
     align-self: flex-start;

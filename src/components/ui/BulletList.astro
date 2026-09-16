@@ -1,0 +1,41 @@
+---
+// src/components/ui/BulletList.astro — marker list (check / dash / up / down),
+// optional kicker title, optional two CSS columns, optional raw-HTML items.
+interface Props {
+  items: readonly string[];
+  title?: string;
+  marker?: 'check' | 'dash' | 'up' | 'down';
+  columns?: 1 | 2;
+  html?: boolean;
+  class?: string;
+}
+const { items, title, marker = 'dash', columns = 1, html = false, class: cls } = Astro.props;
+---
+
+<div class:list={['bullet-list', cls]}>
+  {title && <h3 class="eyebrow bullet-list__title">{title}</h3>}
+  <ul class:list={['bullet-list__items', `bullet-list__items--${marker}`, { 'bullet-list__items--cols': columns === 2 }]}>
+    {items.map((x) => (html ? <li set:html={x} /> : <li>{x}</li>))}
+  </ul>
+</div>
+
+<style>
+  .bullet-list__title { margin: 0 0 var(--space-4); }
+  .bullet-list__items { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-2); }
+  .bullet-list__items li {
+    position: relative;
+    padding-left: var(--space-5);
+    font-size: var(--fs-small);
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+  .bullet-list__items li::before { position: absolute; left: 0; color: var(--color-accent); }
+  .bullet-list__items--check li::before { content: '✓'; }
+  .bullet-list__items--dash li::before { content: '—'; }
+  .bullet-list__items--up li::before { content: '↑'; }
+  .bullet-list__items--down li::before { content: '↓'; }
+  .bullet-list__items :global(b), .bullet-list__items :global(strong) { color: var(--color-text); font-weight: 500; }
+  .bullet-list__items--cols { display: block; columns: 2; column-gap: var(--space-8); }
+  .bullet-list__items--cols li { break-inside: avoid; padding-bottom: var(--space-2); }
+  @media (max-width: 768px) { .bullet-list__items--cols { columns: 1; } }
+</style>

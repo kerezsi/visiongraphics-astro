@@ -1,8 +1,10 @@
 ---
-// src/pages/articles/index.astro
+// src/pages/[lang]/articles/index.astro — article index: hero, tag filter,
+// one featured lead, card grid, CTA. Filter state lives in ?tag= (no storage).
 
 import Page from '../../../layouts/Page.astro';
 import SectionBanner from '../../../components/ui/SectionBanner.astro';
+import CtaPanel from '../../../components/ui/CtaPanel.astro';
 import { getCollection } from 'astro:content';
 import { thumbUrl } from '../../../lib/image-url';
 import { staticLocalePaths, localeUrl, tStr, type Locale } from '../../../lib/i18n';
@@ -11,14 +13,21 @@ import { formatDate, readingTime } from '../../../lib/article-meta';
 
 export const getStaticPaths = staticLocalePaths;
 
-
 const { lang } = Astro.params as { lang: Locale };
 Astro.locals.lang = lang;
 const L = ui(lang);
+
 const allArticles = await getCollection('articles', ({ data }) => data.published);
 const articles = allArticles.sort((a, b) =>
   new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
 );
+
+// Tag pills: tags shared by ≥2 articles, by frequency then name. Tags are EN
+// slugs (articles are EN-only); singletons still show on their card.
+const tagCounts = new Map<string, number>();
+for (const a of articles) for (const t of a.data.tags) tagCounts.set(t, (tagCounts.get(t) ?? 0) + 1);
+const tags = [...tagCounts.entries()].filter(([, n]) => n >= 2).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+const tagLabel = (t: string) => t.replace(/-/g, ' ');
 ---
 
 <Page
@@ -26,88 +35,161 @@ const articles = allArticles.sort((a, b) =>
   description={L.articles.metaDesc}
   fullBleed
 >
-  <div class="articles-page">
+  <SectionBanner
+    image="/_img/banners/banner-general.jpg"
+    label={L.articles.bannerLabel}
+    title={L.articles.bannerTitle}
+    size="page"
+    headingLevel="h1"
+  />
 
-    <SectionBanner
-      image="/_img/banners/banner-general.jpg"
-      label={L.articles.bannerLabel}
-      title={L.articles.bannerTitle}
-      size="page"
-      headingLevel="h1"
-    />
-
-    <section class="articles-section section">
+  <section class="articles-section">
     <div class="container">
 
-    <div class="articles-header">
-      <p class="section-label">{L.articles.sectionLabel}</p>
-      <p class="articles-intro">{L.articles.intro}</p>
-      {L.articles.enOnlyNote && <p class="articles-note">{L.articles.enOnlyNote}</p>}
-    </div>
+      <div class="articles-header">
+        <div>
+          <p class="section-label">{L.articles.sectionLabel}</p>
+          <p class="articles-intro">{L.articles.intro}</p>
+          {L.articles.enOnlyNote && <p class="articles-note">{L.articles.enOnlyNote}</p>}
+        </div>
+        <span
+          id="articles-count"
+          class="articles-count"
+          data-total={articles.length}
+          data-tmpl-all={L.articles.countAll}
+          data-tmpl-some={L.articles.countSome}
+        >{L.articles.countAll.replace('{n}', String(articles.length))}</span>
+      </div>
 
-    {articles.length > 0 ? (
-      <div class="articles-list">
-        {articles.map((article, i) => (
-          <a href={localeUrl(`/articles/${article.slug}/`, lang)} lang="en" class:list={['article-item', { 'article-item--featured': i === 0 }]}>
-            {article.data.coverImage && (
-              <div class="article-image">
-                <img
-                  src={thumbUrl(article.data.coverImage)}
-                  alt={tStr(article.data.title, lang)}
-                  loading={i === 0 ? 'eager' : 'lazy'}
-                  onerror={`this.onerror=null;this.src='${article.data.coverImage}'`}
-                />
-              </div>
-            )}
-            <div class="article-body">
-              <div class="article-meta">
-                <time class="article-date" datetime={article.data.date.toISOString()}>
-                  {formatDate(article.data.date, lang)}
-                </time>
-                <span class="article-date">{L.articles.readingTime.replace('{n}', String(readingTime(article.body)))}</span>
-                {article.data.tags.length > 0 && (
-                  <div class="article-tags">
-                    {article.data.tags.slice(0, 3).map(tag => (
-                      <span class="article-tag">{tag}</span>
-                    ))}
+      {tags.length > 0 && (
+        <div class="articles-filter" id="articles-filter">
+          <span class="eyebrow articles-filter__label">{L.articles.topics}</span>
+          <div class="articles-pills" role="group" aria-label={L.articles.topics}>
+            <button class="articles-pill active" data-tag="" aria-pressed="true">{L.articles.allTopics}</button>
+            {tags.map(([tag, n]) => (
+              <button class="articles-pill" data-tag={tag} aria-pressed="false">
+                {tagLabel(tag)}<span class="articles-pill__n">{n}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {articles.length > 0 ? (
+        <div class="articles-grid" id="articles-grid">
+          {articles.map((article, i) => {
+            const title = tStr(article.data.title, lang);
+            const featured = i === 0;
+            return (
+              <a
+                href={localeUrl(`/articles/${article.slug}/`, lang)}
+                lang="en"
+                class:list={['article-card', { 'article-card--featured': featured }]}
+                data-tags={article.data.tags.join('|')}
+              >
+                {article.data.coverImage && (
+                  <div class="article-card__img">
+                    <img
+                      src={thumbUrl(article.data.coverImage, featured ? 'large' : 'card')}
+                      alt=""
+                      loading={featured ? 'eager' : 'lazy'}
+                      decoding="async"
+                      onerror={`this.onerror=null;this.src='${article.data.coverImage}'`}
+                    />
                   </div>
                 )}
-              </div>
-              <h2 class="article-title">{tStr(article.data.title, lang)}</h2>
-              <p class="article-excerpt">{tStr(article.data.excerpt, lang)}</p>
-              <span class="article-read-more">{L.articles.readArticle}</span>
-            </div>
-          </a>
-        ))}
-      </div>
-    ) : (
-      <div class="articles-empty">
-        <p>{L.articles.emptyTitle}</p>
-        <p class="articles-empty-sub">
-          {L.articles.emptyPrefix}<a href={localeUrl('/contact/', lang)}>{L.articles.emptyLink}</a>{L.articles.emptySuffix}
-        </p>
-      </div>
-    )}
+                <div class="article-card__body">
+                  {featured && <p class="section-label">{L.articles.featured}</p>}
+                  <div class="article-card__meta">
+                    <time datetime={article.data.date.toISOString()}>{formatDate(article.data.date, lang)}</time>
+                    <span>{L.articles.readingTime.replace('{n}', String(readingTime(article.body)))}</span>
+                  </div>
+                  <h2 class="article-card__title">{title}</h2>
+                  <p class="article-card__excerpt">{tStr(article.data.excerpt, lang)}</p>
+                  <div class="article-card__foot">
+                    {article.data.tags.slice(0, 3).map(tag => (
+                      <span class="article-card__tag">{tagLabel(tag)}</span>
+                    ))}
+                    {featured && <span class="article-card__more">{L.articles.readArticle}</span>}
+                  </div>
+                </div>
+              </a>
+            );
+          })}
+        </div>
+      ) : (
+        <div class="articles-empty">
+          <p>{L.articles.emptyTitle}</p>
+          <p class="articles-empty-sub">
+            {L.articles.emptyPrefix}<a href={localeUrl('/contact/', lang)}>{L.articles.emptyLink}</a>{L.articles.emptySuffix}
+          </p>
+        </div>
+      )}
+
+      <CtaPanel
+        title={L.articles.ctaTitle}
+        text={L.articles.ctaText}
+        href={localeUrl('/contact/', lang)}
+        cta={L.articles.startProject}
+      />
 
     </div>
-    </section>
-  </div>
+  </section>
 </Page>
 
+<script>
+  // Single-select tag filter; state in ?tag= so a filtered view is shareable.
+  const grid    = document.getElementById('articles-grid');
+  const countEl = document.getElementById('articles-count');
+  const pills   = [...document.querySelectorAll<HTMLButtonElement>('.articles-pill')];
+
+  function apply(tag: string) {
+    if (!grid || !countEl) return;
+    let visible = 0;
+    grid.querySelectorAll<HTMLElement>('.article-card').forEach(card => {
+      const show = !tag || (card.dataset.tags || '').split('|').includes(tag);
+      card.hidden = !show;
+      if (show) visible++;
+    });
+    pills.forEach(p => {
+      const on = (p.dataset.tag || '') === tag;
+      p.classList.toggle('active', on);
+      p.setAttribute('aria-pressed', String(on));
+    });
+    const total = countEl.dataset.total || '0';
+    countEl.textContent = tag
+      ? (countEl.dataset.tmplSome || '{v} of {n}').replace('{v}', String(visible)).replace('{n}', total)
+      : (countEl.dataset.tmplAll || '{n}').replace('{n}', total);
+    history.replaceState({}, '', tag ? `${location.pathname}?tag=${encodeURIComponent(tag)}` : location.pathname);
+  }
+
+  pills.forEach(p => p.addEventListener('click', () => {
+    const tag = p.dataset.tag || '';
+    apply(p.classList.contains('active') && tag ? '' : tag);
+  }));
+
+  const initial = new URLSearchParams(location.search).get('tag') || '';
+  if (initial && pills.some(p => p.dataset.tag === initial)) apply(initial);
+</script>
+
 <style>
-  .articles-page { width: 100%; }
-  .articles-section { padding-block: clamp(3rem, 5vw, 5rem); }
+  .articles-section { padding-block: var(--space-12) var(--space-16); }
 
-  .articles-header { margin-bottom: 3rem; }
-
+  /* Header: intro left, live count right */
+  .articles-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: var(--space-8);
+    margin-bottom: var(--space-6);
+  }
   .articles-intro {
     font-size: var(--fs-small);
     color: var(--color-text-muted);
     max-width: 55ch;
     line-height: 1.7;
-    margin: 0;
+    margin: var(--space-3) 0 0;
   }
-
   /* HU-only notice: articles are published in English */
   .articles-note {
     font-size: var(--fs-xs);
@@ -116,132 +198,177 @@ const articles = allArticles.sort((a, b) =>
     padding-left: var(--space-3);
     border-left: 2px solid var(--color-accent);
   }
-
-  /* List */
-  .articles-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
-
-  .article-item {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
-    padding-block: 2rem;
-    border-top: 1px solid var(--color-border);
-    text-decoration: none;
-    color: inherit;
-    transition: background 200ms;
-  }
-
-  .article-item:last-child { border-bottom: 1px solid var(--color-border); }
-
-  .article-item--featured {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .article-item:hover .article-title { color: var(--color-accent); }
-
-  .article-image {
-    aspect-ratio: 16/9;
-    overflow: hidden;
-    background: var(--color-surface-2);
-    border-radius: var(--radius-sm);
-  }
-
-  .article-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 400ms ease;
-  }
-
-  .article-item:hover .article-image img { transform: scale(1.03); }
-
-  .article-body {
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-    justify-content: center;
-  }
-
-  .article-meta {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-
-  .article-date {
+  .articles-count {
     font-family: var(--font-mono);
     font-size: var(--fs-xs);
     color: var(--color-text-faint);
+    white-space: nowrap;
   }
 
-  .article-tags { display: flex; gap: 0.35rem; flex-wrap: wrap; }
-
-  .article-tag {
+  /* Tag filter */
+  .articles-filter {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-4);
+    padding-block: var(--space-4);
+    margin-bottom: var(--space-8);
+    border-block: 1px solid var(--color-border);
+  }
+  .articles-filter__label { white-space: nowrap; }
+  .articles-pills { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  .articles-pill {
     font-family: var(--font-body);
     font-size: var(--fs-xs);
     font-weight: 500;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--color-text-faint);
+    color: var(--color-text-muted);
+    background: transparent;
     border: 1px solid var(--color-border);
-    padding: 0.15rem 0.45rem;
-    border-radius: 1px;
+    border-radius: var(--radius-sm);
+    padding: var(--space-1) var(--space-3);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color var(--transition), border-color var(--transition), background var(--transition);
   }
+  .articles-pill:hover { color: var(--color-text); border-color: var(--color-text-muted); }
+  .articles-pill.active {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+    background: color-mix(in srgb, var(--color-accent) 8%, transparent);
+  }
+  .articles-pill__n {
+    font-family: var(--font-mono);
+    letter-spacing: 0;
+    color: var(--color-text-faint);
+    margin-left: var(--space-2);
+  }
+  .articles-pill.active .articles-pill__n { color: inherit; }
 
-  .article-title {
+  /* Grid: up to 3 columns (px floor: rem is viewport-scaled); the lead spans the row */
+  .articles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(max(320px, 30%), 1fr));
+    gap: var(--space-6);
+    margin-bottom: var(--space-16);
+  }
+  .article-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    color: inherit;
+    transition: border-color var(--transition), transform var(--transition);
+  }
+  .article-card:hover { border-color: var(--color-text-faint); transform: translateY(-2px); }
+  .article-card[hidden] { display: none; }
+
+  .article-card__img {
+    aspect-ratio: 16/9;
+    overflow: hidden;
+    background: var(--color-surface-2);
+  }
+  .article-card__img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 400ms ease;
+  }
+  .article-card:hover .article-card__img img { transform: scale(1.03); }
+
+  .article-card__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-4) var(--space-5) var(--space-5);
+    flex: 1;
+  }
+  .article-card__meta {
+    display: flex;
+    gap: var(--space-4);
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    color: var(--color-text-faint);
+  }
+  .article-card__title {
     font-family: var(--font-display);
-    font-size: var(--fs-h5);
-    font-weight: 300;
+    font-size: var(--fs-h6);
+    font-weight: 600;
+    line-height: 1.25;
     color: var(--color-text);
-    line-height: 1.15;
-    letter-spacing: -0.01em;
-    transition: color 200ms;
     margin: 0;
+    transition: color var(--transition);
   }
-
-  .article-excerpt {
+  .article-card:hover .article-card__title { color: var(--color-accent); }
+  .article-card__excerpt {
     font-size: var(--fs-small);
     color: var(--color-text-muted);
-    line-height: 1.65;
+    line-height: 1.6;
     margin: 0;
-    max-width: 60ch;
+    max-width: none;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
-
-  .article-read-more {
-    font-family: var(--font-body);
+  .article-card__foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+    margin-top: auto;
+    padding-top: var(--space-3);
+  }
+  .article-card__tag {
+    font-size: var(--fs-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-faint);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 0 var(--space-2);
+  }
+  .article-card__more {
+    margin-left: auto;
     font-size: var(--fs-xs);
     color: var(--color-accent);
     letter-spacing: 0.03em;
-    margin-top: 0.25rem;
   }
+
+  /* Featured lead: image left, text right, bigger type, unclamped excerpt */
+  .article-card--featured {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .article-card--featured .article-card__img { aspect-ratio: auto; min-height: 100%; }
+  .article-card--featured .article-card__body {
+    justify-content: center;
+    gap: var(--space-3);
+    padding: var(--space-6) var(--space-8);
+  }
+  .article-card--featured .article-card__title {
+    font-size: var(--fs-h4);
+    font-weight: 300;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+  .article-card--featured .article-card__excerpt { -webkit-line-clamp: 4; }
 
   /* Empty state */
-  .articles-empty {
-    padding: 4rem 0;
-    border-top: 1px solid var(--color-border);
-  }
-
-  .articles-empty p {
-    font-size: var(--fs-small);
-    color: var(--color-text-muted);
-    margin-bottom: 0.5rem;
-    max-width: none;
-  }
-
+  .articles-empty { padding: var(--space-16) 0; border-top: 1px solid var(--color-border); margin-bottom: var(--space-16); }
+  .articles-empty p { font-size: var(--fs-small); color: var(--color-text-muted); margin-bottom: var(--space-2); max-width: none; }
   .articles-empty-sub { font-size: var(--fs-xs) !important; }
+  .articles-empty a { color: var(--color-accent); text-decoration: underline; text-underline-offset: 2px; }
 
-  .articles-empty a {
-    color: var(--color-accent);
-    text-decoration: underline;
-    text-underline-offset: 2px;
-  }
-
-  @media (max-width: 640px) {
-    .article-item--featured { grid-template-columns: 1fr; }
+  @media (max-width: 768px) {
+    .articles-header { flex-direction: column; align-items: flex-start; gap: var(--space-3); }
+    .articles-filter { flex-direction: column; gap: var(--space-3); }
+    .article-card--featured { grid-template-columns: 1fr; }
+    .article-card--featured .article-card__img { aspect-ratio: 16/9; min-height: 0; }
+    .article-card--featured .article-card__body { padding: var(--space-5); }
+    .article-card--featured .article-card__title { font-size: var(--fs-h5); }
   }
 </style>
