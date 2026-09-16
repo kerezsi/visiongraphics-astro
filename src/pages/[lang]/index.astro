@@ -11,6 +11,7 @@ import { staticLocalePaths, localeUrl, tStr, LOCALES, type Locale } from '../../
 import { ui } from '../../i18n/strings';
 import PackageGrid from '../../components/pricing/PackageGrid.astro';
 import LabPromo from '../../components/labs/LabPromo.astro';
+import DepthImage from '../../components/ui/DepthImage.astro';
 
 export const getStaticPaths = staticLocalePaths;
 
@@ -81,8 +82,8 @@ const COPY = {
     metaTitle:       'Vision Graphics',
     metaDescription: 'Expert 3D architectural visualization. 30 years, 500+ projects. Budapest-based, working globally. Stills, animation, VR, AI-enhanced workflows.',
     heroLabel:       '30 Years · 500+ Projects · Budapest',
-    heroH1Lines:     ['Architecture', 'Deserves Better', 'Visuals'],
-    heroSub:         'We turn complex architectural plans into visuals that get projects approved, properties sold, and stakeholders aligned. Budapest-based. Working globally since 1996.',
+    heroH1Lines:     ['Your building,', 'seen before', 'it exists.'],
+    heroSub:         'Stills, films, 360° tours and VR that get projects approved, properties sold and stakeholders aligned. One Budapest studio, 30 years, 500+ projects — working globally since 1996.',
     seeWork:         'See Our Work',
     talkToUs:        'Talk to Us',
     selectedWork:    'Selected Work',
@@ -129,8 +130,8 @@ const COPY = {
     metaTitle:       'Vision Graphics',
     metaDescription: 'Professzionális 3D építészeti látványtervezés. 30 év, 500+ projekt. Budapesti székhellyel, globális ügyfélkörrel. Állóképek, animáció, VR, AI-támogatott munkafolyamatok.',
     heroLabel:       '30 év tapasztalat · több mint 500 projekt · Budapest',
-    heroH1Lines:     ['Az építészet', 'jobb látványt', 'érdemel'],
-    heroSub:         'Az összetett építészeti tervekből olyan látványterveket készítünk, amelyek elősegítik a projekt jóváhagyását, az ingatlan értékesítését és az érintett partnerek egyetértését. Budapesti székhely. 1996 óta dolgozunk a világ minden táján.',
+    heroH1Lines:     ['Az épülete,', 'még mielőtt', 'megépülne.'],
+    heroSub:         'Állóképek, filmek, 360°-os túrák és VR, amelyekkel a projekt jóváhagyást kap, az ingatlan elkel, és a döntéshozók egyetértenek. Egy budapesti stúdió, 30 év, több mint 500 projekt — 1996 óta a világ minden táján.',
     seeWork:         'Munkáink',
     talkToUs:        'Beszéljünk',
     selectedWork:    'Válogatott munkák',
@@ -176,6 +177,11 @@ const COPY = {
 } as const;
 
 const c = COPY[lang];
+
+// Hero renders + depth maps (R2 banners/hero/, depth via scripts/generate-depth.py <file>).
+// <DepthImage> picks one at random per visit; the first is the <noscript> still.
+const HERO_SET = ['hero-bg', 'hero-bg-2', 'hero-bg-3'].map((n): [string, string] =>
+  [`/_img/banners/hero/${n}.webp`, `/_img/banners/hero/${n}-depth.webp`]);
 ---
 
 <Base
@@ -209,6 +215,7 @@ const c = COPY[lang];
       </div>
 
       <div class="hero-bg" aria-hidden="true">
+        <DepthImage set={HERO_SET} />
         <div class="hero-bg-overlay"></div>
       </div>
     </section>
@@ -385,7 +392,8 @@ const c = COPY[lang];
   /* ── Hero ─────────────────────────────────────────────────── */
   .hero {
     position: relative;
-    min-height: 70vh;
+    min-height: calc(100vh - var(--size-header));
+    min-height: calc(100svh - var(--size-header));
     display: flex;
     align-items: center;
     overflow: hidden;
@@ -441,31 +449,30 @@ const c = COPY[lang];
     animation: fadeUp 0.8s ease 0.65s forwards;
   }
 
+  /* The render itself is <DepthImage> (ui/DepthImage.astro), filling this box. */
   .hero-bg {
     position: absolute;
     inset: 0;
     z-index: 0;
-    background:
-      url('/hero-bg.jpg') center/cover no-repeat,
-      linear-gradient(135deg, var(--color-surface-2) 0%, var(--color-surface) 50%, var(--color-surface-2) 100%);
+    background-color: var(--color-surface);
   }
 
   .hero-bg-overlay {
     position: absolute;
     inset: 0;
     background: linear-gradient(
-      105deg,
-      rgba(0, 0, 0, 0.92) 0%,
-      rgba(0, 0, 0, 0.70) 50%,
-      rgba(0, 0, 0, 0.40) 100%
+      100deg,
+      rgba(0, 0, 0, 0.82) 0%,
+      rgba(0, 0, 0, 0.50) 42%,
+      rgba(0, 0, 0, 0.08) 100%
     );
   }
   :global([data-theme="light"]) .hero-bg-overlay {
     background: linear-gradient(
-      105deg,
-      rgba(247, 245, 242, 0.92) 0%,
-      rgba(247, 245, 242, 0.70) 50%,
-      rgba(247, 245, 242, 0.35) 100%
+      100deg,
+      rgba(247, 245, 242, 0.94) 0%,
+      rgba(247, 245, 242, 0.74) 42%,
+      rgba(247, 245, 242, 0.15) 100%
     );
   }
 

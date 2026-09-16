@@ -7,9 +7,10 @@
  *
  * Sizes:
  *   card  — 600px  (portfolio grid, service carousel, article cards, gallery strip)
- *   large — 1600px (gallery main viewer, 360 cover images)
+ *   large — 1600px (gallery main viewer, 360 cover images, hero parallax texture)
+ *   depth — 1280px grayscale depth map for the hero parallax (scripts/generate-depth.py)
  */
-export function thumbUrl(src: string | undefined | null, size: 'card' | 'large' = 'card'): string {
+export function thumbUrl(src: string | undefined | null, size: 'card' | 'large' | 'depth' = 'card'): string {
   if (!src) return '';
   // Strip /_img/ prefix, swap extension to .webp
   const stripped = src.startsWith('/_img/') ? src.slice('/_img/'.length) : src;

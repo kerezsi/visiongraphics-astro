@@ -336,6 +336,17 @@ Astro.locals.pageType = 'portfolio';   // 'portfolio' | 'service' | 'article' | 
   labs list mirrors https://labs.visiongraphics.eu — when an app ships there, add it to
   `labs.json` (`slug` = subdomain, `desc` `{en,hu}`, `live`, `tags`). Used on the home
   page bottom and the About page's Labs section.
+- **Depth heroes (added 2026-09-16)** — `ui/DepthImage.astro` (`set` = `[image, depthMap][]`,
+  fills its positioned parent) draws a render plus its depth map on a WebGL quad via
+  `src/lib/hero-depth.ts`: a slow camera orbit + push-in moves the whole frame, and pointer,
+  scroll and that orbit displace near pixels more than far ones. No dependency, no React
+  island, no storage. **Standard for every hero:** the home page (`HERO_SET`, random pick per
+  visit) and every project detail page (`thumbUrl(cover,'large')` + `thumbUrl(cover,'depth')`,
+  layered over the semantic `<img>`). It runs under `prefers-reduced-motion` too — owner's
+  decision, don't re-add the gate. Fallback chain: no WebGL / image, depth-map or CORS
+  failure → `.is-still` (CSS still of the same pick), no JS → `<noscript>` still — a
+  project without a depth map simply gets a static hero. Assets and the depth pipeline:
+  §8.2. Tuning knobs in the lib: `DEPTH` (near/far separation, tears past ~5 %), `PAN`, `MARGIN`.
 
 ### 5.3 Content authoring (current conventions — use these for new work)
 
@@ -461,7 +472,8 @@ Previously unwritten; now binding:
 - [ ] Localized fields are `{en,hu}` objects; body prose is inside paired `<Lang>` blocks.
 - [ ] Body order matches the collection convention (§5.3).
 - [ ] Every image path is `/_img/<collection>/<slug>/<file>`; images exist in R2 or `.staging`.
-- [ ] Thumbs generated (`node scripts/generate-thumbs.mjs --slug <collection>/<slug>`).
+- [ ] Thumbs generated (`node scripts/generate-thumbs.mjs --slug <collection>/<slug>`), and for
+      a project its cover's depth map (`python scripts/generate-depth.py --slug portfolio/<slug>`).
 - [ ] Renders at **both** `/en/...` and `/hu/...` — zero `[object Object]`, zero raw `{en,hu}`.
 - [ ] Galleries open the lightbox; tours/videos are facades (click-to-load).
 - [ ] References (client/designer/city/...) point at existing reference-collection slugs.
@@ -595,6 +607,22 @@ Rules: internal multipliers (framework, rush, source…) are quote-only — `pub
 - Prod: `public/_redirects` 302 → R2. Dev: `r2DevProxy` in `astro.config.mjs` checks
   `tools/editor/.staging/<path>` first, then fetches R2.
 - Upload path: VG Editor image picker → `.staging/<collection>/<slug>/` → "↑ R2" (rclone).
+- **Depth maps (§5.2 heroes):** a third thumb size, `public/thumbs/depth/<collection>/<slug>/x.webp`
+  (1280px Depth Anything V2 map, 1 = near), made from the `large` thumb by
+  `python scripts/generate-depth.py` (all project covers missing one; `--slug portfolio/x`;
+  `--force`; CPU torch, ~8 s each). **⟳ Thumbs does not produce it** — run the script after
+  new thumbs, then "↑ R2 all" (or `rclone copy public/thumbs/depth r2:visiongraphics-images/thumbs/depth/`).
+- **Home hero renders:** `/_img/banners/hero/<name>.webp` (1920px, q82) + `<name>-depth.webp`
+  in R2 `banners/hero/`. Add one: stage the WebP in `tools/editor/.staging/banners/hero/`,
+  `python scripts/generate-depth.py <that file>` (writes `<name>-depth.webp` beside it),
+  `rclone copy tools/editor/.staging/banners/hero r2:visiongraphics-images/banners/hero/
+  --s3-no-check-bucket`, add the name to `HERO_SET`.
+- **WebGL reads all of these as textures, so the bucket needs a CORS rule** — `scripts/r2-cors.json`
+  (R2 API shape: a `rules` array, not S3 `AllowedOrigins`), applied 2026-09-16 with
+  `npx wrangler r2 bucket cors set visiongraphics-images --file scripts/r2-cors.json` (after
+  `wrangler login`; `cors list` shows the live rule). It replaces the whole bucket policy, so any
+  new origin that must read R2 from JS goes into that file. Without it production silently
+  shows the static stills (§5.2).
 - Thumbs: WebP, `card` 600px / `large` 1600px, at `public/thumbs/<size>/<collection>/<slug>/x.webp`
   (not committed; pushed to R2 by "↑ R2 all").
   Generate: `node scripts/generate-thumbs.mjs [--slug portfolio/hotel-lycium] [--force]`.
@@ -660,7 +688,8 @@ locale; must be registered in the template's components map to work inside MDX.
 
 `build-stamp` is currently imported by exactly: `HomeCarousel.tsx`, `PortfolioFilter.tsx`,
 `ServicesTabs.tsx`, `media/ImageLightbox.tsx`, `media/ArticleGalleryMounter.tsx`,
-`media/ArticleImageCompareMounter.tsx`. (`ui/ImageCompare.tsx` is covered via its mounter.)
+`media/ArticleImageCompareMounter.tsx`, and the non-island `lib/hero-depth.ts` (the home
+hero's script chunk). (`ui/ImageCompare.tsx` is covered via its mounter.)
 Add every future island to this list — and to this paragraph.
 
 ### 8.6 Template component maps (what MDX can use where)
@@ -728,6 +757,7 @@ Live maintenance:
 | `translate-reference-collections.mjs [--dry-run]` | curated HU titles for categories + client-types |
 | `split-lang-blocks.mjs <file>\|--all` | split `<Lang>` pairs at `##` boundaries (vision-tech) |
 | `populate-tour360-cover.mjs [--dry-run]` | add `coverImage` to bare `<Tour360>` in projects |
+| `generate-depth.py [--slug c/s] [--force] [files…]` | Depth Anything V2 depth maps for the hero parallax (§8.2): project covers → `public/thumbs/depth/`, or `<name>-depth.webp` beside given files; `r2-cors.json` is the bucket CORS rule the heroes need |
 
 Everything else in `scripts/` (`convert-*`, `migrate-*`, `i18n-*`, `generate-projects.js`,
 `fetch-images.js`, `extract-tech-content.mjs`) is one-shot WordPress-migration history —

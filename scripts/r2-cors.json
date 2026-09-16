@@ -1,0 +1,18 @@
+{
+  "rules": [
+    {
+      "id": "site-webgl-textures",
+      "allowed": {
+        "origins": [
+          "https://visiongraphics.eu",
+          "https://www.visiongraphics.eu",
+          "https://visiongraphics-astro.pages.dev",
+          "https://*.visiongraphics-astro.pages.dev"
+        ],
+        "methods": ["GET", "HEAD"],
+        "headers": ["*"]
+      },
+      "maxAgeSeconds": 86400
+    }
+  ]
+}

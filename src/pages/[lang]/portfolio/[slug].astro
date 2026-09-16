@@ -26,6 +26,7 @@ import Lang from '../../../components/i18n/Lang.astro';
 import { getCollection, getEntry } from 'astro:content';
 import { localizedPaths, localeUrl, t, tStr, type Locale } from '../../../lib/i18n';
 import { thumbUrl } from '../../../lib/image-url';
+import DepthImage from '../../../components/ui/DepthImage.astro';
 import { ui } from '../../../i18n/strings';
 
 export async function getStaticPaths() {
@@ -123,6 +124,9 @@ const resolvedTechniques = (data.techniques ?? []).map((slug: string) => {
       class="project-hero-img"
       loading="eager"
     />
+    {data.coverImage && (
+      <DepthImage set={[[thumbUrl(data.coverImage, 'large'), thumbUrl(data.coverImage, 'depth')]]} />
+    )}
     <div class="project-hero-overlay">
       <div class="container">
         <div class="project-hero-meta">
