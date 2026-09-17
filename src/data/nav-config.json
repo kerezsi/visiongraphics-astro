@@ -22,7 +22,7 @@
   {
     "label": "Blog",
     "href": "/articles/",
-    "enabled": false
+    "enabled": true
   },
   {
     "label": "FAQ",
