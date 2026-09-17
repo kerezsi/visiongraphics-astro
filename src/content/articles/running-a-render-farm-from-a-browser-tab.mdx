@@ -1,13 +1,11 @@
 ---
-title: >-
-  Running the Render Farm From a Browser Tab: The Tool We Built to Stop Walking
-  to Every PC
+title:
+  en: "Running the Render Farm From a Browser Tab: The Tool I Built to Stop Walking to Every PC"
+  hu: "Renderfarm egy böngészőfülből: az eszköz, amit azért építettem, hogy ne kelljen minden géphez odasétálni"
 date: 2026-09-16T00:00:00.000Z
-excerpt: >-
-  One operator, a farm of up to fifteen machines, and a deadline. We wrote a
-  small agent for each PC and a dashboard that talks to all of them — start and
-  stop render and AI services, push models to every node, tail the logs, and
-  stop walking to the machine room.
+excerpt:
+  en: "One operator, a farm of up to fifteen machines, and a deadline. I wrote a small agent for each PC and a dashboard that talks to all of them: start and stop render and AI services, push models to every node, tail the logs, and stop walking to the machine room."
+  hu: "Egy operátor, egy legfeljebb tizenöt gépes farm, és egy határidő. Írtam egy kis ügynököt minden PC-re és egy műszerfalat, amely mindegyikkel beszél: render- és AI-szolgáltatások indítása és leállítása, modellek kitolása minden node-ra, naplók követése, és a gépterembe sétálás vége."
 tags:
   - tools
   - workflow
@@ -17,17 +15,18 @@ published: false
 coverImage: /_img/articles/render-farm/hero.jpg
 ---
 
-A batch has to go out tonight and half the machines are sitting there with a dead render service. Each one is a thirty-second fix: wake the screen, find the window, start the process. The thirty seconds is not the problem — the walk is, once per machine, every time. And a new model file has to be on every GPU node before the batch starts, the copy finished before you press go.
+<Lang code="en">
+A batch has to go out tonight and half the machines are sitting there with a dead render service. Each one is a thirty-second fix: wake the screen, find the window, start the process. The thirty seconds is not the problem. The walk is, once per machine, every time. And a new model file has to be on every GPU node before the batch starts, the copy finished before you press go.
 
-We are a one-person studio with a farm of up to fifteen machines, which is exactly the size where this hurts most: too many boxes to manage by walking, too few to justify a commercial farm-management licence per node. So we wrote our own controller.
+One operator with a farm of up to fifteen machines is exactly the size where this hurts most: too many boxes to manage by walking, too few to justify a commercial farm-management licence per node. So I wrote my own controller.
 
 ![The farm dashboard — a card per machine, showing service status across the whole farm](/_img/articles/render-farm/farm-dashboard-overview.jpg)
 
 ## Two small pieces
 
-**The whole system is an agent and a dashboard.** The agent is a Node.js HTTP server running on every target PC, listening on port 7700 with zero npm dependencies — the built-in `http` module and nothing else. The dashboard is a small Express app on the file server, port 3000, holding the machine inventory and proxying commands to the right agent. The browser UI is a single HTML file with React from a CDN: no bundler, no build step. A tool that keeps the farm maintained should not itself become the thing that needs maintaining.
+An agent and a dashboard. The agent is a Node.js HTTP server on every target PC, port 7700, zero npm dependencies: the built-in `http` module and nothing else. The dashboard is a small Express app on the file server, port 3000, holding the machine inventory and proxying commands to the right agent. The browser UI is a single HTML file with React from a CDN. No bundler, no build step. A tool that keeps the farm maintained should not itself become the thing that needs maintaining.
 
-Every machine declares a type — Backburner only, AI backend only, or both — and its card shows only the controls that type has. Agents are polled in parallel every five seconds, so an unreachable machine dims its card instead of freezing the page.
+Every machine declares a type (Backburner only, AI backend only, both) and its card shows only the controls that type has. Agents are polled in parallel every five seconds, so an unreachable machine dims its card instead of freezing the page.
 
 ![A dual-role machine card — Backburner, SwarmUI, the ComfyUI backend row, and the maintenance buttons](/_img/articles/render-farm/machine-card-both.jpg)
 
@@ -35,52 +34,123 @@ Every machine declares a type — Backburner only, AI backend only, or both — 
 
 Start and Stop buttons are easy. Knowing whether something is *actually* running took the work.
 
-A service counts as running when something is listening on its port — 7861 for SwarmUI, 7821 or 8188 for the ComfyUI backend behind it. Our first version used a loopback connect and lied to us whenever SwarmUI bound to the LAN address instead of localhost; parsing `netstat` for a LISTENING socket fixed it. Backburner is detected differently: we ask Windows for every `server.exe` and keep only the ones whose executable path contains "Backburner", through PowerShell's `Get-CimInstance Win32_Process` — WMIC has been removed from current Windows 11 builds. Stopping is just as unglamorous: killing SwarmUI means killing the console window that launched it as well as the process holding the port.
+A service counts as running when something is listening on its port: 7861 for SwarmUI, 7821 or 8188 for the ComfyUI backend behind it. My first version used a loopback connect and lied to me whenever SwarmUI bound to the LAN address instead of localhost; parsing `netstat` for a LISTENING socket fixed it. Backburner is detected differently: ask Windows for every `server.exe` and keep the ones whose path contains "Backburner", through PowerShell's `Get-CimInstance Win32_Process`, because WMIC has been removed from current Windows 11 builds. Stopping is just as unglamorous: killing SwarmUI means killing the console window that launched it as well as the process holding the port.
 
-## The same hardware, two different jobs
+## The same hardware, two jobs
 
-**A render farm and an AI-generation farm are now the same boxes doing different work at different hours.** The GPU workstation generating images for [the finishing pipeline](/articles/inside-archupgrade-technical/) during the day is a V-Ray render node overnight, and the two do not coexist politely — they want the same VRAM and the same CPU.
+A render farm and an AI-generation farm are now the same boxes doing different work at different hours. The GPU workstation generating images for [the finishing pipeline](/articles/inside-archupgrade-technical/) during the day is a V-Ray render node overnight, and the two do not coexist politely. They want the same VRAM and the same CPU.
 
 So the summary bar has two buttons for dual-role machines: Render and Swarm. One click stops the AI backend on every dual node and brings the render service up; the other does the reverse, skipping any node already in the target state.
 
 ![Switching every dual-role node from AI generation to render work in one click](/_img/articles/render-farm/dual-node-switch.jpg)
 
-That is the honest shape of what AI changed for a small studio: it is an operations problem before it is a creative one. The pipeline, for its part, polls the same nodes for health and pulls an offline machine out of its rotation on its own — but somebody still has to bring the service up, and that somebody used to walk.
+That is the honest shape of what AI changed for a small studio: it is an operations problem before it is a creative one. The pipeline polls the same nodes for health and pulls an offline machine out of rotation on its own, but somebody still has to bring the service up, and that somebody used to walk.
 
 ## Keeping every machine identical
 
-The other half of the tool is fleet maintenance, all of it running as asynchronous jobs on the agent with the output captured for the dashboard.
+The other half is fleet maintenance, all of it asynchronous jobs on the agent with output captured for the dashboard.
 
-- **Sync Models** — robocopy from the donor share into each node's model folder, additive by default so nothing local is deleted. Mirror mode makes the folder an exact copy of the donor and sits behind a confirmation dialog.
-- **Sync Custom Nodes** — the same for ComfyUI custom nodes, additive only. Those folders are git checkouts; mirroring them would be vandalism.
-- **Update** — runs the three updater scripts that ship with the ComfyUI install, each fed an empty stdin so a trailing `pause` exits instead of hanging.
-- **Clear Output History** — wipes the generated-image folder on that node, confirm-gated.
-- **Run Script** — a dropdown of the `.bat` files in one shared scripts folder, nothing outside it, for plugin installs and one-off maintenance. It runs in the agent's own session — session 0 when the agent runs as SYSTEM — so an installer that pops a dialog just hangs.
+- **Sync Models:** robocopy from the donor share into each node's model folder, additive by default so nothing local is deleted. Mirror mode makes an exact copy and sits behind a confirmation.
+- **Sync Custom Nodes:** the same for ComfyUI custom nodes, additive only. Those folders are git checkouts; mirroring them would be vandalism.
+- **Update:** runs the three updater scripts that ship with the ComfyUI install, each fed an empty stdin so a trailing `pause` exits instead of hanging.
+- **Clear Output History:** wipes the generated-image folder on that node, confirm-gated.
+- **Run Script:** a dropdown of the `.bat` files in one shared scripts folder, nothing outside it. It runs in the agent's own session, session 0 when the agent runs as SYSTEM, so an installer that pops a dialog just hangs.
 
-Two rules make this safe enough to trust: a machine runs one job at a time and answers "busy" to anything else, and the agent refuses to sync or update while a backend is live on it — replacing model files under a running process is how you get a corrupted evening. The bulk action at the top syncs every eligible node at once.
+Two rules make this safe enough to trust: a machine runs one job at a time and answers "busy" to anything else, and the agent refuses to sync or update while a backend is live on it. Replacing model files under a running process is how you get a corrupted evening.
 
 ![A model sync in progress — spinner, elapsed time, and the last job result on each card](/_img/articles/render-farm/sync-job-running.jpg)
 
-Clicking the last-job line opens its log in a modal that refreshes every three seconds — robocopy counting files on a machine two rooms away, in real time.
+Clicking the last-job line opens its log in a modal that refreshes every three seconds: robocopy counting files on a machine two rooms away, in real time.
 
 ![The live job log — robocopy output streamed back from the agent](/_img/articles/render-farm/job-log-modal.jpg)
 
 ## Coming back on its own
 
-Power cuts happen. The agent is a scheduled task that starts at boot with a one-minute delay, so a machine that comes back is manageable again without anyone logging into it. The dashboard is registered the same way on the file server.
+Power cuts happen. The agent is a scheduled task that starts at boot with a one-minute delay, so a machine that comes back is manageable without anyone logging in. The dashboard is registered the same way on the file server.
 
-Agents also update themselves: on boot, nightly at 04:00, and on demand from a button on each card. The updater pulls from a master share but excludes the per-machine settings file, so local configuration survives while shared farm settings are deliberately overwritten — that is how a new setting reaches every node without a visit to each one. Each agent reports its version in its status response, so it is obvious which node is behind.
+Agents update themselves: on boot, nightly at 04:00, and on demand from each card. The updater pulls from a master share but excludes the per-machine settings file, so local configuration survives while shared farm settings are deliberately overwritten. That is how a new setting reaches every node without a visit. Each agent reports its version, so it is obvious which node is behind.
 
-Most of the real engineering went into Windows identity, not into HTTP. An AI backend is a desktop GPU application and cannot run in the session-0 context a service lives in, so the agent triggers a per-user task to launch it in the logged-in desktop session. Backburner reads its configuration from the profile of whoever started it, which is empty under the SYSTEM account, so the agent copies that config in before every start. Miss it and the service starts, looks healthy, and never registers with the manager.
+Most of the real engineering went into Windows identity, not HTTP. An AI backend is a desktop GPU application and cannot run in the session-0 context a service lives in, so the agent triggers a per-user task to launch it in the logged-in desktop session. Backburner reads its configuration from the profile of whoever started it, which is empty under SYSTEM, so the agent copies that config in before every start. Miss it and the service starts, looks healthy, and never registers with the manager. I found that one the slow way.
 
 ![An agent's status response in a browser tab — services, install detection, job state](/_img/articles/render-farm/agent-status-json.jpg)
 
-## The honest position
+## What it is not
 
-**It is not a scheduler.** It does not queue, assign, prioritise or balance render jobs — Backburner still does all of that. Our tool starts and stops the things that do the work and keeps their inputs in sync. That division is why it stayed small enough to maintain.
+Not a scheduler. It does not queue, assign, prioritise or balance render jobs. Backburner still does all of that. This tool starts and stops the things that do the work and keeps their inputs in sync. That division is why it stayed small enough to maintain.
 
-**There is no authentication, and no users.** Anyone who can reach port 3000 on the LAN can stop every render service in the building. No permissions, no audit trail, no job accounting. That is an acceptable trade for a single-operator studio on a closed network and unacceptable anywhere else, which is why it never leaves the LAN.
+No authentication, no users. Anyone who can reach port 3000 on the LAN can stop every render service in the building. No permissions, no audit trail, no job accounting. Acceptable for a single-operator studio on a closed network, unacceptable anywhere else, which is why it never leaves the LAN.
 
-If your farm has several artists submitting at once, licences to track, chargeback per project, or a need to call someone at two in the morning, buy commercial farm management — that is what it is for. Write your own only when your problem has the shape ours did: a small fleet, one operator, and more of the day going into the walk than into the work.
+If your farm has several artists submitting at once, licences to track, chargeback per project, or a need to call someone at two in the morning, buy commercial farm management. Write your own only when your problem has the shape mine did: a small fleet, one operator, and more of the day going into the walk than into the work.
 
-We build internal tooling like this because we run production every day and know where the time goes. If your studio loses more time to walking and re-checking than to actual work, that is what our [pipeline and workflow optimization work](/services/workflow-optimization/) addresses — [get in touch](/contact/) and we can compare notes.
+If your studio loses more time to walking and re-checking than to actual work, that is what my [pipeline and workflow work](/services/workflow-optimization/) is for. [Get in touch](/contact/).
+</Lang>
+
+<Lang code="hu">
+Egy kötegnek ma este ki kell mennie, és a gépek fele ott ül halott render-szolgáltatással. Mindegyik harmincmásodperces javítás: felébreszteni a képernyőt, megtalálni az ablakot, elindítani a folyamatot. Nem a harminc másodperc a gond. A séta az, gépenként egyszer, minden alkalommal. És egy új modellfájlnak minden GPU-node-on ott kell lennie, mielőtt a köteg elindul, a másolásnak be kell fejeződnie, mielőtt megnyomod a gombot.
+
+Egy operátor egy legfeljebb tizenöt gépes farmmal pontosan az a méret, ahol ez a legjobban fáj: túl sok doboz ahhoz, hogy sétálva kezeld, túl kevés ahhoz, hogy node-onként kereskedelmi farmkezelő licencet indokoljon. Így megírtam a saját vezérlőmet.
+
+![A farm műszerfala – gépenként egy kártya, a szolgáltatások állapotával az egész farmon](/_img/articles/render-farm/farm-dashboard-overview.jpg)
+
+## Két kis darab
+
+Egy ügynök és egy műszerfal. Az ügynök egy Node.js HTTP-szerver minden célgépen, a 7700-as porton, nulla npm-függőséggel: a beépített `http` modul és semmi más. A műszerfal egy kis Express-app a fájlszerveren, a 3000-es porton, amely a gépleltárt tartja, és a parancsokat a megfelelő ügynökhöz továbbítja. A böngészős felület egyetlen HTML-fájl CDN-ről töltött Reacttel. Se bundler, se build lépés. Egy eszköz, amely a farmot karbantartja, ne legyen maga is az, amit karban kell tartani.
+
+Minden gép deklarál egy típust (csak Backburner, csak AI-backend, mindkettő), és a kártyája csak azokat a vezérlőket mutatja, amik ahhoz a típushoz tartoznak. Az ügynökök ötmásodpercenként párhuzamosan vannak lekérdezve, így egy elérhetetlen gép elhalványítja a kártyáját, ahelyett hogy lefagyasztaná az oldalt.
+
+![Egy kettős szerepű gép kártyája – Backburner, SwarmUI, a ComfyUI-backend sor, és a karbantartási gombok](/_img/articles/render-farm/machine-card-both.jpg)
+
+## Olyan dolgok indítása és leállítása, amiket nem látsz
+
+A Start és Stop gomb könnyű. Tudni, hogy valami *tényleg* fut-e, az vitte el a munkát.
+
+Egy szolgáltatás akkor számít futónak, ha valami figyel a portján: 7861 a SwarmUI-nál, 7821 vagy 8188 a mögötte lévő ComfyUI-backendnél. Az első változatom loopback-kapcsolatot használt, és hazudott, valahányszor a SwarmUI a LAN-címre kötött localhost helyett; a `netstat` LISTENING socketre való elemzése javította. A Backburnert máshogy érzékeli: megkérdezi a Windowst minden `server.exe`-ről, és megtartja azokat, amelyek útvonala tartalmazza a „Backburner"-t, a PowerShell `Get-CimInstance Win32_Process`-én át, mert a WMIC-et eltávolították a jelenlegi Windows 11-buildekből. A leállítás ugyanolyan hálátlan: a SwarmUI megölése azt jelenti, hogy meg kell ölni a konzolablakot is, amely elindította, meg a portot tartó folyamatot.
+
+## Ugyanaz a hardver, két munka
+
+Egy renderfarm és egy AI-generáló farm ma ugyanazok a dobozok, más munkát végezve más órákban. A GPU-s munkaállomás, amely napközben [a befejező pipeline-nak](/articles/inside-archupgrade-technical/) generál képeket, éjjel V-Ray render-node, és a kettő nem fér meg udvariasan. Ugyanazt a VRAM-ot és ugyanazt a CPU-t akarják.
+
+Így az összesítő sávon két gomb van a kettős szerepű gépekhez: Render és Swarm. Egy kattintás leállítja az AI-backendet minden kettős node-on, és felhozza a render-szolgáltatást; a másik a fordítottját teszi, kihagyva a már célállapotban lévő node-okat.
+
+![Minden kettős szerepű node átkapcsolása AI-generálásról rendermunkára egy kattintással](/_img/articles/render-farm/dual-node-switch.jpg)
+
+Ez az őszinte alakja annak, amit az AI egy kis stúdiónak megváltoztatott: üzemeltetési probléma, mielőtt kreatív lenne. A pipeline ugyanezeket a node-okat kérdezi állapotra, és egy offline gépet magától kivesz a körforgásból, de valakinek még mindig fel kell hoznia a szolgáltatást, és az a valaki régen sétált.
+
+## Minden gép egyformán tartása
+
+A másik fele a flottakarbantartás, mind aszinkron feladatként az ügynökön, a kimenettel a műszerfal számára rögzítve.
+
+- **Modellek szinkronizálása:** robocopy a donor-megosztásból minden node modellmappájába, alapból hozzáadó, így semmi helyi nem törlődik. A tükör mód pontos másolatot csinál, és megerősítés mögött ül.
+- **Custom node-ok szinkronizálása:** ugyanez a ComfyUI custom node-okhoz, csak hozzáadó. Azok a mappák git-checkoutok; tükrözni őket vandalizmus lenne.
+- **Frissítés:** a ComfyUI-telepítéssel érkező három frissítő szkriptet futtatja, mindegyiket üres stdin-nel, hogy egy záró `pause` kilépjen, ahelyett hogy lógna.
+- **Kimeneti előzmények törlése:** letörli a generált képek mappáját azon a node-on, megerősítéssel kapuzva.
+- **Szkript futtatása:** egy legördülő a `.bat` fájlokból egy közös szkriptmappában, semmi azon kívül. Az ügynök saját munkamenetében fut, 0-s munkamenetben, ha az ügynök SYSTEM-ként fut, így egy párbeszédablakot feldobó telepítő egyszerűen lóg.
+
+Két szabály teszi ezt elég biztonságossá ahhoz, hogy megbízzak benne: egy gép egyszerre egy feladatot futtat, és minden másra „foglalt"-tal válaszol, és az ügynök nem hajlandó szinkronizálni vagy frissíteni, amíg backend fut rajta. Modellfájlokat cserélni egy futó folyamat alatt: így szerzel egy sérült estét.
+
+![Egy modellszinkron folyamatban – forgó jelző, eltelt idő, és az utolsó feladat eredménye minden kártyán](/_img/articles/render-farm/sync-job-running.jpg)
+
+Az utolsó-feladat sorra kattintva a naplója egy háromsodpercenként frissülő modálban nyílik meg: a robocopy fájlokat számol egy két szobával arrébb lévő gépen, valós időben.
+
+![Az élő feladatnapló – az ügynöktől visszastreamelt robocopy-kimenet](/_img/articles/render-farm/job-log-modal.jpg)
+
+## Magától visszajön
+
+Áramszünetek vannak. Az ügynök egy ütemezett feladat, amely bootkor egyperces késleltetéssel indul, így egy visszatérő gép anélkül kezelhető, hogy bárki bejelentkezne. A műszerfal ugyanígy van regisztrálva a fájlszerveren.
+
+Az ügynökök frissítik magukat: bootkor, éjjel 04:00-kor, és igény szerint minden kártyáról. A frissítő egy master-megosztásból húz, de kizárja a gépenkénti beállításfájlt, így a helyi konfiguráció túlél, míg a közös farmbeállítások szándékosan felülíródnak. Így ér el egy új beállítás minden node-ot látogatás nélkül. Minden ügynök jelenti a verzióját, így nyilvánvaló, melyik node van lemaradva.
+
+A valódi mérnöki munka nagy része a Windows-identitásba ment, nem a HTTP-be. Egy AI-backend asztali GPU-alkalmazás, és nem tud futni abban a 0-s munkamenetben, amelyben egy szolgáltatás él, így az ügynök egy felhasználónkénti feladatot indít, hogy a bejelentkezett asztali munkamenetben indítsa el. A Backburner annak a profiljából olvassa a konfigurációját, aki elindította, ami SYSTEM alatt üres, így az ügynök minden indítás előtt bemásolja azt a konfigurációt. Hagyd ki, és a szolgáltatás elindul, egészségesnek látszik, és sosem regisztrál a managernél. Ezt a lassú módon találtam meg.
+
+![Egy ügynök állapotválasza egy böngészőfülön – szolgáltatások, telepítés-érzékelés, feladatállapot](/_img/articles/render-farm/agent-status-json.jpg)
+
+## Mi nem
+
+Nem ütemező. Nem sorol, nem oszt ki, nem rangsorol és nem egyensúlyoz renderfeladatokat. Ezt továbbra is a Backburner csinálja mind. Ez az eszköz elindítja és leállítja azokat a dolgokat, amelyek a munkát végzik, és szinkronban tartja a bemeneteiket. Ez a felosztás az oka, hogy elég kicsi maradt a karbantartáshoz.
+
+Nincs hitelesítés, nincsenek felhasználók. Bárki, aki eléri a 3000-es portot a LAN-on, leállíthat minden render-szolgáltatást az épületben. Se jogosultságok, se auditnapló, se feladatelszámolás. Elfogadható egy egyoperátoros stúdiónak zárt hálózaton, elfogadhatatlan bárhol máshol, ezért sosem hagyja el a LAN-t.
+
+Ha a farmján több művész ad be egyszerre, licenceket kell követni, projektenként elszámolni, vagy hajnali kettőkor valakit fel kell hívni, vegyen kereskedelmi farmkezelőt. Sajátot csak akkor írjon, ha a problémája olyan alakú, mint az enyém volt: kis flotta, egy operátor, és a napból több megy a sétára, mint a munkára.
+
+Ha a stúdiója több időt veszít sétálásra és újraellenőrzésre, mint valódi munkára, arra való a [pipeline- és munkafolyamat-munkám](/services/workflow-optimization/). [Írjon](/contact/).
+</Lang>

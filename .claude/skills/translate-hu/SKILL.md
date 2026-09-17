@@ -20,12 +20,12 @@ Edit tool only; Node script for true bulk.
 | Surface | Localize? | Mechanism |
 |---|---|---|
 | Project/service/vision-tech frontmatter (`title`, `description`, `tagline`, `startRequirements`, `pricing`, `sidebarLabel`, `sidebarContent`) | yes | `{en,hu}` block YAML |
-| MDX body prose (all collections except articles) | yes | paired `<Lang code="en">` / `<Lang code="hu">` blocks |
+| MDX body prose (all collections) | yes | paired `<Lang code="en">` / `<Lang code="hu">` blocks |
 | JSX props on components (`SectionBanner` label/title, `Tour360`/`YoutubeEmbed` title, gallery label/subtitle, `ProcessFlow` steps, table rows...) | yes | `prop={{ en: "…", hu: "…" }}` |
 | `ProjectStory` heading | yes | `heading={{ en: "The Story:", hu: "A sztori:" }}` — the component's default is EN-only |
 | UI chrome (nav, buttons, form labels, section headings) | yes | `src/i18n/strings.ts` `hu` object — never inline in templates |
 | Page-local copy in templates | yes | the file's `COPY = { en: {...}, hu: {...} }` block — edit `hu` only |
-| **Articles** | **no** | EN-only by design. If asked to translate an article, stop and flag it: the articles template renders raw strings and has no `Lang` registered — localizing frontmatter would print `[object Object]` (§8.10 bug 2). Template migration is a separate approved task. |
+| **Articles** | yes, by script | Never hand-wrap. `node scripts/wrap-article-hu.mjs --dump <slug>` lists the prose runs and the localizable component captions; write a translation module (`export default { title, excerpt, props: {EN→HU}, segments: [HU markdown per run] }`, HU alt text on Markdown images inside the segments, en dashes `–` in HU) in the scratchpad; then `node scripts/wrap-article-hu.mjs <slug> <module.mjs>`. The script turns `title`/`excerpt` into `{en,hu}`, wraps runs in `<Lang>` pairs, rewrites captions as `{{ en, hu }}`, and refuses to write if the EN text would change — that is the hard-rule-13 proof. Verify at `/hu/articles/<slug>/` (drafts: flip `published` locally, revert in the same script). |
 | Reference collections: `categories`, `client-types` | yes | `{en,hu}` title (curated list lives in `scripts/translate-reference-collections.mjs`) |
 | Reference collections: `clients`, `designers`, `cities`, `countries` | **no** | proper nouns, plain strings, never translated |
 | Image `alt` in project galleries | no | `""` by convention — leave empty |

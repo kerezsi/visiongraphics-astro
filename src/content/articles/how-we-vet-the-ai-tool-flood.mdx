@@ -1,12 +1,11 @@
 ---
-title: 'The AI Tool Flood: How We Decide What Is Actually Usable'
+title:
+  en: "The AI Tool Flood: How I Decide What Is Actually Usable"
+  hu: "Az AI-eszközáradat: hogyan döntöm el, mi használható valójában"
 date: 2026-09-16T00:00:00.000Z
-excerpt: >-
-  Something genuinely new ships most weeks, and most of it is demo-grade,
-  awkwardly licensed, or impossible to run on hardware you own. We stopped
-  judging by launch threads and built a database instead — 1,537 tools at the
-  time of writing, with a weekly job that re-checks everything that has not
-  settled yet.
+excerpt:
+  en: Something genuinely new ships most weeks, and most of it is demo-grade, awkwardly licensed, or impossible to run on hardware you own. I stopped judging by launch threads and built a database instead, with a weekly job that re-checks everything that has not settled yet.
+  hu: A legtöbb héten megjelenik valami tényleg új, és a nagy része demószintű, ügyetlenül licencelt, vagy lehetetlen futtatni saját hardveren. Nem a bejelentő threadek alapján ítélek, hanem építettem egy adatbázist, egy heti feladattal, amely újraellenőriz mindent, ami még nem ülepedett le.
 tags:
   - ai
   - tools
@@ -16,64 +15,126 @@ published: false
 coverImage: /_img/articles/ai-vetting/hero.jpg
 ---
 
-Something genuinely new ships most weeks. A model that relights an interior from a single image. A mesh generator that finally produces usable topology. A video model that holds a camera move a little longer than the last one did. The demo reel is spectacular, the launch thread is euphoric — and three days later nobody can tell you whether the thing has weights you can actually download, a licence that survives contact with a paying client, or a memory footprint that fits on a card you own.
+<Lang code="en">
+Something genuinely new ships most weeks. A model that relights an interior from a single image. A mesh generator that finally produces usable topology. A video model that holds a camera move a little longer than the last one. The demo reel is spectacular, the launch thread is euphoric, and three days later nobody can tell you whether the thing has weights you can download, a licence that survives contact with a paying client, or a memory footprint that fits on a card you own.
 
-We used to keep up by reading. That does not scale, and it is biased in a specific way: release-week enthusiasm tells you what a tool does in the best case, on the author's hardware, with the author's chosen input. It tells you almost nothing about the three questions that decide whether we can point a tool at your project. Is it real, or is it a paper with a project page? Is it licensed so that the images it produces can be used commercially? Will it run on machines we own, in our building?
+I used to keep up by reading. That does not scale, and it is biased in a specific way: release-week enthusiasm tells you what a tool does in the best case, on the author's hardware, with the author's chosen input. It tells you nothing about the three questions that decide whether I can point a tool at your project. Is it real, or a paper with a project page? Is it licensed so the images can be used commercially? Will it run on machines I own, in my building?
 
-So we stopped reading and built a database.
+So I stopped reading and built a database.
 
 ![The tool browser — filter row across the top, tracked AI tools as cards below, each with its project-fit score](/_img/articles/ai-vetting/ai-tracker-browse.jpg)
 
-## What the database is
+## What it is
 
-It is an internal web app running on a machine in our office — Python and SQLite behind a FastAPI service, a React front end, and a scheduled worker that keeps it current. Nothing about it is public; it exists so that one studio can answer one question quickly.
+An internal web app on a machine in the office: Python and SQLite behind FastAPI, a React front end, a scheduled worker that keeps it current. Not public. It exists so one studio can answer one question quickly.
 
-It currently holds **1,537 tools** (mid-September 2026), harvested from several hundred source videos on the AI channels we follow, plus direct imports from GitHub and Hugging Face repositories, the ComfyUI custom-node registry, the Ollama model library, and scraped roundup pages. Entries are classified against 21 categories — text-to-image, image editing, upscaling and restoration, relighting, depth estimation, 3D mesh, Gaussian splatting, video, large language models, vision-language models, voice cloning, LoRA training, and the rest. A tool can sit in several, and a new one in none until it is classified.
+Mid-September 2026 it holds 1,537 tools, harvested from several hundred source videos on the AI channels I follow, plus direct imports from GitHub and Hugging Face, the ComfyUI custom-node registry, the Ollama model library, and scraped roundup pages. Entries are classified against 21 categories: text-to-image, image editing, upscaling and restoration, relighting, depth estimation, 3D mesh, Gaussian splatting, video, language models, vision-language models, voice cloning, LoRA training, and the rest.
 
-## What we record about each tool
+## What I record
 
-**Release state, on a ladder.** Announced → paper-only → code released → weights released → available to run locally. A tool's state only ever moves up the ladder unless a person overrides it, so an entry is a record of the best thing ever confirmed about it rather than whatever a check happened to see on a bad day. The current shape of the catalogue is instructive: of 1,537 entries, 674 are open-source and local in principle, and 515 are *verified* as runnable locally — the rest are a paper, an announcement, code without weights, a hosted service, or not yet checked. Roughly a third of what gets talked about is something you could actually run this week.
+**Release state, on a ladder.** Announced → paper-only → code released → weights released → runs locally. A tool's state only moves up unless a person overrides it, so an entry records the best thing ever confirmed about it, not whatever a check saw on a bad day. The current catalogue is instructive: of 1,537 entries, 674 are open-source and local in principle, 515 are *verified* runnable locally. The rest are a paper, an announcement, code without weights, a hosted service, or unchecked. Roughly a third of what gets talked about is something you could run this week.
 
 ![The dashboard — the tracked catalogue broken down by release state and category](/_img/articles/ai-vetting/ai-tracker-dashboard.jpg)
 
-**Licence, and whether it is commercially safe.** Verification reads the licence metadata the repository itself publishes — GitHub, Hugging Face, arXiv — and classifies it: permissive, copyleft, non-commercial, or use-restricted. Anything carrying "NC", "non-commercial" or "research only" is flagged as unusable for client work. Right now 270 tools are confirmed commercially safe; 1,225 carry no usable licence string at all yet, which is the same thing as "not for client work" until a person reads the terms.
+**Licence, and whether it is commercially safe.** Verification reads the licence metadata the repository itself publishes and classifies it: permissive, copyleft, non-commercial, use-restricted. Anything carrying "NC", "non-commercial" or "research only" is flagged unusable for client work. Right now 270 tools are confirmed commercially safe; 1,225 carry no readable licence string at all, which means "not for client work" until a person reads the terms.
 
-**Hardware.** Where a model publishes weights we can measure, a minimum VRAM figure is derived from its parameter count or the size of its weight files, and the browser can filter to "fits my GPU" at a given number of gigabytes. So far that number is recorded for only a small fraction of the catalogue. Repository stars, download counts and the date of the last push ride along as an activity signal — abandoned is a status too.
+**Hardware.** Where a model publishes weights I can measure, a minimum VRAM figure is derived from parameter count or weight-file size, and the browser filters to "fits my GPU". That number exists for only a small fraction of the catalogue so far. Stars, downloads and last-push date ride along as an activity signal. Abandoned is a status too.
 
-**Where it can run in our stack.** ComfyUI support is recorded as native, custom node, or none — 206 tracked tools have a custom node, two are native. A separate flag marks the 233 that can be pulled straight through Ollama, cross-checked against what is actually installed on our own node.
+**Where it runs in my stack.** ComfyUI support as native, custom node, or none: 206 tools have a custom node, two are native. A separate flag marks the 233 that pull straight through Ollama, cross-checked against what is installed on my own node.
 
 ![A tool's detail page — release-state ladder, licence and commercial verdict, evidence links](/_img/articles/ai-vetting/ai-tracker-tool-detail.jpg)
 
-**A fit score against our own work.** Each of our internal projects has a profile: its priority categories, what it prefers, and its hard requirements. A local language model scores every plausibly relevant tool from 0 to 1 with a one-sentence rationale. Where a project requires commercially usable licences, a non-commercial or copyleft tool is forced to 0.2 or below no matter how good it looks.
+**A fit score against my own projects.** Each internal project has a profile: priority categories, preferences, hard requirements. A local language model scores every plausibly relevant tool from 0 to 1 with a one-sentence rationale. Where a project requires commercial licences, a non-commercial or copyleft tool is forced to 0.2 or below no matter how good it looks.
 
 ## The weekly run
 
-Once a week a scheduled job pulls new material, parses tool mentions with a local model, deduplicates against what is already there, re-verifies everything sitting below "available locally" — because that is where states flip — then re-scores fit against our projects, re-enriches, rebuilds the search index and writes a digest of what changed.
+Once a week a job pulls new material, parses tool mentions with a local model, deduplicates, re-verifies everything below "runs locally" because that is where states flip, then re-scores fit, re-enriches, rebuilds the search index and writes a digest of what changed.
 
-It reports on itself. Every stage records whether it succeeded, how many rows it touched and how long it took; the run exits with a failure code if any stage broke, and raises an in-app alert. It refuses to start while another writer is running, because two concurrent writers corrupted the database once and that is not a lesson worth learning twice. Degradation is documented rather than silent: when GitHub rate-limits the checks, the affected tools are marked as rate-limited instead of being quietly downgraded.
+It reports on itself. Every stage records success, rows touched, time taken; the run exits with a failure code if any stage broke and raises an in-app alert. It refuses to start while another writer is running, because two concurrent writers corrupted the database once and that is not a lesson worth learning twice. When GitHub rate-limits the checks, the affected tools are marked rate-limited instead of quietly downgraded.
 
-A watchlist sits on top of it. Tools we are waiting on — a licence change, a ComfyUI node appearing, weights finally landing — raise an alert when their status moves.
+A watchlist sits on top: tools I am waiting on (a licence change, a ComfyUI node, weights finally landing) raise an alert when their status moves.
 
 ![The status page — the weekly run's stages with counts, timings and live logs](/_img/articles/ai-vetting/ai-tracker-weekly-run.jpg)
 
-## Why any of this matters to your project
+## Why this matters to your project
 
-**A licence is not paperwork — it decides whether you can use the image.** Several of the most impressive open models ship under non-commercial or research-only terms. An image produced with one of those is not something we can responsibly hand you for a brochure, a hoarding, or an investor deck. Checking that before a tool enters a production pipeline is much cheaper than discovering it afterwards.
+A licence decides whether you can use the image. Several of the most impressive open models ship under non-commercial or research-only terms. An image made with one of those is not something I can hand you for a brochure, a hoarding or an investor deck. Checking before a tool enters production is much cheaper than finding out after the print run.
 
-**Running locally decides where your material lives.** Unbuilt schemes, tenant layouts, plans under NDA — the runtime filters exist so that we can prefer tools which run on our own machines. Nothing is uploaded, nothing is retained by a third party, and there is no per-image cost that quietly shapes how many variations we are willing to try.
+Running locally decides where your material lives. Unbuilt schemes, tenant layouts, plans under NDA. The runtime filters exist so I can prefer tools that run on my own machines. Nothing uploaded, nothing retained by a third party, no per-image cost quietly shaping how many variations I try.
 
-**Hardware limits are real limits.** A model that needs more memory than our cards have is not a future option, it is not an option on your schedule. Recording that number, wherever we can get it, means we plan around it instead of finding out mid-project.
+Hardware limits are real limits. A model that needs more memory than my cards have is not a future option, it is not an option on your schedule.
 
 ![The catalogue narrowed to commercially-safe licences — 270 of 1,537 tools survive the one filter that matters for paid work](/_img/articles/ai-vetting/ai-tracker-licence-filter.jpg)
 
-## The honest position
+## What it does not do
 
-The database is a filter, not a verdict, and it is worth being precise about what it does not do.
+It does not tell me a tool is good. It tells me the tool exists, what state it is in, how it is licensed and where it runs. Whether it holds up on a real interior with a real material palette only comes out of trying it on actual work, and most things that clear the filter still fail that test.
 
-It does not tell us a tool is good. It tells us the tool exists, what state it is in, how it is licensed and where it can run. Whether it holds up on a real interior with a real material palette — that only comes out of trying it on actual work, and most things that clear the filter still fail that test.
+Its metadata is only as good as its sources. 1,225 entries carry no licence string the checker could read. VRAM figures are thinner still. Categories are drafted automatically and fit scores come from a model; both are editable by hand, and I edit them.
 
-Its metadata is only as good as its sources. Of the 1,537 entries, 1,225 carry no licence string the checker could read, and only a few hundred classify cleanly enough to call commercially safe or not without a person reading the terms. VRAM figures are thinner still. Categories are drafted automatically — a language model on the way in, keyword rules for the rest — and fit scores come from the model; both are editable by hand.
+Scoring fit is a judgement call. A high score means "worth an afternoon", not "adopt this". The value is not in the number. It is in never choosing tools from memory, or from whatever was most recently impressive.
 
-And scoring fit is a judgement call. A high score means "worth an afternoon", not "adopt this". The value is not in the number — it is in never choosing tools from memory, or from whatever was most recently impressive.
+The tools that pass go into [the production pipeline](/articles/inside-archupgrade-technical/), where every model carries its licence class into the files it produces. If you want to know what this means for a specific project — what is realistic this quarter, what is licensed cleanly enough to publish, what stays on my machines — [get in touch](/contact/).
+</Lang>
 
-The tools that pass this filter are the ones that end up in [our production pipeline](/articles/inside-archupgrade-technical/), where every model carries its licence class into the files it produces. If you want to know what this means for a specific project — what is realistic to produce this quarter, what is licensed cleanly enough to publish, what stays on our own machines — our [advanced AI services](/services/advanced-ai-services/) page covers what we actually offer, and you are welcome to [get in touch](/contact/).
+<Lang code="hu">
+A legtöbb héten megjelenik valami tényleg új. Egy modell, amely egyetlen képből átvilágít egy belső teret. Egy mesh-generátor, amely végre használható topológiát ad. Egy videómodell, amely valamivel tovább tart meg egy kameramozgást, mint az előző. A demóvideó lenyűgöző, a bejelentő thread eufórikus, és három nappal később senki nem tudja megmondani, hogy a dolognak vannak-e letölthető súlyai, olyan licence, amely túléli a találkozást egy fizető ügyféllel, vagy olyan memóriaigénye, amely elfér egy saját kártyán.
+
+Régen olvasással tartottam lépést. Ez nem skálázódik, és egy konkrét módon elfogult: a megjelenés heti lelkesedés azt mondja el, mit csinál egy eszköz a legjobb esetben, a szerző hardverén, a szerző választott bemenetével. Semmit nem mond arról a három kérdésről, amely eldönti, ráirányíthatom-e az eszközt az Ön projektjére. Valódi, vagy egy tanulmány projektoldallal? Úgy van licencelve, hogy a képek kereskedelmileg használhatók? Fut olyan gépeken, amelyek az enyémek, az én épületemben?
+
+Így abbahagytam az olvasást, és építettem egy adatbázist.
+
+![Az eszközböngésző – szűrősor felül, alatta a követett AI-eszközök kártyákként, mindegyik a projekt-illeszkedési pontszámával](/_img/articles/ai-vetting/ai-tracker-browse.jpg)
+
+## Mi ez
+
+Egy belső webapp az iroda egyik gépén: Python és SQLite egy FastAPI mögött, React frontend, egy ütemezett worker, amely naprakészen tartja. Nem nyilvános. Azért létezik, hogy egy stúdió egy kérdésre gyorsan válaszolhasson.
+
+2026 szeptember közepén 1537 eszközt tartalmaz, több száz forrásvideóból gyűjtve az általam követett AI-csatornákról, plusz közvetlen importokból a GitHubról és a Hugging Face-ről, a ComfyUI custom node-nyilvántartásából, az Ollama modellkönyvtárából, és lekapart összefoglaló oldalakról. A bejegyzések 21 kategóriába vannak sorolva: szövegből kép, képszerkesztés, felskálázás és helyreállítás, átvilágítás, mélységbecslés, 3D mesh, Gaussian splatting, videó, nyelvi modellek, látás-nyelvi modellek, hangklónozás, LoRA-tanítás, és a többi.
+
+## Mit jegyzek fel
+
+**Kiadási állapot, egy létrán.** Bejelentve → csak tanulmány → kód kiadva → súlyok kiadva → helyben fut. Egy eszköz állapota csak felfelé mozog, hacsak egy ember felül nem írja, így egy bejegyzés a valaha megerősített legjobb dolgot rögzíti róla, nem azt, amit egy ellenőrzés egy rossz napon látott. A jelenlegi katalógus tanulságos: az 1537 bejegyzésből 674 elvben nyílt forráskódú és helyi, 515 *ellenőrzötten* helyben futtatható. A többi tanulmány, bejelentés, kód súlyok nélkül, hosztolt szolgáltatás, vagy ellenőrizetlen. Nagyjából annak a harmada, amiről beszélnek, olyasmi, amit ezen a héten futtathatnál.
+
+![A műszerfal – a követett katalógus kiadási állapot és kategória szerint bontva](/_img/articles/ai-vetting/ai-tracker-dashboard.jpg)
+
+**Licenc, és hogy kereskedelmileg biztonságos-e.** Az ellenőrzés azt a licenc-metaadatot olvassa, amit maga a tároló publikál, és osztályozza: megengedő, copyleft, nem kereskedelmi, felhasználás-korlátozott. Ami „NC", „non-commercial" vagy „research only" jelzést hordoz, az ügyfélmunkára használhatatlanként van megjelölve. Jelenleg 270 eszköz megerősítetten kereskedelmileg biztonságos; 1225 egyáltalán nem hordoz olvasható licenc-sztringet, ami „nem ügyfélmunkára" jelent, amíg egy ember el nem olvassa a feltételeket.
+
+**Hardver.** Ahol egy modell mérhető súlyokat publikál, a paraméterszámból vagy a súlyfájlok méretéből egy minimális VRAM-érték származik, és a böngésző „elfér a GPU-mon" szűrőt kínál. Ez a szám eddig a katalógus csak kis részénél létezik. Csillagok, letöltések és az utolsó push dátuma aktivitásjelként utaznak mellette. Az elhagyott is egy állapot.
+
+**Hol fut az én stackemben.** A ComfyUI-támogatás natívként, custom node-ként vagy semmiként: 206 eszköznek van custom node-ja, kettő natív. Egy külön jelző jelöli a 233-at, amelyek közvetlenül az Ollamán át húzhatók, keresztellenőrizve azzal, ami a saját node-omon telepítve van.
+
+![Egy eszköz részletoldala – kiadási állapot létrája, licenc és kereskedelmi ítélet, bizonyíték-linkek](/_img/articles/ai-vetting/ai-tracker-tool-detail.jpg)
+
+**Illeszkedési pontszám a saját projektjeimhez.** Minden belső projektnek van profilja: kiemelt kategóriák, preferenciák, kemény követelmények. Egy helyi nyelvi modell minden hihetően releváns eszközt 0-tól 1-ig pontoz egy egymondatos indoklással. Ahol egy projekt kereskedelmi licencet követel, egy nem kereskedelmi vagy copyleft eszköz 0,2-re vagy az alá van kényszerítve, bármilyen jónak is látszik.
+
+## A heti futás
+
+Hetente egyszer egy feladat új anyagot húz be, egy helyi modellel eszközemlítéseket elemez, deduplikál, újraellenőriz mindent, ami a „helyben fut" alatt van, mert ott fordulnak az állapotok, majd újrapontozza az illeszkedést, újradúsít, újraépíti a keresőindexet, és összefoglalót ír arról, mi változott.
+
+Jelent magáról. Minden szakasz rögzíti a sikert, az érintett sorokat, az eltelt időt; a futás hibakóddal lép ki, ha bármelyik szakasz eltört, és alkalmazáson belüli riasztást ad. Nem hajlandó elindulni, amíg egy másik író fut, mert két párhuzamos író egyszer megrongálta az adatbázist, és ez nem olyan lecke, amit érdemes kétszer megtanulni. Amikor a GitHub korlátozza az ellenőrzéseket, az érintett eszközök korlátozottként jelölődnek meg, ahelyett hogy csendben lefokozódnának.
+
+Fölötte egy figyelőlista ül: az eszközök, amelyekre várok (licencváltás, egy ComfyUI-node, végre landoló súlyok), riasztást adnak, ha az állapotuk elmozdul.
+
+![Az állapotoldal – a heti futás szakaszai számokkal, időzítésekkel és élő naplókkal](/_img/articles/ai-vetting/ai-tracker-weekly-run.jpg)
+
+## Miért számít ez az Ön projektjének
+
+A licenc dönti el, használhatja-e a képet. A leglenyűgözőbb nyílt modellek közül több nem kereskedelmi vagy csak kutatási feltételekkel jelenik meg. Egy ilyennel készült kép nem olyasmi, amit átadhatok Önnek egy prospektushoz, egy óriásplakáthoz vagy egy befektetői prezentációhoz. Ezt ellenőrizni, mielőtt egy eszköz produkcióba kerül, sokkal olcsóbb, mint a nyomás után kideríteni.
+
+A helyi futtatás dönti el, hol él az Ön anyaga. Meg nem épült tervek, bérlői elrendezések, NDA alatti tervek. A futtatókörnyezet-szűrők azért léteznek, hogy a saját gépeimen futó eszközöket részesíthessem előnyben. Semmi nincs feltöltve, semmit nem őriz meg harmadik fél, nincs képenkénti költség, amely csendben alakítja, hány variációt próbálok ki.
+
+A hardverkorlátok valódi korlátok. Egy modell, amelynek több memória kell, mint amennyi a kártyáimon van, nem jövőbeli lehetőség, hanem az Ön menetrendjén nem lehetőség.
+
+![A katalógus kereskedelmileg biztonságos licencekre szűkítve – 1537-ből 270 eszköz éli túl az egyetlen szűrőt, amely fizetett munkánál számít](/_img/articles/ai-vetting/ai-tracker-licence-filter.jpg)
+
+## Mit nem csinál
+
+Nem mondja meg, hogy egy eszköz jó. Azt mondja meg, hogy az eszköz létezik, milyen állapotban van, hogyan van licencelve, és hol fut. Hogy kitart-e egy valódi belső téren valódi anyagpalettával, az csak a valódi munkán való kipróbálásból derül ki, és a szűrőn átjutó dolgok nagy része ezen a teszten még elbukik.
+
+A metaadatai csak annyira jók, mint a forrásai. 1225 bejegyzés nem hordoz olyan licenc-sztringet, amit az ellenőrző olvasni tudott. A VRAM-értékek még ritkábbak. A kategóriákat automatikusan vázolja, az illeszkedési pontszámok modellből jönnek; mindkettő kézzel szerkeszthető, és szerkesztem is.
+
+Az illeszkedés pontozása ítélet kérdése. A magas pontszám azt jelenti, „megér egy délutánt", nem azt, hogy „vezesd be". Az érték nem a számban van. Abban, hogy sosem emlékezetből választok eszközt, vagy abból, ami legutóbb a leglenyűgözőbb volt.
+
+Az átjutó eszközök [a produkciós pipeline-ba](/articles/inside-archupgrade-technical/) mennek, ahol minden modell magával viszi a licencosztályát az általa előállított fájlokba. Ha tudni akarja, mit jelent ez egy konkrét projektnél – mi reális ebben a negyedévben, mi van elég tisztán licencelve a publikáláshoz, mi marad a gépeimen –, [írjon](/contact/).
+</Lang>

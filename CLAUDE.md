@@ -23,7 +23,9 @@ copy its markup, patterns, or bugs.
 - **Two translation channels, never mixed:** UI chrome (nav, buttons, form labels) lives in
   `src/i18n/strings.ts` and resolves via `ui(lang)`. Content (MDX frontmatter + props) resolves
   via `t()`/`tStr()` from `src/lib/i18n.ts`; body prose uses paired `<Lang code="en|hu">` blocks.
-  Articles are the deliberate exception: **EN-only, plain strings, no Lang blocks.**
+  Articles use the same channels since 2026-09-17: `{en,hu}` `title`/`excerpt`, paired `<Lang>`
+  blocks in the body, `{en,hu}` captions on components; a plain-string title still means an
+  EN-only article and renders as English on both locales.
 - **Files are the source of truth.** Content = MDX/MD files in `src/content/`. The Zod schemas
   in `src/content/config.ts` are the contract. `keystatic.config.ts` has drifted from reality
   (flat strings vs `{en,hu}` files, unregistered components) — never "fix" content to match
@@ -388,9 +390,17 @@ enums in `config.ts` (see §4.14). Body: alternating `<Lang>` blocks each holdin
 `published: false` hides from index and redirects the slug. `ai-animation` and
 `ai-render-upgrade` link out to ai.visiongraphics.eu.
 
-**Articles** (EN-only): plain-string frontmatter (`title`, `date`, `excerpt`, `tags[]`,
-`coverImage`, `published`), plain-Markdown body, images as `![alt](/_img/articles/<topic>/x.jpg)`,
-no `<Lang>`. A paragraph that is only a Markdown image is turned into `<SingleImage fit="natural">`
+**Articles** (bilingual since 2026-09-17, all 15 translated): `{en,hu}` `title` and `excerpt`,
+plain `date`, `tags[]` (EN slugs), `coverImage`, `published`. Body = Markdown prose in paired
+`<Lang code="en">` / `<Lang code="hu">` blocks (the HU block duplicates the prose *and* its
+Markdown images with HU alt text), with JSX components (`ImageCompare`, `ImageGallery`,
+`SectionBanner`) shared between the pair and their `subtitle`/`beforeText`/`afterText`/`label`/
+`title` props as `{{ en, hu }}` objects; `alt` strings stay EN. Images as
+`![alt](/_img/articles/<topic>/x.jpg)`. A plain-string `title` is the EN-only fallback: the
+templates then mark the prose `lang="en"` and the HU index shows `enOnlyNote`. Reading time
+counts only the active locale's blocks. Author EN first, then `/translate-hu` — the pass
+wraps prose and localizes props by script, never by hand-editing EN (hard rule 13).
+A paragraph that is only a Markdown image is turned into `<SingleImage fit="natural">`
 at build time (`remarkArticleImages` in `astro.config.mjs`, articles only) — lightbox, thumb,
 `"title"` → caption — so authors keep writing plain Markdown. A linked image
 (`[![alt](img)](url)`) stays a plain link (a lightbox anchor can't nest in a link); galleries
@@ -670,8 +680,8 @@ UI strings: `ui(lang)` from `src/i18n/strings.ts` — `hu` is typed `Widen<typeo
 missing key is a compile error (keys must match; text may differ). Sections: `nav`, `cta`,
 `project`, `listing`, `meta`, `langSwitch`, `a11y` (aria-labels, skip link), `portfolio`
 (filter island labels — passed as a plain-string `labels` prop, `{n}`/`{v}` placeholders),
-`category`, `articles` (list/detail chrome; articles themselves stay EN — HU shows
-`enOnlyNote`), `about`, `contact`. Article date/reading-time helpers: `src/lib/article-meta.ts`.
+`category`, `articles` (list/detail chrome; `enOnlyNote` shows on HU only while some listed
+article still has a plain-string title), `about`, `contact`. Article date/reading-time helpers: `src/lib/article-meta.ts`.
 `<Lang code="en|hu">` (`src/components/i18n/Lang.astro`) renders its slot only for the active
 locale; must be registered in the template's components map to work inside MDX.
 `App.Locals` (see `src/env.d.ts`): `{ lang?: Locale; pageType?: 'portfolio'|'service'|'article'|'vision-tech' }`.
@@ -710,7 +720,7 @@ Add every future island to this list — and to this paragraph.
   SpecTable, CompareTable, Tour360, FilmEmbed, YouTubeEmbed+YoutubeEmbed, Lang.
 - `articles/[slug].astro` — SectionBanner(=mdx), SingleImage, ImageGallery, ImageCompare,
   Tour360, FilmEmbed, YouTubeEmbed+YoutubeEmbed, ProcessFlow, SpecTable, CompareTable,
-  NotableGrid, DeliverableGrid, TimelineTable, PhaseMatrix — **no Lang** (articles are EN-only).
+  NotableGrid, DeliverableGrid, TimelineTable, PhaseMatrix, Lang.
   Markdown images become SingleImage via the remark plugin (§5.3); the page chrome is built
   from `ui/ChipRow` (tag chips → `/articles/?tag=`) and `ui/SectionHeading` (author box).
 All four templates also mount `ArticleGalleryMounter` + `ArticleImageCompareMounter`.
@@ -767,6 +777,7 @@ Live maintenance:
 | `translate-reference-collections.mjs [--dry-run]` | curated HU titles for categories + client-types |
 | `split-lang-blocks.mjs <file>\|--all` | split `<Lang>` pairs at `##` boundaries (vision-tech) |
 | `populate-tour360-cover.mjs [--dry-run]` | add `coverImage` to bare `<Tour360>` in projects |
+| `wrap-article-hu.mjs --dump [slug]` · `<slug> <hu.mjs>` | make an article bilingual from a translation module (`/translate-hu`); asserts the EN text is unchanged |
 | `generate-depth.py [--slug c/s] [--force] [files…]` | Depth Anything V2 depth maps for the hero parallax (§8.2): project covers → `public/thumbs/depth/`, or `<name>-depth.webp` beside given files; `r2-cors.json` is the bucket CORS rule the heroes need |
 
 Everything else in `scripts/` (`convert-*`, `migrate-*`, `i18n-*`, `generate-projects.js`,
@@ -790,38 +801,34 @@ is invisible under `border-none`; don't "fix" it back.
 
 ### 8.10 Known bugs & debt register (flag, don't fix unasked — §5.6)
 
-1. **Articles are EN-only by design; the templates' chrome is now localized** (links via
-   `localeUrl`, dates via `formatDate(date, lang)`, labels from `strings.ts articles`, prose
-   marked `lang="en"`). `Lang` is still not registered in `articles/[slug].astro` — localizing
-   an article body requires adding it (and `{en,hu}` frontmatter support in the template).
-2. **Eight orphaned editor block types** (`section-label`, `diff-block`, `cta-section`,
+1. **Eight orphaned editor block types** (`section-label`, `diff-block`, `cta-section`,
    `button-group`, `sidebar-block`, `section-container`, `two-col`, `service-body-grid`):
    render+inspector exist, but absent from palette registry and from `blockToMdx` — saving a
    doc containing one **silently deletes it** (§4.16).
-3. **`3ds-max-tools.mdx` ships `TODO_` media URLs** (Hungexpo gala, Rubik, Planet 2023 tour).
-4. **Dead code — do not wire new work to it:** `ui/PageHero.astro` (unused), `comfyBase`
+2. **`3ds-max-tools.mdx` ships `TODO_` media URLs** (Hungexpo gala, Rubik, Planet 2023 tour).
+3. **Dead code — do not wire new work to it:** `ui/PageHero.astro` (unused), `comfyBase`
    config key + "ComfyUIPanel" misnomer, editor ImportDialog (unreachable), `FilmEmbed`
    (registered, unused; `hasFilm` flags exist with no embeds), projects `features`/`tags`
    (always empty — the portfolio filter hides its "Output type" group until they aren't),
    `components.css` double-import, mounter comments referencing nonexistent remark plugins.
    Pagefind is still indexed at build time but nothing on the site consumes it (no search UI).
-5. **MDX body links are locale-blind** (bare `/vision-tech/x/` → redirects to `/en/...` even
+4. **MDX body links are locale-blind** (bare `/vision-tech/x/` → redirects to `/en/...` even
    from HU pages) — accepted debt, consistent across all content.
-6. **Editor live pipeline has zero tests** (vitest wired but `tools/editor/tests/` empty).
+5. **Editor live pipeline has zero tests** (vitest wired but `tools/editor/tests/` empty).
    A future suite should round-trip `documentToMdx` → `parseMdx` → `mapMdxToBlocks`.
-7. **Working tree carries teardown debris:** `storybook-static/` is untracked build output.
+6. **Working tree carries teardown debris:** `storybook-static/` is untracked build output.
    It is gitignored again, but delete it — `astro check` walks it otherwise (tsconfig now
    excludes it too).
-8. **YouTubeEmbed nests a `<button>` inside a `role="button"` div** — works, but double
+7. **YouTubeEmbed nests a `<button>` inside a `role="button"` div** — works, but double
    announces to screen readers. Fix = drop the outer role and make the inner button the target.
-9. **Light-mode `--color-border` is `#9a9088` in `global.css`** while §8.9 documents `#d0cbc3`;
+8. **Light-mode `--color-border` is `#9a9088` in `global.css`** while §8.9 documents `#d0cbc3`;
     the CSS is what ships. Reconcile when the light palette is next touched.
-10. **`ui/ImageCompare.tsx` reveals the *after* image on the left** (`clipPath: inset(0 X% 0 0)`
+9. **`ui/ImageCompare.tsx` reveals the *after* image on the left** (`clipPath: inset(0 X% 0 0)`
     on the after-wrap) while its corner labels sit before-left / after-right and the prop
     comments say "after — revealed on the right". Prose must not say "left side is the
     before" — the articles now say "the labels on the image say which". Fix = flip the clip
     side or the label sides, in the island, once, with the user's sign-off.
-11. **ArchUpgrade's Vite dev server (`192.168.0.2:5173`) is an unauthenticated owner door**:
+10. **ArchUpgrade's Vite dev server (`192.168.0.2:5173`) is an unauthenticated owner door**:
     it proxies `/api` from loopback, so any LAN peer is `owner` without a credential (the
     `:7788` backend itself refuses them). Convenient for §8.2 illustrations; a security gap
     on the production PC. Belongs to the archupgrade repo, noted here because the site

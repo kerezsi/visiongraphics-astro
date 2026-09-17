@@ -1,7 +1,9 @@
 ---
 // src/pages/[lang]/articles/[slug].astro — article detail. Chrome is
-// localized, the prose is EN-only (§8.10 #1). Layout and spacing come from
-// the shared blocks and tokens only — no page-local px/rem.
+// localized; an article is bilingual when its title is {en,hu} and its prose
+// sits in paired <Lang> blocks, otherwise it renders as EN on both locales
+// (marked lang="en"). Layout and spacing come from the shared blocks and
+// tokens only — no page-local px/rem.
 
 import Page from '../../../layouts/Page.astro';
 import { getCollection } from 'astro:content';
@@ -23,7 +25,8 @@ import PhaseMatrix from '../../../components/mdx/PhaseMatrix.astro';
 import SingleImage from '../../../components/mdx/SingleImage.astro';
 import ChipRow from '../../../components/ui/ChipRow.astro';
 import SectionHeading from '../../../components/ui/SectionHeading.astro';
-import { localizedPaths, localeUrl, tStr, type Locale } from '../../../lib/i18n';
+import Lang from '../../../components/i18n/Lang.astro';
+import { localizedPaths, localeUrl, tStr, hasLocale, type Locale } from '../../../lib/i18n';
 import { ui } from '../../../i18n/strings';
 import { formatDate, readingTime } from '../../../lib/article-meta';
 
@@ -41,8 +44,11 @@ const article = allArticles.find(a => a.slug === slug);
 if (!article) return Astro.redirect(localeUrl('/articles/', lang));
 const { data } = article;
 const { Content } = await article.render();
-const minutes = readingTime(article.body);
-// Articles are EN-only plain strings today, but the schema allows {en,hu} — flatten (§4.1).
+const minutes = readingTime(article.body, lang);
+// A plain-string title means an EN-only article (a plain string counts as "available" to
+// hasLocale, so check the shape first). Flatten either way (§4.1).
+const isHu = (t: unknown) => typeof t !== 'string' && hasLocale(t as never, 'hu');
+const proseLang: Locale = isHu(data.title) ? lang : 'en';
 const title   = tStr(data.title, lang);
 const excerpt = tStr(data.excerpt, lang);
 const authorName = lang === 'hu' ? 'Kerezsi László' : 'László Kerezsi';
@@ -60,7 +66,7 @@ const articleJsonLd = JSON.stringify({
   headline: title,
   description: excerpt,
   datePublished: data.date.toISOString(),
-  inLanguage: 'en',
+  inLanguage: proseLang,
   image: data.coverImage ? new URL(data.coverImage, Astro.site).toString() : undefined,
   author: { '@type': 'Person', name: 'László Kerezsi' },
   publisher: { '@type': 'Organization', name: 'Vision Graphics Kft.', url: 'https://visiongraphics.eu/' },
@@ -90,11 +96,11 @@ const nextArticle = sorted[currentIndex - 1] ?? null;
     <nav class="article-breadcrumb" aria-label={L.a11y.breadcrumb}>
       <a href={localeUrl('/articles/', lang)}>{L.articles.breadcrumbRoot}</a>
       <span aria-hidden="true">→</span>
-      <span aria-current="page" lang="en">{title}</span>
+      <span aria-current="page" lang={proseLang}>{title}</span>
     </nav>
 
-    <!-- Header — articles are authored in English; mark the prose as such on /hu/ -->
-    <header class="article-header" lang="en">
+    <!-- Header — an EN-only article is marked lang="en" on /hu/ -->
+    <header class="article-header" lang={proseLang}>
       <div class="article-meta">
         <time datetime={data.date.toISOString()}>{formatDate(data.date, lang)}</time>
         <span>{L.articles.readingTime.replace('{n}', String(minutes))}</span>
@@ -112,8 +118,8 @@ const nextArticle = sorted[currentIndex - 1] ?? null;
 
     <!-- Content — markdown images arrive as <SingleImage> (remarkArticleImages in astro.config.mjs) -->
     <div class="article-layout">
-      <div class="article-content prose" lang="en">
-        <Content components={{ SectionBanner, ImageGallery, ImageCompare, SingleImage, Tour360, FilmEmbed, YouTubeEmbed, YoutubeEmbed: YouTubeEmbed, ProcessFlow, SpecTable, CompareTable, NotableGrid, DeliverableGrid, TimelineTable, PhaseMatrix }} />
+      <div class="article-content prose" lang={proseLang}>
+        <Content components={{ SectionBanner, ImageGallery, ImageCompare, SingleImage, Tour360, FilmEmbed, YouTubeEmbed, YoutubeEmbed: YouTubeEmbed, ProcessFlow, SpecTable, CompareTable, NotableGrid, DeliverableGrid, TimelineTable, PhaseMatrix, Lang }} />
         <ArticleImageCompareMounter client:load />
         <ArticleGalleryMounter client:load />
       </div>
@@ -132,14 +138,14 @@ const nextArticle = sorted[currentIndex - 1] ?? null;
       {prevArticle && (
         <a href={localeUrl(`/articles/${prevArticle.slug}/`, lang)} class="article-nav-link article-nav-link--prev">
           <span class="nav-dir">{L.articles.older}</span>
-          <span class="nav-title" lang="en">{tStr(prevArticle.data.title, lang)}</span>
+          <span class="nav-title" lang={isHu(prevArticle.data.title) ? lang : 'en'}>{tStr(prevArticle.data.title, lang)}</span>
         </a>
       )}
       <a href={localeUrl('/articles/', lang)} class="eyebrow article-nav-link article-nav-link--all">{L.articles.allArticles}</a>
       {nextArticle && (
         <a href={localeUrl(`/articles/${nextArticle.slug}/`, lang)} class="article-nav-link article-nav-link--next">
           <span class="nav-dir">{L.articles.newer}</span>
-          <span class="nav-title" lang="en">{tStr(nextArticle.data.title, lang)}</span>
+          <span class="nav-title" lang={isHu(nextArticle.data.title) ? lang : 'en'}>{tStr(nextArticle.data.title, lang)}</span>
         </a>
       )}
     </nav>

@@ -1,10 +1,11 @@
 ---
-title: 'Building Our Own VR Tour Engine: When the Tour Has to Match the Model'
+title:
+  en: "Building My Own VR Tour Engine: When the Tour Has to Match the Model"
+  hu: "Saját VR-túramotort építettem: amikor a túrának egyeznie kell a modellel"
 date: 2026-09-16T00:00:00.000Z
-excerpt: >-
-  We already had good commercial tour software. We built our own anyway —
-  because a 360 tour should be generated from the same 3D scene the renders come
-  from, and re-publishing it should be a command, not an afternoon.
+excerpt:
+  en: I already had good commercial tour software. I built my own anyway, because a 360 tour should be generated from the same 3D scene the renders come from, and re-publishing it should be a command, not an afternoon.
+  hu: Volt már jó kereskedelmi túraszoftverem. Mégis sajátot építettem, mert egy 360-as túrának ugyanabból a 3D-jelenetből kell generálódnia, amiből a renderek jönnek, és az újrapublikálásának egy parancsnak kell lennie, nem egy délutánnak.
 tags:
   - architectural-visualization
   - tools
@@ -14,60 +15,126 @@ published: false
 coverImage: /_img/articles/tour-engine/hero.jpg
 ---
 
-A 360 tour normally gets built twice. Once in the 3D scene — where the cameras stand, which room can see which, where the floor plan is drawn. Then again in the tour software, where you place the same viewpoints on the same plan and draw the same connections by hand. Then the architect moves a wall, three cameras shift, you re-render, and you build the second one again.
+<Lang code="en">
+A 360 tour normally gets built twice. Once in the 3D scene, where the cameras stand, which room can see which, where the floor plan is drawn. Then again in the tour software, where you place the same viewpoints on the same plan and draw the same connections by hand. Then the architect moves a wall, three cameras shift, you re-render, and you build the second one again.
 
-We have delivered 360 tours in commercial authoring software for years, mostly Pano2VR, and none of this is a complaint about it. It is mature software that does its job. The problem is structural: the tour is a separate document from the scene that produced it, so keeping the two in agreement is manual work nobody bills for and everybody repeats.
+I have delivered 360 tours in commercial software for years, mostly Pano2VR, and this is not a complaint about it. It is mature and does its job. The problem is structural: the tour is a separate document from the scene that produced it, so keeping the two in agreement is manual work nobody bills for and everybody repeats.
 
-So over the past months we built our own tour authoring and publishing engine. Three reasons, in order: **integration** with the 3D scene, **batch** operation, and **control** over the player and the publishing path.
+So over the past months I built my own tour authoring and publishing engine. Three reasons, in order: integration with the 3D scene, batch operation, and control over the player and the publishing path.
 
 ![A 360° tour in the browser — floor plan mini-map, viewpoint pins and a compass; the kind of deliverable the new engine publishes](/_img/vision-tech/360-tour.jpg)
 
-## The tour is generated from the scene the renders come from
+## The tour is generated from the scene
 
-We wrote two bridges — a Blender add-on and a 3ds Max plugin using pymxs — that emit the same JSON hand-off file. In the scene you mark cameras as tour viewpoints, define levels by their elevation range, and press one button. Out comes every viewpoint with its world position in metres and its compass bearing; an orthographic top-down floor plan per level, north-up, with the world-to-pixel mapping so pins land on the plan without anyone dragging them; and the links between viewpoints, computed by raycasting line-of-sight between every same-level camera pair within a distance cap. Objects excluded from renders do not block the ray, so the door-open state is whatever the scene contains. A marker dropped near a staircase links the nearest camera on each floor.
+Two bridges, a Blender add-on and a 3ds Max plugin using pymxs, emit the same JSON hand-off file. In the scene you mark cameras as tour viewpoints, define levels by elevation range, and press one button. Out comes every viewpoint with its world position in metres and compass bearing; an orthographic top-down floor plan per level, north-up, with the world-to-pixel mapping so pins land on the plan without anyone dragging them; and the links between viewpoints, computed by raycasting line-of-sight between every same-level camera pair within a distance cap. Objects excluded from renders do not block the ray, so the door-open state is whatever the scene contains. A marker dropped near a staircase links the nearest camera on each floor.
 
 ![Illustration: viewpoints as numbered pins on the plan, with the line-of-sight links between them — the hand-off file, drawn](/_img/articles/tour-engine/plan.jpg)
 
-**The tour cannot drift out of sync with the model, because it is derived from the model.** Re-export is idempotent and re-import diffs by stable IDs: moved cameras update their positions, links and plan pins, while titles, hotspots and view settings you authored by hand survive untouched. A camera deleted from the scene is flagged as orphaned and waits for you to confirm.
+The tour cannot drift out of sync with the model, because it is derived from it. Re-export is idempotent and re-import diffs by stable IDs: moved cameras update their positions, links and plan pins, while titles, hotspots and view settings authored by hand survive. A camera deleted from the scene is flagged as orphaned and waits for confirmation.
 
-The bridges deliberately never render — the app consumes finished panoramas and nothing else, decided in the first week. You render equirects with Cycles, V-Ray, Corona or anything that outputs a 2:1 sphere, named after the camera IDs the export already references, and a watch folder attaches them to their nodes as they land, so import runs while the render queue is still working.
+The bridges never render. The app consumes finished panoramas and nothing else, decided in the first week. You render equirects with Cycles, V-Ray, Corona or anything that outputs a 2:1 sphere, named after the camera IDs the export already references, and a watch folder attaches them to their nodes as they land, so import runs while the render queue is still working.
+</Lang>
 
-<ImageGallery label={false} subtitle="Panoramas come from the same scene as the stills — Hungexpo revitalization and the Adria Pearl, both delivered with 360° tours." images={[{"src":"/_img/portfolio/hungexpo-revitalization/01.jpg","alt":"Hungexpo revitalization — aerial render of the new pavilion"},{"src":"/_img/portfolio/hungexpo-revitalization/05.jpg","alt":"Hungexpo revitalization — interior concourse"},{"src":"/_img/portfolio/adria-pearl/09.jpg","alt":"Hotel Adria Pearl — reception, one of the tour viewpoints"},{"src":"/_img/portfolio/adria-pearl/05.jpg","alt":"Hotel Adria Pearl — guest room viewpoint"}]} />
+<Lang code="hu">
+Egy 360-as túra általában kétszer épül meg. Egyszer a 3D-jelenetben, ahol a kamerák állnak, ahol eldől, melyik szoba melyiket látja, ahol az alaprajz rajzolódik. Aztán még egyszer a túraszoftverben, ahol ugyanazokat a nézőpontokat helyezed ugyanarra az alaprajzra, és ugyanazokat a kapcsolatokat rajzolod meg kézzel. Aztán az építész áthelyez egy falat, három kamera elmozdul, újrarenderelsz, és a másodikat újra megépíted.
 
-Old tours come across too. The importer reads Pano2VR project files — built against real projects from versions 5.2 through 7.1 — bringing over nodes, source panoramas, view parameters and north, point and polygon hotspots, links, sounds and floor plans. Skins, animations and baked patches are listed in an import report as skipped rather than silently dropped.
+Évek óta szállítok 360-as túrákat kereskedelmi szoftverben, többnyire Pano2VR-ben, és ez nem panasz rá. Érett, és teszi a dolgát. A probléma szerkezeti: a túra külön dokumentum attól a jelenettől, amely létrehozta, így a kettő egyezésben tartása kézi munka, amit senki nem számláz ki, és mindenki ismétel.
+
+Így az elmúlt hónapokban saját túraszerkesztő és -publikáló motort építettem. Három ok, sorrendben: integráció a 3D-jelenettel, kötegelt működés, és kontroll a lejátszó és a publikálási útvonal fölött.
+
+![Egy 360°-os túra a böngészőben – alaprajzi minitérkép, nézőpont-tűk és iránytű; az a fajta leszállítás, amit az új motor publikál](/_img/vision-tech/360-tour.jpg)
+
+## A túra a jelenetből generálódik
+
+Két híd, egy Blender-kiegészítő és egy pymxs-alapú 3ds Max-bővítmény, ugyanazt a JSON átadófájlt bocsátja ki. A jelenetben kamerákat jelölsz meg túra-nézőpontnak, szinteket definiálsz magassági tartománnyal, és megnyomsz egy gombot. Kijön minden nézőpont a világkoordinátás pozíciójával méterben és az iránytű szerinti irányával; szintenként egy ortografikus, felülnézeti alaprajz, északkal felfelé, a világ–pixel leképezéssel, hogy a tűk anélkül landoljanak a rajzon, hogy bárki húzogatná őket; és a nézőpontok közötti kapcsolatok, sugárkövetéses rálátás-számítással minden azonos szintű kamerapár között, egy távolságkorláton belül. A renderből kizárt objektumok nem blokkolják a sugarat, így az ajtók nyitottsága az, ami a jelenetben van. Egy lépcső mellé ejtett jelölő minden emeleten a legközelebbi kamerát kapcsolja össze.
+
+![Illusztráció: nézőpontok számozott tűkként az alaprajzon, a közöttük futó rálátási kapcsolatokkal – az átadófájl, lerajzolva](/_img/articles/tour-engine/plan.jpg)
+
+A túra nem csúszhat szét a modelltől, mert belőle származik. Az újraexport idempotens, az újraimport stabil azonosítók alapján diffel: az elmozdított kamerák frissítik a pozíciójukat, kapcsolataikat és alaprajzi tűiket, míg a kézzel írt címek, hotspotok és nézetbeállítások megmaradnak. A jelenetből törölt kamera árvaként megjelölődik, és megerősítésre vár.
+
+A hidak sosem renderelnek. Az app kész panorámákat fogyaszt és semmi mást, ez az első héten eldőlt. Az ekvirektanguláris képeket Cycles-szel, V-Ray-jel, Coronával vagy bármivel rendereled, ami 2:1-es gömböt ad ki, azokkal a kameraazonosítókkal elnevezve, amelyekre az export már hivatkozik, és egy figyelt mappa a csomópontjaikhoz csatolja őket, ahogy beérkeznek, így az import fut, amíg a rendersor még dolgozik.
+</Lang>
+
+<ImageGallery label={false} subtitle={{ en: "Panoramas come from the same scene as the stills — Hungexpo revitalization and the Adria Pearl, both delivered with 360° tours.", hu: "A panorámák ugyanabból a jelenetből jönnek, mint az állóképek – Hungexpo-revitalizáció és az Adria Pearl, mindkettő 360°-os túrával leszállítva." }} images={[{"src":"/_img/portfolio/hungexpo-revitalization/01.jpg","alt":"Hungexpo revitalization — aerial render of the new pavilion"},{"src":"/_img/portfolio/hungexpo-revitalization/05.jpg","alt":"Hungexpo revitalization — interior concourse"},{"src":"/_img/portfolio/adria-pearl/09.jpg","alt":"Hotel Adria Pearl — reception, one of the tour viewpoints"},{"src":"/_img/portfolio/adria-pearl/05.jpg","alt":"Hotel Adria Pearl — guest room viewpoint"}]} />
+
+<Lang code="en">
+Old tours come across too. The importer reads Pano2VR project files, built against real projects from versions 5.2 through 7.1: nodes, source panoramas, view parameters and north, point and polygon hotspots, links, sounds, floor plans. Skins, animations and baked patches are listed in an import report as skipped rather than silently dropped.
 
 ## Headless by default
 
-The visual editor is a convenience layer. Underneath, one Python service layer is exposed four ways: a REST API, a command-line tool, an importable Python API, and an MCP server for agents.
+The visual editor is a convenience layer. Underneath, one Python service layer is exposed four ways: REST API, command-line tool, importable Python API, and an MCP server for agents.
 
-**Re-publishing a tour is a command, not an afternoon.** A complete run is six lines: create the project from a saved template, import the scene export, watch the render folder, tile, run the QA report, publish. The report exits non-zero when it finds errors, so it can gate a build the way a test suite does. Publishing goes through saved deploy profiles — folder, FTP or SFTP — and a folder deploy copies incrementally, so a one-node edit re-copies one node.
+Re-publishing a tour is a command, not an afternoon. A complete run is six lines: create the project from a saved template, import the scene export, watch the render folder, tile, run the QA report, publish. The report exits non-zero on errors, so it gates a build the way a test suite does. Publishing goes through saved deploy profiles (folder, FTP, SFTP), and a folder deploy copies incrementally, so a one-node edit re-copies one node.
 
-The project itself is a folder with a JSON file at the root and stable string IDs everywhere: it diffs in git, and a script or an agent can edit it safely.
+The project is a folder with a JSON file at the root and stable string IDs everywhere. It diffs in git, and a script or an agent can edit it safely.
 
-## Why we wrote the player as well
+## Why I wrote the player as well
 
-Panorama tours ship with a custom WebGL2 viewer that has zero runtime dependencies. It streams multi-resolution cube tiles with per-visible-tile culling, and WebP tiles come out roughly 30% smaller than JPEG at the same quality. The same engine treats flat and cylindrical high-resolution images — gigapixel drone panoramas, ortho elevations, site plans — as navigable nodes; on a 1.27 gigapixel test panorama, zooming to native resolution costs fourteen tile requests rather than the whole pyramid.
+Tours ship with a custom WebGL2 viewer with zero runtime dependencies. It streams multi-resolution cube tiles with per-visible-tile culling; WebP tiles come out roughly 30% smaller than JPEG at the same quality. The same engine treats flat and cylindrical high-resolution images (gigapixel drone panoramas, ortho elevations, site plans) as navigable nodes. On a 1.27 gigapixel test panorama, zooming to native resolution costs fourteen tile requests rather than the whole pyramid.
 
-Because the tour knows the real 3D offsets between viewpoints, moving between them is a position-aware directional zoom — it reads as walking towards the next room instead of a crossfade. That falls out of the scene integration: the real offsets are already in the export, so the transition does not have to guess at them.
+Because the tour knows the real 3D offsets between viewpoints, moving between them is a position-aware directional zoom. It reads as walking towards the next room instead of a crossfade. That falls out of the scene integration for free.
 
 Tours carrying Gaussian splats or glTF models lazy-load a separate three.js chunk; a plain panorama tour never downloads a 3D library.
 
-The panoramas themselves get the same treatment as our stills: [the finishing pipeline](/articles/from-render-to-photograph-archupgrade/) has an equirectangular mode that keeps the seam closed, so a tour can be relit or upscaled without a re-render either.
+The panoramas get the same treatment as stills: [the finishing pipeline](/articles/from-render-to-photograph-archupgrade/) has an equirectangular mode that keeps the seam closed, so a tour can be relit or upscaled without a re-render either.
 
-## VR, and a guide who can see what the client is seeing
+## VR, and a guide who can see what the client sees
 
-The viewer takes an immersive 3DOF WebXR session from a headset browser and renders over/under stereo panoramas per eye — code that is complete but has not met a headset yet, more on which below. Headsets refuse VR on an insecure origin, so serving on a LAN address generates and caches a self-signed certificate automatically; exported tours are also installable, which is the fallback if a headset declines WebXR through that certificate.
+The viewer takes an immersive 3DOF WebXR session from a headset browser and renders over/under stereo panoramas per eye. Code complete, not yet met a headset; more below. Headsets refuse VR on an insecure origin, so serving on a LAN address generates and caches a self-signed certificate automatically. Exported tours are also installable, the fallback if a headset declines WebXR through that certificate.
 
-The part we care about most is guided viewing on site. A presenter drives the view and every joined browser follows. The guide's tablet lists each device by name with the room it is in and a compass dial for where it is looking, and clicking a device opens its view full size. Nothing is streamed: the panel renders the same tour locally from a handful of numbers a second, which is why it works on an offline hotspot. The guide can drop a marker on a detail — an edge arrow appears if it is behind you — send one headset elsewhere while the group stays, or gather everyone back. What none of those buttons do is take over someone's head; re-centring rotates the tour's forward direction and lets the wearer look.
+The part I care about most is guided viewing on site. A presenter drives the view and every joined browser follows. The guide's tablet lists each device by name with the room it is in and a compass dial for where it is looking; clicking a device opens its view full size. Nothing is streamed: the panel renders the same tour locally from a handful of numbers a second, which is why it works on an offline hotspot. The guide can drop a marker on a detail (an edge arrow appears if it is behind you), send one headset elsewhere while the group stays, or gather everyone back. None of those buttons take over someone's head; re-centring rotates the tour's forward direction and lets the wearer look.
+</Lang>
 
-<ImageGallery label={false} subtitle="Guided viewing in practice — headset sessions at an airport client's trade-show stand, run on the commercial tour software this engine replaces. The presenter's problem was the same then: knowing what each visitor is looking at." images={[{"src":"/_img/vision-tech/360-tour/497108520-10213743002446153-2279518246668265827-n.jpg","alt":"Visitors in VR headsets at a trade-show stand, an operator beside them"},{"src":"/_img/vision-tech/360-tour/495373920-10213743003166171-8349668242143708587-n.jpg","alt":"A headset session at the stand with the tour on a screen behind"},{"src":"/_img/vision-tech/360-tour/497521017-10213743002406152-3683011073681937631-n.jpg","alt":"A presenter steering the tour from a tablet while visitors watch"},{"src":"/_img/vision-tech/360-tour/496944047-10213742999686084-5088113894096025011-n.jpg","alt":"Several visitors in headsets at once — the case for a guide console"}]} />
+<Lang code="hu">
+A régi túrák is átjönnek. Az importáló Pano2VR-projektfájlokat olvas, valódi projekteken kipróbálva az 5.2-től a 7.1-es verzióig: csomópontok, forráspanorámák, nézetparaméterek és észak, pont- és sokszög-hotspotok, kapcsolatok, hangok, alaprajzok. A skinek, animációk és beégetett foltok egy importjelentésben kihagyottként szerepelnek, nem csendben eldobva.
 
-## The honest position
+## Alapból fej nélkül
 
-Working end to end: authoring, tiling, export, publishing, skins, the QA report, the Pano2VR importer, the Blender bridge, and the guided-viewing console — the last verified in live multi-client browser sessions in late July.
+A vizuális szerkesztő kényelmi réteg. Alatta egyetlen Python-szolgáltatásréteg négyféleképpen érhető el: REST API, parancssori eszköz, importálható Python API, és MCP-szerver ügynököknek.
 
-Not verified on hardware: no headset session has happened yet. VR rendering and the 6DOF splat mode are code-complete, but until a Quest sits on the desk we are not claiming they pass. The 3ds Max bridge is the same story — feature-complete but younger than its Blender twin, with a dozen assumptions about the Max API marked in the code for verification on first production use.
+Egy túra újrapublikálása parancs, nem délután. Egy teljes futás hat sor: projekt létrehozása mentett sablonból, a jenetexport importálása, a rendermappa figyelése, csempézés, a QA-jelentés futtatása, publikálás. A jelentés hibánál nem nulla kóddal lép ki, így úgy kapuzza a buildet, ahogy egy tesztkészlet. A publikálás mentett deploy-profilokon át megy (mappa, FTP, SFTP), és a mappás deploy inkrementálisan másol, így egy egycsomópontos szerkesztés egy csomópontot másol újra.
 
-Genuinely missing: inside a VR session hotspots do not render and nothing is clickable, so you navigate before entering VR. That is the next piece of work. 360 video panorama nodes are specified and deliberately unbuilt until a project needs them. And installation is still developer-grade — clone the repository, run a build script, keep Python and Node on the machine. There is no installer, because the one we tried produced a shell that could not start its own backend. This is internal studio tooling, not a product.
+A projekt egy mappa, a gyökerében egy JSON-fájllal, és mindenütt stabil sztring-azonosítókkal. Diffel gitben, és egy szkript vagy egy ügynök biztonságosan szerkesztheti.
 
-If you want a tour that stays in step with the model it came from — or a guided viewing where the person running it can see what your client is looking at — that is part of our [architectural visualization work](/services/architectural-visualization/). [Get in touch](/contact/) and we will walk you through what it would look like on your project.
+## Miért írtam meg a lejátszót is
+
+A túrák egy saját WebGL2-es nézővel érkeznek, futásidejű függőség nélkül. Többfelbontású kockacsempéket streamel, láthatócsempénkénti selejtezéssel; a WebP-csempék azonos minőségen nagyjából 30%-kal kisebbek a JPEG-nél. Ugyanaz a motor a lapos és hengeres nagyfelbontású képeket (gigapixeles drónpanorámák, orto-homlokzatok, helyszínrajzok) bejárható csomópontként kezeli. Egy 1,27 gigapixeles tesztpanorámán a natív felbontásra zoomolás tizennégy csempekérésbe kerül a teljes piramis helyett.
+
+Mivel a túra ismeri a nézőpontok közötti valódi 3D-eltolásokat, a köztük mozgás pozíciótudatos irányított zoom. Úgy hat, mint a következő szoba felé sétálás, nem mint egy áttűnés. Ez a jenetintegrációból ingyen kiesik.
+
+A Gaussian splatokat vagy glTF-modelleket hordozó túrák egy külön three.js-darabot töltenek be lustán; egy sima panorámatúra sosem tölt le 3D-könyvtárat.
+
+A panorámák ugyanazt a kezelést kapják, mint az állóképek: [a befejező pipeline-nak](/articles/from-render-to-photograph-archupgrade/) van ekvirektanguláris módja, amely zárva tartja a varratot, így egy túra is átvilágítható vagy felskálázható újrarenderelés nélkül.
+
+## VR, és egy vezető, aki látja, mit lát az ügyfél
+
+A néző egy headset-böngészőtől immerzív 3DOF WebXR-munkamenetet fogad, és szemenként fent/lent sztereó panorámákat renderel. A kód kész, headsettel még nem találkozott; alább bővebben. A headsetek nem biztonságos origin-en megtagadják a VR-t, így a LAN-címen való kiszolgálás automatikusan generál és gyorsítótáraz egy önaláírt tanúsítványt. Az exportált túrák telepíthetők is, ez a tartalék, ha egy headset ezen a tanúsítványon át elutasítja a WebXR-t.
+
+A rész, ami a legjobban érdekel, a helyszíni vezetett megtekintés. Egy bemutató vezérli a nézetet, és minden csatlakozott böngésző követi. A vezető tabletje név szerint listáz minden eszközt, a szobával, ahol van, és egy iránytű-tárcsával, merre néz; egy eszközre kattintva teljes méretben megnyílik a nézete. Semmi nem streamelődik: a panel helyben ugyanazt a túrát rendereli másodpercenként egy maréknyi számból, ezért működik offline hotspoton. A vezető jelölőt ejthet egy részletre (ha mögötted van, egy szélső nyíl jelenik meg), egy headsetet máshová küldhet, míg a csoport marad, vagy mindenkit visszagyűjthet. Egyik gomb sem veszi át senki fejét; az újraközpontozás a túra előre-irányát forgatja, és hagyja, hogy a viselő nézzen.
+</Lang>
+
+<ImageGallery label={false} subtitle={{ en: "Guided viewing in practice — headset sessions at an airport client's trade-show stand, run on the commercial tour software this engine replaces. The presenter's problem was the same then: knowing what each visitor is looking at.", hu: "Vezetett megtekintés a gyakorlatban – headset-ülések egy repülőtéri ügyfél kiállítási standján, azon a kereskedelmi túraszoftveren, amelyet ez a motor vált le. A bemutató gondja akkor is ugyanaz volt: tudni, mit néz éppen az egyes látogató." }} images={[{"src":"/_img/vision-tech/360-tour/497108520-10213743002446153-2279518246668265827-n.jpg","alt":"Visitors in VR headsets at a trade-show stand, an operator beside them"},{"src":"/_img/vision-tech/360-tour/495373920-10213743003166171-8349668242143708587-n.jpg","alt":"A headset session at the stand with the tour on a screen behind"},{"src":"/_img/vision-tech/360-tour/497521017-10213743002406152-3683011073681937631-n.jpg","alt":"A presenter steering the tour from a tablet while visitors watch"},{"src":"/_img/vision-tech/360-tour/496944047-10213742999686084-5088113894096025011-n.jpg","alt":"Several visitors in headsets at once — the case for a guide console"}]} />
+
+<Lang code="en">
+## Where it stands
+
+Working end to end: authoring, tiling, export, publishing, skins, the QA report, the Pano2VR importer, the Blender bridge, and the guided-viewing console, the last verified in live multi-client browser sessions in late July.
+
+Not verified on hardware: no headset session has happened yet. VR rendering and the 6DOF splat mode are code-complete, but until a Quest sits on the desk I am not claiming they pass. The 3ds Max bridge is the same story: feature-complete but younger than its Blender twin, with a dozen assumptions about the Max API marked in the code for verification on first production use.
+
+Missing: inside a VR session hotspots do not render and nothing is clickable, so you navigate before entering VR. That is next. 360 video panorama nodes are specified and deliberately unbuilt until a project needs them. Installation is developer-grade: clone the repository, run a build script, keep Python and Node on the machine. There is no installer, because the one I tried produced a shell that could not start its own backend. This is studio tooling, not a product.
+
+If you want a tour that stays in step with the model it came from, or a guided viewing where the person running it can see what your client is looking at, that is part of my [architectural visualization work](/services/architectural-visualization/). [Get in touch](/contact/).
+</Lang>
+
+<Lang code="hu">
+## Hol tart
+
+Végponttól végpontig működik: szerkesztés, csempézés, export, publikálás, skinek, a QA-jelentés, a Pano2VR-importáló, a Blender-híd, és a vezetett megtekintés konzolja, az utóbbi élő, több kliensű böngésző-munkamenetekben ellenőrizve július végén.
+
+Hardveren nem ellenőrzött: headset-ülés még nem volt. A VR-renderelés és a 6DOF splat-mód kódszinten kész, de amíg egy Quest nem ül az asztalon, nem állítom, hogy átmennek. A 3ds Max-híd ugyanez a történet: funkciókész, de fiatalabb a Blender-ikertestvérénél, egy tucat, a Max API-ra vonatkozó feltételezéssel a kódban megjelölve, első éles használatkor ellenőrzendő.
+
+Hiányzik: VR-munkameneten belül a hotspotok nem renderelődnek, és semmi nem kattintható, így a VR-be lépés előtt navigálsz. Ez a következő. A 360-as videópanoráma-csomópontok specifikálva vannak, és szándékosan nincsenek megépítve, amíg egy projektnek nem kellenek. A telepítés fejlesztői szintű: klónozd a tárolót, futtass egy build-szkriptet, tarts Pythont és Node-ot a gépen. Telepítő nincs, mert az, amit kipróbáltam, olyan héjat gyártott, amely nem tudta elindítani a saját backendjét. Ez stúdióeszköz, nem termék.
+
+Ha olyan túrát szeretne, amely lépést tart a modellel, amiből jött, vagy olyan vezetett megtekintést, ahol az azt vezető ember látja, mit néz az ügyfele, az része az [építészeti vizualizációs munkámnak](/services/architectural-visualization/). [Írjon](/contact/).
+</Lang>

@@ -5,10 +5,13 @@ description: Write, edit, or publish a blog article for visiongraphics.eu in the
 
 # Write an article
 
-Articles are the one **EN-only** collection: plain-string frontmatter, plain-Markdown body,
-no `<Lang>`, no `{en,hu}` objects, and in practice no MDX components. Blog is enabled in the
-nav; new drafts start `published: false` and flip only on explicit user instruction
-(hard rule 16).
+Articles are **authored in English and translated afterwards** (all 15 bilingual since
+2026-09-17). Write the EN draft as plain Markdown with plain-string `title`/`excerpt`; the HU pass
+(`/translate-hu`) then turns those into `{en,hu}`, wraps every prose run in paired
+`<Lang code="en">` / `<Lang code="hu">` blocks and localizes component captions
+(`subtitle`, `beforeText`, `afterText`, `label`, `title` → `{{ en, hu }}`) by script — see the
+articles paragraph in CLAUDE.md §5.3 for the exact file shape. Blog is enabled in the nav; new
+drafts start `published: false` and flip only on explicit user instruction (hard rule 16).
 
 ## Phase 1 — Sourcing (before writing a word)
 
@@ -17,30 +20,30 @@ nav; new drafts start `published: false` and flip only on explicit user instruct
   details, dates, metrics, or capabilities (hard rule 1). Missing fact → ask, or draft with
   `TODO_<FACT>` and list every one in your report.
 - No raw AI prompts as visible text (hard rule 2), no fake testimonials.
-- Read the two newest articles before writing — `from-render-to-photograph-archupgrade.mdx`
-  and `inside-archupgrade-technical.mdx` are the current voice benchmark. Older articles vary
-  (some first-person singular); **new work uses studio "we"**.
+- Read the two newest articles before writing — `inside-archupgrade-technical.mdx` and
+  `the-3ds-max-toolkit-we-built-for-ourselves.mdx` are the current voice benchmark (all
+  fifteen were rewritten to it on 2026-09-17).
 
 ## Phase 2 — Voice & structure
 
-**Voice:** confident, plain-spoken, benefit-first. Written by a practitioner with 30 years in
-the field, not a marketer. Second person for the reader's outcomes. Em-dashes for rhythm.
-No hype adjectives; specifics instead ("about ten minutes per batch", "four candidate images").
+**Voice (owner's decision, 2026-09-17):** László's own, **first person singular**. "We" only
+where the studio team literally acts (rendering, delivery). Compact and concise: facts only,
+no marketing or "AI" adjectives, no benefit-selling, no "the first conversation is free"
+boilerplate. Dry, occasionally sarcastic, never at the reader's expense. The stance is a
+practitioner who does not know everything, expects the ground to move, learns, experiments,
+and says so when he was wrong ("I was right then and wrong now"). Specifics over claims
+("about a minute per image per GPU"). Bold lead-ins only for parallel list items, never for
+claims. Cut prose, not facts: keep every number, name, image and component the old version had.
 
 **Canonical skeleton:**
 
-1. **Open with the reader's concrete pain** — a scene, not a thesis.
-   *"Every architectural visualization project hits the same wall: the 3D model is accurate,
-   the camera angles are approved… and then the polishing begins."*
-2. **What we built / how it works** — `##` sections, numbered lists for process steps.
-3. **Benefit paragraphs with bold lead-ins:**
-   `**You see more options, earlier.**` `**The design stays under control.**`
-   One benefit per paragraph; lead sentence is the claim, rest is the evidence.
-4. **"The honest position"** — a recurring house section: state plainly what the tech does
-   *not* do. *"This system doesn't replace 3D work — it's built on top of it."* Every
-   AI-related article includes it.
-5. **Soft CTA close, always linking `/contact/`:**
-   *"…[get in touch](/contact/) — the first conversation is free."*
+1. **Open with the concrete problem** — a scene, not a thesis, two to four sentences.
+2. **What I built / how it works** — `##` sections, numbered lists for process steps.
+3. **Where it stands / What it is not / What I do not trust it with** — the recurring house
+   section, in plain words, replacing the old "The honest position". State what the tech does
+   *not* do, what is unverified, what was deliberately left unbuilt. Every AI-related article
+   includes it, and it should read as the least certain part of the piece.
+4. **One-line close linking `/contact/`.** No sales paragraph before it.
 
 **Formatting rules:** `##` for sections (never `#` — the title renders from frontmatter);
 `###` sparingly for sub-points; `**bold**` for emphasis and lead-ins; numbered lists for
@@ -122,7 +125,6 @@ Publish (only when the user says so):
 - [ ] Appears on `/en/articles/` index with cover + excerpt.
 - [ ] Deploy via the normal flow (↑ Git → staging check → user drives ↑ Live).
 
-Known constraint (CLAUDE.md §8.10 bug 2): the articles templates are not i18n-migrated —
-HU URLs serve English text and body links resolve to `/en/`. That's accepted; do not localize
-article frontmatter (it would render `[object Object]`), and do not "fix" the template as part
-of an article task.
+Until the HU pass runs, a draft with a plain-string title renders as English on `/hu/` too
+(marked `lang="en"`, and the HU index shows its "English only" note) — that is the designed
+fallback, not a bug. Body links stay bare paths and resolve to `/en/` (CLAUDE.md §8.10).

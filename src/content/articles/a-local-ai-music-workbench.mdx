@@ -1,11 +1,11 @@
 ---
-title: 'A Local AI Music Workbench: Notes From an Unfinished Side Project'
+title:
+  en: "A Local AI Music Workbench: Notes From an Unfinished Side Project"
+  hu: "Helyi AI zenei műhely: jegyzetek egy befejezetlen mellékprojektről"
 date: 2026-09-16T00:00:00.000Z
-excerpt: >-
-  A side project, openly labelled as one. A small local server that wires half a
-  dozen open music models into a single browser workbench, held together by
-  nothing more than a shared output folder. What works, what does not, and why
-  an archviz studio built it at all.
+excerpt:
+  en: A side project, labelled as one. A small local server that wires half a dozen open music models into one browser workbench, held together by a shared output folder. What works, what does not, and why I built it at all.
+  hu: Mellékprojekt, és annak is van címkézve. Egy kis helyi szerver, amely fél tucat nyílt zenei modellt köt össze egyetlen böngészős munkafelületté, és egy közös kimeneti mappa tartja egyben. Mi működik, mi nem, és miért építettem meg egyáltalán.
 tags:
   - ai
   - tools
@@ -15,63 +15,124 @@ published: false
 coverImage: /_img/articles/music-workbench/hero.jpg
 ---
 
-This one is a side project, and we are labelling it as such before the first paragraph ends. It is not a service, it is not on the price list, and we are not offering to score anyone's film. It is a prototype on one machine in the studio — its browser-only half is public as [Musiccer](https://musiccer.visiongraphics.eu/) in our [Labs](https://labs.visiongraphics.eu/), the model-backed half is not — and it is worth writing up only because building it taught us things about local models that transfer to the work we are paid for.
+<Lang code="en">
+This is a side project. Not a service, not on the price list, and I am not offering to score your film. It is a prototype on one machine in the studio. The browser-only half is public as [Musiccer](https://musiccer.visiongraphics.eu/) in [Labs](https://labs.visiongraphics.eu/); the model-backed half is not. I am writing it up because building it taught me things about local models that carry over to the work I get paid for.
 
-The itch is real enough. An architectural film gets cut, graded and approved, and then it needs thirty to ninety seconds of music. The options are a stock library — pay per project, and spend an afternoon rejecting the same six corporate-uplifting tracks everyone else is using — or a composer, which is right for a big film and overkill for a lobby loop. Which licence covers which use is a recurring small annoyance rather than a crisis: exactly the shape of problem a studio starts poking at on a Sunday.
+The itch: an architectural film gets cut, graded and approved, and then it needs thirty to ninety seconds of music. Stock library — pay per project, then spend an afternoon rejecting the same six corporate-uplifting tracks everyone else uses. Composer — right for a big film, overkill for a lobby loop. Which licence covers which use is the recurring annoyance. Exactly the kind of problem I start poking at on a Sunday.
 
-**The transferable part is the discipline, not the music.** We already run image models entirely on our own hardware — [the whole finishing pipeline](/articles/inside-archupgrade-technical/) — as much for client confidentiality as for cost. Audio turns out to be the same engineering problem in a different hat: a handful of open models, each with its own Python environment and its own idea of what a file is, and a great deal of unglamorous plumbing between them. Getting the plumbing right is the whole job — it was on the image side too.
+I already run image models on my own hardware ([the whole finishing pipeline](/articles/inside-archupgrade-technical/)), as much for confidentiality as for cost. Audio turned out to be the same problem in a different hat: a handful of open models, each with its own Python environment and its own idea of what a file is, and a lot of unglamorous plumbing between them. The plumbing is the job. It was on the image side too.
 
 ## The stack
 
-The tool is a single Flask server on one port, serving nine static pages and wrapping every model behind a small HTTP API. No build step, no npm, no database. Generated files land in an `output/` folder, one directory per job.
+One Flask server on one port, nine static pages, every model behind a small HTTP API. No build step, no npm, no database. Generated files land in an `output/` folder, one directory per job.
 
-The generation side pulls in what is currently available and open:
-
-- **Symbolic orchestration.** SymphonyGen — a 3D hierarchical model conditioned on a beat-quantised harmony skeleton, accepted at ISMIR 2026 — writes full orchestral MIDI either from scratch or from a chord progression you hand it. The server exposes three of its released checkpoints and up to four variations per run.
-- **Text to MIDI.** text2midi from the AMAAI Lab turns a written description ("epic orchestral piece in D minor with french horns, timpani and full strings") into a MIDI sketch.
+- **Symbolic orchestration.** SymphonyGen — a hierarchical model conditioned on a beat-quantised harmony skeleton, accepted at ISMIR 2026 — writes orchestral MIDI from scratch or from a chord progression. Three released checkpoints, up to four variations per run.
+- **Text to MIDI.** text2midi from the AMAAI Lab turns a written description into a MIDI sketch.
 - **Continuation and accompaniment.** Stanford's Anticipatory Music Transformer either keeps composing where a MIDI file stops, or treats it as a melody and writes parts around it.
-- **Audio generation.** ACE-Step 1.5 runs as a local subprocess and produces actual audio from a prompt, with declared BPM and key.
-- **Analysis, going the other way.** Basic Pitch transcribes audio back to MIDI, Demucs splits a track into four stems, Matchering masters a mix against a reference.
-- **Sound.** One soft synth for the whole app: js-synthesizer 1.13.0 with libfluidsynth 2.4.6 compiled to WebAssembly, loading the same GeneralUser GS soundfont that the server-side FluidSynth renders with. Sixteen MIDI channels, one stereo output — so per-track level and pan are CC7 and CC10 rather than a Web Audio gain node that cannot exist.
+- **Audio.** ACE-Step 1.5 as a local subprocess: actual audio from a prompt, with declared BPM and key.
+- **Analysis, the other way.** Basic Pitch transcribes audio to MIDI, Demucs splits a track into four stems, Matchering masters a mix against a reference.
+- **Sound.** One soft synth for the whole app: js-synthesizer 1.13.0 with libfluidsynth 2.4.6 in WebAssembly, loading the same GeneralUser GS soundfont the server-side FluidSynth renders with. Sixteen MIDI channels, one stereo output, so per-track level and pan are CC7 and CC10 rather than a gain node that cannot exist.
 
-The models above all run on the machine, with two exceptions: Magenta's GrooVAE fetches its drum checkpoints from Google's CDN on first use, and the tool pages load their MIDI-player library from a CDN rather than vendoring it.
+Two things do not run on the machine: GrooVAE fetches its drum checkpoints from Google's CDN on first use, and the tool pages load their MIDI-player library from a CDN.
 
-## The pages on top
+## The pages
 
-The front page is a music sketchpad — chord progression editor, melody lane, drum grid, key and scale selection across sixty-two scales, cadence labelling, reharmonisation suggestions, negative-harmony mirroring, a lyrics lane, and Web MIDI in and out so a keyboard or a DAW can join in.
+The front page is a sketchpad: chord progression editor, melody lane, drum grid, sixty-two scales, cadence labelling, reharmonisation suggestions, negative-harmony mirroring, a lyrics lane, Web MIDI in and out.
 
 ![The sketchpad — chord wheel on the left, progression and melody lanes in the middle, the scale keyboard along the bottom](/_img/articles/music-workbench/sketchpad-progression.jpg)
 
-The drum lane is its own page: a Euclidean step editor per voice, the pattern drawn as rings, and two buttons that hand the bar to GrooVAE to humanise or re-play it.
+The drum lane is its own page: a Euclidean step editor per voice, the pattern drawn as rings, two buttons that hand the bar to GrooVAE to humanise or re-play it.
 
 ![The drum page — a Euclidean step editor per voice, the pattern as rings, and two model-backed groove buttons](/_img/articles/music-workbench/drum-grid.jpg)
 
-Attached to it is the piece nobody needed: a world map. Scales, drum patterns and time signatures are pinned to where they come from, and a Songs tab carries fifty-five traditional songs from forty-six countries and regions, each loadable into the sketchpad as a working progression with its melody. It began as a way to make an unfamiliar scale mean something.
+Attached to it is the piece nobody needed: a world map. Scales, drum patterns and time signatures pinned to where they come from, and fifty-five traditional songs from forty-six countries and regions, each loadable into the sketchpad. It started as a way to make an unfamiliar scale mean something. I kept it because I liked it.
 
-From there the material moves to a song editor: a canvas timeline with MIDI and audio tracks, clips you can move, trim, split and loop, waveform peaks drawn per clip, a metronome and count-in, project save and undo. The transport runs on integer ticks at 480 per quarter note, with a 25 ms scheduler filling a 150 ms lookahead window — the standard two-clocks arrangement, which is what makes editing during playback free.
+From there the material goes to a song editor: a canvas timeline with MIDI and audio tracks, clips you can move, trim, split and loop, waveform peaks per clip, metronome, count-in, save, undo. Transport on integer ticks at 480 per quarter note, a 25 ms scheduler filling a 150 ms lookahead — the standard two-clocks arrangement, which is what makes editing during playback free.
 
-The same page carries a second view over the same model: a session grid, borrowed wholesale from Ableton's behaviour rather than reinvented. One playing clip per track, launches quantised to a bar or a beat, scenes as rows, a QWERTY grid across four scenes and eight tracks. Bouncing renders the MIDI tracks server-side with FluidSynth, sums them against the audio clips in an `OfflineAudioContext`, and drops the mix back into `output/`.
+The same page has a second view over the same model: a session grid, borrowed wholesale from Ableton rather than reinvented. One playing clip per track, launches quantised to a bar or a beat, scenes as rows, a QWERTY grid across four scenes and eight tracks. Bouncing renders the MIDI tracks server-side with FluidSynth, sums them against the audio clips in an `OfflineAudioContext`, and drops the mix back into `output/`.
 
 ## The output folder is the message bus
 
-The one design decision we would defend is the least clever one. Every producer writes a job directory with a small `manifest.json` — what made it, when, from which parent job, and whatever metadata it knows, like BPM and key. Every consumer accepts a path relative to `output/` instead of demanding an upload. That is the entire interoperability layer: files as IPC, no database, no schema registry.
+The one design decision I would defend is the least clever one. Every producer writes a job directory with a small `manifest.json`: what made it, when, from which parent job, and whatever metadata it knows, like BPM and key. Every consumer accepts a path relative to `output/` instead of demanding an upload. That is the entire interoperability layer. Files as IPC. No database, no schema registry.
 
 ![Files as the message bus — every job is a folder with a small manifest, and every tool reads folders](/_img/articles/music-workbench/output-folder.jpg)
 
-What it buys is disproportionate. A picker lists recent jobs with their provenance chain, so "stems ← song ← sketch" reads at a glance. Every result grows a "Send to" menu whose targets are one line each in a routing table. A `BroadcastChannel` lets a result finished in one tab announce itself to the others, so the song editor can offer to import it instead of losing it.
+It buys a lot for nothing. A picker lists recent jobs with their provenance chain, so "stems ← song ← sketch" reads at a glance. Every result gets a "Send to" menu whose targets are one line each in a routing table. A `BroadcastChannel` lets a result finished in one tab announce itself to the others.
 
-![The Labs index — the browser-only half of this and two dozen other small tools live there, no accounts, no uploads](/_img/articles/music-workbench/labs-index.jpg)
+![The Labs index — the browser-only half of this and the other small tools live there, no accounts, no uploads](/_img/articles/music-workbench/labs-index.jpg)
 
-## The honest position
+## Where it stands
 
-This is a prototype, and the hand-offs are still its weak point.
+A prototype, and the hand-offs are still the weak point.
 
-The design note that drove the current round opened by listing the damage: five mutually incompatible note formats in circulation, every hand-off one-way out of the sketchpad, and three tools that were outright dead ends — the drum page never touched the server, generated audio never landed in the shared folder, and the orchestrator's variations fed nothing. Those three are closed. What replaced them is not a finished system, it is a convention that everyone currently obeys.
+The design note that drove the last round opened by listing the damage: five incompatible note formats in circulation, every hand-off one-way out of the sketchpad, three tools that were dead ends — the drum page never touched the server, generated audio never landed in the shared folder, the orchestrator's variations fed nothing. Those three are closed. What replaced them is not a finished system, it is a convention that everything currently obeys.
 
-The unfinished parts are specific. The sketchpad was deliberately not migrated onto the shared playback modules, so the app carries two copies of the timing code. The song editor edits clips, not notes — there is no piano roll in it, and anything below clip level goes back to the sketchpad to be edited. Audio follows tempo by changing playback rate, which also changes pitch; proper time-stretching is a planned dependency nobody has needed enough to add. Above fifteen melodic tracks, they start sharing a MIDI channel, because one synth instance has sixteen. A harmony skeleton is silently looped or truncated to exactly thirty-two bars. Only one heavy job runs at a time, because there is one GPU and a single lock guarding it. Leave the tab in the background and the browser throttles the scheduler until playback starves.
+The unfinished parts, specifically: the sketchpad still carries its own copy of the timing code. The song editor edits clips, not notes — no piano roll. Audio follows tempo by changing playback rate, which also changes pitch; proper time-stretching is a dependency nobody has needed enough to add. Above fifteen melodic tracks they start sharing a MIDI channel, because one synth has sixteen. A harmony skeleton is silently looped or cut to thirty-two bars. One heavy job at a time, because one GPU and one lock. Background the tab and the browser throttles the scheduler until playback starves.
 
-None of that is a bug list waiting to be cleared. They are ceilings chosen on purpose to get something working, each written down next to the code that imposes it. The thing plays, it generates, it round-trips, and it is nowhere near being a product.
+None of that is a bug list waiting to be cleared. They are ceilings I chose to get something working, each written next to the code that imposes it. It plays, it generates, it round-trips, and it is nowhere near a product.
 
-Nothing from it has gone into a delivered film. It may never. AI-composed music *is* a line item on our [price list](/pricing/) now — but it comes out of the production pipeline's music engines, behind the same render facade as everything else we deliver, not out of this workbench. What it has produced is a much better feel for how far local audio models have come, where they still fall over, and how much of "AI tooling" is actually file management — roughly the answer the image side gave too.
+Nothing from it has gone into a delivered film. It may never. AI-composed music *is* on the [price list](/pricing/), but that comes out of the production pipeline's music engines, behind the same render facade as everything else I deliver, not out of this workbench. What I got instead: a much better feel for how far local audio models have come, where they still fall over, and how much of "AI tooling" is actually file management. Roughly the answer the image side gave.
 
-If you build things like this on your own evenings and want to compare notes, [say hello](/contact/).
+If you build things like this on your own evenings, [say hello](/contact/).
+</Lang>
+
+<Lang code="hu">
+Ez egy mellékprojekt. Nem szolgáltatás, nincs az árlistán, és nem ajánlkozom, hogy megzenésítem a filmjét. Prototípus, egyetlen gépen a stúdióban. A csak böngészőben futó fele nyilvános [Musiccer](https://musiccer.visiongraphics.eu/) néven a [Labs](https://labs.visiongraphics.eu/) oldalon; a modellekre épülő fele nem. Azért írom le, mert az építése olyan dolgokra tanított meg a helyi modellekről, amelyek átvihetők a munkára, amiért fizetnek.
+
+A viszketés: egy építészeti filmet megvágnak, színeznek, jóváhagynak, aztán kell hozzá harminc–kilencven másodpercnyi zene. Stock-könyvtár – projektenként fizetsz, majd egy délutánt töltesz azzal, hogy visszadobod ugyanazt a hat „corporate-uplifting" számot, amit mindenki más használ. Zeneszerző – nagy filmhez helyes, egy előcsarnok-loophoz túlzás. Hogy melyik licenc melyik felhasználást fedi, az a visszatérő bosszúság. Pontosan az a fajta probléma, amit vasárnap elkezdek piszkálni.
+
+Képmodelleket már futtatok a saját hardveremen ([a teljes befejező pipeline-t](/articles/inside-archupgrade-technical/)), legalább annyira a titoktartás, mint a költség miatt. A hangról kiderült, hogy ugyanaz a probléma más kalapban: egy maréknyi nyílt modell, mindegyiknek saját Python-környezete és saját elképzelése arról, mi az a fájl, és rengeteg hálátlan csövezés közöttük. A csövezés maga a munka. A képes oldalon is az volt.
+
+## A stack
+
+Egy Flask-szerver egy porton, kilenc statikus oldal, minden modell egy kis HTTP API mögött. Nincs build lépés, nincs npm, nincs adatbázis. A generált fájlok egy `output/` mappában landolnak, feladatonként egy könyvtárban.
+
+- **Szimbolikus hangszerelés.** A SymphonyGen – ütemre kvantált harmóniavázra kondicionált hierarchikus modell, az ISMIR 2026-ra elfogadva – zenekari MIDI-t ír a semmiből vagy egy akkordmenetből. Három kiadott checkpoint, futásonként legfeljebb négy variáció.
+- **Szövegből MIDI.** Az AMAAI Lab text2midi-je egy leírt kérésből MIDI-vázlatot csinál.
+- **Folytatás és kíséret.** A Stanford Anticipatory Music Transformere vagy folytatja a komponálást ott, ahol a MIDI-fájl abbamarad, vagy dallamként kezeli és szólamokat ír köré.
+- **Audió.** Az ACE-Step 1.5 helyi alfolyamatként: valódi hang egy promptból, megadott BPM-mel és hangnemmel.
+- **Elemzés, visszafelé.** A Basic Pitch hangból MIDI-t ír, a Demucs négy sávra bontja a számot, a Matchering egy referenciához igazítva masterel.
+- **Hang.** Egyetlen szoftszintetizátor az egész apphoz: js-synthesizer 1.13.0, libfluidsynth 2.4.6 WebAssemblyben, ugyanazzal a GeneralUser GS soundfonttal, amivel a szerveroldali FluidSynth renderel. Tizenhat MIDI-csatorna, egy sztereó kimenet, így a sávonkénti hangerő és pan CC7 és CC10, nem egy gain node, ami nem létezhet.
+
+Két dolog nem a gépen fut: a GrooVAE első használatkor a Google CDN-jéről tölti a dob-checkpointjait, az eszközoldalak pedig CDN-ről töltik a MIDI-lejátszó könyvtárat.
+
+## Az oldalak
+
+A kezdőlap egy vázlatfüzet: akkordmenet-szerkesztő, dallamsáv, dobrács, hatvankét skála, kadenciacímkézés, reharmonizációs javaslatok, negatívharmónia-tükrözés, dalszövegsáv, Web MIDI be és ki.
+
+![A vázlatfüzet – balra az akkordkerék, középen az akkordmenet és a dallamsáv, alul a skálabillentyűzet](/_img/articles/music-workbench/sketchpad-progression.jpg)
+
+A dobsáv külön oldal: euklideszi lépésszerkesztő hangonként, a minta gyűrűkként rajzolva, két gomb, ami átadja az ütemet a GrooVAE-nek humanizálni vagy újrajátszani.
+
+![A doboldal – euklideszi lépésszerkesztő hangonként, a minta gyűrűkként, két modellvezérelt groove-gomb](/_img/articles/music-workbench/drum-grid.jpg)
+
+Hozzá van csatolva a darab, amire senkinek nem volt szüksége: egy világtérkép. Skálák, dobminták és ütemmutatók oda tűzve, ahonnan származnak, plusz ötvenöt hagyományos dal negyvenhat országból és régióból, mindegyik betölthető a vázlatfüzetbe. Azért kezdtem el, hogy egy ismeretlen skála jelentsen valamit. Azért tartottam meg, mert tetszett.
+
+Innen az anyag egy dalszerkesztőbe megy: vászon-idővonal MIDI- és audiosávokkal, mozgatható, vágható, felezhető, loopolható klipekkel, klipenként rajzolt hullámformával, metronómmal, beszámolással, mentéssel, visszavonással. A transzport egész tickeken fut, negyedenként 480-on, egy 25 ms-os ütemező tölt egy 150 ms-os előretekintő ablakot – a szokásos kétórás elrendezés, ettől ingyenes a lejátszás közbeni szerkesztés.
+
+Ugyanezen az oldalon van egy második nézet ugyanarra a modellre: egy session-rács, egy az egyben az Abletonból kölcsönözve, nem újra kitalálva. Sávonként egy játszó klip, ütemre vagy negyedre kvantált indítás, a jelenetek sorokban, QWERTY-rács négy jeleneten és nyolc sávon. A bounce a MIDI-sávokat szerveroldalon rendereli FluidSynth-tel, az audioklipekkel egy `OfflineAudioContext`-ben összegzi, és a mixet visszateszi az `output/`-ba.
+
+## A kimeneti mappa az üzenetbusz
+
+Az egyetlen tervezési döntés, amit megvédenék, a legkevésbé okos. Minden előállító egy feladatkönyvtárat ír egy kis `manifest.json`-nal: mi csinálta, mikor, melyik szülőfeladatból, és amit még tud, például BPM és hangnem. Minden fogyasztó egy `output/`-hoz képesti útvonalat fogad el feltöltés helyett. Ez a teljes együttműködési réteg. Fájlok mint IPC. Se adatbázis, se sémanyilvántartás.
+
+![Fájlok mint üzenetbusz – minden feladat egy mappa egy kis manifesttel, és minden eszköz mappákat olvas](/_img/articles/music-workbench/output-folder.jpg)
+
+Sokat ad a semmiért. Egy választó a friss feladatokat a származási láncukkal listázza, így a „sávok ← dal ← vázlat" egy pillantásra olvasható. Minden eredmény kap egy „Küldés ide" menüt, amelynek célpontjai egy-egy sor egy útválasztó táblában. Egy `BroadcastChannel` révén az egyik fülön elkészült eredmény bejelenti magát a többinek.
+
+![A Labs index – ennek a böngészős fele és a többi kis eszköz itt él, fiók és feltöltés nélkül](/_img/articles/music-workbench/labs-index.jpg)
+
+## Hol tart
+
+Prototípus, és az átadások még mindig a gyenge pontja.
+
+A legutóbbi kört hajtó tervezési jegyzet a károk felsorolásával kezdődött: öt inkompatibilis hangjegyformátum forgalomban, minden átadás egyirányú a vázlatfüzetből kifelé, három zsákutca-eszköz – a doboldal sosem érte el a szervert, a generált hang sosem landolt a közös mappában, a hangszerelő variációi semmit nem tápláltak. Ez a három le van zárva. Ami a helyükre került, az nem kész rendszer, hanem egy konvenció, amit jelenleg minden betart.
+
+A befejezetlen részek, konkrétan: a vázlatfüzet még a saját másolatát hordozza az időzítő kódnak. A dalszerkesztő klipeket szerkeszt, nem hangjegyeket – nincs benne zongoratekercs. Az audió a lejátszási sebesség változtatásával követi a tempót, ami a hangmagasságot is változtatja; a rendes time-stretching olyan függőség, amire senkinek nem volt még elég szüksége. Tizenöt dallamsáv fölött osztozni kezdenek egy MIDI-csatornán, mert egy szintetizátornak tizenhat van. Egy harmóniaváz csendben harminckét ütemre loopolódik vagy vágódik. Egyszerre egy nehéz feladat, mert egy GPU és egy zár. Tedd háttérbe a fület, és a böngésző addig fojtja az ütemezőt, míg a lejátszás ki nem éhezik.
+
+Ez nem egy tisztításra váró hibalista. Ezek plafonok, amiket azért választottam, hogy valami működjön, és mindegyik oda van írva a kód mellé, ami kiszabja. Játszik, generál, oda-vissza jár, és nagyon messze van attól, hogy termék legyen.
+
+Semmi nem került belőle leszállított filmbe. Lehet, hogy soha nem is fog. Az AI-komponált zene *rajta van* az [árlistán](/pricing/), de az a produkciós pipeline zenei motorjaiból jön, ugyanazon a render-homlokzaton át, mint minden más, amit leszállítok, nem ebből a műhelyből. Amit helyette kaptam: sokkal jobb érzék ahhoz, hová jutottak a helyi hangmodellek, hol borulnak még fel, és hogy az „AI-eszközök" mekkora része valójában fájlkezelés. Nagyjából ugyanaz a válasz, amit a képes oldal adott.
+
+Ha ilyesmit épít a saját estéin, [írjon](/contact/).
+</Lang>

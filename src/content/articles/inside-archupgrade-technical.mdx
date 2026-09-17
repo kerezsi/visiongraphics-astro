@@ -1,13 +1,11 @@
 ---
-title: 'Inside ArchUpgrade: How We Built a Production AI Pipeline for Archviz'
+title:
+  en: "Inside ArchUpgrade: How I Built a Production AI Pipeline for Archviz"
+  hu: "Az ArchUpgrade belülről: hogyan építettem produkciós AI-pipeline-t archvizhez"
 date: 2026-09-16T00:00:00.000Z
-excerpt: >-
-  A technical look at our render-to-photorealistic system: a FastAPI backend
-  driving a multi-GPU ComfyUI farm, a version-tree data model, structured prompt
-  assembly, a local LLM that quality-scores every image — and, a year in, the
-  parts that turned out to matter more than the models: licences, provenance,
-  observability, and a client loop. No cloud, no subscriptions, no client data
-  leaving the studio.
+excerpt:
+  en: "A technical look at my render-to-photorealistic system: a FastAPI backend driving a multi-GPU ComfyUI farm, a version-tree data model, structured prompt assembly, a local LLM that scores every image, and, a year in, the parts that turned out to matter more than the models: licences, provenance, observability, and a client loop. No cloud, no subscriptions, no client data leaving the studio."
+  hu: "Technikai pillantás a renderből-fotorealisztikus rendszeremre: egy FastAPI-backend, amely több-GPU-s ComfyUI-farmot hajt, verziófa-adatmodell, strukturált prompt-összeállítás, egy helyi LLM, amely minden képet pontoz, és egy év után azok a részek, amelyek fontosabbnak bizonyultak a modelleknél: licencek, származás, megfigyelhetőség, és egy ügyfélhurok. Se felhő, se előfizetés, ügyféladat nem hagyja el a stúdiót."
 tags:
   - ai
   - tools
@@ -17,96 +15,188 @@ published: false
 coverImage: /_img/articles/archupgrade/archupgrade-before-after.jpg
 ---
 
-In a [companion article](/articles/from-render-to-photograph-archupgrade/) we showed what our in-house AI enhancement pipeline does for clients. This one is for the technically curious: how it's actually built, the engineering decisions that made it production-grade instead of a demo, and what a year of daily use changed about the design.
+<Lang code="en">
+The [companion article](/articles/from-render-to-photograph-archupgrade/) shows what the pipeline does for clients. This one is how it is built, the decisions that made it production-grade instead of a demo, and what a year of daily use changed about the design. Some of those changes were reversals.
 
-ArchUpgrade is a full-stack system that takes working 3D renders and produces photorealistic, quality-scored image sets. It has been in daily production use in our studio since spring 2026, and it has grown: about 200,000 lines of code, 91 workflow graphs, and a test suite of roughly 750 backend and 560 frontend tests as of September. Everything runs locally — the models, the GPUs, the quality reviewer. No client image ever leaves our network.
+ArchUpgrade takes working 3D renders and produces photorealistic, quality-scored image sets. Daily production use since spring 2026. As of September: about 200,000 lines of code, 91 workflow graphs, roughly 750 backend and 560 frontend tests. Everything runs locally: models, GPUs, the quality reviewer. No client image leaves the network.
 
 ## The stack
 
-- **Backend:** Python 3.11 / FastAPI with an async SQLite database. One process orchestrates everything: job queues, render dispatch, file management, delivery packaging, and the WebSocket stream the interfaces watch.
-- **Frontends:** three Vite/React apps — the operator UI with its numbered workflow (Ingest → Configure → Queue → Review → Upscale → Deliver, plus the tool pages), a client order portal, and an admin portal.
-- **Rendering:** SwarmUI instances driving ComfyUI on the GPU nodes. The image-to-image enhancement is built on the Qwen image-edit family with our own photorealism LoRA; sibling graphs cover text-to-image, multi-reference editing, seven upscalers, five lighting tools, camera-angle passes, inpainting and outpainting, mesh and Gaussian-splat generation, video, and speech and music.
-- **Quality control:** a local vision LLM (via Ollama) that scores every generated image — no API keys, no per-image cloud costs.
-- **Hardware:** a small farm of our own GPU nodes, from 16 GB cards that chew through enhancement batches to a 48 GB card that takes the heavy upscales and video. The farm doubles as the render farm at night; [a separate tool switches the nodes between the two jobs](/articles/running-a-render-farm-from-a-browser-tab/).
+- **Backend:** Python 3.11 / FastAPI with an async SQLite database. One process orchestrates job queues, render dispatch, file management, delivery packaging, and the WebSocket stream the interfaces watch.
+- **Frontends:** three Vite/React apps. The operator UI with its numbered workflow (Ingest → Configure → Queue → Review → Upscale → Deliver, plus tool pages), a client order portal, an admin portal.
+- **Rendering:** SwarmUI instances driving ComfyUI on the GPU nodes. Image-to-image enhancement is built on the Qwen image-edit family with my own photorealism LoRA; sibling graphs cover text-to-image, multi-reference editing, seven upscalers, five lighting tools, camera-angle passes, inpainting and outpainting, mesh and Gaussian-splat generation, video, speech and music.
+- **Quality control:** a local vision LLM via Ollama scores every generated image. No API keys, no per-image cloud cost.
+- **Hardware:** a small farm of my own GPU nodes, 16 GB cards for enhancement batches, one 48 GB card for heavy upscales and video. The farm doubles as the render farm at night; [a separate tool switches the nodes between the two jobs](/articles/running-a-render-farm-from-a-browser-tab/).
 
-The central screen is the Versioning page: source images on the left, iteration parameters in the middle, and a live preview of the exact structured prompt that will be sent to the model on the right:
+The central screen is Versioning: source images left, iteration parameters middle, a live preview of the exact structured prompt on the right.
 
 ![The Versioning page — parameter axes and live structured prompt preview](/_img/articles/archupgrade/archupgrade-versioning.jpg)
 
 ## Structured prompts, not prompt soup
 
-Early on we learned that image-edit models respond much better to terse, keyed instructions than to walls of prose. The prompt assembler merges multiple sources — per-image notes, per-directory context, reusable preset cards, parameter categories like season or budget tier — into a single structured payload with deterministic ordering. The same inputs always produce the same prompt, which makes results reproducible and debuggable. The rendered prompt is stored on every version as the exact string that was sent — never reconstructed from templates after the fact.
+Image-edit models respond much better to terse, keyed instructions than to walls of prose. I learned that by writing the walls of prose first. The assembler merges per-image notes, per-directory context, reusable preset cards and parameter categories like season or budget tier into one structured payload with deterministic ordering. Same inputs, same prompt, every time. The rendered prompt is stored on every version as the exact string sent, never reconstructed from templates afterwards.
 
-Parameters are organized into iteration axes. Select two lighting moods, three furnishing styles, and five seeds, and the planner expands the cartesian product into thirty versions — each with a label that encodes exactly how it was made.
+Parameters are organised into iteration axes. Two lighting moods, three furnishing styles, five seeds: the planner expands the cartesian product into thirty versions, each labelled with exactly how it was made.
 
 ## The version tree
 
-Every output gets a label like `g03_i_s02_e01`: generation 3, iteration code, seed 2, edit 1. Retries, mutations, manual edits, upscales, crops, relights and camera moves each append their own letter, so any image's full ancestry is readable from its filename. Re-queueing always bumps the generation number — nothing on disk is ever overwritten.
+Every output gets a label like `g03_i_s02_e01`: generation 3, iteration code, seed 2, edit 1. Retries, mutations, manual edits, upscales, crops, relights and camera moves each append their own letter, so any image's ancestry reads from its filename. Re-queueing bumps the generation number. Nothing on disk is ever overwritten.
 
-The review screen renders this as a tree: the source render at the root, generations as children, and every derived operation branching below. You can see the quality scores climb across generations as parameters get refined:
+The review screen renders this as a tree: source render at the root, generations as children, every derived operation branching below.
 
 ![The version tree — source render at top, scored generations below](/_img/articles/archupgrade/archupgrade-version-tree.jpg)
 
-This sounds like bookkeeping until a client says "we liked the third version from last month, but can we see it with evening lighting?" — and you branch from exactly that node instead of reconstructing settings from memory.
+This sounds like bookkeeping until a client says "we liked the third version from last month, can we see it in evening light?" and you branch from that node instead of reconstructing settings from memory.
 
 ## Automated review: five scores per image
 
-Every completed render is evaluated by a local vision LLM against the source image and the prompt. It returns five independent 0–10 scores — aesthetics, fidelity, prompt adherence, technical quality, and style match — plus written notes and a list of missing elements. An image passes only if *every* aspect clears its threshold; failures are retried automatically with correction notes fed back into the prompt.
-
-The same data is surfaced in the lightbox, where the operator sees the full-size image alongside its scores, the reviewer's notes, and the exact prompt that produced it:
+Every completed render is evaluated by a local vision LLM against the source image and the prompt. Five independent 0–10 scores (aesthetics, fidelity, prompt adherence, technical quality, style match), written notes, a list of missing elements. An image passes only if *every* aspect clears its threshold; failures are retried with correction notes fed back into the prompt.
 
 ![The lightbox — full-size result with QA score, reviewer notes, and the exact prompt](/_img/articles/archupgrade/archupgrade-qa-lightbox.jpg)
 
-A built-in compare slider overlays any version on its source for pixel-level inspection:
-
 ![In-app before/after compare — source render against the generated version](/_img/articles/archupgrade/archupgrade-before-after.jpg)
 
-The scores are advisory, not authoritative — a human still picks the final images. But they invert the economics of review: instead of inspecting 300 images, the operator inspects the 40 that passed, sorted by score. On a recent 18-view interior project, the system generated over 300 versions; the LLM filtered, a human picked 18.
+The scores are advisory. A human still picks. But they invert the economics of review: instead of inspecting 300 images I inspect the 40 that passed, sorted by score. On a recent 18-view interior project the system generated over 300 versions, the LLM filtered, I picked 18.
 
-Two rules we learned the expensive way, now baked into every judge in the system: ask about *presence*, not absence — "is there a visible defect?" is answered far more reliably than "is this good" — and turn the model's thinking mode off for fixed-format answers, which took a verdict from twenty-five seconds to under one.
+Two rules learned the expensive way, now in every judge in the system: ask about *presence*, not absence ("is there a visible defect?" is answered far more reliably than "is this good"), and turn the model's thinking mode off for fixed-format answers, which took a verdict from twenty-five seconds to under one.
 
 ## Passes on the finished image
 
-The enhancement is one graph among many. Once a version is picked, the operator can run targeted passes on it without going back to the 3D scene: five lighting tools (a scene-locked time-of-day relight, light migration from a reference photo, a multi-angle key light, studio delight and light restoration), sky replacement and material swap, generative expand to a new aspect ratio, upscaling, and a camera-angle pass for a slightly different viewpoint. Each is its own letter in the version tree and its own row in the queue.
+Enhancement is one graph among many. Once a version is picked, targeted passes run on it without a trip back to the 3D scene: five lighting tools (scene-locked time-of-day relight, light migration from a reference photo, multi-angle key light, studio delight, light restoration), sky replacement and material swap, generative expand, upscaling, and a camera-angle pass for a slightly different viewpoint. Each is its own letter in the tree and its own row in the queue.
+</Lang>
 
-<ImageCompare before="/_img/portfolio/avalon-business-center/03.jpg" after="/_img/articles/archupgrade/avalon-night.jpg" beforeAlt="Avalon Business Center — daytime render from the archive" afterAlt="The same render after the scene-locked time-of-day pass: night, interior and exterior lights on" beforeText="Archive render" afterText="Time-of-day pass" label={false} />
+<Lang code="hu">
+A [társcikk](/articles/from-render-to-photograph-archupgrade/) azt mutatja, mit csinál a pipeline az ügyfeleknek. Ez arról szól, hogyan épül, milyen döntések tették produkciószintűvé demó helyett, és mit változtatott a tervezésen egy év napi használat. Néhány változtatás visszafordítás volt.
 
-The relight above was produced on the studio farm through the same API our automation uses, from an eight-year-old render in our archive, in about half a minute once the model was loaded. The prompt the tool assembles opens with a scene-lock clause that pins the viewpoint before it says a word about light — that clause, learned from a dozen drifting outputs, is most of the engineering.
+Az ArchUpgrade munkarendereket fog, és fotorealisztikus, minőségpontozott képkészleteket állít elő. Napi produkciós használatban 2026 tavasza óta. Szeptember szerint: nagyjából 200 000 sor kód, 91 workflow-gráf, nagyjából 750 backend- és 560 frontend-teszt. Minden helyben fut: modellek, GPU-k, a minőségellenőrző. Ügyfélkép nem hagyja el a hálózatot.
+
+## A stack
+
+- **Backend:** Python 3.11 / FastAPI aszinkron SQLite-adatbázissal. Egy folyamat vezényli a feladatsorokat, a render-kiosztást, a fájlkezelést, a leszállítási csomagolást, és a WebSocket-streamet, amit a felületek figyelnek.
+- **Frontendek:** három Vite/React-app. Az operátori felület a számozott munkafolyamatával (Beolvasás → Beállítás → Sor → Átnézés → Felskálázás → Leszállítás, plusz eszközoldalak), egy ügyfél-rendelési portál, egy adminportál.
+- **Renderelés:** SwarmUI-példányok hajtják a ComfyUI-t a GPU-node-okon. A képből-kép feljavítás a Qwen image-edit családra épül, a saját fotorealizmus-LoRA-mmal; testvérgráfok fedik a szövegből képet, a többreferenciás szerkesztést, hét felskálázót, öt világítási eszközt, kameraszög-meneteket, in- és outpaintinget, mesh- és Gaussian-splat-generálást, videót, beszédet és zenét.
+- **Minőségkontroll:** egy helyi látó-LLM az Ollamán át pontoz minden generált képet. Se API-kulcs, se képenkénti felhőköltség.
+- **Hardver:** a saját GPU-node-jaim kis farmja, 16 GB-os kártyák a feljavító kötegekhez, egy 48 GB-os kártya a nehéz felskálázásokhoz és a videóhoz. A farm éjjel renderfarmként is szolgál; [egy külön eszköz kapcsolja a node-okat a két munka között](/articles/running-a-render-farm-from-a-browser-tab/).
+
+A központi képernyő a Verziózás: balra a forrásképek, középen az iterációs paraméterek, jobbra a pontos strukturált prompt élő előnézete.
+
+![A Verziózás oldal – paramétertengelyek és élő strukturált prompt-előnézet](/_img/articles/archupgrade/archupgrade-versioning.jpg)
+
+## Strukturált promptok, nem promptleves
+
+A képszerkesztő modellek sokkal jobban reagálnak tömör, kulcsolt utasításokra, mint prózafalakra. Ezt úgy tanultam meg, hogy előbb megírtam a prózafalakat. Az összeállító a képenkénti jegyzeteket, a könyvtárankénti kontextust, az újrahasználható preset-kártyákat és a paraméterkategóriákat, mint évszak vagy költségszint, egyetlen strukturált csomaggá fésüli össze, determinisztikus sorrendben. Ugyanaz a bemenet, ugyanaz a prompt, minden alkalommal. A renderelt prompt minden verzión a pontosan elküldött sztringként van tárolva, sosem sablonokból utólag rekonstruálva.
+
+A paraméterek iterációs tengelyekbe vannak szervezve. Két fényhangulat, három berendezési stílus, öt seed: a tervező a Descartes-szorzatot harminc verzióra bontja ki, mindegyiket pontosan azzal címkézve, hogyan készült.
+
+## A verziófa
+
+Minden kimenet egy `g03_i_s02_e01`-szerű címkét kap: 3. generáció, iterációs kód, 2. seed, 1. szerkesztés. Az újrapróbálások, mutációk, kézi szerkesztések, felskálázások, vágások, átvilágítások és kameramozgatások mind saját betűt fűznek hozzá, így bármely kép származása a fájlnevéből olvasható. Az újrasorolás növeli a generációszámot. A lemezen semmi nem íródik felül soha.
+
+Az átnéző képernyő ezt faként rendereli: a forrásrender a gyökérben, a generációk gyerekként, minden származtatott művelet alatta elágazva.
+
+![A verziófa – forrásrender fent, pontozott generációk alatta](/_img/articles/archupgrade/archupgrade-version-tree.jpg)
+
+Ez könyvelésnek hangzik, amíg egy ügyfél azt nem mondja: „tetszett a múlt havi harmadik változat, láthatnánk esti fényben?", és abból a csomópontból ágazol el ahelyett, hogy emlékezetből rekonstruálnád a beállításokat.
+
+## Automatikus átnézés: öt pontszám képenként
+
+Minden elkészült rendert egy helyi látó-LLM értékel a forráskép és a prompt ellenében. Öt független 0–10-es pontszám (esztétika, hűség, prompt-követés, technikai minőség, stílusegyezés), írott jegyzetek, hiányzó elemek listája. Egy kép csak akkor megy át, ha *minden* szempont átlépi a küszöbét; a bukások a promptba visszatáplált javítási jegyzetekkel újrapróbálódnak.
+
+![A lightbox – teljes méretű eredmény QA-pontszámmal, ellenőrzői jegyzetekkel és a pontos prompttal](/_img/articles/archupgrade/archupgrade-qa-lightbox.jpg)
+
+![Alkalmazáson belüli előtte/utána összehasonlítás – forrásrender a generált változat ellenében](/_img/articles/archupgrade/archupgrade-before-after.jpg)
+
+A pontszámok tanácsadók. Ember választ továbbra is. De megfordítják az átnézés gazdaságtanát: 300 kép vizsgálata helyett azt a 40-et vizsgálom, amelyik átment, pontszám szerint rendezve. Egy nemrégi 18 nézetes belsőépítészeti projekten a rendszer több mint 300 verziót generált, az LLM szűrt, én 18-at választottam.
+
+Két szabály, amit drágán tanultam, és most a rendszer minden bírójában ott van: *jelenlétről* kérdezz, ne hiányról (a „van látható hiba?" sokkal megbízhatóbban válaszolódik, mint a „jó ez?"), és kapcsold ki a modell gondolkodó módját fix formátumú válaszoknál, ami egy ítéletet huszonöt másodpercről egy alá vitt.
+
+## Menetek a kész képen
+
+A feljavítás egy gráf a sok közül. Ha egy verzió ki van választva, célzott menetek futnak rajta a 3D-jelenetbe való visszatérés nélkül: öt világítási eszköz (jelenetre rögzített napszak-átvilágítás, fényátvitel referenciafotóról, többszögű főfény, stúdió-fénytelenítés, fény-helyreállítás), égboltcsere és anyagcsere, generatív bővítés, felskálázás, és egy kameraszög-menet enyhén más nézőponthoz. Mindegyik saját betű a fában, és saját sor a sorban.
+</Lang>
+
+<ImageCompare before="/_img/portfolio/avalon-business-center/03.jpg" after="/_img/articles/archupgrade/avalon-night.jpg" beforeAlt="Avalon Business Center — daytime render from the archive" afterAlt="The same render after the scene-locked time-of-day pass: night, interior and exterior lights on" beforeText={{ en: "Archive render", hu: "Archív render" }} afterText={{ en: "Time-of-day pass", hu: "Napszak-menet" }} label={false} />
+
+<Lang code="en">
+That relight came off the farm through the same API my automation uses, from an eight-year-old archive render, in about half a minute once the model was loaded. The prompt the tool assembles opens with a scene-lock clause that pins the viewpoint before it says a word about light. That clause, learned from a dozen drifting outputs, is most of the engineering.
 
 ## A weighted multi-GPU farm
 
-Render dispatch runs across the SwarmUI/ComfyUI backends with weighted round-robin scheduling. Each machine declares roles — image editing, text-to-image, upscaling, 3D, video — with per-role weights, so the 48 GB card handles heavy upscales while smaller cards chew through enhancement batches. Health checks gate offline machines out of the rotation automatically, and a crash recovery sweep on startup means a power blip never leaves the queue in a corrupted state. Eight runners share one rule: acquire the GPU semaphore *before* popping the queue, so the "pending" count is honest.
+Dispatch runs across the SwarmUI/ComfyUI backends with weighted round-robin. Each machine declares roles (image editing, text-to-image, upscaling, 3D, video) with per-role weights, so the 48 GB card takes heavy upscales while smaller cards chew through enhancement batches. Health checks gate offline machines out of rotation; a crash-recovery sweep on startup means a power blip never leaves the queue corrupted. Eight runners share one rule: acquire the GPU semaphore *before* popping the queue, so the "pending" count is honest.
 
-![Part of the GPU farm — the machines are ours, the models are open-weight](/_img/articles/archupgrade/farm.jpg)
+![Part of the GPU farm — the machines are mine, the models are open-weight](/_img/articles/archupgrade/farm.jpg)
 
 ## Licences and provenance are data, not policy
 
-Every model, LoRA, checkpoint and external tool in the system carries a licence class — permissive, copyleft, non-commercial or unlicensed — declared once in its configuration. Every produced asset records the worst-case class of any tool that touched it, plus the list of tools, on the database row and in a JSON sidecar next to the file. A single deployment switch, `allow_noncommercial`, hides every non-permissive backend from the interface and refuses it at the API: flipped off, the system is in commercial-delivery mode and physically cannot ship an image made with a research-only model. We track licences for a reason — several of the most impressive open models are non-commercial, and [our tool-vetting database](/articles/how-we-vet-the-ai-tool-flood/) exists to catch that before a model ever reaches this pipeline.
+Every model, LoRA, checkpoint and external tool carries a licence class (permissive, copyleft, non-commercial, unlicensed), declared once in configuration. Every produced asset records the worst-case class of any tool that touched it, plus the tool list, on the database row and in a JSON sidecar next to the file. A single deployment switch, `allow_noncommercial`, hides every non-permissive backend from the interface and refuses it at the API. Flipped off, the system physically cannot ship an image made with a research-only model. Several of the most impressive open models are non-commercial; [the vetting database](/articles/how-we-vet-the-ai-tool-flood/) exists to catch that before a model reaches this pipeline.
 
 ## The parts a demo never needs
 
 A year of daily use added the machinery that turns a tool into infrastructure:
 
 - **Observability.** One immutable row per terminal render attempt, from every runner's `finally:` block; VRAM and queue-depth samples from every node every five minutes; per-node roll-ups and a "retry everything that failed for a safe reason" button.
-- **Retention and backups.** Sandbox output older than a retention window is reconciled and cleared through a dry-run → checked list → apply flow, with the rule that the delivery tree is unreachable written in code rather than configuration. The database is backed up with SQLite's online backup API and integrity-checked, never file-copied.
-- **A disk guard** at every runner's enqueue — the one real choke point — that refuses new renders below a free-space floor rather than corrupting a batch halfway.
-- **Auth and a client loop.** Principals and roles (owner, studio, service, client), bearer tokens for automation, per-order links for clients, watermarked previews, one open revision per order, pin comments normalised to the image, and a client zip that carries no studio paths. A LAN peer with no credential is still the owner, so the studio's trust model did not change — every one of the existing tests passed untouched when auth landed.
-- **A render facade.** One path-in, path-out API through which every other process in the studio renders — our scheduled agents, scripts, other repositories — with no database rows and no UI state. That boundary is why the [agents](/articles/agents-that-work-the-night-shift/) could move into their own project without importing a line of this one.
+- **Retention and backups.** Sandbox output older than a retention window is reconciled and cleared through dry-run → checked list → apply, with "the delivery tree is unreachable" written in code, not configuration. The database is backed up with SQLite's online backup API and integrity-checked, never file-copied.
+- **A disk guard** at every runner's enqueue that refuses new renders below a free-space floor rather than corrupting a batch halfway.
+- **Auth and a client loop.** Principals and roles (owner, studio, service, client), bearer tokens for automation, per-order links for clients, watermarked previews, one open revision per order, pin comments normalised to the image, a client zip that carries no studio paths. A LAN peer with no credential is still the owner, so the trust model did not change; every existing test passed untouched when auth landed.
+- **A render facade.** One path-in, path-out API through which every other process in the studio renders (scheduled agents, scripts, other repositories), with no database rows and no UI state. That boundary is why the [agents](/articles/agents-that-work-the-night-shift/) could move into their own project without importing a line of this one.
 - **Two machines.** The dev box runs `main`; the production server runs a `stable` branch off a shared output store. Promotion is a deploy script, not a `git pull` on the box clients depend on.
 
 ## Delivery is part of the pipeline
 
-The final step packages picked versions with clean sequential filenames, while a metadata file preserves the full internal labels, generation parameters and provenance. Per-category quotas ("15 exteriors, 3 interiors") are enforced before the package can ship:
+The final step packages picked versions with clean sequential filenames while a metadata file preserves the internal labels, generation parameters and provenance. Per-category quotas ("15 exteriors, 3 interiors") are enforced before the package can ship.
 
 ![The Deliver page — picked versions, rename template, quota check, delivery history](/_img/articles/archupgrade/archupgrade-deliver.jpg)
 
-## What we'd tell anyone building something similar
+## What I would tell anyone building one
 
-- **Determinism is the feature.** Seeded generation, snapshot-at-queue-time configuration, and labels that encode ancestry — those are what make an AI pipeline production-usable rather than a slot machine.
-- **Score with a local model.** Quality review is the highest-volume LLM call in the system. Running it locally makes per-image cost zero, so you never hesitate to review everything.
-- **Plan for failure everywhere.** GPUs go offline, processes restart mid-batch, JSON files get corrupted at the worst moment. Atomic writes, per-cell failure isolation, and mark-failed-never-auto-retry recovery policies are unglamorous and essential.
-- **Licences are a schema field.** If the licence class is not on the row, it is not in the delivery, and someone will find out after the brochure is printed.
-- **Verify on real hardware.** Mock mode proves the UI-to-queue-to-database circuit. It proves nothing about the render. Six shipped features had no interface until an audit found them, and a generative-expand tool was dark for two months because it sent a mask to the wrong graph — both found by running the real path and looking at the picture.
-- **The model is maybe a fifth of the system.** The rest is version management, prompt assembly, queueing, review UX, delivery, licences, observability — the unglamorous machinery that turns a great demo into a tool a studio actually uses every day.
+- **Determinism is the feature.** Seeded generation, snapshot-at-queue-time configuration, labels that encode ancestry. That is what makes it a production tool rather than a slot machine.
+- **Score with a local model.** Quality review is the highest-volume LLM call in the system. Local makes per-image cost zero, so you never hesitate to review everything.
+- **Plan for failure everywhere.** GPUs go offline, processes restart mid-batch, JSON files corrupt at the worst moment. Atomic writes, per-cell failure isolation, mark-failed-never-auto-retry. Unglamorous and essential.
+- **Licences are a schema field.** If the class is not on the row, it is not in the delivery, and someone finds out after the brochure is printed.
+- **Verify on real hardware.** Mock mode proves the UI-to-queue-to-database circuit and nothing about the render. Six shipped features had no interface until an audit found them, and a generative-expand tool was dark for two months because it sent a mask to the wrong graph. Both found by running the real path and looking at the picture.
+- **The model is maybe a fifth of the system.** The rest is version management, prompt assembly, queueing, review UX, delivery, licences, observability. The machinery that turns a great demo into a tool a studio uses every day.
 
-ArchUpgrade is internal tooling, not a product — though its finishing pass is now something we run for other studios' renders through [ai.visiongraphics.eu](https://ai.visiongraphics.eu/). The workflow thinking behind it, and the [pipeline auditing and automation work](/services/workflow-optimization/) that grew out of it, is exactly the kind of engineering we do for other studios. If you're wiring AI into a real production pipeline and want to compare notes, [we're happy to talk](/contact/).
+ArchUpgrade is internal tooling, not a product, though its finishing pass now runs on other studios' renders through [ai.visiongraphics.eu](https://ai.visiongraphics.eu/). The [pipeline auditing and automation work](/services/workflow-optimization/) I do for other studios grew out of building it. If you are wiring AI into a real production pipeline and want to compare notes, [get in touch](/contact/).
+</Lang>
+
+<Lang code="hu">
+Az az átvilágítás ugyanazon az API-n át jött le a farmról, amit az automatizálásom használ, egy nyolcéves archív renderből, nagyjából fél perc alatt, miután a modell betöltődött. A prompt, amit az eszköz összeállít, egy jelenetrögzítő záradékkal nyit, amely rögzíti a nézőpontot, mielőtt egy szót szólna a fényről. Az a záradék, egy tucat elcsúszó kimenetből tanulva, a mérnöki munka nagy része.
+
+## Súlyozott több-GPU-s farm
+
+A kiosztás a SwarmUI/ComfyUI-backendeken át súlyozott körforgással fut. Minden gép szerepeket deklarál (képszerkesztés, szövegből kép, felskálázás, 3D, videó) szerepenkénti súlyokkal, így a 48 GB-os kártya viszi a nehéz felskálázásokat, míg a kisebb kártyák a feljavító kötegeket rágják. Az állapotellenőrzések kikapuzzák az offline gépeket a körforgásból; egy indításkori összeomlás-helyreállító söprés miatt egy áramkimaradás sosem hagyja megrongálva a sort. Nyolc futtató egy szabályon osztozik: szerezd meg a GPU-szemafort, *mielőtt* leveszed a sorról, hogy a „függőben" szám őszinte legyen.
+
+![A GPU-farm egy része – a gépek az enyémek, a modellek nyílt súlyúak](/_img/articles/archupgrade/farm.jpg)
+
+## A licencek és a származás adat, nem szabályzat
+
+Minden modell, LoRA, checkpoint és külső eszköz licencosztályt hordoz (megengedő, copyleft, nem kereskedelmi, licenc nélküli), egyszer deklarálva a konfigurációban. Minden előállított eszköz rögzíti az őt érintő bármely eszköz legrosszabb osztályát, plusz az eszközlistát, az adatbázissoron és egy JSON-sidecarban a fájl mellett. Egyetlen telepítési kapcsoló, az `allow_noncommercial`, elrejt minden nem megengedő backendet a felületről, és elutasítja az API-n. Kikapcsolva a rendszer fizikailag nem tud olyan képet kiküldeni, amely csak kutatási modellel készült. A leglenyűgözőbb nyílt modellek közül több nem kereskedelmi; [az átvilágító adatbázis](/articles/how-we-vet-the-ai-tool-flood/) azért létezik, hogy ezt elkapja, mielőtt egy modell elérné ezt a pipeline-t.
+
+## A részek, amelyekre egy demónak sosincs szüksége
+
+Egy év napi használat hozzátette a gépezetet, amely egy eszközt infrastruktúrává tesz:
+
+- **Megfigyelhetőség.** Egy megváltoztathatatlan sor minden lezárt renderpróbálkozásról, minden futtató `finally:` blokkjából; VRAM- és sormélység-minták minden node-ról ötpercenként; node-onkénti összesítők és egy „próbálj újra mindent, ami biztonságos okból bukott" gomb.
+- **Megőrzés és mentések.** A megőrzési ablaknál régebbi sandbox-kimenet egyeztetve és törölve egy próbafutás → ellenőrzött lista → alkalmazás folyamaton át, azzal, hogy „a leszállítási fa elérhetetlen" kódban van írva, nem konfigurációban. Az adatbázis az SQLite online mentési API-jával mentődik és integritás-ellenőrződik, sosem fájlmásolással.
+- **Lemezőr** minden futtató sorbaállításánál, amely a szabadhely-küszöb alatt visszautasítja az új rendereket, ahelyett hogy félúton megrongálna egy köteget.
+- **Hitelesítés és ügyfélhurok.** Szereplők és szerepek (tulajdonos, stúdió, szolgáltatás, ügyfél), bearer tokenek az automatizálásnak, rendelésenkénti linkek ügyfeleknek, vízjeles előnézetek, rendelésenként egy nyitott revízió, a képhez normalizált tűjegyzetek, egy ügyfél-zip stúdióútvonalak nélkül. Egy LAN-partner hitelesítés nélkül továbbra is tulajdonos, így a bizalmi modell nem változott; minden meglévő teszt érintetlenül átment, amikor a hitelesítés landolt.
+- **Egy render-homlokzat.** Egyetlen útvonal-be, útvonal-ki API, amelyen át a stúdió minden más folyamata renderel (ütemezett ügynökök, szkriptek, más tárolók), adatbázissorok és UI-állapot nélkül. Ez a határ az oka, hogy az [ügynökök](/articles/agents-that-work-the-night-shift/) saját projektbe költözhettek anélkül, hogy egy sort importálnának ebből.
+- **Két gép.** A fejlesztő doboz a `main`-t futtatja; a produkciós szerver egy `stable` ágat egy közös kimeneti tárból. Az előléptetés deploy-szkript, nem `git pull` azon a dobozon, amelytől ügyfelek függnek.
+
+## A leszállítás a pipeline része
+
+Az utolsó lépés a kiválasztott verziókat tiszta, sorszámozott fájlnevekkel csomagolja, míg egy metaadatfájl megőrzi a belső címkéket, a generálási paramétereket és a származást. A kategóriánkénti kvóták („15 külső, 3 belső") a csomag kiküldése előtt kikényszerítődnek.
+
+![A Leszállítás oldal – kiválasztott verziók, átnevezési sablon, kvótaellenőrzés, leszállítási előzmények](/_img/articles/archupgrade/archupgrade-deliver.jpg)
+
+## Amit annak mondanék, aki ilyet épít
+
+- **A determinizmus a funkció.** Seedelt generálás, sorbaállításkor pillanatképezett konfiguráció, származást kódoló címkék. Ettől produkciós eszköz, nem félkarú rabló.
+- **Helyi modellel pontozz.** A minőségátnézés a rendszer legnagyobb volumenű LLM-hívása. Helyben a képenkénti költség nulla, így sosem habozol mindent átnézni.
+- **Tervezz hibára mindenütt.** A GPU-k offline mennek, a folyamatok köteg közben újraindulnak, a JSON-fájlok a legrosszabb pillanatban sérülnek. Atomi írások, cellánkénti hibaelszigetelés, bukottnak-jelöl-sosem-újrapróbál-automatikusan. Hálátlan és nélkülözhetetlen.
+- **A licenc sémamező.** Ha az osztály nincs a soron, nincs a leszállításban sem, és valaki a prospektus kinyomtatása után jön rá.
+- **Valódi hardveren ellenőrizz.** A mock mód a UI–sor–adatbázis kört bizonyítja, és a renderről semmit. Hat leszállított funkciónak nem volt felülete, amíg egy audit meg nem találta, és egy generatív bővítő eszköz két hónapig sötét volt, mert rossz gráfnak küldte a maszkot. Mindkettőt a valódi útvonal futtatása és a kép megnézése találta meg.
+- **A modell talán a rendszer ötöde.** A többi verziókezelés, prompt-összeállítás, sorkezelés, átnéző UX, leszállítás, licencek, megfigyelhetőség. A gépezet, amely egy nagyszerű demóból olyan eszközt csinál, amit egy stúdió minden nap használ.
+
+Az ArchUpgrade belső eszköz, nem termék, bár a befejező menete ma már más stúdiók renderjein is fut az [ai.visiongraphics.eu](https://ai.visiongraphics.eu/) oldalon át. A [pipeline-auditálási és automatizálási munka](/services/workflow-optimization/), amit más stúdióknak végzek, az építéséből nőtt ki. Ha valódi produkciós pipeline-ba köt be AI-t, és jegyzeteket cserélne, [írjon](/contact/).
+</Lang>

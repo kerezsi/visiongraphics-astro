@@ -1,10 +1,11 @@
 ---
-title: 'Agents That Work the Night Shift: The Boring Version of AI Automation'
+title:
+  en: "Agents That Work the Night Shift: The Boring Version of AI Automation"
+  hu: "Ügynökök éjszakai műszakban: az AI-automatizálás unalmas változata"
 date: 2026-09-16T00:00:00.000Z
-excerpt: >-
-  Not autonomous AI. Scheduled jobs with a model in the loop, an automated check
-  on the output, and a person reading the results in the morning — plus what
-  building a few dozen of them taught us about small local models.
+excerpt:
+  en: Not autonomous AI. Scheduled jobs with a model in the loop, an automated check on the output, and me reading the results in the morning — plus what building a few dozen of them taught me about small local models.
+  hu: Nem autonóm AI. Ütemezett feladatok, a hurokban egy modellel, a kimeneten automatikus ellenőrzéssel, és reggel én olvasom az eredményt – plusz amit néhány tucat ilyen megépítése tanított a kis helyi modellekről.
 tags:
   - ai
   - tools
@@ -14,25 +15,26 @@ published: false
 coverImage: /_img/articles/creative-agents/hero.jpg
 ---
 
-The word "agent" is doing a lot of work at the moment, and most of what it is asked to carry — software that plans and acts on your behalf while you sleep — is not something we would put near client work. What earns its keep is duller: a job that fires at a set time, calls a model, checks its own output, and leaves something for a human to read in the morning. A slot in the calendar, judgement in the middle, a person at the end.
+<Lang code="en">
+The word "agent" is doing a lot of work at the moment. Most of what it is asked to carry — software that plans and acts on your behalf while you sleep — is not something I would put near client work. What earns its keep is duller: a job that fires at a set time, calls a model, checks its own output, and leaves something for a human to read in the morning. A slot in the calendar, judgement in the middle, a person at the end.
 
-We built a small runner for exactly that. It grew inside [our AI image pipeline](/articles/inside-archupgrade-technical/), moved into its own project on 6 August 2026, and by mid-September carries about thirty agent recipes on the studio server, a handful of them on a schedule by default. Its outputs can now leave the machine as a rendered video file, an email digest, or an Instagram or YouTube upload — the channels are plumbing; the judgement about what goes out stays where it was.
+I built a small runner for exactly that. It grew inside [my AI image pipeline](/articles/inside-archupgrade-technical/), moved into its own project on 6 August 2026, and by mid-September carries about thirty agent recipes on the studio server, a handful on a schedule by default. Outputs can leave the machine as a video file, an email digest, or an Instagram or YouTube upload. The channels are plumbing. The judgement about what goes out stays where it was.
 
 ![The morning view — every agent's output from today on one wall, with run and failure counts](/_img/articles/creative-agents/creative-agents-today.jpg)
 
 ## An agent is a declaration, not a program
 
-**Adding an agent means writing a file, not writing code.** The registry holds one entry per agent: key, label, description, category, a default schedule, a parameter schema, and the pipeline itself. The router, the scheduler, the run records and every knob in the interface are generic over that list — there is no per-agent front-end code and no per-agent endpoint anywhere, and there must never be.
+Adding an agent means writing a file, not code. The registry holds one entry per agent: key, label, description, category, default schedule, parameter schema, and the pipeline itself. The router, the scheduler, the run records and every knob in the interface are generic over that list. There is no per-agent front-end code and no per-agent endpoint anywhere, and there must never be.
 
-Most of our agents are a single tracked JSON document each. Two are code, because their pipelines are not graphs: a morning ops digest built from an analytics endpoint, and one that roasts a render in a comedy voice and ends with a genuinely useful improvement.
+Most agents are a single tracked JSON document each. Two are code, because their pipelines are not graphs: a morning ops digest built from an analytics endpoint, and one that roasts a render in a comedy voice and ends with a genuinely useful improvement.
 
 ![An agent document — key, parameters, schedule and the node list that forms its pipeline](/_img/articles/creative-agents/agent-declaration-json.jpg)
 
-The pipeline inside the document is a graph: named nodes over one run-state dictionary, edges between them, fourteen node types in the registry today. A writer that turns a system prompt into a JSON object of fields, a caption template, a render, an extension to 9:16, a brand stamp, an image grade, three judges, a save — and a sub-agent node that runs another agent's whole graph inline as one step. A new node type needs no front-end code: the canvas builds its palette, sockets and inspector widgets from the registry declaration.
+The pipeline inside the document is a graph: named nodes over one run-state dictionary, edges between them, fourteen node types today. A writer that turns a system prompt into a JSON object of fields, a caption template, a render, an extension to 9:16, a brand stamp, an image grade, three judges, a save, and a sub-agent node that runs another agent's whole graph inline as one step. A new node type needs no front-end code: the canvas builds its palette, sockets and inspector widgets from the registry declaration.
 
 ## Why it left the image pipeline
 
-**The runner is a client of our render service, not a part of it.** It talks over HTTP and nothing else — a path-in, path-out render facade with one endpoint per kind of job (text-to-image, multi-reference edit, relight, aspect extension, video, speech, music) plus one for the analytics counts — and a standing rule forbids importing the image pipeline's code at all. The payoff shows at deploy time: the two applications update independently, and a pipeline edit made on the server survives the next render-tooling update.
+The runner is a client of the render service, not a part of it. It talks over HTTP and nothing else — a path-in, path-out render facade with one endpoint per kind of job (text-to-image, multi-reference edit, relight, aspect extension, video, speech, music) plus one for analytics counts — and a standing rule forbids importing the image pipeline's code at all. The two applications update independently, and a pipeline edit made on the server survives the next render-tooling update. I learned that rule by breaking it first.
 
 ## Schedules are data, not cron
 
@@ -42,34 +44,97 @@ Each agent carries an enabled flag, a list of times or an interval inside a wind
 
 ## What small local models are actually good at
 
-**A small local model given one narrow job and a strict output schema is reliable. The same model asked for a complex nested structure is not.** Our satirical-history site, [FakeHistory.eu](https://fakehistory.eu), taught us that first, and every agent here is built around it.
+A small local model given one narrow job and a strict output schema is reliable. The same model asked for a complex nested structure is not. [FakeHistory.eu](https://fakehistory.eu) taught me that first, expensively, and every agent here is built around it.
 
 The agent that feeds that site asks its writer for one flat object of five short strings: a headline of at most seven words, a city, a year, one period-voice sentence of at most eighteen words, and a description of the photograph to render. Not a nested document. Not an article. Five strings.
 
 The joke agent's writers' room chains that principle instead of asking once: six candidate lines in one call, then `{index, reason}` to pick the most visual, then up to two punch-up passes that each hand back one tightened line, then an illustration prompt. Every hop is one question with one shape of answer.
 
-The judges are narrower still — one yes/no verdict and a one-line reason. Their vision rules were learned the expensive way: use the caption-capable model (the QA model is near-blind), send a resized copy at roughly a one-megapixel budget, and turn thinking off for fixed-JSON answers, which spent twenty-five seconds reaching the verdict the flag returns in half a second. Ask about presence, not absence — the composition judge asks "is there a visible defect?", never "is this good", because a model confirms presence far more reliably than absence. And an unparseable verdict counts as a pass: only honest rejections should burn a retry.
+The judges are narrower still: one yes/no verdict and a one-line reason. Their vision rules cost me real time to learn. Use the caption-capable model (the QA model is near-blind). Send a resized copy at roughly one megapixel. Turn thinking off for fixed-JSON answers — it spent twenty-five seconds reaching the verdict the flag returns in half a second. Ask about presence, not absence: "is there a visible defect?", never "is this good", because a model confirms presence far more reliably than absence. And an unparseable verdict counts as a pass, so only honest rejections burn a retry.
 
 ## Loops you can see
 
-A judge node has two outputs, pass and fail, and the fail edge is a first-class retry edge carrying its own attempt bound. Most of our graphs have exactly one: render, let a judge look at the picture, and on a failure back to the render — three attempts, counted as renders rather than as back-edges. Exhausting the bound fails the run loudly unless the edge names a fallback output; the joke agent ships its last render, the composition check does not. A failed run beats an ugly image.
+A judge node has two outputs, pass and fail, and the fail edge is a first-class retry edge with its own attempt bound. Most graphs have exactly one: render, let a judge look at the picture, and on failure back to the render — three attempts, counted as renders. Exhausting the bound fails the run loudly unless the edge names a fallback output; the joke agent ships its last render, the composition check does not. A failed run beats an ugly image.
 
 ![The graph canvas — nodes, the retry edge in its own lane below, and the loop body tinted](/_img/articles/creative-agents/agent-graph-canvas.jpg)
 
-Having that loop as visible structure, rather than a `for` buried in a function, is the point of the canvas: retry edges route in their own lane beneath the cards, tint the nodes they re-run, and after a run each card carries its own elapsed time.
+Having that loop as visible structure rather than a `for` buried in a function is the point of the canvas: retry edges route in their own lane beneath the cards, tint the nodes they re-run, and after a run each card carries its own elapsed time.
 
 ![A finished run — the executed steps, per-node timings and the attempts a judge rejected](/_img/articles/creative-agents/run-record-timings.jpg)
 
-## The honest position
+## What I do not trust it with
 
 Agents are bad at judgement and bad at long chains. Every node is somewhere a run can fail, and the interpreter caps a run at two hundred steps because a hand-edited cycle will eventually find a way. Nothing here decides anything a client will see.
 
-**Unattended generation only pays for itself when there is an automated review step and a human gate.** Without the judge you wake up to a folder of pictures and no idea which are broken. With it you wake up to a shorter list that passed a check, plus a record naming every attempt that did not and why.
+Unattended generation only pays for itself with an automated review step and a human gate. Without the judge you wake up to a folder of pictures and no idea which are broken. With it you wake up to a shorter list that passed a check, plus a record naming every attempt that did not and why.
 
-The same gate applies to authoring. The local model can write and edit agent pipelines, but nothing it writes is saved or run automatically — its edits arrive on the canvas as a before-and-after diff you accept or discard. In one test the model helpfully replaced a template placeholder with the literal words "A fun pun." Another rewrite quietly dropped a field name, and every run afterwards died at the render, after paying for the language-model call. The save path now refuses a pipeline whose renderer asks for a field no writer produces.
+The same gate applies to authoring. The local model can write and edit agent pipelines, but nothing it writes is saved or run automatically; its edits arrive on the canvas as a before-and-after diff I accept or discard. In one test it helpfully replaced a template placeholder with the literal words "A fun pun." Another rewrite quietly dropped a field name, and every run afterwards died at the render, after paying for the language-model call. The save path now refuses a pipeline whose renderer asks for a field no writer produces.
 
-There is also plenty we deliberately have not built: resuming a run from a checkpoint, a pause node for mid-run approval, a generic HTTP node. None has a job that needs it yet. The per-step snapshots exist so a bad output from three days ago can be inspected and reproduced, not so a run can be restarted — we would rather say so than imply a capability we do not ship.
+Deliberately not built: resuming a run from a checkpoint, a pause node for mid-run approval, a generic HTTP node. None has a job that needs it yet. The per-step snapshots exist so a bad output from three days ago can be inspected and reproduced, not so a run can be restarted. I would rather say so than imply a capability I do not ship.
 
-The pictures are a side product. What these agents really are is a rehearsal for the automation that belongs in a production pipeline: something scheduled, something narrow, something that checks its own work, and a person who reads the result over coffee. That is the shape we build when we do [advanced AI and pipeline work](/services/advanced-ai-services/) for other studios — the value is rarely the model, it is the schedule, the review step and the record.
+The pictures are a side product. What these agents really are is a rehearsal for the automation that belongs in a production pipeline: scheduled, narrow, checks its own work, and a person reads the result over coffee. That is the shape I build when I do [pipeline work for other studios](/services/advanced-ai-services/). The value is rarely the model. It is the schedule, the review step and the record.
 
-If you have a repetitive production job that runs on a clock and eats an hour of somebody's morning, [get in touch](/contact/) — the first conversation is free.
+If you have a repetitive production job that runs on a clock and eats an hour of somebody's morning, [get in touch](/contact/).
+</Lang>
+
+<Lang code="hu">
+Az „ügynök" szó mostanában sokat dolgozik. Aminek nagy részét cipelnie kell – szoftver, amely tervez és cselekszik helyetted, amíg alszol – nem olyasmi, amit ügyfélmunka közelébe engednék. Ami megkeresi a kenyerét, az unalmasabb: egy feladat, amely adott időben elindul, meghív egy modellt, ellenőrzi a saját kimenetét, és reggelre otthagy valamit egy embernek elolvasni. Egy hely a naptárban, ítélőképesség középen, egy ember a végén.
+
+Pontosan erre építettem egy kis futtatót. [Az AI-képpipeline-omon](/articles/inside-archupgrade-technical/) belül nőtt, 2026. augusztus 6-án költözött saját projektbe, és szeptember közepére nagyjából harminc ügynökreceptet hordoz a stúdió szerverén, ebből egy maréknyi alapból ütemezve. A kimenetek videófájlként, e-mail-összefoglalóként vagy Instagram-, illetve YouTube-feltöltésként hagyhatják el a gépet. A csatornák csövezés. Az ítélet arról, hogy mi megy ki, ott maradt, ahol volt.
+
+![A reggeli nézet – minden ügynök mai kimenete egy falon, futás- és hibaszámokkal](/_img/articles/creative-agents/creative-agents-today.jpg)
+
+## Az ügynök deklaráció, nem program
+
+Új ügynök hozzáadása fájlírást jelent, nem kódírást. A nyilvántartásban ügynökönként egy bejegyzés van: kulcs, címke, leírás, kategória, alapértelmezett ütemezés, paraméterséma, és maga a pipeline. A router, az ütemező, a futásrekordok és a felület minden gombja generikus e lista fölött. Nincs ügynökönkénti frontend-kód és nincs ügynökönkénti végpont sehol, és nem is lehet soha.
+
+A legtöbb ügynök egyetlen verziókövetett JSON-dokumentum. Kettő kód, mert a pipeline-juk nem gráf: egy reggeli üzemeltetési összefoglaló egy analitikai végpontból, és egy, amely komikus hangon lehúz egy rendert, és egy tényleg hasznos javítási javaslattal zár.
+
+![Egy ügynökdokumentum – kulcs, paraméterek, ütemezés és a pipeline-t alkotó csomópontlista](/_img/articles/creative-agents/agent-declaration-json.jpg)
+
+A dokumentumban lévő pipeline egy gráf: elnevezett csomópontok egyetlen futásállapot-szótár fölött, élek közöttük, ma tizennégy csomóponttípus. Egy író, amely rendszerpromptból mezőkből álló JSON-objektumot csinál, egy képaláírás-sablon, egy render, egy 9:16-ra bővítés, egy márkabélyegző, egy képfokozat, három bíró, egy mentés, és egy al-ügynök csomópont, amely egy másik ügynök teljes gráfját inline, egy lépésként futtatja. Új csomóponttípushoz nem kell frontend-kód: a vászon a nyilvántartás deklarációjából építi a palettát, a foglalatokat és az inspektor-vezérlőket.
+
+## Miért hagyta el a képpipeline-t
+
+A futtató a render-szolgáltatás kliense, nem része. HTTP-n beszél, semmi máson – egy útvonal-be, útvonal-ki render-homlokzat, feladattípusonként egy végponttal (szövegből kép, többreferenciás szerkesztés, átvilágítás, képarány-bővítés, videó, beszéd, zene), plusz egy az analitikai számokhoz –, és egy állandó szabály tiltja a képpipeline kódjának importálását egyáltalán. A két alkalmazás egymástól függetlenül frissül, és a szerveren végzett pipeline-szerkesztés túléli a következő render-eszköz frissítést. Ezt a szabályt úgy tanultam meg, hogy előbb megszegtem.
+
+## Az ütemezés adat, nem cron
+
+Minden ügynök hordoz egy engedélyezve-kapcsolót, időpontlistát vagy ablakon belüli intervallumot, hétnapos maszkot, jitter-beállítást és egy „következőt kihagy"-ot. Egy hurok szolgál ki minden ügynököt, percenként ébred, és csak a *legutóbbi* esedékes slotot süti el: egy este hatkor visszatérő gép nem játszhat le öt elmulasztott reggeli slotot, és egy 07:45-ös összefoglaló 18:00-kor értéktelen. A jitter az ügynökből, a napból és a slotból van hashelve, nem frissen sorsolva, így az előnézet azt a percet mutatja, amikor a hurok tényleg tüzelni fog.
+
+![Az ütemezőpanel – időpontok, napmaszk, jitter, és a következő valódi indítások előnézete](/_img/articles/creative-agents/schedule-editor.jpg)
+
+## Miben jók valójában a kis helyi modellek
+
+Egy kis helyi modell egyetlen szűk feladattal és szigorú kimeneti sémával megbízható. Ugyanaz a modell összetett, egymásba ágyazott struktúrát kérve nem az. A [FakeHistory.eu](https://fakehistory.eu) tanította meg ezt először, drágán, és itt minden ügynök erre épül.
+
+Az az ügynök, amely azt az oldalt táplálja, az írójától egy lapos objektumot kér öt rövid sztringgel: legfeljebb hétszavas címsor, egy város, egy évszám, egy korabeli hangú, legfeljebb tizennyolc szavas mondat, és a renderelendő fénykép leírása. Nem egymásba ágyazott dokumentum. Nem cikk. Öt sztring.
+
+A vicc-ügynök íróterme ezt az elvet láncolja ahelyett, hogy egyszer kérdezne: hat jelölt sor egy hívásban, majd `{index, reason}` a legvizuálisabb kiválasztására, majd legfeljebb két csiszoló menet, amelyek egy-egy feszesebb sort adnak vissza, majd egy illusztrációs prompt. Minden ugrás egy kérdés, egyféle alakú válasszal.
+
+A bírók még szűkebbek: egy igen/nem ítélet és egy egysoros indoklás. A látási szabályaikat valódi időmbe került megtanulni. Használd a képaláírásra képes modellt (a QA-modell szinte vak). Küldj átméretezett másolatot, nagyjából egy megapixeles kerettel. Kapcsold ki a gondolkodást a fix JSON-válaszoknál – huszonöt másodpercet töltött azzal az ítélettel, amit a kapcsoló fél másodperc alatt visszaad. Jelenlétről kérdezz, ne hiányról: „van látható hiba?", sosem „jó ez?", mert a modell sokkal megbízhatóbban erősít meg jelenlétet, mint hiányt. És egy feldolgozhatatlan ítélet átmenésnek számít, hogy csak az őszinte elutasítások égessenek újrapróbálást.
+
+## Hurkok, amiket látsz
+
+Egy bíró-csomópontnak két kimenete van, átment és megbukott, és a bukás-él elsőrendű újrapróbálási él, saját próbálkozás-korláttal. A legtöbb gráfban pontosan egy van: renderel, hagyja, hogy egy bíró ránézzen a képre, és bukásnál vissza a renderhez – három próbálkozás, renderként számolva. A korlát kimerítése hangosan buktatja a futást, hacsak az él nem nevez meg tartalék kimenetet; a vicc-ügynök kiküldi az utolsó renderjét, a kompozíció-ellenőrzés nem. Egy megbukott futás jobb egy csúnya képnél.
+
+![A gráfvászon – csomópontok, az újrapróbálási él a saját sávjában alul, a hurok teste színezve](/_img/articles/creative-agents/agent-graph-canvas.jpg)
+
+Az, hogy ez a hurok látható struktúra, nem egy függvénybe temetett `for`, a vászon lényege: az újrapróbálási élek a kártyák alatt saját sávban futnak, színezik a csomópontokat, amiket újrafuttatnak, és futás után minden kártya hordozza a saját eltelt idejét.
+
+![Egy befejezett futás – a végrehajtott lépések, csomópontonkénti időzítések, és a bíró által elutasított próbálkozások](/_img/articles/creative-agents/run-record-timings.jpg)
+
+## Mit nem bízok rá
+
+Az ügynökök rosszak ítélkezésben és rosszak hosszú láncokban. Minden csomópont egy hely, ahol a futás elbukhat, és az értelmező kétszáz lépésnél lezárja a futást, mert egy kézzel szerkesztett ciklus előbb-utóbb utat talál. Semmi itt nem dönt olyanról, amit ügyfél fog látni.
+
+A felügyelet nélküli generálás csak automatizált ellenőrző lépéssel és emberi kapuval fizeti ki magát. A bíró nélkül egy mappányi képre ébredsz, és fogalmad sincs, melyik törött. Vele egy rövidebb listára ébredsz, ami átment egy ellenőrzésen, plusz egy rekordra, amely megnevez minden próbálkozást, ami nem, és hogy miért.
+
+Ugyanez a kapu vonatkozik a szerzőségre. A helyi modell tud ügynök-pipeline-okat írni és szerkeszteni, de semmi, amit ír, nem mentődik és nem fut automatikusan; a szerkesztései előtte-utána diffként érkeznek a vászonra, amit elfogadok vagy eldobok. Egy tesztben segítőkészen lecserélte a sablon-helyőrzőt a szó szerinti „A fun pun." szövegre. Egy másik átírás csendben elejtett egy mezőnevet, és utána minden futás a rendernél halt meg, miután kifizette a nyelvimodell-hívást. A mentési útvonal most visszautasít egy olyan pipeline-t, amelynek a renderelője olyan mezőt kér, amit egyetlen író sem állít elő.
+
+Szándékosan nincs megépítve: futás folytatása ellenőrzőpontból, szünet-csomópont futás közbeni jóváhagyáshoz, generikus HTTP-csomópont. Egyiknek sincs még olyan feladata, aminek szüksége lenne rá. A lépésenkénti pillanatképek azért léteznek, hogy egy három napja rossz kimenet megvizsgálható és reprodukálható legyen, nem azért, hogy a futás újraindítható legyen. Inkább kimondom, mint hogy olyan képességet sugalljak, amit nem szállítok.
+
+A képek melléktermékek. Amik ezek az ügynökök valójában: főpróba annak az automatizálásnak, amely egy produkciós pipeline-ba való: ütemezett, szűk, ellenőrzi a saját munkáját, és egy ember kávé mellett olvassa az eredményt. Ezt a formát építem, amikor [pipeline-munkát csinálok más stúdióknak](/services/advanced-ai-services/). Az érték ritkán a modell. Az ütemezés, az ellenőrző lépés és a rekord az.
+
+Ha van egy ismétlődő produkciós feladata, ami óra szerint fut, és valakinek a reggeléből egy órát megeszik, [írjon](/contact/).
+</Lang>

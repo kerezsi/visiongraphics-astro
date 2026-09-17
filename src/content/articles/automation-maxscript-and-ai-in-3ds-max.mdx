@@ -1,77 +1,120 @@
 ---
-title: >-
-  Automation, MaxScript and AI in 3ds Max: From Writing Scripts to Driving the
-  Software
-date: 2026-09-16T00:00:00.000Z
-excerpt: >-
-  We have automated 3ds Max with MAXScript for twenty-five years. AI assistants
-  first made the scripts faster to write; now an assistant can operate Max
-  directly through a tool server we built. What changed, what it is good for,
-  and the part that is still a human job.
+title:
+  en: "Automation, MaxScript and AI in 3ds Max: From Writing Scripts to Driving the Software"
+  hu: "Automatizálás, MaxScript és AI a 3ds Maxban: a szkriptírástól a szoftver vezérléséig"
+date: 2025-09-16
+excerpt:
+  en: I have automated 3ds Max with MAXScript for twenty-five years. AI assistants first made the scripts faster to write; now an assistant can operate Max directly through a tool server I built. What changed, what it is good for, and the part that is still my job.
+  hu: Huszonöt éve automatizálom a 3ds Maxot MAXScripttel. Az AI-asszisztensek először a szkriptek írását gyorsították fel; ma egy asszisztens közvetlenül működteti a Maxot egy általam épített eszközszerveren keresztül. Mi változott, mire jó, és melyik rész marad az én dolgom.
 tags:
   - workflow
   - maxscript
   - automation
   - ai
-published: false
+published: true
 coverImage: /_img/articles/automation/hero.jpg
 ---
 
-Automation is not new for us. Long before AI was a conference topic we were writing MAXScript to solve production problems — CAD import cleanup, batch render submission, scene organisation scripts that save hours per project. One example that has held up: CAD import preparation used to take 30–45 minutes per project; a MAXScript tool we built cut that to under five. Over dozens of projects a year, that is real time recovered.
+<Lang code="en">
+Automation is not new here. Long before AI was a conference topic I was writing MAXScript to solve production problems: CAD import cleanup, batch render submission, scene organisation. One number that has held up: CAD import preparation used to take 30–45 minutes per project; a MAXScript tool cut it to under five. Over dozens of projects a year, that is real time.
 
-What has changed, twice now, is the tooling around that work. First AI assistants made scripts far faster to write and debug. Then, this year, the assistant stopped needing us to write the script at all for many jobs — it drives 3ds Max itself, through a tool server we built for it.
+What changed, twice now, is the tooling around that work. First AI assistants made scripts far faster to write and debug. Then, this year, the assistant stopped needing me to write the script at all for many jobs. It drives 3ds Max itself, through a tool server I built for it.
 
 ## Stage one: AI writes the MAXScript
 
-**Code completion and generation.** Describing a workflow in plain language and getting a working first draft saves the hour that used to go into scaffolding. It still needs review and a test on a real scene, but the starting point is much closer to finished.
+Code generation. Describe a workflow in plain language, get a working first draft. It still needs review and a test on a real scene, but the hour that went into scaffolding is gone.
 
-**Error diagnosis.** Pasting a failing script into an assistant surfaces the problem faster than reading it line by line — off-by-one errors, missing property checks, a loop that never ends.
+Error diagnosis. Pasting a failing script into an assistant surfaces the problem faster than reading it line by line: off-by-one errors, missing property checks, a loop that never ends.
 
-**Optimisation.** For scripts that run on large scenes, AI-suggested refactoring has meaningfully cut execution time: one production script went from a ten-minute run to under three.
+Optimisation. One production script went from a ten-minute run to under three after an AI-suggested refactor.
 
-**Tools that were never worth writing are now worth writing.** A script that took two days to build and debug takes hours. That moves the threshold: a step that happens on every project and that a person gets wrong on the sixtieth repetition is now worth automating even if it saves only minutes each time.
+The real shift: tools that were never worth writing are now worth writing. A script that took two days to build and debug takes hours. That moves the threshold. A step that happens on every project and that a person gets wrong on the sixtieth repetition is now worth automating even if it saves only minutes each time.
 
-The result of a few years of this is [the toolkit we built for ourselves](/articles/the-3ds-max-toolkit-we-built-for-ourselves/): a procedural building generator, a batch camera renderer, sun and camera utilities, a garden planner — about 20,000 lines of MAXScript and 16,000 of Python, in daily use here.
+A few years of this produced [the toolkit I use every day](/articles/the-3ds-max-toolkit-we-built-for-ourselves/): a procedural building generator, a batch camera renderer, sun and camera utilities, a garden planner. About 20,000 lines of MAXScript and 16,000 of Python.
+</Lang>
 
-<ImageGallery label={false} subtitle="One scene, many cameras — Sasad Liget 6. The batch renderer keeps resolution, output path and render elements on each camera, so the sixtieth view renders like the first." images={[{"src":"/_img/portfolio/sasad-liget-6/01.jpg","alt":"Sasad Liget 6 — street-level exterior view"},{"src":"/_img/portfolio/sasad-liget-6/04.jpg","alt":"Sasad Liget 6 — aerial view of the estate"},{"src":"/_img/portfolio/sasad-liget-6/07.jpg","alt":"Sasad Liget 6 — courtyard facade detail"},{"src":"/_img/portfolio/sasad-liget-6/13.jpg","alt":"Sasad Liget 6 — inner courtyard with playground"}]} />
+<Lang code="hu">
+Az automatizálás itt nem újdonság. Jóval azelőtt, hogy az AI konferenciatéma lett, MAXScriptet írtam produkciós problémákra: CAD-import tisztítás, kötegelt renderbeadás, jelenetszervezés. Egy szám, ami kitartott: a CAD-import előkészítése projektenként 30–45 percet vett igénybe; egy MAXScript-eszköz öt perc alá vitte. Évi több tucat projekten ez valódi idő.
 
+Ami változott, immár kétszer, az a munka körüli eszközkészlet. Először az AI-asszisztensek tették sokkal gyorsabbá a szkriptek írását és hibakeresését. Aztán idén az asszisztensnek sok feladathoz már nem kellett, hogy egyáltalán megírjam a szkriptet. Maga vezérli a 3ds Maxot, egy eszközszerveren keresztül, amit neki építettem.
+
+## Első szakasz: az AI írja a MAXScriptet
+
+Kódgenerálás. Leírsz egy munkafolyamatot köznyelven, kapsz egy működő első vázlatot. Még kell hozzá átnézés és teszt valódi jeleneten, de az óra, ami az állványozásba ment, eltűnt.
+
+Hibadiagnózis. Egy elhaló szkript beillesztése egy asszisztensbe gyorsabban hozza felszínre a problémát, mint a soronkénti olvasás: eggyel-elszámolás, hiányzó tulajdonság-ellenőrzés, egy ciklus, ami sosem ér véget.
+
+Optimalizálás. Egy produkciós szkript tízperces futásról három perc alá ment egy AI által javasolt refaktor után.
+
+Az igazi váltás: azok az eszközök, amelyeket sosem volt érdemes megírni, most érdemes megírni. Egy szkript, amelynek felépítése és hibakeresése két nap volt, órákba kerül. Ez elmozdítja a küszöböt. Egy lépés, amely minden projekten előfordul, és amelyet az ember a hatvanadik ismétlésnél elront, most akkor is megéri az automatizálást, ha alkalmanként csak perceket takarít meg.
+
+Néhány év ilyen munkából állt össze [az eszközkészlet, amit minden nap használok](/articles/the-3ds-max-toolkit-we-built-for-ourselves/): procedurális épületgenerátor, kötegelt kamerarenderelő, nap- és kamerasegédek, kerttervező. Nagyjából 20 000 sor MAXScript és 16 000 sor Python.
+</Lang>
+
+<ImageGallery images={[{"src":"/_img/portfolio/sasad-liget-6/01.jpg","alt":"Sasad Liget 6 — street-level exterior view"},{"src":"/_img/portfolio/sasad-liget-6/04.jpg","alt":"Sasad Liget 6 — aerial view of the estate"},{"src":"/_img/portfolio/sasad-liget-6/07.jpg","alt":"Sasad Liget 6 — courtyard facade detail"},{"src":"/_img/portfolio/sasad-liget-6/13.jpg","alt":"Sasad Liget 6 — inner courtyard with playground"}]} subtitle={{ en: "One scene, many cameras — Sasad Liget 6. The batch renderer keeps resolution, output path and render elements on each camera, so the sixtieth view renders like the first.", hu: "Egy jelenet, sok kamera – Sasad Liget 6. A kötegelt renderelő minden kamerán megőrzi a felbontást, a kimeneti útvonalat és a render-elemeket, így a hatvanadik nézet ugyanúgy renderelődik, mint az első." }} />
+
+<Lang code="en">
 ## Stage two: AI operates 3ds Max
 
 Writing a script and running it is still a loop with a person in the middle: describe, generate, paste, run, read the error, repeat. The next step was to remove the paste.
 
-We built an MCP server for 3ds Max — a tool server that exposes the application to an AI assistant as a set of typed operations, currently about 115 of them. Scene inspection and selection, object and modifier properties, material networks and texture maps, RailClone and Forest Pack styles, tyFlow events and operators, OSL shaders, state sets, viewport captures, batch renames, layer management, merges from other files. The assistant calls those tools the way it would call any API, and sees the result — including a screenshot of the viewport — before deciding what to do next.
+I built an MCP server for 3ds Max, a tool server that exposes the application to an AI assistant as a set of typed operations, currently about 115. Scene inspection and selection, object and modifier properties, material networks and texture maps, RailClone and Forest Pack styles, tyFlow events and operators, OSL shaders, state sets, viewport captures, batch renames, layer management, merges from other files. The assistant calls those tools the way it would call any API, and sees the result, including a screenshot of the viewport, before deciding what to do next.
 
-What that looks like in practice:
+The tool is deterministic; the assistant is not. Every operation the server exposes is plain MAXScript or Python underneath, doing one named thing. The assistant decides which operations to call and in what order, and I watch it, the way I would watch a new colleague on their first day. Nothing it does is invisible. The scene is right there.
 
-1. **"Tell me what's wrong with this scene."** The assistant walks the hierarchy, lists objects with missing textures or absurd scale, reads the render settings, and reports — in seconds, on a scene with thousands of objects.
-2. **"Set up the background street like the last project."** It creates the RailClone and Forest Pack objects, assigns the styles and materials, scatters along the splines we point it at, and captures the viewport so we can check.
-3. **"Rename every camera to the sheet, set resolutions from this table."** Tedious, error-prone by hand, one instruction now.
-4. **"Write me an OSL shader that does X."** It writes the shader, creates the map, assigns it, renders a test frame, and iterates on what it sees.
+## Where this connects to the rest
 
-**The tool is deterministic; the assistant is not.** Every operation the server exposes is plain MAXScript or Python underneath, doing one named thing. The assistant decides *which* operations to call and in what order — and we watch it, the same way we would watch a new colleague on their first day. Nothing it does is invisible: the scene is right there.
+Rendering is only half of a picture now. The working render that leaves 3ds Max goes into [the AI finishing pipeline](/articles/from-render-to-photograph-archupgrade/), and that system, too, is driven by tools rather than by hand: scripted ingest of render passes, structured prompts assembled from per-camera metadata, automated review. Deterministic tools, an assistant choosing among them, a person at the end, from the first CAD import to the delivered image.
+</Lang>
 
-![Conceptual illustration: an assistant sitting beside the architect's model rather than inside it](/_img/articles/automation/agent.jpg)
+<Lang code="hu">
+## Második szakasz: az AI működteti a 3ds Maxot
 
-## Where this connects to the rest of the pipeline
+Egy szkript megírása és futtatása továbbra is egy hurok, benne egy emberrel: leír, generál, beilleszt, futtat, hibát olvas, ismétel. A következő lépés a beillesztés kiiktatása volt.
 
-Rendering is only half of a picture now. The working render that leaves 3ds Max goes into [our AI finishing pipeline](/articles/from-render-to-photograph-archupgrade/), and that system, too, is driven by tools rather than by hand: scripted ingest of render passes, structured prompts assembled from per-camera metadata, automated review. The same discipline — deterministic tools, an assistant choosing among them, a person at the end — runs from the first CAD import to the delivered image.
+Építettem egy MCP-szervert a 3ds Maxhoz, egy eszközszervert, amely az alkalmazást tipizált műveletek halmazaként teszi elérhetővé egy AI-asszisztensnek, jelenleg nagyjából 115-öt. Jelenet-vizsgálat és kijelölés, objektum- és módosító-tulajdonságok, anyaghálózatok és textúratérképek, RailClone- és Forest Pack-stílusok, tyFlow-események és -operátorok, OSL-shaderek, state setek, viewport-rögzítések, kötegelt átnevezések, rétegkezelés, összefésülés más fájlokból. Az asszisztens úgy hívja ezeket az eszközöket, ahogy bármilyen API-t hívna, és látja az eredményt, beleértve a viewport képernyőképét, mielőtt eldöntené, mi legyen a következő lépés.
 
-<ImageCompare before="/_img/articles/archupgrade/bank-branch-2-before.jpg" after="/_img/articles/archupgrade/bank-branch-2-after.jpg" beforeAlt="Working render of a bank branch as it leaves 3ds Max" afterAlt="The same view after the AI finishing pass" beforeText="Out of 3ds Max" afterText="After the pipeline" label={false} />
+Az eszköz determinisztikus; az asszisztens nem. Minden művelet, amit a szerver kiad, alatta sima MAXScript vagy Python, amely egy megnevezett dolgot csinál. Az asszisztens dönti el, melyik műveleteket hívja és milyen sorrendben, én pedig figyelem, ahogy egy új kollégát figyelnék az első napján. Semmi, amit tesz, nem láthatatlan. A jelenet ott van előttem.
 
-We are also, deliberately, building a second home. A Geometry Nodes add-on for Blender that behaves like RailClone and Forest Pack, and the same MCP approach for Blender, exist as working slices — insurance against depending on one vendor's roadmap. 3ds Max with V-Ray remains the production seat today.
+## Hol kapcsolódik ez a többihez
 
-## What AI doesn't replace
+A renderelés ma egy képnek csak a fele. A 3ds Maxból kilépő munkarender [az AI-befejező pipeline-ba](/articles/from-render-to-photograph-archupgrade/) megy, és azt a rendszert is eszközök vezérlik, nem kéz: render-passok szkriptelt beolvasása, kameránkénti metaadatokból összeállított strukturált promptok, automatikus ellenőrzés. Determinisztikus eszközök, egy közülük választó asszisztens, egy ember a végén, az első CAD-importtól a leszállított képig.
+</Lang>
 
-Understanding what problem you are actually solving is still the human's job. An assistant produces plausible scripts that do not always do what you intended; testing against real project files, handling edge cases, and knowing when a tool is causing more problems than it solves — that is experience.
+<ImageCompare before="/_img/articles/archupgrade/bank-branch-2-before.jpg" after="/_img/articles/archupgrade/bank-branch-2-after.jpg" beforeAlt="Working render of a bank branch as it leaves 3ds Max" afterAlt="The same view after the AI finishing pass" beforeText={{ en: "Out of 3ds Max", hu: "A 3ds Maxból" }} afterText={{ en: "After the pipeline", hu: "A pipeline után" }} />
 
-Production scripting is tied to specific workflows. The assistant does not know that our render manager needs output paths in one particular form, or that a client's files always arrive with a naming convention that needs cleanup, until we tell it — and then it needs telling again next session. That institutional knowledge lives in the tool definitions we write, which is one reason the MCP server exists.
+<Lang code="en">
+I am also, deliberately, building a second home. A Geometry Nodes add-on for Blender that behaves like RailClone and Forest Pack, and the same MCP approach for Blender, exist as working slices. Insurance against one vendor's roadmap. 3ds Max with V-Ray is still the production seat today.
 
-And a script — or an agent — is the wrong answer more often than script authors admit. If a task will happen twice, do it twice.
+## What stays my job
 
-## The honest position
+Understanding what problem you are actually solving. An assistant produces plausible scripts that do not always do what you intended. Testing against real project files, handling edge cases, knowing when a tool causes more problems than it solves: that is thirty years, not a prompt.
 
-MaxScript is still the right tool. It reaches virtually everything in the application — object properties, render settings, material parameters, scene structure — and that depth is exactly what makes a tool server useful: every one of those 115 operations is a few lines of MAXScript with a typed contract on top. What changed is who writes the lines and who runs them.
+Production scripting is tied to specific workflows. The assistant does not know that my render manager needs output paths in one particular form, or that a client's files always arrive with a naming convention that needs cleanup, until I tell it. Then it needs telling again next session. That knowledge lives in the tool definitions I write, which is one reason the MCP server exists.
 
-The assistant gets things wrong. It has renamed the wrong objects, clobbered a live variable with a two-letter name, and cheerfully replaced a template placeholder with literal text. That is why every tool it can call is narrow, why the scene stays visible, and why nothing it does is a substitute for the lint gate and smoke tests that guard the scripts real work depends on.
+And a script, or an agent, is the wrong answer more often than script authors admit. If a task will happen twice, do it twice.
 
-If your studio keeps losing the same hour to the same manual step in 3ds Max, that is work we do for others too — [custom tools and scripting](/services/3ds-max-tools/) built against your pipeline, and [pipeline audits](/services/workflow-optimization/) that find where the time actually goes. [Tell us where it hurts](/contact/) and we will say honestly whether a script, an agent, or neither is the right answer.
+MaxScript is still the right tool. It reaches virtually everything in the application, and that depth is what makes a tool server useful: every one of those 115 operations is a few lines of MAXScript with a typed contract on top. What changed is who writes the lines and who runs them.
+
+The assistant gets things wrong. It has renamed the wrong objects, clobbered a live variable with a two-letter name, and cheerfully replaced a template placeholder with literal text. That is why every tool it can call is narrow, why the scene stays visible, and why nothing it does replaces the lint gate and smoke tests that guard the scripts real work depends on.
+
+If your studio keeps losing the same hour to the same manual step in 3ds Max, that is [work I do for others](/services/3ds-max-tools/). Tell me where it hurts and I will say whether a script, an agent, or neither is the answer.
+</Lang>
+
+<Lang code="hu">
+Emellett, szándékosan, egy második otthont is építek. Egy Geometry Nodes-kiegészítő Blenderhez, amely úgy viselkedik, mint a RailClone és a Forest Pack, és ugyanez az MCP-megközelítés Blenderhez, működő szeletekként létezik. Biztosítás egyetlen gyártó ütemterve ellen. A 3ds Max V-Ray-jel ma is a produkciós szék.
+
+## Ami az én dolgom marad
+
+Megérteni, hogy valójában milyen problémát oldasz meg. Egy asszisztens hihető szkripteket állít elő, amelyek nem mindig azt teszik, amit szándékoztál. Tesztelés valódi projektfájlokon, peremesetek kezelése, annak tudása, mikor okoz egy eszköz több gondot, mint amennyit megold: ez harminc év, nem egy prompt.
+
+A produkciós szkriptelés konkrét munkafolyamatokhoz kötődik. Az asszisztens nem tudja, hogy a render-managerem egy adott formában kéri a kimeneti útvonalakat, vagy hogy egy ügyfél fájljai mindig olyan névkonvencióval érkeznek, amit tisztítani kell, amíg meg nem mondom. Aztán a következő munkamenetben újra meg kell mondani. Ez a tudás az általam írt eszközdefiníciókban él, ami az egyik ok, amiért az MCP-szerver létezik.
+
+És egy szkript, vagy egy ügynök, gyakrabban rossz válasz, mint azt a szkriptírók beismerik. Ha egy feladat kétszer fordul elő, csináld meg kétszer.
+
+A MaxScript továbbra is a megfelelő eszköz. Az alkalmazásban gyakorlatilag mindent elér, és ez a mélység teszi hasznossá az eszközszervert: mind a 115 művelet néhány sor MAXScript egy tipizált szerződéssel a tetején. Ami változott, az az, hogy ki írja a sorokat, és ki futtatja őket.
+
+Az asszisztens hibázik. Átnevezte a rossz objektumokat, felülírt egy élő változót egy kétbetűs névvel, és vidáman lecserélte a sablon-helyőrzőt szó szerinti szövegre. Ezért szűk minden eszköz, amit hívhat, ezért marad látható a jelenet, és ezért nem helyettesíti semmi, amit tesz, a lint-kaput és a füstteszteket, amelyek azokat a szkripteket őrzik, amelyektől valódi munka függ.
+
+Ha a stúdiója ugyanazt az órát veszíti el ugyanarra a kézi lépésre a 3ds Maxban, az [olyan munka, amit másoknak is csinálok](/services/3ds-max-tools/). Mondja el, hol fáj, és megmondom, hogy szkript, ügynök, vagy egyik sem a válasz.
+</Lang>

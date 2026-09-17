@@ -7,7 +7,7 @@ import SectionBanner from '../../../components/ui/SectionBanner.astro';
 import CtaPanel from '../../../components/ui/CtaPanel.astro';
 import { getCollection } from 'astro:content';
 import { thumbUrl } from '../../../lib/image-url';
-import { staticLocalePaths, localeUrl, tStr, type Locale } from '../../../lib/i18n';
+import { staticLocalePaths, localeUrl, tStr, hasLocale, type Locale } from '../../../lib/i18n';
 import { ui } from '../../../i18n/strings';
 import { formatDate, readingTime } from '../../../lib/article-meta';
 
@@ -22,8 +22,14 @@ const articles = allArticles.sort((a, b) =>
   new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
 );
 
+// An article is bilingual when its title is {en,hu} (a plain string is EN-only and
+// counts as "available" to hasLocale, hence the shape check). The EN-only note shows
+// only while some listed article still lacks HU.
+const isHu = (t: unknown) => typeof t !== 'string' && hasLocale(t as never, 'hu');
+const someEnOnly = articles.some(a => !isHu(a.data.title));
+
 // Tag pills: tags shared by ≥2 articles, by frequency then name. Tags are EN
-// slugs (articles are EN-only); singletons still show on their card.
+// slugs; singletons still show on their card.
 const tagCounts = new Map<string, number>();
 for (const a of articles) for (const t of a.data.tags) tagCounts.set(t, (tagCounts.get(t) ?? 0) + 1);
 const tags = [...tagCounts.entries()].filter(([, n]) => n >= 2).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
@@ -50,7 +56,7 @@ const tagLabel = (t: string) => t.replace(/-/g, ' ');
         <div>
           <p class="section-label">{L.articles.sectionLabel}</p>
           <p class="articles-intro">{L.articles.intro}</p>
-          {L.articles.enOnlyNote && <p class="articles-note">{L.articles.enOnlyNote}</p>}
+          {someEnOnly && L.articles.enOnlyNote && <p class="articles-note">{L.articles.enOnlyNote}</p>}
         </div>
         <span
           id="articles-count"
@@ -83,7 +89,7 @@ const tagLabel = (t: string) => t.replace(/-/g, ' ');
             return (
               <a
                 href={localeUrl(`/articles/${article.slug}/`, lang)}
-                lang="en"
+                lang={isHu(article.data.title) ? lang : 'en'}
                 class:list={['article-card', { 'article-card--featured': featured }]}
                 data-tags={article.data.tags.join('|')}
               >
@@ -102,7 +108,7 @@ const tagLabel = (t: string) => t.replace(/-/g, ' ');
                   {featured && <p class="section-label">{L.articles.featured}</p>}
                   <div class="article-card__meta">
                     <time datetime={article.data.date.toISOString()}>{formatDate(article.data.date, lang)}</time>
-                    <span>{L.articles.readingTime.replace('{n}', String(readingTime(article.body)))}</span>
+                    <span>{L.articles.readingTime.replace('{n}', String(readingTime(article.body, lang)))}</span>
                   </div>
                   <h2 class="article-card__title">{title}</h2>
                   <p class="article-card__excerpt">{tStr(article.data.excerpt, lang)}</p>

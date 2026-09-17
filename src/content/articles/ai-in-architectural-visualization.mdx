@@ -1,11 +1,11 @@
 ---
-title: 'AI in Architectural Visualization: What''s Actually Useful in 2026'
+title:
+  en: "AI in Architectural Visualization: What's Actually Useful in 2026"
+  hu: "AI az építészeti vizualizációban: mi hasznos valójában 2026-ban"
 date: 2026-09-16T00:00:00.000Z
-excerpt: >-
-  Eighteen months ago we wrote that generative tools could not produce a
-  deliverable render. That is no longer true — with one condition. Here is where
-  AI sits in our production today, what it does for your project, and the honest
-  list of what it still cannot do.
+excerpt:
+  en: Eighteen months ago I wrote that generative tools could not produce a deliverable render. I was right then and wrong now. Where AI sits in my production today, what it does for your project, and the list of what it still cannot do — valid until roughly next week.
+  hu: Tizennyolc hónapja azt írtam, hogy a generatív eszközök nem tudnak leszállítható rendert készíteni. Akkor igazam volt, most nincs. Hol ül az AI ma a produkciómban, mit tesz az Ön projektjéért, és a lista arról, amit még nem tud – nagyjából jövő hétig érvényes.
 tags:
   - ai
   - workflow
@@ -15,66 +15,144 @@ published: true
 coverImage: /_img/articles/ai-in-architectural-visualization/hero.jpg
 ---
 
-In early 2025 we published a version of this article that said generative tools "cannot produce images that meet the accuracy standards required for architectural visualization". At the time that was correct. We are rewriting it because it stopped being correct — not because AI became magic, but because we changed where it sits in the pipeline.
+<Lang code="en">
+In early 2025 I published a version of this article that said generative tools "cannot produce images that meet the accuracy standards required for architectural visualization". At the time that was correct. I am rewriting it because it stopped being correct. Not because AI became magic, but because I changed where it sits in the pipeline, and I expect to rewrite it again.
 
-The short version: AI does not build the picture. It finishes it. Everything that makes a visualization *right* — the geometry, the camera, the proportions, the brand colours, where the designer put the furniture — still comes from a 3D model built from your drawings. Everything that makes it *read as a photograph* — material response, light falloff, reflections, atmosphere, the sense that a camera stood in the room — is now largely done by an AI pass that runs on top of that model, on our own machines, checked by an automated reviewer before a human ever picks.
+The short version: AI does not build the picture. It finishes it. Everything that makes a visualization *right* — geometry, camera, proportions, brand colours, where the designer put the furniture — still comes from a 3D model built from your drawings. Everything that makes it *read as a photograph* — material response, light falloff, reflections, atmosphere — is now largely an AI pass on top of that model, on my own machines, checked by an automated reviewer before a human picks.
+</Lang>
 
-<ImageCompare before="/_img/articles/archupgrade/bank-branch-1-before.jpg" after="/_img/articles/archupgrade/bank-branch-1-after.jpg" beforeAlt="Working 3D render of a bank branch interior, straight out of 3ds Max" afterAlt="The same view after the AI finishing pass — same geometry, camera and layout" beforeText="3D render" afterText="AI finish" label={false} />
+<Lang code="hu">
+2025 elején közzétettem ennek a cikknek egy változatát, amely szerint a generatív eszközök „nem tudnak olyan képeket előállítani, amelyek megfelelnek az építészeti vizualizáció pontossági követelményeinek". Akkor ez igaz volt. Azért írom újra, mert megszűnt igaznak lenni. Nem azért, mert az AI varázslattá vált, hanem mert megváltoztattam, hol ül a pipeline-ban, és számítok rá, hogy újra át fogom írni.
 
-Drag the slider to compare: one side is the working render straight out of 3ds Max, the other is the same image after our pipeline — the labels on the image say which. Nothing about the design changed — the partition glass, the screens, the green poufs in the kids' corner are all where the designer put them.
+A rövid változat: az AI nem építi a képet. Befejezi. Minden, amitől egy vizualizáció *helyes* – geometria, kamera, arányok, márkaszínek, hová tette a tervező a bútort – továbbra is az Ön rajzaiból épített 3D-modellből jön. Minden, amitől *fényképként olvasható* – anyagválasz, fényesés, tükröződések, atmoszféra – ma nagyrészt egy AI-menet a modell tetején, a saját gépeimen, egy automatikus ellenőrzővel átnézve, mielőtt ember választ.
+</Lang>
 
-## Where AI genuinely helps today
+<ImageCompare before="/_img/articles/archupgrade/bank-branch-1-before.jpg" after="/_img/articles/archupgrade/bank-branch-1-after.jpg" beforeAlt="Working 3D render of a bank branch interior, straight out of 3ds Max" afterAlt="The same view after the AI finishing pass — same geometry, camera and layout" beforeText={{ en: "3D render", hu: "3D render" }} afterText={{ en: "AI finish", hu: "AI-befejezés" }} label={false} />
 
-**Finishing.** This is the big one. The last stretch from "correct render" to "image that sells the project" used to eat most of the schedule: materials, vegetation, people, atmosphere. Our in-house system — [ArchUpgrade](/articles/from-render-to-photograph-archupgrade/) — takes the working render and produces photorealistic versions in about a minute per image per GPU, in controlled variations, each scored by a local vision model on five criteria before anyone looks at it. On a recent 18-view interior project the system generated over 300 candidates, the reviewer filtered them, and a human picked 18.
+<Lang code="en">
+Drag the slider. One side is the working render out of 3ds Max, the other is the same image after the pipeline; the labels say which. Nothing about the design changed. The partition glass, the screens, the green poufs in the kids' corner are where the designer put them.
 
-**Variants without re-rendering.** Season, time of day, weather, furnishing style, budget tier — from the same base render, geometry locked. Where we used to show you two polished options, we now show a curated selection from dozens. A night or dusk variant of an existing view is priced at a fraction of a new view on our [price list](/pricing/) precisely because of this.
+## Where it helps today
 
-<ImageCompare before="/_img/services/advanced-ai-services/novus-liget-k-ls-15-summer-daytime.jpg" after="/_img/services/advanced-ai-services/novus-liget-k-ls-15-summer-blue-hour.jpg" beforeAlt="Residential estate aerial, summer daytime" afterAlt="The same aerial relit to blue hour with interior lights on" beforeText="Daytime" afterText="Blue hour" label={false} />
+**Finishing.** The last stretch from "correct render" to "image that sells the project" used to eat most of the schedule: materials, vegetation, people, atmosphere. [ArchUpgrade](/articles/from-render-to-photograph-archupgrade/), the system I built, takes the working render and produces photorealistic versions in about a minute per image per GPU, in controlled variations, each scored by a local vision model on five criteria before anyone looks. On a recent 18-view interior project it generated over 300 candidates, the reviewer filtered them, I picked 18.
 
-**Relighting and sky work on finished images.** Time-of-day relighting, light migration from a reference photo, sky replacement and material swaps now run as targeted tools on a finished render rather than a full re-render. These are look passes, not physically measured ones — good for presentation, not for daylight studies.
+**Variants without re-rendering.** Season, time of day, weather, furnishing style, budget tier, from the same base render with geometry locked. A night or dusk variant of an existing view is a fraction of a new view on the [price list](/pricing/) for exactly this reason.
+</Lang>
 
-**Interiors from an empty model.** For sales material, an empty 3D apartment can be furnished and finished by the pipeline from a viewpoint we set — a fraction of the cost of hand-dressing every flat type, and consistent across a whole building. The furniture is plausible, not specified; where a client sells a specific fit-out, we model it.
+<Lang code="hu">
+Húzza a csúszkát. Az egyik oldal a 3ds Maxból kijövő munkarender, a másik ugyanaz a kép a pipeline után; a feliratok mondják meg, melyik melyik. A terven semmi nem változott. A válaszfal-üveg, a képernyők, a zöld puffok a gyereksarokban ott vannak, ahová a tervező tette.
 
-**Renders from sketches and flat exports.** A pencil sketch, a SketchUp or ArchiCAD export, an old render from a previous phase — all usable as a starting point for a photorealistic image before any 3D work begins. Fast for competitions and early client conversations; see [AI Render Upgrade](/vision-tech/ai-render-upgrade/).
+## Hol segít ma
 
-<ImageCompare before="/_img/services/advanced-ai-services/bugyi-k-p-2-.jpg" after="/_img/services/advanced-ai-services/bugyi-k-p-2-g01-i-s01-daytime-g01-iab-s01-summer-daytime.jpg" beforeAlt="Flat white-model export of a family house" afterAlt="Photorealistic image generated from that export" beforeText="Software export" afterText="AI image" label={false} />
+**Befejezés.** A „helyes render"-től a „képig, amely eladja a projektet" tartó utolsó szakasz ette meg a menetrend nagy részét: anyagok, növényzet, emberek, atmoszféra. Az [ArchUpgrade](/articles/from-render-to-photograph-archupgrade/), a rendszer, amit építettem, fogja a munkarendert, és fotorealisztikus változatokat állít elő, képenként és GPU-nként nagyjából egy perc alatt, kontrollált variációkban, mindegyiket egy helyi látómodell pontozza öt szempont szerint, mielőtt bárki ránézne. Egy nemrégi 18 nézetes belsőépítészeti projekten több mint 300 jelöltet generált, az ellenőrző szűrte, én 18-at választottam.
 
-**Motion from stills.** Camera moves, time-of-day and weather transitions generated from a still image, cut into 30-second to 5-minute films — [AI Animation](/vision-tech/ai-animation/). Right for social and sales-office loops; a complex flythrough through a building is still a 3D animation.
+**Variánsok újrarenderelés nélkül.** Évszak, napszak, időjárás, berendezési stílus, költségszint, ugyanabból az alaprenderből, rögzített geometriával. Egy meglévő nézet éjszakai vagy alkonyi változata az [árlistán](/pricing/) pontosan ezért egy új nézet töredéke.
+</Lang>
 
-**Upscaling to print.** A 6-megapixel delivery upscaled to 4K or 8K with detail added rather than smeared, so an older render survives a hoarding-sized print.
+<ImageCompare before="/_img/services/advanced-ai-services/novus-liget-k-ls-15-summer-daytime.jpg" after="/_img/services/advanced-ai-services/novus-liget-k-ls-15-summer-blue-hour.jpg" beforeAlt="Residential estate aerial, summer daytime" afterAlt="The same aerial relit to blue hour with interior lights on" beforeText={{ en: "Daytime", hu: "Nappal" }} afterText={{ en: "Blue hour", hu: "Kék óra" }} label={false} />
 
-**Everything around the picture.** AI narration and AI-composed music for films are now line items rather than a hunt for a stock library; batch quality checks catch a wrong-resolution frame before a client does; and the scripting that runs our 3ds Max pipeline is written with AI assistants — see [Automation, MaxScript and AI in 3ds Max](/articles/automation-maxscript-and-ai-in-3ds-max/).
+<Lang code="en">
+**Relighting and sky work on finished images.** Time-of-day relighting, light migration from a reference photo, sky replacement, material swaps: targeted tools on a finished render, not a re-render. Look passes, not physically measured ones. Good for presentation, useless for a daylight study.
+
+**Interiors from an empty model.** For sales material, an empty 3D apartment can be furnished and finished by the pipeline from a viewpoint I set. Consistent across a building, a fraction of hand-dressing every flat type. The furniture is plausible, not specified; where a client sells a specific fit-out, I model it.
+
+**Renders from sketches and flat exports.** A pencil sketch, a SketchUp or ArchiCAD export, an old render from a previous phase: all usable as a starting point for a photorealistic image before any 3D work begins. Fast for competitions and early conversations; see [AI Render Upgrade](/vision-tech/ai-render-upgrade/).
+</Lang>
+
+<Lang code="hu">
+**Átvilágítás és égbolt-munka kész képeken.** Napszak-átvilágítás, fényátvitel referenciafotóról, égboltcsere, anyagcsere: célzott eszközök egy kész renderen, nem újrarenderelés. Látvány-menetek, nem fizikailag mért menetek. Prezentációra jók, benapozási vizsgálatra használhatatlanok.
+
+**Belső terek üres modellből.** Értékesítési anyaghoz egy üres 3D-lakást a pipeline be tud bútorozni és be tud fejezni egy általam beállított nézőpontból. Egy egész épületen át konzisztens, az egyes lakástípusok kézi berendezésének töredékéért. A bútor hihető, nem specifikált; ahol az ügyfél konkrét beépítést árul, azt modellezem.
+
+**Renderek vázlatból és lapos exportból.** Ceruzavázlat, SketchUp- vagy ArchiCAD-export, egy régi render egy korábbi fázisból: mind használható kiindulópont egy fotorealisztikus képhez, mielőtt bármilyen 3D-munka elkezdődne. Gyors pályázatokhoz és korai beszélgetésekhez; lásd [AI Render Upgrade](/vision-tech/ai-render-upgrade/).
+</Lang>
+
+<ImageCompare before="/_img/services/advanced-ai-services/bugyi-k-p-2-.jpg" after="/_img/services/advanced-ai-services/bugyi-k-p-2-g01-i-s01-daytime-g01-iab-s01-summer-daytime.jpg" beforeAlt="Flat white-model export of a family house" afterAlt="Photorealistic image generated from that export" beforeText={{ en: "Software export", hu: "Szoftverexport" }} afterText={{ en: "AI image", hu: "AI-kép" }} label={false} />
+
+<Lang code="en">
+**Motion from stills.** Camera moves, time-of-day and weather transitions generated from a still, cut into 30-second to 5-minute films: [AI Animation](/vision-tech/ai-animation/). Right for social and sales-office loops. A flythrough through a building is still a 3D animation.
+
+**Upscaling to print.** A 6-megapixel delivery upscaled to 4K or 8K with detail added rather than smeared, so an older render survives a hoarding.
+
+**Everything around the picture.** AI narration and AI-composed music for films are line items now instead of a hunt through a stock library. Batch quality checks catch a wrong-resolution frame before a client does. And the scripting that runs my 3ds Max pipeline is written with AI assistants: [Automation, MaxScript and AI in 3ds Max](/articles/automation-maxscript-and-ai-in-3ds-max/).
 
 ![A contact sheet of render variations with one candidate circled — the job has moved from making one image to choosing among many](/_img/articles/ai-in-architectural-visualization/curator.jpg)
 
 ## Where it still falls short
 
-**New viewpoints.** An AI pass works from one image. It cannot walk around the building, look through a door it cannot see, or add the elevation you forgot to render. That is what the 3D model is for.
+**New viewpoints.** An AI pass works from one image. It cannot walk around the building, look through a door it cannot see, or add the elevation you forgot to render. That is what the model is for.
 
-**Material-exact finals.** The pipeline generates surface quality probabilistically. It will produce a convincing oak floor; it will not reproduce a specific oak floor from a specific supplier's catalogue unless we model it. For material-precise output — a manufacturer's own product, a listed facade — a full V-Ray render from the model is still the answer.
+**Material-exact finals.** The pipeline generates surface quality probabilistically. It will produce a convincing oak floor; it will not reproduce a specific oak floor from a specific supplier's catalogue unless I model it. For a manufacturer's own product or a listed facade, a full V-Ray render from the model is still the answer.
 
-**Geometry generation.** Text-to-3D and image-to-3D tools are in our toolkit for props and context, and they have improved a lot. They do not produce a building from a plan. The model is still built from the drawings, by someone who knows what a stair needs.
+**Geometry generation.** Text-to-3D and image-to-3D are in my toolkit for props and context, and they have improved a lot. They do not produce a building from a plan. The model is still built from the drawings, by someone who knows what a stair needs.
 
-**Long, consistent video.** AI clips are 3 to 8 seconds each and hold a camera move about that long. A ninety-second film is an edit of many clips; a continuous walkthrough with exact geometry through every frame is a 3D animation.
+**Long, consistent video.** AI clips are 3 to 8 seconds each and hold a camera move about that long. A ninety-second film is an edit of many clips. A continuous walkthrough with exact geometry in every frame is a 3D animation.
 
-**Judgement.** Which camera tells the story, which hour of the day the building looks like itself, whether an image will survive a planning committee — none of that is a parameter. Nobody has automated it, including us.
+**Judgement.** Which camera tells the story, which hour the building looks like itself, whether an image survives a planning committee. Nobody has automated that, including me.
 
-## What actually runs in our production
+This list is the least reliable part of the article. Something on it will be wrong within weeks. I check.
 
-- **ArchUpgrade** — our own render-to-photograph system: multi-GPU ComfyUI farm, structured prompts, version tree, automated five-score review, delivery packaging. Daily use since spring 2026. The [technical write-up](/articles/inside-archupgrade-technical/) has the details.
-- **Relighting, sky and material tools, generative expand, upscalers, camera-angle passes** — the same system, on finished images.
-- **Local models only.** Every model we run is open-weight and runs on our hardware. No client image is uploaded anywhere. Each model is classified by licence, and anything non-commercial is locked out of paid deliverables at the configuration level — every delivered file carries a record of the tools that touched it.
-- **A vetting database** of 1,537 open AI tools, re-checked weekly for release state, licence and hardware needs, so what we deploy is chosen on evidence — [how we vet the flood](/articles/how-we-vet-the-ai-tool-flood/).
-- **Scheduled agents** that run generation and review unattended overnight, with a person reading the results in the morning — [the boring version of AI automation](/articles/agents-that-work-the-night-shift/).
+## What actually runs here
+
+- **ArchUpgrade**, my own render-to-photograph system: multi-GPU ComfyUI farm, structured prompts, version tree, automated five-score review, delivery packaging. Daily use since spring 2026. [Technical write-up](/articles/inside-archupgrade-technical/).
+- **Relighting, sky and material tools, generative expand, upscalers, camera-angle passes**: the same system, on finished images.
+- **Local models only.** Every model is open-weight and runs on my hardware. No client image is uploaded anywhere. Each model is classified by licence, anything non-commercial is locked out of paid deliverables at the configuration level, and every delivered file carries a record of the tools that touched it.
+- **A vetting database** of AI tools, re-checked weekly for release state, licence and hardware needs: [how I vet the flood](/articles/how-we-vet-the-ai-tool-flood/).
+- **Scheduled agents** that run generation and review overnight, with me reading the results in the morning: [the boring version of AI automation](/articles/agents-that-work-the-night-shift/).
 - **Unreal Engine 5** for VR and interactive deliverables, with AI denoising and upscaling in the real-time path.
-- **AI coding assistants** for every MAXScript and Python tool we build, plus an MCP server that lets an assistant drive 3ds Max directly.
+- **AI coding assistants** for every MAXScript and Python tool I build, plus an MCP server that lets an assistant drive 3ds Max directly.
 
-## The honest position
+## Creator to curator
 
-We describe the change in one line: the job moved from *creator* to *curator*. The picture used to be made once, by hand, over days. Now it is made many times, by machine, in minutes — and the craft is in the model that anchors it, the constraints we put on the generator, and the choice of which result to show you.
+The job moved. The picture used to be made once, by hand, over days. Now it is made many times, by machine, in minutes, and the craft is in the model that anchors it, the constraints I put on the generator, and the choice of which result to show you.
 
-It still does not replace 3D work. It is built on top of it. The accuracy comes from the model. The judgement is human. What changed is the iteration count and where the hours go.
+It does not replace 3D work. It is built on top of it. The accuracy comes from the model. The judgement is human. What changed is the iteration count and where the hours go.
 
-For clients: when AI touches your project, we say so. An enhanced render from your approved model, an AI variant of an existing view, a concept image from a sketch — each is labelled as what it is, and each delivered file carries its provenance. You always know what you are getting.
+When AI touches your project, I say so. An enhanced render from your approved model, an AI variant of an existing view, a concept image from a sketch: each is labelled as what it is, and each delivered file carries its provenance.
 
-If you want to see what this does on your project, [get in touch](/contact/) — the first conversation is free.
+If you want to see what this does on your project, [get in touch](/contact/).
+</Lang>
+
+<Lang code="hu">
+**Mozgás állóképekből.** Kameramozgások, napszak- és időjárás-átmenetek egy állóképből generálva, 30 másodperctől 5 percig terjedő filmekbe vágva: [AI-animáció](/vision-tech/ai-animation/). Közösségi médiához és értékesítési irodai loopokhoz való. Egy átrepülés az épületen továbbra is 3D-animáció.
+
+**Felskálázás nyomdához.** Egy 6 megapixeles leszállítás 4K-ra vagy 8K-ra felskálázva, elkent helyett hozzáadott részletekkel, hogy egy régebbi render túléljen egy óriásplakátot.
+
+**Minden a kép körül.** Az AI-narráció és az AI-komponált zene filmekhez ma árlistatétel, nem stock-könyvtárban való vadászat. Kötegelt minőségellenőrzés kapja el a rossz felbontású képkockát, mielőtt az ügyfél tenné. És a szkriptelést, amely a 3ds Max-pipeline-omat futtatja, AI-asszisztensekkel írom: [Automatizálás, MaxScript és AI a 3ds Maxban](/articles/automation-maxscript-and-ai-in-3ds-max/).
+
+![Kontaktlap rendervariációkból, egy jelölt bekarikázva – a munka az egyetlen kép elkészítéséből a sok közüli választássá vált](/_img/articles/ai-in-architectural-visualization/curator.jpg)
+
+## Hol marad még el
+
+**Új nézőpontok.** Az AI-menet egy képből dolgozik. Nem tud körbejárni az épületen, benézni egy ajtón, amit nem lát, vagy hozzátenni a homlokzatot, amit elfelejtett lerenderelni. Erre való a modell.
+
+**Anyagpontos véglegesek.** A pipeline valószínűségi alapon generál felületi minőséget. Meggyőző tölgyfapadlót fog gyártani; egy konkrét beszállító katalógusának konkrét tölgypadlóját nem reprodukálja, hacsak nem modellezem. Egy gyártó saját termékéhez vagy egy műemléki homlokzathoz továbbra is a modellből készült teljes V-Ray render a válasz.
+
+**Geometria-generálás.** A szövegből-3D és képből-3D az eszköztáramban van kellékekhez és kontextushoz, és sokat javultak. Épületet nem gyártanak tervrajzból. A modell továbbra is a rajzokból épül, olyan valaki által, aki tudja, mi kell egy lépcsőhöz.
+
+**Hosszú, konzisztens videó.** Az AI-klipek 3–8 másodpercesek, és nagyjából ennyi ideig tartanak meg egy kameramozgást. Egy kilencvenmásodperces film sok klip vágása. Egy folyamatos bejárás minden képkockában pontos geometriával 3D-animáció.
+
+**Ítélőképesség.** Melyik kamera meséli el a történetet, melyik órában néz ki az épület önmagának, túlél-e egy kép egy tervtanácsot. Ezt senki nem automatizálta, engem is beleértve.
+
+Ez a lista a cikk legkevésbé megbízható része. Valami rajta heteken belül téves lesz. Ellenőrzöm.
+
+## Mi fut itt valójában
+
+- **ArchUpgrade**, a saját renderből-fényképet rendszerem: több-GPU-s ComfyUI-farm, strukturált promptok, verziófa, automatikus ötpontos ellenőrzés, leszállítási csomagolás. Napi használatban 2026 tavasza óta. [Technikai leírás](/articles/inside-archupgrade-technical/).
+- **Átvilágító, égbolt- és anyageszközök, generatív bővítés, felskálázók, kameraszög-menetek**: ugyanaz a rendszer, kész képeken.
+- **Csak helyi modellek.** Minden modell nyílt súlyú, és a saját hardveremen fut. Ügyfélkép sehová nem kerül feltöltésre. Minden modell licenc szerint osztályozva, ami nem kereskedelmi, az konfigurációs szinten ki van zárva a fizetett leszállításokból, és minden leszállított fájl hordozza az őt érintő eszközök jegyzékét.
+- **Egy átvilágító adatbázis** AI-eszközökről, hetente újraellenőrizve kiadási állapotra, licencre és hardverigényre: [hogyan szűröm az áradatot](/articles/how-we-vet-the-ai-tool-flood/).
+- **Ütemezett ügynökök**, amelyek éjjel futtatják a generálást és az ellenőrzést, én pedig reggel olvasom az eredményt: [az AI-automatizálás unalmas változata](/articles/agents-that-work-the-night-shift/).
+- **Unreal Engine 5** VR-hez és interaktív leszállításokhoz, AI-zajszűréssel és felskálázással a valós idejű útvonalban.
+- **AI-kódasszisztensek** minden MAXScript- és Python-eszközhöz, amit építek, plusz egy MCP-szerver, amely engedi, hogy egy asszisztens közvetlenül vezérelje a 3ds Maxot.
+
+## Alkotóból kurátor
+
+A munka elmozdult. A kép régen egyszer készült, kézzel, napok alatt. Most sokszor készül, géppel, percek alatt, és a mesterség a modellben van, ami lehorgonyozza, a korlátokban, amiket a generátorra teszek, és a választásban, hogy melyik eredményt mutatom meg Önnek.
+
+Nem helyettesíti a 3D-munkát. Ráépül. A pontosság a modellből jön. Az ítélet emberi. Ami változott, az az iterációk száma és az, hová mennek az órák.
+
+Amikor AI ér az Ön projektjéhez, kimondom. Egy feljavított render a jóváhagyott modellből, egy meglévő nézet AI-variánsa, egy koncepciókép vázlatból: mindegyik annak van címkézve, ami, és minden leszállított fájl hordozza a származását.
+
+Ha látni akarja, mit csinál ez az Ön projektjén, [írjon](/contact/).
+</Lang>

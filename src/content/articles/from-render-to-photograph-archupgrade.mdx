@@ -1,11 +1,11 @@
 ---
-title: 'From Render to Photograph: Our In-House AI Enhancement Pipeline'
+title:
+  en: "From Render to Photograph: My In-House AI Enhancement Pipeline"
+  hu: "Renderből fénykép: a saját AI-befejező pipeline-om"
 date: 2026-09-16T00:00:00.000Z
-excerpt: >-
-  We built our own production system that turns working 3D renders into
-  photorealistic images — with dozens of controlled variations, relighting on
-  demand and automated quality checks on every single output. In daily use since
-  spring 2026. Here is what it does for your project.
+excerpt:
+  en: I built a production system that turns working 3D renders into photorealistic images, with controlled variations, relighting on demand and an automated quality check on every output. In daily use since spring 2026. What it does on your project, and what it does not.
+  hu: Építettem egy produkciós rendszert, amely munkarenderekből fotorealisztikus képeket csinál, kontrollált variációkkal, igény szerinti átvilágítással és minden kimeneten automatikus minőségellenőrzéssel. Napi használatban 2026 tavasza óta. Mit csinál az Ön projektjén, és mit nem.
 tags:
   - ai
   - workflow
@@ -14,60 +14,126 @@ published: false
 coverImage: /_img/articles/archupgrade/atrium-after.jpg
 ---
 
-Every architectural visualization project hits the same wall: the 3D model is accurate, the camera angles are approved, the layout is final — and then the polishing begins. Materials, lighting, vegetation, people, atmosphere. Traditionally, that last stretch from "correct render" to "image that sells the project" is where most of the time and budget goes.
+<Lang code="en">
+Every visualization project hits the same wall. The 3D model is accurate, the cameras are approved, the layout is final, and then the polishing begins. Materials, lighting, vegetation, people, atmosphere. That last stretch from "correct render" to "image that sells the project" is where most of the time went.
 
-Over the past year and a half we built an in-house production system — we call it ArchUpgrade — that changes the economics of that last stretch. It takes our working 3D renders and transforms them into photorealistic images, in controlled variations, with automated quality scoring on every output. It has been in daily production use since spring 2026. It runs on our own hardware, on our own render farm, with our own quality standards baked in — and no client image ever leaves the building.
+Over the past year and a half I built a system, ArchUpgrade, that changes the economics of that stretch. It takes working 3D renders and turns them into photorealistic images, in controlled variations, with automated quality scoring on every output. Daily production use since spring 2026. It runs on my own hardware, on my own farm, and no client image leaves the building.
 
-Drag the slider to compare. One side is the working render straight out of 3ds Max, the other is the same image after the pipeline — same geometry, same camera, same layout; the labels on the image say which is which.
+Drag the slider. One side is the working render out of 3ds Max, the other is the same image after the pipeline. Same geometry, same camera, same layout; the labels say which is which.
+</Lang>
 
-<ImageCompare before="/_img/articles/archupgrade/bank-branch-1-before.jpg" after="/_img/articles/archupgrade/bank-branch-1-after.jpg" beforeAlt="Working 3D render of a bank branch interior" afterAlt="Photorealistic AI-enhanced version of the same view" beforeText="Working render" afterText="After the pipeline" label={false} />
+<Lang code="hu">
+Minden vizualizációs projekt ugyanabba a falba ütközik. A 3D-modell pontos, a kamerák jóváhagyva, az elrendezés végleges, és akkor kezdődik a csiszolás. Anyagok, világítás, növényzet, emberek, atmoszféra. A „helyes render"-től a „képig, amely eladja a projektet" tartó utolsó szakasz vitte el az idő nagy részét.
 
-Nothing about the design changed. The furniture is where the designer put it. The signage, the screens, the partition glass, the little green poufs in the kids' corner — all preserved. What changed is everything that makes an image read as a photograph: material response, light falloff, soft shadows, reflections, the sense that a camera was actually standing in the room.
+Az elmúlt másfél évben építettem egy rendszert, az ArchUpgrade-et, amely megváltoztatja ennek a szakasznak a gazdaságtanát. Munkarendereket fog, és fotorealisztikus képekké alakítja őket, kontrollált variációkban, minden kimeneten automatikus minőségpontozással. Napi produkciós használatban 2026 tavasza óta. A saját hardveremen fut, a saját farmomon, és ügyfélkép nem hagyja el az épületet.
 
-## Why this matters for your project
+Húzza a csúszkát. Az egyik oldal a 3ds Maxból kijövő munkarender, a másik ugyanaz a kép a pipeline után. Ugyanaz a geometria, ugyanaz a kamera, ugyanaz az elrendezés; a feliratok mondják meg, melyik melyik.
+</Lang>
 
-**You see more options, earlier.** The system generates systematic variations — different lighting moods, seasons, furnishing styles, budget tiers — from the same base render. Where we used to show you two or three polished images, we now show you a curated selection from dozens of candidates. These four images are variations of the same source render, generated in one batch:
+<ImageCompare before="/_img/articles/archupgrade/bank-branch-1-before.jpg" after="/_img/articles/archupgrade/bank-branch-1-after.jpg" beforeAlt="Working 3D render of a bank branch interior" afterAlt="Photorealistic AI-enhanced version of the same view" beforeText={{ en: "Working render", hu: "Munkarender" }} afterText={{ en: "After the pipeline", hu: "A pipeline után" }} label={false} />
 
-<ImageGallery label={false} subtitle="Four variations of one bank branch render, one batch." images={[{"src":"/_img/articles/archupgrade/variation-s01.jpg","alt":"Variation 1 of the same bank branch render"},{"src":"/_img/articles/archupgrade/variation-s02.jpg","alt":"Variation 2 of the same bank branch render"},{"src":"/_img/articles/archupgrade/variation-s03.jpg","alt":"Variation 3 of the same bank branch render"},{"src":"/_img/articles/archupgrade/variation-s04.jpg","alt":"Variation 4 of the same bank branch render"}]} />
+<Lang code="en">
+Nothing about the design changed. The furniture is where the designer put it. Signage, screens, partition glass, the little green poufs in the kids' corner, all preserved. What changed is what makes an image read as a photograph: material response, light falloff, soft shadows, reflections, the sense that a camera stood in the room.
 
-**The approved image can be relit without a re-render.** This is new since we first wrote about the system. A finished view can be taken to golden hour, blue hour or night — interior lights on, street lamps on, sky replaced — as a pass on the image, with the scene locked. The three pairs below are portfolio renders from our archive put through the current pipeline while writing this article; nothing was re-rendered.
+## What it does
 
-<ImageCompare before="/_img/portfolio/loft52/01.jpg" after="/_img/articles/archupgrade/loft52-blue-hour.jpg" beforeAlt="Loft 52 — daytime render" afterAlt="Loft 52 — blue hour with interior lights, produced by the relighting pass" beforeText="Daytime render" afterText="Blue hour" label={false} />
+**Variations.** Lighting moods, seasons, furnishing styles, budget tiers, from the same base render. Where I used to show two or three polished images, I now show a curated selection from dozens. These four are one source render, one batch:
+</Lang>
 
-<ImageCompare before="/_img/portfolio/avalon-business-center/03.jpg" after="/_img/articles/archupgrade/avalon-night.jpg" beforeAlt="Avalon Business Center — daytime plaza render" afterAlt="Avalon Business Center — night version from the relighting pass" beforeText="Daytime render" afterText="Night" label={false} />
+<Lang code="hu">
+A terven semmi nem változott. A bútor ott van, ahová a tervező tette. Feliratok, képernyők, válaszfal-üveg, a kis zöld puffok a gyereksarokban, mind megőrizve. Ami változott, az az, amitől egy kép fényképként olvasható: anyagválasz, fényesés, lágy árnyékok, tükröződések, az érzés, hogy egy kamera állt a szobában.
 
-<ImageCompare before="/_img/portfolio/balatonszemes-hotel/02.jpg" after="/_img/articles/archupgrade/balaton-blue-hour.jpg" beforeAlt="Balatonszemes Hotel — daytime entrance render" afterAlt="Balatonszemes Hotel — blue hour with the building lit" beforeText="Daytime render" afterText="Blue hour" label={false} />
+## Mit csinál
 
-These are look passes, not lighting simulations — the pipeline re-tints materials under the warm light it adds, so a daylight study still comes from the 3D model. For a sales brochure that needs the building at dusk, it is a fraction of the price of a night render. That difference is written into our [price list](/pricing/): a night or dusk variant of an existing view costs a fraction of a new view.
+**Variációk.** Fényhangulatok, évszakok, berendezési stílusok, költségszintek, ugyanabból az alaprenderből. Ahol régen két-három csiszolt képet mutattam, most tucatnyiból válogatott szelekciót mutatok. Ez a négy egy forrásrender, egy köteg:
+</Lang>
 
-**Every image is quality-checked before a human ever picks it.** Each generated image is scored by an AI reviewer on five independent aspects — aesthetics, fidelity to the source design, prompt adherence, technical quality, and style match. Images that don't meet the thresholds are automatically retried. The review screen shows every candidate with its scores, so the final selection is made from a field that already passed inspection:
+<ImageGallery label={false} subtitle={{ en: "Four variations of one bank branch render, one batch.", hu: "Egy bankfiók-render négy variációja, egy köteg." }} images={[{"src":"/_img/articles/archupgrade/variation-s01.jpg","alt":"Variation 1 of the same bank branch render"},{"src":"/_img/articles/archupgrade/variation-s02.jpg","alt":"Variation 2 of the same bank branch render"},{"src":"/_img/articles/archupgrade/variation-s03.jpg","alt":"Variation 3 of the same bank branch render"},{"src":"/_img/articles/archupgrade/variation-s04.jpg","alt":"Variation 4 of the same bank branch render"}]} />
+
+<Lang code="en">
+**Relighting without a re-render.** New since I first wrote about the system. A finished view can go to golden hour, blue hour or night — interior lights on, street lamps on, sky replaced — as a pass on the image, scene locked. The three pairs below are archive renders put through the current pipeline while writing this. Nothing was re-rendered.
+</Lang>
+
+<Lang code="hu">
+**Átvilágítás újrarenderelés nélkül.** Új azóta, hogy először írtam a rendszerről. Egy kész nézet elmehet aranyórába, kék órába vagy éjszakába – belső fények felkapcsolva, utcai lámpák felkapcsolva, égbolt lecserélve – a képen végzett menetként, rögzített jelenettel. Az alábbi három pár archív render, az írás közben a jelenlegi pipeline-on átküldve. Semmi nem lett újrarenderelve.
+</Lang>
+
+<ImageCompare before="/_img/portfolio/loft52/01.jpg" after="/_img/articles/archupgrade/loft52-blue-hour.jpg" beforeAlt="Loft 52 — daytime render" afterAlt="Loft 52 — blue hour with interior lights, produced by the relighting pass" beforeText={{ en: "Daytime render", hu: "Nappali render" }} afterText={{ en: "Blue hour", hu: "Kék óra" }} label={false} />
+
+<ImageCompare before="/_img/portfolio/avalon-business-center/03.jpg" after="/_img/articles/archupgrade/avalon-night.jpg" beforeAlt="Avalon Business Center — daytime plaza render" afterAlt="Avalon Business Center — night version from the relighting pass" beforeText={{ en: "Daytime render", hu: "Nappali render" }} afterText={{ en: "Night", hu: "Éjszaka" }} label={false} />
+
+<ImageCompare before="/_img/portfolio/balatonszemes-hotel/02.jpg" after="/_img/articles/archupgrade/balaton-blue-hour.jpg" beforeAlt="Balatonszemes Hotel — daytime entrance render" afterAlt="Balatonszemes Hotel — blue hour with the building lit" beforeText={{ en: "Daytime render", hu: "Nappali render" }} afterText={{ en: "Blue hour", hu: "Kék óra" }} label={false} />
+
+<Lang code="en">
+These are look passes, not lighting simulations. The pipeline re-tints materials under the warm light it adds, so a daylight study still comes from the 3D model. For a brochure that needs the building at dusk, it is a fraction of the price of a night render, and the [price list](/pricing/) says so.
+
+**Quality check before a human picks.** Each generated image is scored by a local AI reviewer on five aspects: aesthetics, fidelity to the source design, prompt adherence, technical quality, style match. Images below threshold are retried automatically. The review screen shows every candidate with its scores, so the final pick is made from a field that already passed inspection.
 
 ![The ArchUpgrade review screen — every generated image carries its quality scores](/_img/articles/archupgrade/archupgrade-review-grid.jpg)
 
-**The design stays under control.** This is the part we care most about, and the part most "AI rendering" services get wrong. The pipeline works *from our accurate 3D model* — it enhances, it doesn't invent. Walls don't move. Proportions don't drift. The brand colours stay the brand colours. When a generated image deviates from the source design, the fidelity score catches it and the image is rejected.
+**The design stays under control.** This is the part I care most about, and the part most "AI rendering" services get wrong. The pipeline works from the accurate 3D model. It enhances, it does not invent, unless I instruct it to. Walls do not move. Proportions do not drift. Brand colours stay brand colours. When a generated image deviates from the source design, the fidelity score catches it and the image is rejected.
 
-Here is a larger space — an office atrium — through the same pipeline:
+A larger space, an office atrium, through the same pipeline:
+</Lang>
 
-<ImageCompare before="/_img/articles/archupgrade/atrium-before.jpg" after="/_img/articles/archupgrade/atrium-after.jpg" beforeAlt="Working render of an office atrium" afterAlt="The photorealistic version delivered to the client" beforeText="Working render" afterText="Delivered" label={false} />
+<Lang code="hu">
+Ezek látvány-menetek, nem világításszimulációk. A pipeline újraszínezi az anyagokat a meleg fény alatt, amit hozzáad, így egy benapozási vizsgálat továbbra is a 3D-modellből jön. Egy prospektushoz, amelynek alkonyatkor kell az épület, ez egy éjszakai render árának töredéke, és az [árlista](/pricing/) így is mondja.
 
-**Your material never leaves our network.** Every model in the system is open-weight and runs on our own GPU farm — nothing is uploaded to a third-party service, and there is no per-image cloud cost quietly shaping how many variations we are willing to try. Every model is also classified by licence, and anything non-commercial is locked out of paid deliverables at the configuration level. Each delivered file carries a record of the tools that touched it.
+**Minőségellenőrzés, mielőtt ember választ.** Minden generált képet egy helyi AI-ellenőrző pontoz öt szempont szerint: esztétika, hűség a forrásdesignhoz, prompt-követés, technikai minőség, stílusegyezés. A küszöb alatti képek automatikusan újrapróbálódnak. Az ellenőrző képernyő minden jelöltet a pontszámaival mutat, így a végső választás egy olyan mezőnyből történik, amely már átment a vizsgálaton.
 
-![Part of the GPU farm behind the pipeline — our own machines, in our own building](/_img/articles/archupgrade/farm.jpg)
+![Az ArchUpgrade ellenőrző képernyője – minden generált kép hordozza a minőségpontszámait](/_img/articles/archupgrade/archupgrade-review-grid.jpg)
 
-## What a project looks like with this in the loop
+**A terv kontroll alatt marad.** Ez az a rész, ami a legjobban érdekel, és az a rész, amit a legtöbb „AI-renderelő" szolgáltatás elront. A pipeline a pontos 3D-modellből dolgozik. Feljavít, nem talál ki, hacsak nem utasítom rá. A falak nem mozdulnak. Az arányok nem csúsznak. A márkaszínek márkaszínek maradnak. Ha egy generált kép eltér a forrásdesigntól, a hűség-pontszám elkapja, és a kép elutasításra kerül.
 
-1. **We build the 3D scene as always.** Accurate model from your plans, approved camera angles, correct proportions. This part doesn't change — it's the foundation everything else depends on.
-2. **The pipeline generates candidates.** For each approved view, the system produces a set of photorealistic versions across the moods and styles we agreed on. A version renders in about a minute on one GPU, and the farm runs many in parallel.
-3. **Machines filter, humans choose.** Automated scoring removes the failures; we review what's left and pick the strongest images — and you can be part of that selection round if you want to be.
-4. **Finishing on the picked images.** Relighting, sky, generative expand to a new aspect ratio, upscaling to print resolution — passes on the chosen image rather than a return to the 3D scene.
-5. **Delivery is organized.** The picked images are delivered in a clean, numbered package, with the full generation history archived on our side. If you come back in three months and want "that version, but in evening light" — we branch from exactly that version.
+Egy nagyobb tér, egy irodai átrium, ugyanazon a pipeline-on:
+</Lang>
+
+<ImageCompare before="/_img/articles/archupgrade/atrium-before.jpg" after="/_img/articles/archupgrade/atrium-after.jpg" beforeAlt="Working render of an office atrium" afterAlt="The photorealistic version delivered to the client" beforeText={{ en: "Working render", hu: "Munkarender" }} afterText={{ en: "Delivered", hu: "Leszállított" }} label={false} />
+
+<Lang code="en">
+**Your material never leaves the network.** Every model is open-weight and runs on my own GPU farm. Nothing is uploaded to a third party, and there is no per-image cloud cost quietly deciding how many variations I am willing to try. Every model is classified by licence; anything non-commercial is locked out of paid deliverables at the configuration level. Each delivered file carries a record of the tools that touched it.
+
+![Part of the GPU farm behind the pipeline — my own machines, in my own building](/_img/articles/archupgrade/farm.jpg)
+
+## A project with this in the loop
+
+1. **I build the 3D scene as always.** Accurate model from your plans, approved cameras, correct proportions. This part does not change. Everything else depends on it.
+2. **The pipeline generates candidates.** For each approved view, a set of photorealistic versions across the moods and styles we agreed. A version renders in about a minute on one GPU; the farm runs many in parallel.
+3. **Machines filter, humans choose.** Automated scoring removes the failures; I review what is left and pick. You can sit in on that round if you want to.
+4. **Finishing on the picked images.** Relighting, sky, generative expand to a new aspect ratio, upscaling to print: passes on the chosen image rather than a return to the 3D scene.
+5. **Delivery.** A clean, numbered package, with the full generation history archived on my side. If you come back in three months and want "that version, but in evening light", I branch from exactly that version.
 
 ## Beyond stills
 
-The same system now carries the rest of a presentation package: AI motion from stills for short films, AI narration and AI-composed music for them, upscalers for print, and experimental 3D tools — mesh generation for props, Gaussian splats for captured context. Those are line items on the price list where they are production-ready and internal experiments where they are not; we say which is which.
+The same system carries the rest of a presentation package: AI motion from stills for short films, AI narration and AI-composed music for them, upscalers for print, and experimental 3D tools, mesh generation for props, Gaussian splats for captured context. Those are line items on the price list where they are production-ready and internal experiments where they are not. I say which is which.
 
-## The honest position
+## What it is not
 
-This system doesn't replace 3D work — it's built on top of it. The accuracy still comes from the model. The judgment about which image tells the right story is still human. What the pipeline changes is the iteration count: more variations, tighter quality control, and faster turnaround on the polishing stretch that used to consume the end of every schedule.
+It does not replace 3D work. It is built on top of it. The accuracy comes from the model. The judgement about which image tells the right story is still mine, or yours. What the pipeline changes is the iteration count: more variations, tighter quality control, and a shorter polishing stretch at the end of every schedule.
 
-We built it because we render every day and we know exactly where the time goes. It is also, since this year, something we run for other studios' renders — see [ai.visiongraphics.eu](https://ai.visiongraphics.eu/) — and the engineering behind it is described in the [technical companion article](/articles/inside-archupgrade-technical/). If you want to see what it does on your project, [get in touch](/contact/) — the first conversation is free.
+I built it because I render every day and know exactly where the time goes. Since this year it also runs on other studios' renders: [ai.visiongraphics.eu](https://ai.visiongraphics.eu/). The engineering is in the [technical companion](/articles/inside-archupgrade-technical/). If you want to see what it does on your project, [get in touch](/contact/).
+</Lang>
+
+<Lang code="hu">
+**Az Ön anyaga sosem hagyja el a hálózatot.** Minden modell nyílt súlyú, és a saját GPU-farmomon fut. Semmi nem kerül feltöltésre harmadik félhez, és nincs képenkénti felhőköltség, amely csendben eldönti, hány variációt vagyok hajlandó kipróbálni. Minden modell licenc szerint osztályozva; ami nem kereskedelmi, az konfigurációs szinten ki van zárva a fizetett leszállításokból. Minden leszállított fájl hordozza az őt érintő eszközök jegyzékét.
+
+![A pipeline mögötti GPU-farm egy része – saját gépek, saját épületben](/_img/articles/archupgrade/farm.jpg)
+
+## Egy projekt ezzel a hurokban
+
+1. **A 3D-jelenetet úgy építem, mint mindig.** Pontos modell az Ön terveiből, jóváhagyott kamerák, helyes arányok. Ez a rész nem változik. Minden más ettől függ.
+2. **A pipeline jelölteket generál.** Minden jóváhagyott nézethez fotorealisztikus változatok halmaza a megbeszélt hangulatokban és stílusokban. Egy változat egy GPU-n nagyjából egy perc alatt renderelődik; a farm sokat futtat párhuzamosan.
+3. **A gépek szűrnek, az emberek választanak.** Az automatikus pontozás eltávolítja a selejtet; ami marad, azt átnézem és választok. Ha akar, beülhet abba a körbe.
+4. **Befejezés a kiválasztott képeken.** Átvilágítás, égbolt, generatív bővítés új képarányra, felskálázás nyomdához: menetek a kiválasztott képen, nem visszatérés a 3D-jelenethez.
+5. **Leszállítás.** Tiszta, számozott csomag, a teljes generálási előzmény az én oldalamon archiválva. Ha három hónap múlva visszajön, és azt kéri, „azt a változatot, de esti fényben", pontosan abból a változatból ágazok el.
+
+## Az állóképeken túl
+
+Ugyanaz a rendszer viszi egy prezentációs csomag többi részét: AI-mozgás állóképekből rövidfilmekhez, AI-narráció és AI-komponált zene hozzájuk, felskálázók nyomdához, és kísérleti 3D-eszközök, mesh-generálás kellékekhez, Gaussian splatok befogott kontextushoz. Ezek árlistatételek ott, ahol produkciókészek, és belső kísérletek ott, ahol nem. Megmondom, melyik melyik.
+
+## Mi nem
+
+Nem helyettesíti a 3D-munkát. Ráépül. A pontosság a modellből jön. Az ítélet arról, hogy melyik kép meséli el a megfelelő történetet, továbbra is az enyém, vagy az Öné. Amit a pipeline megváltoztat, az az iterációk száma: több variáció, szorosabb minőségkontroll, és rövidebb csiszolási szakasz minden menetrend végén.
+
+Azért építettem, mert minden nap renderelek, és pontosan tudom, hová megy az idő. Idén óta más stúdiók renderjein is fut: [ai.visiongraphics.eu](https://ai.visiongraphics.eu/). A mérnöki munka a [technikai társcikkben](/articles/inside-archupgrade-technical/) van. Ha látni akarja, mit csinál az Ön projektjén, [írjon](/contact/).
+</Lang>
