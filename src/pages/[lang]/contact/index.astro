@@ -12,9 +12,10 @@ const { lang } = Astro.params as { lang: Locale };
 Astro.locals.lang = lang;
 const L = ui(lang);
 
-// Turnstile site key (public). Set PUBLIC_TURNSTILE_SITE_KEY in the Cloudflare Pages build env;
-// without it the page uses Cloudflare's always-passing test key (visibly labelled "testing only").
-const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '1x00000000000000000000AA';
+// Cloudflare Turnstile — the production widget's public site key. PUBLIC_TURNSTILE_SITE_KEY in
+// the build env overrides it (e.g. Cloudflare's test key 1x00000000000000000000AA for local dev).
+// The token is verified server-side in functions/api/contact.ts (action "contact").
+const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '0x4AAAAAAE675uIdf2Z6cbcB';
 ---
 
 <Page
@@ -182,8 +183,9 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '1x00000
           <!-- Honeypot (spam prevention) -->
           <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true" />
 
-          <!-- Cloudflare Turnstile — token lands in cf-turnstile-response, verified in functions/api/contact.ts -->
-          <div class="cf-turnstile form-turnstile" data-sitekey={TURNSTILE_SITE_KEY} data-theme="auto" data-language={lang}></div>
+          <!-- Cloudflare Turnstile — rendered explicitly by the script below (keeps the widget id for
+               reset after each attempt); the token lands in the hidden cf-turnstile-response field. -->
+          <div id="turnstile-contact" class="form-turnstile" data-sitekey={TURNSTILE_SITE_KEY} data-language={lang}></div>
 
           <button type="submit" class="btn btn-primary form-submit">
             {L.contact.fSubmit}
@@ -202,11 +204,28 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '1x00000
   </div>
 </Page>
 
-<script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback&render=explicit" async defer></script>
 <script>
   // Progressive enhancement: handle submission with fetch.
   // Localized status messages are read from data-status-* on the form.
   const form = document.getElementById('contact-form') as HTMLFormElement | null;
+
+  // Turnstile: explicit render so we hold the widget id. Tokens are single-use — the widget is
+  // reset after every submission attempt (success or failure) so a retry gets a fresh token.
+  type Turnstile = { render: (el: HTMLElement, o: Record<string, string>) => string; reset: (id: string) => void };
+  const tsEl = document.getElementById('turnstile-contact');
+  let widgetId: string | undefined;
+  const renderTurnstile = () => {
+    const ts = (window as unknown as { turnstile?: Turnstile }).turnstile;
+    if (!ts || !tsEl || widgetId !== undefined) return;
+    widgetId = ts.render(tsEl, { sitekey: tsEl.dataset.sitekey ?? '', action: 'contact', theme: 'auto', language: tsEl.dataset.language ?? 'auto' });
+  };
+  (window as unknown as { onloadTurnstileCallback?: () => void }).onloadTurnstileCallback = renderTurnstile;
+  renderTurnstile(); // api.js may already be loaded (bfcache, fast network)
+  const resetTurnstile = () => {
+    const ts = (window as unknown as { turnstile?: Turnstile }).turnstile;
+    if (ts && widgetId !== undefined) ts.reset(widgetId);
+  };
   const status = document.getElementById('form-status');
   const msgSending = form?.dataset.statusSending ?? 'Sending…';
   const msgOk      = form?.dataset.statusOk      ?? "Message sent — we'll be in touch within one business day.";
@@ -245,8 +264,7 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '1x00000
       }
       if (submitBtn) submitBtn.disabled = false;
     }
-    // a Turnstile token is single-use — issue a fresh one for the next attempt
-    (window as any).turnstile?.reset();
+    resetTurnstile();
   });
 
   // Hand-off from the price calculator (/pricing/estimate/): ?quote=<text> prefills the

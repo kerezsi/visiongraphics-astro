@@ -11,25 +11,30 @@
 //   CONTACT_TO      — destination address (e.g. info@visiongraphics.hu)
 //   CONTACT_FROM    — verified sender (e.g. contact@visiongraphics.hu)
 //                     The domain must be verified in Resend.
-//   TURNSTILE_SECRET_KEY — Cloudflare Turnstile secret (encrypt as a secret). Its public
-//                     sibling PUBLIC_TURNSTILE_SITE_KEY goes in the *build* env for the
-//                     contact page. Unset = Cloudflare's always-passing test pair (dev only).
+//   TURNSTILE_SECRET   — the Turnstile widget's secret (encrypt as a secret). Never in git.
+//   TURNSTILE_HOSTNAMES — comma-separated frontend hostnames siteverify must report, per
+//                     environment: Production "visiongraphics.eu,www.visiongraphics.eu";
+//                     Preview "develop.visiongraphics-astro.pages.dev,visiongraphics-astro.pages.dev".
+//                     Never localhost in a production value. Unset → every submission is refused.
+//                     The public site key is in src/pages/[lang]/contact/index.astro.
 //
 // Local testing (optional):
 //   npx wrangler pages dev dist \
 //     --binding RESEND_API_KEY=re_xxx \
 //     --binding CONTACT_TO=info@visiongraphics.hu \
-//     --binding CONTACT_FROM=contact@visiongraphics.hu
+//     --binding CONTACT_FROM=contact@visiongraphics.hu \
+//     --binding TURNSTILE_SECRET=... --binding TURNSTILE_HOSTNAMES=localhost
 
 interface Env {
   RESEND_API_KEY: string;
   CONTACT_TO: string;
   CONTACT_FROM: string;
-  TURNSTILE_SECRET_KEY?: string;
+  TURNSTILE_SECRET?: string;
+  TURNSTILE_HOSTNAMES?: string;
 }
 
-// Cloudflare's documented always-pass test secret — pairs with the test site key the page falls back to.
-const TURNSTILE_TEST_SECRET = '1x0000000000000000000000000000000AA';
+// Must match data-action / the `action` passed to turnstile.render() on the contact page.
+const TURNSTILE_ACTION = 'contact';
 
 export const onRequestPost: PagesFunction<Env> = async (ctx) => {
   try {
@@ -40,9 +45,10 @@ export const onRequestPost: PagesFunction<Env> = async (ctx) => {
       return json({ ok: true });
     }
 
-    // Turnstile — the widget on the page puts its token in cf-turnstile-response
+    // Turnstile gate — canonical siteverify: success + expected action + approved hostname.
+    // Everything below runs unchanged once the token passes.
     const token = str(data.get('cf-turnstile-response'));
-    if (!token || !(await turnstileOk(token, ctx.env.TURNSTILE_SECRET_KEY || TURNSTILE_TEST_SECRET, ctx.request.headers.get('CF-Connecting-IP')))) {
+    if (!(await turnstileOk(ctx.env, token, ctx.request.headers.get('CF-Connecting-IP')))) {
       return json({ ok: false, error: 'Verification failed' }, 403);
     }
 
@@ -119,13 +125,27 @@ export const onRequestPost: PagesFunction<Env> = async (ctx) => {
 
 // ── helpers ────────────────────────────────────────────────────────────────
 
-async function turnstileOk(token: string, secret: string, ip: string | null): Promise<boolean> {
-  const body = new URLSearchParams({ secret, response: token });
+async function turnstileOk(env: Env, token: string, ip: string | null): Promise<boolean> {
+  const expectedHostnames = new Set((env.TURNSTILE_HOSTNAMES ?? '').split(',').map((h) => h.trim()).filter(Boolean));
+  if (!env.TURNSTILE_SECRET || expectedHostnames.size === 0) return false; // misconfigured → fail closed
+  if (!token || token.length > 2048) return false;
+
+  const body = new URLSearchParams({ secret: env.TURNSTILE_SECRET, response: token });
   if (ip) body.set('remoteip', ip);
-  const res = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', { method: 'POST', body });
-  if (!res.ok) return false;
-  const out = (await res.json()) as { success?: boolean };
-  return out.success === true;
+  let result: { success?: boolean; action?: string; hostname?: string };
+  try {
+    const res = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      signal: AbortSignal.timeout(10_000),
+      body,
+    });
+    if (!res.ok) return false;
+    result = await res.json();
+  } catch {
+    return false;
+  }
+  return result.success === true && result.action === TURNSTILE_ACTION && expectedHostnames.has(result.hostname ?? '');
 }
 
 function str(v: FormDataEntryValue | null): string {

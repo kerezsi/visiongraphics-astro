@@ -591,11 +591,16 @@ you patterned it on.
 Contact form: `/api/contact` Pages Function (`functions/api/contact.ts`), Resend API.
 Env vars (Cloudflare Pages → Production): `RESEND_API_KEY` (secret), `CONTACT_TO`
 (info@visiongraphics.hu), `CONTACT_FROM` (contact@visiongraphics.hu, Resend-verified domain).
-Honeypot field `_gotcha` + **Cloudflare Turnstile**: widget on the contact page (site key from
-the build env `PUBLIC_TURNSTILE_SITE_KEY`), token `cf-turnstile-response` verified server-side
-with `TURNSTILE_SECRET_KEY` (Pages secret). Both unset → Cloudflare's always-pass test pair
-(fine in dev, wrong in prod — the widget then says "testing only"). Local test: `npm run build` then
-`npx wrangler pages dev dist --binding RESEND_API_KEY=... --binding CONTACT_TO=... --binding CONTACT_FROM=... --binding TURNSTILE_SECRET_KEY=...`.
+Honeypot field `_gotcha` + **Cloudflare Turnstile** (widget `0x4AAAAAAE675uIdf2Z6cbcB`, action
+`contact`): rendered explicitly on the contact page (site key hardcoded there; the build env
+`PUBLIC_TURNSTILE_SITE_KEY` overrides it — use Cloudflare's test key `1x00000000000000000000AA`
+for local dev). The Function verifies `cf-turnstile-response` with canonical siteverify and
+requires `success`, `action === 'contact'` and a hostname listed in `TURNSTILE_HOSTNAMES`.
+Pages env per environment: `TURNSTILE_SECRET` (secret, from the Turnstile dashboard — never in
+git) + `TURNSTILE_HOSTNAMES` (Production `visiongraphics.eu,www.visiongraphics.eu`; Preview the
+`*.visiongraphics-astro.pages.dev` hosts; never localhost in Production). Missing either →
+every submission is refused with 403 (fail closed). Local test: `npm run build` then
+`npx wrangler pages dev dist --binding RESEND_API_KEY=... --binding CONTACT_TO=... --binding CONTACT_FROM=... --binding TURNSTILE_SECRET=... --binding TURNSTILE_HOSTNAMES=localhost`.
 The estimator hands off with `?quote=<text>&type=<project_type>`; `type` comes from
 `pricing.json calculator.kinds[].contact` (the card with the largest subtotal wins).
 Functions have their own `functions/tsconfig.json` (workers types); root tsconfig excludes them.
