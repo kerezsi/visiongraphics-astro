@@ -227,7 +227,7 @@ const c = COPY[lang];
     <section class="vt-gallery-section">
       <div class="container">
         <p class="section-label">{c.examples}</p>
-        <ImageLightbox images={data.gallery} title={c.examples} client:load />
+        <ImageLightbox images={data.gallery.map((src) => ({ src, alt: '' }))} title={c.examples} client:load />
       </div>
     </section>
   )}

@@ -1,5 +1,7 @@
 ---
-// src/pages/articles/[slug].astro
+// src/pages/[lang]/articles/[slug].astro — article detail. Chrome is
+// localized, the prose is EN-only (§8.10 #1). Layout and spacing come from
+// the shared blocks and tokens only — no page-local px/rem.
 
 import Page from '../../../layouts/Page.astro';
 import { getCollection } from 'astro:content';
@@ -19,6 +21,8 @@ import DeliverableGrid from '../../../components/mdx/DeliverableGrid.astro';
 import TimelineTable from '../../../components/mdx/TimelineTable.astro';
 import PhaseMatrix from '../../../components/mdx/PhaseMatrix.astro';
 import SingleImage from '../../../components/mdx/SingleImage.astro';
+import ChipRow from '../../../components/ui/ChipRow.astro';
+import SectionHeading from '../../../components/ui/SectionHeading.astro';
 import { localizedPaths, localeUrl, tStr, type Locale } from '../../../lib/i18n';
 import { ui } from '../../../i18n/strings';
 import { formatDate, readingTime } from '../../../lib/article-meta';
@@ -41,6 +45,13 @@ const minutes = readingTime(article.body);
 // Articles are EN-only plain strings today, but the schema allows {en,hu} — flatten (§4.1).
 const title   = tStr(data.title, lang);
 const excerpt = tStr(data.excerpt, lang);
+const authorName = lang === 'hu' ? 'Kerezsi László' : 'László Kerezsi';
+
+// Tag chips link back to the filtered index (?tag=, same as the index pills).
+const tagChips = data.tags.map(tag => ({
+  href: `${localeUrl('/articles/', lang)}?tag=${encodeURIComponent(tag)}`,
+  text: tag.replace(/-/g, ' '),
+}));
 
 // Article JSON-LD — author/publisher facts mirror the sidebar and footer.
 const articleJsonLd = JSON.stringify({
@@ -85,20 +96,12 @@ const nextArticle = sorted[currentIndex - 1] ?? null;
     <!-- Header — articles are authored in English; mark the prose as such on /hu/ -->
     <header class="article-header" lang="en">
       <div class="article-meta">
-        <time class="article-date" datetime={data.date.toISOString()}>
-          {formatDate(data.date, lang)}
-        </time>
-        <span class="article-date">{L.articles.readingTime.replace('{n}', String(minutes))}</span>
-        {data.tags.length > 0 && (
-          <div class="article-tags">
-            {data.tags.map(tag => (
-              <span class="article-tag">{tag}</span>
-            ))}
-          </div>
-        )}
+        <time datetime={data.date.toISOString()}>{formatDate(data.date, lang)}</time>
+        <span>{L.articles.readingTime.replace('{n}', String(minutes))}</span>
       </div>
       <h1 class="display-lg article-h1">{title}</h1>
       <p class="article-excerpt">{excerpt}</p>
+      {tagChips.length > 0 && <ChipRow label={L.articles.topics} chips={tagChips} class="article-tags" />}
     </header>
 
     {data.coverImage && (
@@ -107,7 +110,7 @@ const nextArticle = sorted[currentIndex - 1] ?? null;
       </div>
     )}
 
-    <!-- Content -->
+    <!-- Content — markdown images arrive as <SingleImage> (remarkArticleImages in astro.config.mjs) -->
     <div class="article-layout">
       <div class="article-content prose" lang="en">
         <Content components={{ SectionBanner, ImageGallery, ImageCompare, SingleImage, Tour360, FilmEmbed, YouTubeEmbed, YoutubeEmbed: YouTubeEmbed, ProcessFlow, SpecTable, CompareTable, NotableGrid, DeliverableGrid, TimelineTable, PhaseMatrix }} />
@@ -116,14 +119,9 @@ const nextArticle = sorted[currentIndex - 1] ?? null;
       </div>
 
       <aside class="article-sidebar">
+        <SectionHeading level="h3" label={L.articles.aboutAuthor} title={authorName} intro={L.articles.authorBio} />
         <div class="sidebar-block">
-          <h3 class="sidebar-label">{L.articles.aboutAuthor}</h3>
-          <p class="sidebar-author-name">{lang === 'hu' ? 'Kerezsi László' : 'László Kerezsi'}</p>
-          <p class="sidebar-author-bio">{L.articles.authorBio}</p>
-        </div>
-
-        <div class="sidebar-block">
-          <h3 class="sidebar-label">{L.articles.contact}</h3>
+          <p class="eyebrow">{L.articles.contact}</p>
           <a href={localeUrl('/contact/', lang)} class="btn btn-primary sidebar-btn">{L.articles.startProject}</a>
         </div>
       </aside>
@@ -137,7 +135,7 @@ const nextArticle = sorted[currentIndex - 1] ?? null;
           <span class="nav-title" lang="en">{tStr(prevArticle.data.title, lang)}</span>
         </a>
       )}
-      <a href={localeUrl('/articles/', lang)} class="article-nav-link article-nav-link--all">{L.articles.allArticles}</a>
+      <a href={localeUrl('/articles/', lang)} class="eyebrow article-nav-link article-nav-link--all">{L.articles.allArticles}</a>
       {nextArticle && (
         <a href={localeUrl(`/articles/${nextArticle.slug}/`, lang)} class="article-nav-link article-nav-link--next">
           <span class="nav-dir">{L.articles.newer}</span>
@@ -152,54 +150,31 @@ const nextArticle = sorted[currentIndex - 1] ?? null;
 
 <style>
   .article-page { width: 100%; }
-  .article-inner { padding-block: clamp(3rem, 5vw, 5rem); }
+  .article-inner { padding-block: var(--space-12) var(--space-16); }
 
   .article-breadcrumb {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    font-family: var(--font-body);
+    gap: var(--space-2);
     font-size: var(--fs-xs);
     color: var(--color-text-faint);
-    margin-bottom: 2rem;
+    margin-bottom: var(--space-8);
   }
-
-  .article-breadcrumb a { color: var(--color-text-muted); text-decoration: none; transition: color 200ms; }
+  .article-breadcrumb a { color: var(--color-text-muted); }
   .article-breadcrumb a:hover { color: var(--color-accent); }
 
   /* Header */
-  .article-header { margin-bottom: 2rem; }
-
+  .article-header { margin-bottom: var(--space-8); }
   .article-meta {
     display: flex;
-    align-items: center;
-    gap: 1rem;
     flex-wrap: wrap;
-    margin-bottom: 1rem;
-  }
-
-  .article-date {
+    gap: var(--space-4);
+    margin-bottom: var(--space-4);
     font-family: var(--font-mono);
     font-size: var(--fs-xs);
     color: var(--color-text-faint);
   }
-
-  .article-tags { display: flex; gap: 0.35rem; flex-wrap: wrap; }
-
-  .article-tag {
-    font-family: var(--font-body);
-    font-size: var(--fs-xs);
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--color-text-faint);
-    border: 1px solid var(--color-border);
-    padding: 0.15rem 0.45rem;
-    border-radius: 1px;
-  }
-
-  .article-h1 { margin: 0 0 1rem; }
-
+  .article-h1 { margin: 0 0 var(--space-4); }
   .article-excerpt {
     font-size: var(--fs-body);
     color: var(--color-text-muted);
@@ -207,170 +182,78 @@ const nextArticle = sorted[currentIndex - 1] ?? null;
     line-height: 1.65;
     margin: 0;
   }
+  .article-tags { margin-top: var(--space-4); }
 
   /* Cover */
   .article-cover {
-    margin-bottom: 3rem;
+    margin-bottom: var(--space-12);
     aspect-ratio: 16/7;
     overflow: hidden;
     background: var(--color-surface-2);
     border-radius: var(--radius-sm);
   }
-
   .article-cover img { width: 100%; height: 100%; object-fit: cover; }
 
-  /* Layout */
+  /* Layout: prose column + sticky sidebar */
   .article-layout {
     display: grid;
-    grid-template-columns: 1fr 220px;
-    gap: 4rem;
+    grid-template-columns: 1fr 14rem;
+    gap: var(--space-16);
     align-items: start;
   }
 
-  /* Section banner blocks inside article prose */
-  .article-content.prose :global(.article-section-banner) {
-    position: relative;
-    height: clamp(80px, 14vw, 180px);
-    background-size: cover;
-    background-position: center;
-    overflow: hidden;
-    border-radius: var(--radius-sm);
-    margin: 2rem 0;
-    display: flex;
-    align-items: flex-end;
-  }
-
-  .article-content.prose :global(.article-section-banner__overlay) {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.2) 100%);
-  }
-  :global([data-theme="light"]) .article-content.prose :global(.article-section-banner__overlay) {
-    background: linear-gradient(to top, rgba(247,245,242,0.88) 0%, rgba(247,245,242,0.25) 100%);
-  }
-
-  .article-content.prose :global(.article-section-banner__content) {
-    position: relative;
-    padding: 0.75rem 1rem;
-    z-index: 1;
-  }
-
-  .article-content.prose :global(.article-section-banner__label) {
-    font-size: var(--fs-xs);
-    font-weight: 600;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--color-accent);
-    margin: 0 0 0.25rem;
-  }
-
-  .article-content.prose :global(.article-section-banner__title) {
-    font-size: var(--fs-h5);
-    font-weight: 300;
-    color: var(--color-text);
-    margin: 0;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-  }
-
-  /* Prose content */
+  /* Prose — block components (SectionBanner, SingleImage, galleries) bring their own styles */
   .article-content.prose {
     font-size: var(--fs-small);
     color: var(--color-text-muted);
     line-height: 1.8;
     max-width: 65ch;
   }
-
   .article-content.prose :global(h2) {
     font-family: var(--font-display);
     font-size: var(--fs-h5);
     font-weight: 300;
     color: var(--color-text);
-    margin: 2.5rem 0 1rem;
+    margin: var(--space-10) 0 var(--space-4);
     letter-spacing: -0.01em;
   }
-
   .article-content.prose :global(h3) {
-    font-family: var(--font-body);
     font-size: var(--fs-body);
     font-weight: 500;
     color: var(--color-text);
-    margin: 2rem 0 0.75rem;
+    margin: var(--space-8) 0 var(--space-3);
   }
-
-  .article-content.prose :global(p) {
-    margin-bottom: 1.25rem;
-    max-width: none;
-  }
-
+  .article-content.prose :global(p) { margin-bottom: var(--space-5); max-width: none; }
   .article-content.prose :global(ul),
-  .article-content.prose :global(ol) {
-    padding-left: 1.5rem;
-    margin-bottom: 1.25rem;
-  }
-
-  .article-content.prose :global(li) {
-    margin-bottom: 0.4rem;
-    color: var(--color-text-muted);
-    font-size: var(--fs-small);
-  }
-
+  .article-content.prose :global(ol) { padding-left: var(--space-6); margin-bottom: var(--space-5); }
+  .article-content.prose :global(li) { margin-bottom: var(--space-2); }
+  .article-content.prose :global(p a) { color: var(--color-accent); }
   .article-content.prose :global(code) {
     font-family: var(--font-mono);
     font-size: var(--fs-xs);
     background: var(--color-surface-2);
-    padding: 0.1rem 0.35rem;
-    border-radius: 2px;
+    padding: 0 var(--space-1);
+    border-radius: var(--radius-sm);
     color: var(--color-accent);
   }
-
   .article-content.prose :global(blockquote) {
     border-left: 2px solid var(--color-accent);
-    padding-left: 1.25rem;
-    margin: 1.5rem 0;
-    font-family: var(--font-display);
+    padding-left: var(--space-5);
+    margin: var(--space-6) 0;
     font-style: italic;
     font-size: var(--fs-body);
-    color: var(--color-text-muted);
   }
 
   /* Sidebar */
   .article-sidebar {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: var(--space-8);
     position: sticky;
-    top: 5rem;
+    top: calc(var(--size-header) + var(--space-4));
   }
-
-  .sidebar-block { display: flex; flex-direction: column; gap: 0.6rem; }
-
-  .sidebar-label {
-    font-family: var(--font-body);
-    font-size: var(--fs-xs);
-    font-weight: 500;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--color-text-faint);
-  }
-
-  .sidebar-author-name {
-    font-family: var(--font-body);
-    font-size: var(--fs-small);
-    font-weight: 500;
-    color: var(--color-text);
-    margin: 0;
-    max-width: none;
-  }
-
-  .sidebar-author-bio {
-    font-size: var(--fs-xs);
-    color: var(--color-text-muted);
-    line-height: 1.6;
-    margin: 0;
-    max-width: none;
-  }
-
+  .article-sidebar :global(.section-heading) { margin-bottom: 0; }
+  .sidebar-block { display: flex; flex-direction: column; gap: var(--space-3); }
   .sidebar-btn { width: 100%; justify-content: center; }
 
   /* Navigation */
@@ -378,36 +261,15 @@ const nextArticle = sorted[currentIndex - 1] ?? null;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 4rem;
-    padding-top: 2rem;
+    gap: var(--space-4);
+    margin-top: var(--space-16);
+    padding-top: var(--space-8);
     border-top: 1px solid var(--color-border);
-    gap: 1rem;
   }
-
-  .article-nav-link {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-    text-decoration: none;
-    transition: color 200ms;
-    max-width: 35%;
-  }
-
-  .article-nav-link--all {
-    font-family: var(--font-body);
-    font-size: var(--fs-xs);
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--color-text-faint);
-    flex-direction: row;
-    align-items: center;
-    max-width: none;
-  }
-
+  .article-nav-link { display: flex; flex-direction: column; gap: var(--space-1); max-width: 35%; }
+  .article-nav-link--all { flex-direction: row; max-width: none; }
   .article-nav-link--all:hover { color: var(--color-text); }
   .article-nav-link--next { text-align: right; align-items: flex-end; }
-
   .nav-dir {
     font-family: var(--font-mono);
     font-size: var(--fs-xs);
@@ -415,19 +277,10 @@ const nextArticle = sorted[currentIndex - 1] ?? null;
     text-transform: uppercase;
     letter-spacing: 0.1em;
   }
-
-  .nav-title {
-    font-family: var(--font-display);
-    font-size: var(--fs-body);
-    color: var(--color-text-muted);
-    line-height: 1.3;
-    transition: color 200ms;
-  }
-
+  .nav-title { font-size: var(--fs-body); color: var(--color-text-muted); line-height: 1.3; }
   .article-nav-link:hover .nav-title { color: var(--color-accent); }
 
-  /* Responsive */
-  @media (max-width: 900px) {
+  @media (max-width: 768px) {
     .article-layout { grid-template-columns: 1fr; }
     .article-sidebar { position: static; }
   }

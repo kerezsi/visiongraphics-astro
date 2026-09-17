@@ -72,6 +72,34 @@ const r2DevProxy = {
   },
 };
 
+// ── Article images → <SingleImage> ───────────────────────────────────────────
+// In src/content/articles/, a paragraph that holds only `![alt](src "title")`
+// becomes <SingleImage src alt fit="natural" caption={title} /> — the standard
+// lightbox block, not a bare <img>. Linked images ([![…](…)](url)) and inline
+// images stay plain: a lightbox anchor can't nest inside a link.
+function remarkArticleImages() {
+  return (tree, file) => {
+    const p = String(file.path ?? file.history?.[0] ?? '');
+    if (!/[\/]src[\/]content[\/]articles[\/]/.test(p)) return;
+    const attr = (name, value) => ({ type: 'mdxJsxAttribute', name, value });
+    const walk = (node) => {
+      if (!node.children) return;
+      node.children = node.children.map((child) => {
+        const kids = child.type === 'paragraph'
+          ? child.children.filter((k) => k.type !== 'text' || k.value.trim()) : [];
+        if (kids.length !== 1 || kids[0].type !== 'image') { walk(child); return child; }
+        const { url, alt, title } = kids[0];
+        return {
+          type: 'mdxJsxFlowElement', name: 'SingleImage', children: [],
+          attributes: [attr('src', url), attr('alt', alt ?? ''), attr('fit', 'natural'),
+                       ...(title ? [attr('caption', title)] : [])],
+        };
+      });
+    };
+    walk(tree);
+  };
+}
+
 export default defineConfig({
   site: 'https://visiongraphics.eu',
   // ── i18n ────────────────────────────────────────────────────────────────
@@ -95,7 +123,7 @@ export default defineConfig({
     tailwind({
       applyBaseStyles: false,
     }),
-    mdx(),
+    mdx({ remarkPlugins: [remarkArticleImages] }),
     // Auto-generates /sitemap-index.xml + /sitemap-0.xml at build time
     // covering every static route. The i18n config above means every page
     // emits hreflang alternates between /en/ and /hu/ versions automatically.
@@ -114,6 +142,10 @@ export default defineConfig({
   ],
   vite: {
     plugins: [...(!isProd ? [r2DevProxy] : [])],
+    // PhotoSwipe is only reached through a lazy import on first click; without
+    // pre-bundling it Vite discovers it late, re-optimizes, and already-open
+    // pages get "504 Outdated Optimize Dep" on that chunk (§4.7).
+    optimizeDeps: { include: ['photoswipe', 'photoswipe/lightbox', 'embla-carousel-react'] },
     // Per-build constant injected as a global #define. Referenced from
     // src/lib/build-stamp.ts which is imported by Base.astro's inline script
     // and every React island root, so every JS chunk's content changes on

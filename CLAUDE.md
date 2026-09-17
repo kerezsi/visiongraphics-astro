@@ -153,7 +153,10 @@ dead lightbox); console shows `[astro-island] Error hydrating ...`; network show
 sessions). Production is unaffected.
 **Rule:** run the "restart servers" procedure (§2). After a `.vite` wipe, pre-warm one
 island-bearing page, wait ~4s, then test the page you care about — the first load can race
-Vite's re-optimization.
+Vite's re-optimization. `astro.config.mjs` pre-bundles `photoswipe`, `photoswipe/lightbox`
+and `embla-carousel-react` (`vite.optimizeDeps.include`) because PhotoSwipe is only reached
+through a lazy import on first click — discovered late, it triggered exactly this 504 on the
+lightbox chunk (2026-09-17). Keep that list; add any new lazily-imported client dep to it.
 
 ### 4.8 The phantom 500
 **Trigger:** production page or JS chunk serves HTTP 500 with an empty body (`Server: cloudflare`,
@@ -387,7 +390,11 @@ enums in `config.ts` (see §4.14). Body: alternating `<Lang>` blocks each holdin
 
 **Articles** (EN-only): plain-string frontmatter (`title`, `date`, `excerpt`, `tags[]`,
 `coverImage`, `published`), plain-Markdown body, images as `![alt](/_img/articles/<topic>/x.jpg)`,
-no `<Lang>`, no MDX components in practice. House voice and full procedure: `/write-article`.
+no `<Lang>`. A paragraph that is only a Markdown image is turned into `<SingleImage fit="natural">`
+at build time (`remarkArticleImages` in `astro.config.mjs`, articles only) — lightbox, thumb,
+`"title"` → caption — so authors keep writing plain Markdown. A linked image
+(`[![alt](img)](url)`) stays a plain link (a lightbox anchor can't nest in a link); galleries
+are `<ImageGallery>` as elsewhere. House voice and full procedure: `/write-article`.
 
 **Reference collections** (`clients`, `designers`, `cities`, `countries`, `client-types`,
 `categories`): **`.md` files** with YAML frontmatter, empty body (not `.yaml` — Keystatic's
@@ -404,7 +411,7 @@ Registered-per-template maps are in §8.6. Props quick reference:
 | `SectionBanner` | `image` (str), `label`, `title` | **Two implementations** — §4.15 |
 | `ImageGallery` | `images:[{src,alt}]` (str), `label\|false`, `subtitle` | Needs mounters; auto-label "Gallery:" only on portfolio |
 | `ImageCompare` | `before`,`after` (str), `beforeAlt`,`afterAlt`,`label`,`subtitle`,`beforeText`,`afterText` | Needs mounters |
-| `SingleImage` | `src` (str), `alt`, `caption` | Self-mounts PhotoSwipe; never auto-labelled |
+| `SingleImage` | `src` (str), `alt`, `caption`, `fit: 'cover'\|'natural'` | Self-mounts PhotoSwipe; never auto-labelled; `cover` (default) crops to 16/9, `natural` keeps the ratio (articles) |
 | `Tour360` | `url`,`coverImage` (str), `title`,`label`,`subtitle` | Click-to-load |
 | `YoutubeEmbed` | `url` (str), `title`,`label`,`subtitle` | File is `YouTubeEmbed.astro`; registered under **both** spellings |
 | `FilmEmbed` | `vimeoId` (str), `title` | Build-time Vimeo thumbnail fetch; currently unused in content |
@@ -701,8 +708,11 @@ Add every future island to this list — and to this paragraph.
   ImageGallery, ImageCompare, ProcessFlow, PhaseMatrix, Tour360, YouTubeEmbed+YoutubeEmbed, Lang.
 - `vision-tech/[slug].astro` — SectionBanner(=mdx), ImageGallery, ImageCompare, ProcessFlow,
   SpecTable, CompareTable, Tour360, FilmEmbed, YouTubeEmbed+YoutubeEmbed, Lang.
-- `articles/[slug].astro` — SectionBanner(=mdx), SingleImage, ImageGallery, ImageCompare —
-  **no Lang** (articles are EN-only).
+- `articles/[slug].astro` — SectionBanner(=mdx), SingleImage, ImageGallery, ImageCompare,
+  Tour360, FilmEmbed, YouTubeEmbed+YoutubeEmbed, ProcessFlow, SpecTable, CompareTable,
+  NotableGrid, DeliverableGrid, TimelineTable, PhaseMatrix — **no Lang** (articles are EN-only).
+  Markdown images become SingleImage via the remark plugin (§5.3); the page chrome is built
+  from `ui/ChipRow` (tag chips → `/articles/?tag=`) and `ui/SectionHeading` (author box).
 All four templates also mount `ArticleGalleryMounter` + `ArticleImageCompareMounter`.
 The editor palette mirrors these maps automatically via `GET /api/registry`
 (`astro-registry-scanner.ts` re-scans the templates per request).

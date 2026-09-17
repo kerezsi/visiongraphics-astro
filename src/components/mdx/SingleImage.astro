@@ -5,6 +5,7 @@
  * Usage in MDX:
  *   <SingleImage src="/_img/vision-tech/slug/01.jpg" alt="Description" />
  *   <SingleImage src="/_img/..." alt="..." caption="Optional caption text" />
+ *   <SingleImage src="/_img/..." fit="natural" />   — keep the image's own ratio (articles)
  */
 import { tStr, DEFAULT_LOCALE, type Localized, type Locale } from '../../lib/i18n';
 import { thumbUrl } from '../../lib/image-url';
@@ -13,15 +14,17 @@ interface Props {
   src: string;
   alt?: Localized<string>;
   caption?: Localized<string>;
+  /** 'cover' crops to 16/9 (default); 'natural' keeps the image's own ratio. */
+  fit?: 'cover' | 'natural';
 }
-const { src, alt, caption } = Astro.props;
+const { src, alt, caption, fit = 'cover' } = Astro.props;
 const lang: Locale = (Astro.locals as { lang?: Locale })?.lang ?? DEFAULT_LOCALE;
 const altStr     = tStr(alt, lang);
 const captionStr = tStr(caption, lang);
 const thumb      = thumbUrl(src, 'large') || src;
 ---
 
-<figure class="mdx-single-image" data-pswp-gallery>
+<figure class:list={['mdx-single-image', { 'mdx-single-image--natural': fit === 'natural' }]} data-pswp-gallery>
   <a
     href={src}
     class="mdx-single-image-trigger"
@@ -66,15 +69,20 @@ const thumb      = thumbUrl(src, 'large') || src;
     transition: transform 500ms ease;
   }
 
+  .mdx-single-image--natural .mdx-single-image-img {
+    aspect-ratio: auto;
+    height: auto;
+  }
+
   .mdx-single-image-trigger:hover .mdx-single-image-img {
     transform: scale(1.02);
   }
 
   .mdx-single-image-zoom {
     position: absolute;
-    bottom: 0.6rem;
-    right: 0.75rem;
-    font-size: 1.1rem;
+    bottom: var(--space-2);
+    right: var(--space-3);
+    font-size: var(--fs-h6);
     color: rgba(240, 237, 232, 0.55);
     pointer-events: none;
     text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
