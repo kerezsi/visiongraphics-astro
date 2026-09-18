@@ -441,7 +441,11 @@ type and locale, `label={false}` suppresses, `subtitle` adds a white line. Drive
 
 ### 5.5 Editor codebase (`tools/editor/`)
 
-- Express server (:4322) + React/Vite client (:4323), Zustand state, no tests currently
+- Express server (:4322) + React/Vite client (:4323), Zustand state, no tests currently.
+  The server also serves a **prebuilt** copy of the client from `tools/editor/dist`
+  (gitignored) at http://localhost:4322/ — it goes stale silently and crashes on content
+  shapes it predates (React error #31 on `{en,hu}` titles was this). Use :4323 for daily
+  work; after client changes rebuild with `npx vite build --config tools/editor/vite.config.ts`.
   (vitest installed, `tools/editor/tests/` empty — the deleted suite covered only the removed
   legacy pipeline).
 - Live pipeline: `POST /api/import/md` (`mdx-import/parser.ts` + `block-mapper.ts`) → blocks →

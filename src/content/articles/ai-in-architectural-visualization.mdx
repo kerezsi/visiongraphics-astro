@@ -2,10 +2,10 @@
 title:
   en: "AI in Architectural Visualization: What's Actually Useful in 2026"
   hu: "AI az építészeti vizualizációban: mi hasznos valójában 2026-ban"
-date: 2026-09-16T00:00:00.000Z
+date: 2026-09-16
 excerpt:
-  en: Eighteen months ago I wrote that generative tools could not produce a deliverable render. I was right then and wrong now. Where AI sits in my production today, what it does for your project, and the list of what it still cannot do — valid until roughly next week.
-  hu: Tizennyolc hónapja azt írtam, hogy a generatív eszközök nem tudnak leszállítható rendert készíteni. Akkor igazam volt, most nincs. Hol ül az AI ma a produkciómban, mit tesz az Ön projektjéért, és a lista arról, amit még nem tud – nagyjából jövő hétig érvényes.
+  en: "Eighteen months ago I wrote that generative tools could not produce a deliverable render. I was right then and wrong now. Where AI sits in my production today, what it does for your project, and the list of what it still cannot do — valid until roughly next week."
+  hu: "Tizennyolc hónapja azt írtam, hogy a generatív eszközök nem tudnak leszállítható rendert készíteni. Akkor igazam volt, most nincs. Hol ül az AI ma a produkciómban, mit tesz az Ön projektjéért, és a lista arról, amit még nem tud – nagyjából jövő hétig érvényes."
 tags:
   - ai
   - workflow
@@ -22,12 +22,12 @@ The short version: AI does not build the picture. It finishes it. Everything tha
 </Lang>
 
 <Lang code="hu">
-2025 elején közzétettem ennek a cikknek egy változatát, amely szerint a generatív eszközök „nem tudnak olyan képeket előállítani, amelyek megfelelnek az építészeti vizualizáció pontossági követelményeinek". Akkor ez igaz volt. Azért írom újra, mert megszűnt igaznak lenni. Nem azért, mert az AI varázslattá vált, hanem mert megváltoztattam, hol ül a pipeline-ban, és számítok rá, hogy újra át fogom írni.
+2025 elején közzétettem ennek a cikknek egy változatát, amely szerint a generatív eszközök „nem tudnak olyan képeket előállítani, amelyek megfelelnek az építészeti vizualizáció pontossági követelményeinek". Akkor ez igaz volt. Most azárt kell újraírnom, mert már nem igaz többé. Nem azért, mert az AI hirtelen varázslattá vált, hanem mert a folyamotos fejlődése miatt időről időre meg kell változtatnom, hol ül a pipeline-ban, és fel is vagyok ré készülve, hogy újra át kell majd írnom.
 
-A rövid változat: az AI nem építi a képet. Befejezi. Minden, amitől egy vizualizáció *helyes* – geometria, kamera, arányok, márkaszínek, hová tette a tervező a bútort – továbbra is az Ön rajzaiból épített 3D-modellből jön. Minden, amitől *fényképként olvasható* – anyagválasz, fényesés, tükröződések, atmoszféra – ma nagyrészt egy AI-menet a modell tetején, a saját gépeimen, egy automatikus ellenőrzővel átnézve, mielőtt ember választ.
+A rövid változat: az AI nem építi a képet. Befejezi. Minden, amitől egy vizualizáció *helyes* – geometria, kamera, arányok, színek, hová tette a tervező a bútort – továbbra is a tervekből épített 3D-modellből jön. Minden, amitől *fényképként működik* – anyagválasztás, fényezés, tükröződések, atmoszféra – ma nagyrészt egy AI-képalkotás a modellből kiindulva, a saját gépeimen, egy automatikus ellenőrzővel átnézetve, mielőtt (én, az ember) kiválasztom közülük az igazán jót.
 </Lang>
 
-<ImageCompare before="/_img/articles/archupgrade/bank-branch-1-before.jpg" after="/_img/articles/archupgrade/bank-branch-1-after.jpg" beforeAlt="Working 3D render of a bank branch interior, straight out of 3ds Max" afterAlt="The same view after the AI finishing pass — same geometry, camera and layout" beforeText={{ en: "3D render", hu: "3D render" }} afterText={{ en: "AI finish", hu: "AI-befejezés" }} label={false} />
+<ImageCompare before="/_img/articles/archupgrade/bank-branch-1-before.jpg" after="/_img/articles/archupgrade/bank-branch-1-after.jpg" beforeAlt="Working 3D render of a bank branch interior, straight out of 3ds Max" afterAlt="The same view after the AI finishing pass — same geometry, camera and layout" beforeText={{"en":"3D render","hu":"3D render"}} afterText={{"en":"AI finish","hu":"AI-befejezés"}} />
 
 <Lang code="en">
 Drag the slider. One side is the working render out of 3ds Max, the other is the same image after the pipeline; the labels say which. Nothing about the design changed. The partition glass, the screens, the green poufs in the kids' corner are where the designer put them.
@@ -40,16 +40,16 @@ Drag the slider. One side is the working render out of 3ds Max, the other is the
 </Lang>
 
 <Lang code="hu">
-Húzza a csúszkát. Az egyik oldal a 3ds Maxból kijövő munkarender, a másik ugyanaz a kép a pipeline után; a feliratok mondják meg, melyik melyik. A terven semmi nem változott. A válaszfal-üveg, a képernyők, a zöld puffok a gyereksarokban ott vannak, ahová a tervező tette.
+Húzza a csúszkát. Az egyik oldal egy Archicadből lekért nézet, a másik ugyanaz a kép a pipeline után; a feliratok mondják meg, melyik melyik. A terven semmi nem változott. A válaszfal-üveg, a képernyők, a zöld puffok a gyereksarokban ott vannak, ahová a tervező tette.
 
 ## Hol segít ma
 
-**Befejezés.** A „helyes render"-től a „képig, amely eladja a projektet" tartó utolsó szakasz ette meg a menetrend nagy részét: anyagok, növényzet, emberek, atmoszféra. Az [ArchUpgrade](/articles/from-render-to-photograph-archupgrade/), a rendszer, amit építettem, fogja a munkarendert, és fotorealisztikus változatokat állít elő, képenként és GPU-nként nagyjából egy perc alatt, kontrollált variációkban, mindegyiket egy helyi látómodell pontozza öt szempont szerint, mielőtt bárki ránézne. Egy nemrégi 18 nézetes belsőépítészeti projekten több mint 300 jelöltet generált, az ellenőrző szűrte, én 18-at választottam.
+**Befejezés.** A „helyes render"-től a „képig, amely eladja a projektet" tartó utolsó szakasz ette meg a menetrend nagy részét: anyagok, növényzet, emberek, atmoszféra. Az [ArchUpgrade](/articles/from-render-to-photograph-archupgrade/), a rendszer, amit építettem, fogja a gyors rendert, vagy screenhotot, és fotorealisztikus változatokat állít elő, képenként és GPU-nként nagyjából egy perc alatt, kontrollált variációkban, mindegyiket egy helyi vision LLM (olyan nyelvi modell, ami képeket is tud értelmezni bemenetként) pontozza öt szempont szerint, mielőtt bárki ránézne. Egy nemrégi 18 nézetes belsőépítészeti projekten több mint 300 változatot generált, az ellenőrző előszűrte, én a végén 18-at választottam.
 
 **Variánsok újrarenderelés nélkül.** Évszak, napszak, időjárás, berendezési stílus, költségszint, ugyanabból az alaprenderből, rögzített geometriával. Egy meglévő nézet éjszakai vagy alkonyi változata az [árlistán](/pricing/) pontosan ezért egy új nézet töredéke.
 </Lang>
 
-<ImageCompare before="/_img/services/advanced-ai-services/novus-liget-k-ls-15-summer-daytime.jpg" after="/_img/services/advanced-ai-services/novus-liget-k-ls-15-summer-blue-hour.jpg" beforeAlt="Residential estate aerial, summer daytime" afterAlt="The same aerial relit to blue hour with interior lights on" beforeText={{ en: "Daytime", hu: "Nappal" }} afterText={{ en: "Blue hour", hu: "Kék óra" }} label={false} />
+<ImageCompare before="/_img/services/advanced-ai-services/novus-liget-k-ls-15-summer-daytime.jpg" after="/_img/services/advanced-ai-services/novus-liget-k-ls-15-summer-blue-hour.jpg" beforeAlt="Residential estate aerial, summer daytime" afterAlt="The same aerial relit to blue hour with interior lights on" beforeText={{"en":"Daytime","hu":"Nappal"}} afterText={{"en":"Blue hour","hu":"Kék óra"}} />
 
 <Lang code="en">
 **Relighting and sky work on finished images.** Time-of-day relighting, light migration from a reference photo, sky replacement, material swaps: targeted tools on a finished render, not a re-render. Look passes, not physically measured ones. Good for presentation, useless for a daylight study.
@@ -60,14 +60,14 @@ Húzza a csúszkát. Az egyik oldal a 3ds Maxból kijövő munkarender, a másik
 </Lang>
 
 <Lang code="hu">
-**Átvilágítás és égbolt-munka kész képeken.** Napszak-átvilágítás, fényátvitel referenciafotóról, égboltcsere, anyagcsere: célzott eszközök egy kész renderen, nem újrarenderelés. Látvány-menetek, nem fizikailag mért menetek. Prezentációra jók, benapozási vizsgálatra használhatatlanok.
+**Újravilágítás és égbolt-munka kész képeken.** Napszak-csere, világítás átvitele referenciafotóról, égboltcsere, anyagcsere: célzott eszközök egy kész renderen, nem újrarenderelés. Látvány-generációk, nem a 3d modellből fizikailag újraszámított változatok. Prezentációra jók, benapozási vizsgálatra - most még - nem alkalmasak.
 
-**Belső terek üres modellből.** Értékesítési anyaghoz egy üres 3D-lakást a pipeline be tud bútorozni és be tud fejezni egy általam beállított nézőpontból. Egy egész épületen át konzisztens, az egyes lakástípusok kézi berendezésének töredékéért. A bútor hihető, nem specifikált; ahol az ügyfél konkrét beépítést árul, azt modellezem.
+**Belső terek üres modellből.** Értékesítési anyaghoz egy üres 3D-lakást a pipeline be tud bútorozni és be tud fejezni egy általam beállított nézőpontból. Egy egész épületen át konzisztens, az egyes lakástípusok kézi berendezésének töredékéért. A bútor hihető, nem specifikált; ahol az ügyfél konkrét beépítést árul, azt modellezzük. Mivel az ingatlanfejlesztő általában bútorozatlanul értékesíti az új ingatlanokat, nem érdemes belsőépítsszel megterveztetni az abban a formában soha nem megvalósuló lakásokat, elég róluk egy hihető, hangulatos kép, ami eladja őket.
 
-**Renderek vázlatból és lapos exportból.** Ceruzavázlat, SketchUp- vagy ArchiCAD-export, egy régi render egy korábbi fázisból: mind használható kiindulópont egy fotorealisztikus képhez, mielőtt bármilyen 3D-munka elkezdődne. Gyors pályázatokhoz és korai beszélgetésekhez; lásd [AI Render Upgrade](/vision-tech/ai-render-upgrade/).
+**Renderek vázlatból és lapos exportból.** Ceruzavázlat, SketchUp- vagy ArchiCAD-export, egy régi render egy korábbi fázisból: mind használható kiindulópont egy fotorealisztikus képhez, mielőtt bármilyen 3D-munka elkezdődne. Az általunk használ AI képgeneráló modellek valójában egy kiinduló képben ugyanúgy látják a 3d dimenziós teret, mint ahogy az ember is el tudja képzelni egy kép alapján, és ebből a "fejben felépített", nem konretizált térben tudnak tovább gonlolkodni a képalkotáskor. Mostanra gyakorlatilag az összes területen használhatóak, ahol nem szükésges cm és lux pontosságú szimuláció; lásd [AI Render Upgrade](/vision-tech/ai-render-upgrade/).
 </Lang>
 
-<ImageCompare before="/_img/services/advanced-ai-services/bugyi-k-p-2-.jpg" after="/_img/services/advanced-ai-services/bugyi-k-p-2-g01-i-s01-daytime-g01-iab-s01-summer-daytime.jpg" beforeAlt="Flat white-model export of a family house" afterAlt="Photorealistic image generated from that export" beforeText={{ en: "Software export", hu: "Szoftverexport" }} afterText={{ en: "AI image", hu: "AI-kép" }} label={false} />
+<ImageCompare before="/_img/services/advanced-ai-services/bugyi-k-p-2-.jpg" after="/_img/services/advanced-ai-services/bugyi-k-p-2-g01-i-s01-daytime-g01-iab-s01-summer-daytime.jpg" beforeAlt="Flat white-model export of a family house" afterAlt="Photorealistic image generated from that export" beforeText={{"en":"Software export","hu":"Szoftverexport"}} afterText={{"en":"AI image","hu":"AI-kép"}} />
 
 <Lang code="en">
 **Motion from stills.** Camera moves, time-of-day and weather transitions generated from a still, cut into 30-second to 5-minute films: [AI Animation](/vision-tech/ai-animation/). Right for social and sales-office loops. A flythrough through a building is still a 3D animation.
